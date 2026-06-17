@@ -1,0 +1,8 @@
+{
+  "agent": "openhands",
+  "validation_commands": [
+    "python -c \"import django; print(django.get_version())\""
+  ],
+  "validation_success": false,
+  "commands_logged": 5
+}

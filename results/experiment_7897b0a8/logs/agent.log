@@ -1,0 +1,9 @@
+{
+  "agent": "openhands",
+  "validation_commands": [
+    "node --version",
+    "npm --version"
+  ],
+  "validation_success": false,
+  "commands_logged": 19
+}

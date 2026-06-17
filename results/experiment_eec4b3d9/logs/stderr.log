@@ -1,0 +1,20 @@
+$ apt-get update && apt-get install -y lsb-release curl gpg
+debconf: delaying package configuration, since apt-utils is not installed
+
+$ curl -fsSL https://packages.redis.io/gpg | gpg --dearmor -o /usr/share/keyrings/redis-archive-keyring.gpg
+chmod 644 /usr/share/keyrings/redis-archive-keyring.gpg
+echo "deb [signed-by=/usr/share/keyrings/redis-archive-keyring.gpg] https://packages.redis.io/deb $(lsb_release -cs) main" > /etc/apt/sources.list.d/redis.list
+apt-get update
+apt-get install -y redis
+('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+$ apt-get update
+apt-get install -y redis
+debconf: delaying package configuration, since apt-utils is not installed
+
+$ redis-server --version
+redis-cli --version
+('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+
+$ redis-server --version
+('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))

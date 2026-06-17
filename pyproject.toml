@@ -1,0 +1,51 @@
+[project]
+name = "installbench"
+version = "0.1.0"
+description = "An experimental framework evaluating AI software agents on installation tasks."
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    "pydantic>=2.7.0",
+    "pydantic-settings>=2.2.1",
+    "typer>=0.12.0",
+    "rich>=13.0.0",
+    "docker>=7.0.0",
+    "structlog>=24.1.0",
+    "python-dotenv>=1.0.0",
+    "litellm>=1.0.0",
+    "openhands-sdk>=1.28.1",
+    "openhands-tools>=1.28.1",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0.0",
+    "ruff>=0.3.0",
+    "mypy>=1.9.0",
+]
+
+[project.scripts]
+installbench = "installbench.cli:app"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "W", "UP", "B", "C4", "SIM", "RUF"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+warn_return_any = true
+warn_unused_configs = true
+
+# ==============================================================================
+# BUILD CONFIGURATION (Fixes the flat-layout / discovery error)
+# ==============================================================================
+[build-system]
+requires = ["setuptools>=61.0"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["installbench*"]
