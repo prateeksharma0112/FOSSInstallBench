@@ -13,7 +13,6 @@ from dotenv import load_dotenv
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.tool.registry import register_tool
 
-from installbench.agents.adapter import AgentAdapter
 from installbench.agents.openhands_docker_tool import InstallBenchTerminalTool
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.docker_manager import DockerManager
@@ -22,7 +21,7 @@ load_dotenv()
 logger = structlog.get_logger(__name__)
 
 
-class OpenHandsAgent(AgentAdapter):
+class OpenHandsAgent:
     """Runs installation tasks with the OpenHands Software Agent SDK."""
 
     def __init__(self) -> None:
@@ -68,9 +67,9 @@ class OpenHandsAgent(AgentAdapter):
 
         conversation = Conversation(
             agent=agent,
-            # workspace=str(workspace_dir),
-            # persistence_dir=str(persistence_dir),
-            # visualizer=None,
+            workspace=str(workspace_dir),
+            persistence_dir=str(persistence_dir),
+            visualizer=None,
         )
 
         try:
@@ -97,11 +96,15 @@ class OpenHandsAgent(AgentAdapter):
 
         validation_results = self._run_validation(task, sandbox)
         command_results = command_log + validation_results
-        install_ok = bool(command_log) and all(item["exit_code"] == 0 for item in command_log)
         validation_ok = all(item["exit_code"] == 0 for item in validation_results)
+        has_validation = bool(task.validation_commands)
+        agent_attempt_ok = bool(command_log) and all(
+            item["exit_code"] == 0 for item in command_log
+        )
+        success = validation_ok if has_validation else agent_attempt_ok
 
         return {
-            "success": install_ok and validation_ok,
+            "success": success,
             "commands": command_results,
             "stdout": self._format_stream(command_results, "stdout"),
             "stderr": self._format_stream(command_results, "stderr"),
@@ -110,6 +113,7 @@ class OpenHandsAgent(AgentAdapter):
                     "agent": "openhands",
                     "validation_commands": task.validation_commands,
                     "validation_success": validation_ok,
+                    "agent_attempt_success": agent_attempt_ok,
                     "commands_logged": len(command_log),
                 },
                 indent=2,
@@ -131,6 +135,10 @@ Environment:
 - Avoid systemctl because systemd is usually unavailable in this container.
 - Prefer non-interactive commands.
 - Execute commands with the terminal tool.
+- Treat the validation commands below as the exact final contract.
+- Install so those commands pass from a fresh non-interactive shell.
+- Do not rely on an activated shell session or virtual environment unless the
+  validation command itself activates or references it.
 
 Installation guide:
 {installation_guide}
@@ -148,16 +156,20 @@ Finish after the software is installed and validated.
     ) -> list[dict[str, Any]]:
         results = []
         for command in task.validation_commands:
-            exit_code, stdout, stderr = sandbox.execute_command(command)
-            results.append(
-                {
-                    "command": command,
-                    "exit_code": exit_code,
-                    "stdout": stdout,
-                    "stderr": stderr,
-                    "validation": True,
-                }
+            exit_code, stdout, stderr = sandbox.execute_command(
+                command,
+                working_dir="/workspace",
             )
+            result = {
+                "command": command,
+                "exit_code": exit_code,
+                "stdout": stdout,
+                "stderr": stderr,
+                "validation": True,
+            }
+            if self._is_infrastructure_error(stderr):
+                result["error_type"] = "infrastructure"
+            results.append(result)
         return results
 
     def _format_stream(self, results: list[dict[str, Any]], stream_name: str) -> str:
@@ -170,3 +182,6 @@ Finish after the software is installed and validated.
 
     def _safe_text(self, text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")
+
+    def _is_infrastructure_error(self, stderr: str) -> bool:
+        return "RemoteDisconnected" in stderr or "Connection aborted" in stderr

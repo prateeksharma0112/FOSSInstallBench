@@ -1,8 +1,0 @@
-{
-    "name": "React",
-    "description": "Official installation guide for React, a JavaScript library for building user interfaces.",
-    "validation_commands": [
-        "node --version",
-        "npm --version"
-    ]
-}

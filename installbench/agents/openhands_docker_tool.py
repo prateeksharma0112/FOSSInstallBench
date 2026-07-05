@@ -53,19 +53,24 @@ class DockerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
                 metadata=CmdOutputMetadata(exit_code=0, working_dir=self.working_dir),
             )
 
-        exit_code, stdout, stderr = self.sandbox.execute_command(command)
+        exit_code, stdout, stderr = self.sandbox.execute_command(
+            command,
+            working_dir=self.working_dir,
+        )
         output = stdout
         if stderr:
             output = f"{stdout}\n{stderr}".strip()
 
-        self.command_log.append(
-            {
-                "command": command,
-                "exit_code": exit_code,
-                "stdout": stdout,
-                "stderr": stderr,
-            }
-        )
+        command_result = {
+            "command": command,
+            "exit_code": exit_code,
+            "stdout": stdout,
+            "stderr": stderr,
+        }
+        if _is_infrastructure_error(stderr):
+            command_result["error_type"] = "infrastructure"
+
+        self.command_log.append(command_result)
 
         return TerminalObservation.from_text(
             text=output,
@@ -111,3 +116,7 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
                 ),
             )
         ]
+
+
+def _is_infrastructure_error(stderr: str) -> bool:
+    return "RemoteDisconnected" in stderr or "Connection aborted" in stderr

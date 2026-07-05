@@ -1,8 +1,0 @@
-{
-    "name": "Redis",
-    "description": "Official installation guide for Redis, a popular in-memory data structure store, used as a database, cache, and message broker.",
-    "validation_commands": [
-        "redis-server --version",
-        "redis-cli --version"
-    ]
-}

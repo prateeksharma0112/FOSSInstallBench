@@ -1,9 +1,0 @@
-{
-  "agent": "openhands",
-  "validation_commands": [
-    "redis-server --version",
-    "redis-cli --version"
-  ],
-  "validation_success": true,
-  "commands_logged": 13
-}
