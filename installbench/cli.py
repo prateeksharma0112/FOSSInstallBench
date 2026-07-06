@@ -29,6 +29,8 @@ def run_task(
             console.print(
                 f"[bold red]Experiment {result.experiment_id} failed.[/bold red]"
             )
+            if result.error_message:
+                console.print(f"[red]{result.error_message}[/red]")
     except Exception as e:
         console.print(f"[bold red]Experiment failed:[/bold red] {e}")
         # Use a non-zero exit code for your thesis logs/automation to catch failures

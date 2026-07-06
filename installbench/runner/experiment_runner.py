@@ -1,13 +1,16 @@
 import time
 import uuid
+from typing import Any
+
 import structlog
 
+from installbench.agents.adapter import AgentProtocol
 from installbench.config import settings
 from installbench.datasets.loader import DatasetLoader
+from installbench.models.experiment_result import ExperimentMetrics, ExperimentResult
+from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.docker_manager import DockerManager
-from installbench.agents.adapter import AgentProtocol
 from installbench.storage.json_storage import JsonStorage
-from installbench.models.experiment_result import ExperimentResult, ExperimentMetrics
 
 logger = structlog.get_logger(__name__)
 
@@ -51,21 +54,42 @@ class ExperimentRunner:
                     experiment_id,
                 )
 
-                # Extract results from agent response
-                success = raw_results.get("success", False)
+                agent_completed = raw_results.get("completed", False)
                 commands = raw_results.get("commands", [])
-                stdout = raw_results.get("stdout", "")
-                stderr = raw_results.get("stderr", "")
                 agent_log = raw_results.get("logs", "")
                 error_msg = raw_results.get("error_message")
             except Exception as e:
                 logger.exception("agent_invocation_failed", task_id=task_id)
-                success = False
+                agent_completed = False
                 commands = []
-                stdout = ""
-                stderr = str(e)
                 agent_log = ""
                 error_msg = str(e)
+
+            validation_results = (
+                self._run_validation(task, sandbox) if agent_completed else []
+            )
+            commands.extend(validation_results)
+
+            has_validation = bool(task.validation_commands)
+            validation_passed = has_validation and all(
+                result["exit_code"] == 0 for result in validation_results
+            )
+            success = agent_completed and validation_passed
+
+            if agent_completed and not has_validation:
+                error_msg = "Task has no validation commands."
+            elif agent_completed and not validation_passed:
+                failed_commands = [
+                    result["command"]
+                    for result in validation_results
+                    if result["exit_code"] != 0
+                ]
+                error_msg = f"Validation failed: {', '.join(failed_commands)}"
+
+            stdout = self._format_stream(commands, "stdout")
+            stderr = self._format_stream(commands, "stderr")
+            if error_msg and not stderr:
+                stderr = error_msg
 
         duration = time.time() - start_time
 
@@ -96,3 +120,37 @@ class ExperimentRunner:
         )
 
         return result
+
+    def _run_validation(
+        self,
+        task: InstallationTask,
+        sandbox: DockerManager,
+    ) -> list[dict[str, Any]]:
+        results: list[dict[str, Any]] = []
+        for command in task.validation_commands:
+            exit_code, stdout, stderr = sandbox.execute_command(
+                command,
+                working_dir="/workspace",
+            )
+            results.append(
+                {
+                    "command": command,
+                    "exit_code": exit_code,
+                    "stdout": stdout,
+                    "stderr": stderr,
+                    "validation": True,
+                }
+            )
+        return results
+
+    def _format_stream(
+        self,
+        results: list[dict[str, Any]],
+        stream_name: str,
+    ) -> str:
+        parts = []
+        for result in results:
+            output = result.get(stream_name, "")
+            if output:
+                parts.append(f"$ {result['command']}\n{output}".rstrip())
+        return "\n\n".join(parts)

@@ -15,5 +15,5 @@ class AgentProtocol(Protocol):
         prompt: str,
         experiment_id: str,
     ) -> dict[str, Any]:
-        """Execute the task and return its commands, logs, and success state."""
+        """Install the task and return command history and completion state."""
         ...

@@ -48,3 +48,6 @@ build-backend = "setuptools.build_meta"
 
 [tool.setuptools.packages.find]
 include = ["installbench*"]
+
+[tool.setuptools.package-data]
+installbench = ["prompts/*.txt"]
