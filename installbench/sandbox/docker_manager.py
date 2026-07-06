@@ -2,7 +2,6 @@ import shlex
 import subprocess
 from types import TracebackType
 
-import docker
 import structlog
 
 logger = structlog.get_logger(__name__)
@@ -12,14 +11,6 @@ class DockerManager:
     def __init__(self, base_image: str = "ubuntu:22.04") -> None:
         self.base_image = base_image
         self.container_id: str | None = None
-        self.container = None
-        try:
-            self.client = docker.from_env(timeout=300)
-        except Exception as e:
-            logger.error("docker_connection_failed", error=str(e))
-            raise RuntimeError(
-                "Could not connect to Podman. Is Podman Desktop running?"
-            ) from e
 
     def create_sandbox(self) -> None:
         if self.container_id:
@@ -103,7 +94,6 @@ class DockerManager:
         
         container_id = self.container_id
         if not container_id:
-            self.container = None
             return
 
         logger.info("destroying_podman_sandbox", container=self.container_id[:12])
@@ -124,7 +114,6 @@ class DockerManager:
         except Exception as e:
             logger.warning("sandbox_cleanup_error", error=str(e))
         finally:
-            self.container = None
             self.container_id = None
 
     def __enter__(self) -> "DockerManager":
