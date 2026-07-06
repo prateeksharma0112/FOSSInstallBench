@@ -5,7 +5,6 @@ from __future__ import annotations
 
 import json
 import os
-from pathlib import Path
 from typing import Any
 
 import structlog
@@ -14,6 +13,7 @@ from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_docker_tool import InstallBenchTerminalTool
+from installbench.config import settings
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.docker_manager import DockerManager
 
@@ -43,10 +43,15 @@ class OpenHandsAgent:
         task: InstallationTask,
         sandbox: DockerManager,
         prompt: str,
+        experiment_id: str,
     ) -> dict[str, Any]:
-        logger.info("invoking_openhands_agent", task_id=task.task_id)
+        logger.info(
+            "invoking_openhands_agent",
+            task_id=task.task_id,
+            experiment_id=experiment_id,
+        )
 
-        workspace_dir = Path("workspace") / task.task_id
+        workspace_dir = settings.workspace_dir / task.task_id / experiment_id
         workspace_dir.mkdir(parents=True, exist_ok=True)
         persistence_dir = workspace_dir / ".openhands"
         persistence_dir.mkdir(parents=True, exist_ok=True)
@@ -88,6 +93,7 @@ class OpenHandsAgent:
                 "stdout": self._format_stream(command_log, "stdout"),
                 "stderr": self._format_stream(command_log, "stderr") or error_message,
                 "logs": json.dumps({"error": error_message}, indent=2),
+                "error_message": error_message,
             }
         finally:
             close = getattr(conversation, "close", None)
@@ -118,6 +124,7 @@ class OpenHandsAgent:
                 },
                 indent=2,
             ),
+            "error_message": None,
         }
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:

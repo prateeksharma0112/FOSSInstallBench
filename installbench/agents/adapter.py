@@ -13,6 +13,7 @@ class AgentProtocol(Protocol):
         task: InstallationTask,
         sandbox: DockerManager,
         prompt: str,
+        experiment_id: str,
     ) -> dict[str, Any]:
         """Execute the task and return its commands, logs, and success state."""
         ...

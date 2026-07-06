@@ -44,7 +44,12 @@ class ExperimentRunner:
                     guide_length=len(installation_guide_text),
                 )
                 # We pass the formatted guide as the prompt parameter
-                raw_results = self.agent.invoke(task, sandbox, installation_guide_text)
+                raw_results = self.agent.invoke(
+                    task,
+                    sandbox,
+                    installation_guide_text,
+                    experiment_id,
+                )
 
                 # Extract results from agent response
                 success = raw_results.get("success", False)
@@ -52,7 +57,7 @@ class ExperimentRunner:
                 stdout = raw_results.get("stdout", "")
                 stderr = raw_results.get("stderr", "")
                 agent_log = raw_results.get("logs", "")
-                error_msg = None
+                error_msg = raw_results.get("error_message")
             except Exception as e:
                 logger.exception("agent_invocation_failed", task_id=task_id)
                 success = False
