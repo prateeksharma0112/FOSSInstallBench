@@ -1,3 +1,3 @@
-from .docker_manager import DockerManager
+from .podman_sandbox import PodmanSandbox
 
-__all__ = ["DockerManager"]
+__all__ = ["PodmanSandbox"]

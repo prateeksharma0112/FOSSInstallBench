@@ -8,6 +8,8 @@ to the task description and installation guide.
 
 Environment:
 - Fresh {container_image} container.
+- The framework has already cloned the pinned source repository into
+  {repository_dir}. Your terminal starts in that directory.
 - You are root inside the container; do not use sudo.
 - Execute commands with the terminal tool.
 - Prefer non-interactive commands.
@@ -16,6 +18,7 @@ Environment:
 
 Boundaries:
 - Focus only on installation and required setup.
+- Do not clone or replace the repository. Work with the supplied checkout.
 - You may inspect and test your work while troubleshooting.
 - Do not perform the benchmark's final validation. The experiment runner does
   that independently after you finish.

@@ -1,19 +1,23 @@
 """Typing contract for agent integrations."""
-from typing import Any, Protocol
 
+from typing import Protocol
+
+from installbench.models.experiment_result import AgentExecutionResult
 from installbench.models.installation_task import InstallationTask
-from installbench.sandbox.docker_manager import DockerManager
+from installbench.sandbox.podman_sandbox import PodmanSandbox
 
 
 class AgentProtocol(Protocol):
     """An agent that can execute an installation task."""
 
+    model_name: str
+
     def invoke(
         self,
         task: InstallationTask,
-        sandbox: DockerManager,
+        sandbox: PodmanSandbox,
         prompt: str,
         experiment_id: str,
-    ) -> dict[str, Any]:
+    ) -> AgentExecutionResult:
         """Install the task and return command history and completion state."""
         ...

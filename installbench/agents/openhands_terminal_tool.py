@@ -1,6 +1,5 @@
-"""
-OpenHands tool bridge for the InstallBench Docker sandbox.
-"""
+"""OpenHands terminal bridge for the active Podman sandbox."""
+
 from __future__ import annotations
 
 from collections.abc import Sequence
@@ -13,17 +12,18 @@ from openhands.tools.terminal.definition import (
     TerminalObservation,
 )
 
-from installbench.sandbox.docker_manager import DockerManager
+from installbench.models.experiment_result import CommandResult
+from installbench.sandbox.podman_sandbox import PodmanSandbox
 
 
-class DockerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
-    """Executes OpenHands terminal actions inside an InstallBench Docker container."""
+class PodmanTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
+    """Execute agent terminal actions inside the repository checkout."""
 
     def __init__(
         self,
-        sandbox: DockerManager,
-        command_log: list[dict[str, Any]],
-        working_dir: str = "/workspace",
+        sandbox: PodmanSandbox,
+        command_log: list[CommandResult],
+        working_dir: str,
     ) -> None:
         self.sandbox = sandbox
         self.command_log = command_log
@@ -36,7 +36,7 @@ class DockerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
     ) -> TerminalObservation:
         if action.is_input:
             return TerminalObservation.from_text(
-                text="Interactive terminal input is not supported in InstallBench Docker mode.",
+                text="Interactive terminal input is not supported.",
                 is_error=True,
                 command=action.command,
                 exit_code=1,
@@ -53,36 +53,28 @@ class DockerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
                 metadata=CmdOutputMetadata(exit_code=0, working_dir=self.working_dir),
             )
 
-        exit_code, stdout, stderr = self.sandbox.execute_command(
+        result = self.sandbox.execute_command(
             command,
+            phase="agent",
             working_dir=self.working_dir,
         )
-        output = stdout
-        if stderr:
-            output = f"{stdout}\n{stderr}".strip()
-
-        command_result = {
-            "command": command,
-            "exit_code": exit_code,
-            "stdout": stdout,
-            "stderr": stderr,
-        }
-        if _is_infrastructure_error(stderr):
-            command_result["error_type"] = "infrastructure"
-
-        self.command_log.append(command_result)
+        self.command_log.append(result)
+        output = "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
 
         return TerminalObservation.from_text(
             text=output,
-            is_error=exit_code != 0,
+            is_error=result.exit_code != 0,
             command=command,
-            exit_code=exit_code,
-            metadata=CmdOutputMetadata(exit_code=exit_code, working_dir=self.working_dir),
+            exit_code=result.exit_code,
+            metadata=CmdOutputMetadata(
+                exit_code=result.exit_code,
+                working_dir=self.working_dir,
+            ),
         )
 
 
 class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservation]):
-    """OpenHands terminal tool backed by the active InstallBench Docker sandbox."""
+    """OpenHands terminal tool backed by the active benchmark sandbox."""
 
     name = "terminal"
 
@@ -90,15 +82,12 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
     def create(cls, *args: Any, **kwargs: Any) -> Sequence["InstallBenchTerminalTool"]:
         sandbox = kwargs["sandbox"]
         command_log = kwargs["command_log"]
-        working_dir = kwargs.get("working_dir", "/workspace")
-
+        working_dir = kwargs["working_dir"]
         return [
             cls(
                 description=(
-                    "Execute one shell command inside the fresh Ubuntu Docker "
-                    "container used for this installation benchmark. The shell "
-                    "runs as root. Do not use sudo. Avoid systemctl because "
-                    "systemd is usually unavailable in this container."
+                    "Execute one non-interactive shell command inside the source "
+                    "repository. The shell runs as root in a fresh Podman container."
                 ),
                 action_type=TerminalAction,
                 observation_type=TerminalObservation,
@@ -109,14 +98,10 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
                     idempotentHint=False,
                     openWorldHint=True,
                 ),
-                executor=DockerTerminalExecutor(
+                executor=PodmanTerminalExecutor(
                     sandbox=sandbox,
                     command_log=command_log,
                     working_dir=working_dir,
                 ),
             )
         ]
-
-
-def _is_infrastructure_error(stderr: str) -> bool:
-    return "RemoteDisconnected" in stderr or "Connection aborted" in stderr

@@ -3,6 +3,7 @@ Handles persisting experiment results locally.
 """
 import json
 from pathlib import Path
+
 import structlog
 
 from installbench.models.experiment_result import ExperimentResult
@@ -34,16 +35,33 @@ class JsonStorage:
         summary_data = {
             "experiment_id": result.experiment_id,
             "task_id": result.task_id,
+            "task_name": result.task_name,
+            "repository_url": result.repository_url,
+            "commit_sha": result.commit_sha,
+            "container_image": result.container_image,
+            "agent_model": result.agent_model,
             "timestamp": result.timestamp.isoformat(),
-            "error_message": result.error_message
+            "success": result.metrics.success,
+            "error_message": result.error_message,
         }
         self._write_json(experiment_dir / "summary.json", summary_data)
         
         # 2. Metrics JSON
-        self._write_json(experiment_dir / "metrics.json", result.metrics.model_dump())
+        self._write_json(
+            experiment_dir / "metrics.json", result.metrics.model_dump(mode="json")
+        )
         
         # 3. Commands JSON
-        self._write_json(experiment_dir / "commands.json", {"commands": result.commands})
+        self._write_json(
+            experiment_dir / "commands.json",
+            {"commands": [command.model_dump(mode="json") for command in result.commands]},
+        )
+
+        # Complete machine-readable record
+        self._write_json(
+            experiment_dir / "result.json",
+            result.model_dump(mode="json"),
+        )
         
         # 4. Logs
         self._write_text(logs_dir / "stdout.log", result.stdout)

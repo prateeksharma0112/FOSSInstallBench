@@ -9,4 +9,5 @@ __pycache__/
 # Project-specific
 results/
 tasks/
+old_tasks/
 workspace/
