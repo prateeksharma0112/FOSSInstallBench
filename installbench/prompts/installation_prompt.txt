@@ -20,10 +20,9 @@ Boundaries:
 - Focus only on installation and required setup.
 - Do not clone or replace the repository. Work with the supplied checkout.
 - You may inspect and test your work while troubleshooting.
-- Do not perform the benchmark's final validation. The experiment runner does
-  that independently after you finish.
 - If a command fails, inspect its output, adapt, and continue when possible.
-- Finish once the software is installed and configured.
+- Finish when you believe the software is installed and configured, or explain
+  why the installation cannot be completed.
 
 Installation guide:
 {installation_guide}

@@ -17,4 +17,3 @@ class InstallationTask(BaseModel):
     commit_sha: str = Field(pattern=r"^[0-9a-fA-F]{40}$")
     last_updated: date
     documentation_files: dict[str, str] = Field(min_length=1)
-    validation_commands: list[str] = Field(min_length=1)

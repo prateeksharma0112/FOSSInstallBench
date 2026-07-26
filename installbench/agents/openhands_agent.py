@@ -1,13 +1,11 @@
-"""
-OpenHands SDK agent integration for InstallBench.
-"""
+"""OpenHands SDK integration for installation experiments."""
+
 from __future__ import annotations
 
 import json
-import os
 from pathlib import Path
+
 import structlog
-from dotenv import load_dotenv
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.registry import register_tool
@@ -16,9 +14,8 @@ from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.experiment_result import AgentExecutionResult, CommandResult
 from installbench.models.installation_task import InstallationTask
-from installbench.sandbox.podman_sandbox import PodmanSandbox
+from installbench.sandbox.protocol import Sandbox
 
-load_dotenv()
 logger = structlog.get_logger(__name__)
 PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "installation_prompt.txt"
 
@@ -27,24 +24,27 @@ class OpenHandsAgent:
     """Runs installation tasks with the OpenHands Software Agent SDK."""
 
     def __init__(self) -> None:
-        self.model_name = os.getenv("LLM_MODEL")
-        self.api_key = os.getenv("LLM_API_KEY")
+        if not settings.llm_model:
+            raise ValueError("LLM_MODEL or INSTALLBENCH_LLM_MODEL must be configured.")
+
+        self.model_name = settings.llm_model
 
         logger.info("initialized_openhands_agent", model=self.model_name)
 
-        if not self.api_key:
+        if not settings.llm_api_key:
             logger.warning("missing_llm_api_key", message="LLM_API_KEY is empty.")
 
         self.llm = LLM(
             model=self.model_name,
-            api_key=self.api_key,
+            api_key=settings.llm_api_key or None,
         )
 
-    def invoke(
+    def run(
         self,
+        *,
         task: InstallationTask,
-        sandbox: PodmanSandbox,
-        prompt: str,
+        sandbox: Sandbox,
+        installation_guide: str,
         experiment_id: str,
     ) -> AgentExecutionResult:
         logger.info(
@@ -58,6 +58,8 @@ class OpenHandsAgent:
         persistence_dir = workspace_dir / ".openhands"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 
+        prompt = self._build_prompt(task, installation_guide)
+
         command_log: list[CommandResult] = []
         terminal_tool = InstallBenchTerminalTool.create(
             sandbox=sandbox,
@@ -66,27 +68,26 @@ class OpenHandsAgent:
         )[0]
         register_tool("InstallBenchTerminalTool", terminal_tool)
 
-        agent = Agent(
-            llm=self.llm,
-            tools=[Tool(name="InstallBenchTerminalTool")],
-        )
-
-        conversation = Conversation(
-            agent=agent,
-            workspace=str(workspace_dir),
-            persistence_dir=str(persistence_dir),
-            max_iteration_per_run=settings.max_agent_iterations,
-            visualizer=None,
-        )
-
+        conversation: Conversation | None = None
         try:
-            conversation.send_message(self._build_prompt(task, prompt))
+            agent = Agent(
+                llm=self.llm,
+                tools=[Tool(name="InstallBenchTerminalTool")],
+            )
+            conversation = Conversation(
+                agent=agent,
+                workspace=str(workspace_dir),
+                persistence_dir=str(persistence_dir),
+                max_iteration_per_run=settings.max_agent_iterations,
+                visualizer=None,
+            )
+            conversation.send_message(prompt)
             conversation.run()
             execution_status = conversation.state.execution_status
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
                 return AgentExecutionResult(
-                    completed=False,
+                    finished=False,
                     commands=command_log,
                     logs=json.dumps(
                         {
@@ -95,6 +96,7 @@ class OpenHandsAgent:
                         },
                         indent=2,
                     ),
+                    prompt=prompt,
                     error_message=error_message,
                 )
         except Exception as exc:
@@ -105,13 +107,14 @@ class OpenHandsAgent:
                 error=error_message,
             )
             return AgentExecutionResult(
-                completed=False,
+                finished=False,
                 commands=command_log,
                 logs=json.dumps({"error": error_message}, indent=2),
+                prompt=prompt,
                 error_message=error_message,
             )
         finally:
-            close = getattr(conversation, "close", None)
+            close = getattr(conversation, "close", None) if conversation else None
             if callable(close):
                 try:
                     close()
@@ -119,18 +122,19 @@ class OpenHandsAgent:
                     logger.warning("conversation_close_failed", error=str(exc))
 
         return AgentExecutionResult(
-            completed=True,
+            finished=True,
             commands=command_log,
             logs=json.dumps(
                 {
                     "agent": "openhands",
-                    "completed": True,
+                    "finished": True,
                     "execution_status": ConversationExecutionStatus.FINISHED.value,
                     "max_iterations": settings.max_agent_iterations,
                     "commands_logged": len(command_log),
                 },
                 indent=2,
             ),
+            prompt=prompt,
         )
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
@@ -143,5 +147,6 @@ class OpenHandsAgent:
             installation_guide=installation_guide,
         )
 
-    def _safe_text(self, text: str) -> str:
+    @staticmethod
+    def _safe_text(text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")

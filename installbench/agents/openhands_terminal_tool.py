@@ -13,7 +13,7 @@ from openhands.tools.terminal.definition import (
 )
 
 from installbench.models.experiment_result import CommandResult
-from installbench.sandbox.podman_sandbox import PodmanSandbox
+from installbench.sandbox.protocol import Sandbox
 
 
 class PodmanTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
@@ -21,7 +21,7 @@ class PodmanTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
 
     def __init__(
         self,
-        sandbox: PodmanSandbox,
+        sandbox: Sandbox,
         command_log: list[CommandResult],
         working_dir: str,
     ) -> None:

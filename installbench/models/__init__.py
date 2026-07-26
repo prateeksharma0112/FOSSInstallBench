@@ -3,6 +3,7 @@ from .experiment_result import (
     CommandResult,
     ExperimentMetrics,
     ExperimentResult,
+    ExperimentStatus,
 )
 from .installation_task import InstallationTask
 
@@ -11,5 +12,6 @@ __all__ = [
     "CommandResult",
     "ExperimentResult",
     "ExperimentMetrics",
+    "ExperimentStatus",
     "InstallationTask",
 ]

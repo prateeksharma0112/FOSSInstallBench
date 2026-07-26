@@ -1,3 +1,3 @@
-from .json_storage import JsonStorage
+from .json_storage import JsonStorage, ResultStorage
 
-__all__ = ["JsonStorage"]
+__all__ = ["JsonStorage", "ResultStorage"]

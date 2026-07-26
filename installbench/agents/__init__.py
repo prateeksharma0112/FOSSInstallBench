@@ -1,4 +1,3 @@
-from .adapter import AgentProtocol
-from .openhands_agent import OpenHandsAgent
+from .protocol import AgentProtocol
 
-__all__ = ["AgentProtocol", "OpenHandsAgent"]
+__all__ = ["AgentProtocol"]
