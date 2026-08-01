@@ -10,8 +10,8 @@ from .installation_task import InstallationTask
 __all__ = [
     "AgentExecutionResult",
     "CommandResult",
-    "ExperimentResult",
     "ExperimentMetrics",
+    "ExperimentResult",
     "ExperimentStatus",
     "InstallationTask",
 ]

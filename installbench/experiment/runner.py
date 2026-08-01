@@ -42,7 +42,7 @@ class ExperimentRunner:
         self.storage = storage or JsonStorage(settings.results_dir)
         self.sandbox_factory = sandbox_factory
 
-    
+
     @staticmethod
     def _format_documentation(task: InstallationTask) -> str:
         sections = [

@@ -8,14 +8,14 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 class Settings(BaseSettings):
     """Global application settings."""
-    
+
     model_config = SettingsConfigDict(
         env_prefix="INSTALLBENCH_",
         env_file=".env",
         env_file_encoding="utf-8",
         extra="ignore",
     )
-    
+
     base_dir: Path = Path(__file__).parent.parent
     tasks_dir: Path = base_dir / "tasks"
     results_dir: Path = base_dir / "results"

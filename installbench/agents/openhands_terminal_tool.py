@@ -79,7 +79,7 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
     name = "terminal"
 
     @classmethod
-    def create(cls, *args: Any, **kwargs: Any) -> Sequence["InstallBenchTerminalTool"]:
+    def create(cls, *args: Any, **kwargs: Any) -> Sequence[InstallBenchTerminalTool]:
         sandbox = kwargs["sandbox"]
         command_log = kwargs["command_log"]
         working_dir = kwargs["working_dir"]
