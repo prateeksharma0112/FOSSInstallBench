@@ -20,7 +20,7 @@ from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.podman_sandbox import PodmanSandbox
 from installbench.sandbox.protocol import Sandbox
 from installbench.storage.json_storage import JsonStorage, ResultStorage
-from installbench.tasks.loader import TaskLoader
+from installbench.tasks_loader.loader import TaskLoader
 
 logger = structlog.get_logger(__name__)
 SandboxFactory = Callable[[str], Sandbox]
