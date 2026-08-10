@@ -11,10 +11,12 @@ from installbench.config import settings
 from installbench.experiment.repository import prepare_repository
 from installbench.models.experiment_result import (
     AgentExecutionResult,
+    AgentStatus,
     CommandResult,
     ExperimentMetrics,
     ExperimentResult,
-    ExperimentStatus,
+    InstallationStatus,
+    RunStatus,
 )
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.podman_sandbox import PodmanSandbox
@@ -92,8 +94,8 @@ class ExperimentRunner:
         setup_duration = 0.0
         agent_duration = 0.0
         commands: list[CommandResult] = []
-        agent_result = AgentExecutionResult(finished=False)
-        status = ExperimentStatus.SYSTEM_ERROR
+        agent_result: AgentExecutionResult | None = None
+        run_status = RunStatus.SYSTEM_ERROR
         error_message: str | None = None
 
         try:
@@ -109,7 +111,7 @@ class ExperimentRunner:
 
                 setup_failure = self._first_failure(setup_commands)
                 if setup_failure is not None:
-                    status = ExperimentStatus.SETUP_FAILED
+                    run_status = RunStatus.SETUP_FAILED
                     error_message = self._command_failure(
                         "Repository setup",
                         setup_failure,
@@ -126,20 +128,23 @@ class ExperimentRunner:
                     agent_duration = time.monotonic() - phase_started
                     commands.extend(agent_result.commands)
                     error_message = agent_result.error_message
-                    status = (
-                        ExperimentStatus.AGENT_FINISHED
-                        if agent_result.finished
-                        else ExperimentStatus.AGENT_FAILED
+                    run_status = (
+                        RunStatus.COMPLETED
+                        if agent_result.agent_status is AgentStatus.FINISHED
+                        else RunStatus.AGENT_FAILED
                     )
-                    if not agent_result.finished and error_message is None:
-                        error_message = "The installation agent did not finish."
+                    if run_status is RunStatus.AGENT_FAILED and error_message is None:
+                        error_message = (
+                            f"The installation agent stopped with status: "
+                            f"{agent_result.agent_status.value}."
+                        )
         except Exception as exc:
             logger.exception(
                 "experiment_system_error",
                 experiment_id=experiment_id,
                 task_id=task.task_id,
             )
-            status = ExperimentStatus.SYSTEM_ERROR
+            run_status = RunStatus.SYSTEM_ERROR
             error_message = str(exc)
 
         result = ExperimentResult(
@@ -150,7 +155,13 @@ class ExperimentRunner:
             commit_sha=task.commit_sha.lower(),
             container_image=settings.default_container_image,
             agent_model=self.agent.model_name,
-            status=status,
+            run_status=run_status,
+            agent_status=agent_result.agent_status if agent_result else None,
+            installation_status=(
+                agent_result.installation_status
+                if agent_result
+                else InstallationStatus.UNKNOWN
+            ),
             metrics=self._build_metrics(
                 started_at=started_at,
                 setup_duration=setup_duration,
@@ -158,8 +169,8 @@ class ExperimentRunner:
                 commands=commands,
             ),
             commands=commands,
-            agent_log=agent_result.logs,
-            installation_prompt=agent_result.prompt,
+            agent_log=agent_result.logs if agent_result else "",
+            installation_prompt=agent_result.prompt if agent_result else "",
             error_message=error_message,
         )
         self.storage.save(result)
@@ -167,7 +178,7 @@ class ExperimentRunner:
         logger.info(
             "experiment_finished",
             experiment_id=experiment_id,
-            status=status.value,
+            run_status=run_status.value,
             commands_count=len(commands),
             duration_seconds=result.metrics.duration_seconds,
         )

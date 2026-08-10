@@ -12,7 +12,11 @@ from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.experiment_result import AgentExecutionResult, CommandResult
+from installbench.models.experiment_result import (
+    AgentExecutionResult,
+    AgentStatus,
+    CommandResult,
+)
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 
@@ -87,7 +91,7 @@ class OpenHandsAgent:
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
                 return AgentExecutionResult(
-                    finished=False,
+                    agent_status=self._map_execution_status(execution_status.value),
                     commands=command_log,
                     logs=json.dumps(
                         {
@@ -107,7 +111,7 @@ class OpenHandsAgent:
                 error=error_message,
             )
             return AgentExecutionResult(
-                finished=False,
+                agent_status=AgentStatus.ERROR,
                 commands=command_log,
                 logs=json.dumps({"error": error_message}, indent=2),
                 prompt=prompt,
@@ -122,7 +126,7 @@ class OpenHandsAgent:
                     logger.warning("conversation_close_failed", error=str(exc))
 
         return AgentExecutionResult(
-            finished=True,
+            agent_status=AgentStatus.FINISHED,
             commands=command_log,
             logs=json.dumps(
                 {
@@ -151,3 +155,14 @@ class OpenHandsAgent:
     @staticmethod
     def _safe_text(text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")
+
+    @staticmethod
+    def _map_execution_status(execution_status: str) -> AgentStatus:
+        """Map SDK stop reasons without treating a stopped agent as installation success."""
+
+        normalized = execution_status.lower().replace("-", "_").replace(" ", "_")
+        if "max" in normalized and "iteration" in normalized:
+            return AgentStatus.MAX_ITERATIONS
+        if normalized in {"interrupted", "stopped", "paused", "cancelled", "canceled"}:
+            return AgentStatus.INTERRUPTED
+        return AgentStatus.ERROR

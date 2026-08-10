@@ -9,13 +9,31 @@ from pydantic import BaseModel, Field
 CommandPhase = Literal["setup", "agent"]
 
 
-class ExperimentStatus(StrEnum):
-    """Observable outcome of an experiment without claiming installation validity."""
+class RunStatus(StrEnum):
+    """Outcome of the benchmark framework run, independent of installation success."""
 
-    AGENT_FINISHED = "agent_finished"
-    AGENT_FAILED = "agent_failed"
+    COMPLETED = "completed"
     SETUP_FAILED = "setup_failed"
+    AGENT_FAILED = "agent_failed"
     SYSTEM_ERROR = "system_error"
+
+
+class AgentStatus(StrEnum):
+    """How the agent execution itself ended."""
+
+    FINISHED = "finished"
+    MAX_ITERATIONS = "max_iterations"
+    ERROR = "error"
+    INTERRUPTED = "interrupted"
+
+
+class InstallationStatus(StrEnum):
+    """Installation outcome, kept separate from agent and framework completion."""
+
+    SUCCESS = "success"
+    FAILURE = "failure"
+    BLOCKED = "blocked"
+    UNKNOWN = "unknown"
 
 
 class CommandResult(BaseModel):
@@ -32,7 +50,8 @@ class CommandResult(BaseModel):
 class AgentExecutionResult(BaseModel):
     """Evidence returned after an agent run."""
 
-    finished: bool
+    agent_status: AgentStatus
+    installation_status: InstallationStatus = InstallationStatus.UNKNOWN
     commands: list[CommandResult] = Field(default_factory=list)
     logs: str = ""
     prompt: str = ""
@@ -61,7 +80,9 @@ class ExperimentResult(BaseModel):
     container_image: str
     agent_model: str
     timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
-    status: ExperimentStatus
+    run_status: RunStatus
+    agent_status: AgentStatus | None = None
+    installation_status: InstallationStatus = InstallationStatus.UNKNOWN
     metrics: ExperimentMetrics
     commands: list[CommandResult] = Field(default_factory=list)
     agent_log: str = ""
