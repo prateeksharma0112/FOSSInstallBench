@@ -171,6 +171,7 @@ class ExperimentRunner:
             commands=commands,
             agent_log=agent_result.logs if agent_result else "",
             installation_prompt=agent_result.prompt if agent_result else "",
+            agent_final_response=(agent_result.final_response if agent_result else ""),
             error_message=error_message,
         )
         self.storage.save(result)

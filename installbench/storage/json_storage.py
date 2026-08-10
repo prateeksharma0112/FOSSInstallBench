@@ -30,7 +30,12 @@ class JsonStorage:
 
         result_data = result.model_dump(
             mode="json",
-            exclude={"commands", "agent_log", "installation_prompt"},
+            exclude={
+                "commands",
+                "agent_log",
+                "installation_prompt",
+                "agent_final_response",
+            },
         )
         self._write_json(experiment_dir / "result.json", result_data)
         self._write_json(
@@ -41,6 +46,10 @@ class JsonStorage:
         self._write_text(
             experiment_dir / "installation_prompt.txt",
             result.installation_prompt,
+        )
+        self._write_text(
+            experiment_dir / "agent_final_response.txt",
+            result.agent_final_response,
         )
 
         logger.info("stored_experiment_results", path=str(experiment_dir))

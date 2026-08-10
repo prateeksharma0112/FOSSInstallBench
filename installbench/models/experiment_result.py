@@ -55,6 +55,7 @@ class AgentExecutionResult(BaseModel):
     commands: list[CommandResult] = Field(default_factory=list)
     logs: str = ""
     prompt: str = ""
+    final_response: str = ""
     error_message: str | None = None
 
 
@@ -87,4 +88,5 @@ class ExperimentResult(BaseModel):
     commands: list[CommandResult] = Field(default_factory=list)
     agent_log: str = ""
     installation_prompt: str = ""
+    agent_final_response: str = ""
     error_message: str | None = None

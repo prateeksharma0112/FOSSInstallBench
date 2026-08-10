@@ -9,6 +9,7 @@ import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.registry import register_tool
+from openhands.sdk.tool.builtins.finish import FinishAction
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
@@ -88,6 +89,7 @@ class OpenHandsAgent:
             conversation.send_message(prompt)
             conversation.run()
             execution_status = conversation.state.execution_status
+            final_response = self._extract_final_response(conversation)
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
                 return AgentExecutionResult(
@@ -101,6 +103,7 @@ class OpenHandsAgent:
                         indent=2,
                     ),
                     prompt=prompt,
+                    final_response=final_response,
                     error_message=error_message,
                 )
         except Exception as exc:
@@ -115,6 +118,9 @@ class OpenHandsAgent:
                 commands=command_log,
                 logs=json.dumps({"error": error_message}, indent=2),
                 prompt=prompt,
+                final_response=(
+                    self._extract_final_response(conversation) if conversation else ""
+                ),
                 error_message=error_message,
             )
         finally:
@@ -139,6 +145,7 @@ class OpenHandsAgent:
                 indent=2,
             ),
             prompt=prompt,
+            final_response=final_response,
         )
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
@@ -155,6 +162,22 @@ class OpenHandsAgent:
     @staticmethod
     def _safe_text(text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")
+
+    @staticmethod
+    def _extract_final_response(conversation: Conversation) -> str:
+        """Return the exact message supplied to the SDK's final Finish action."""
+
+        try:
+            events = list(conversation.state.events)
+        except Exception as exc:
+            logger.warning("final_response_events_unavailable", error=str(exc))
+            return ""
+
+        for event in reversed(events):
+            action = getattr(event, "action", None)
+            if isinstance(action, FinishAction):
+                return action.message
+        return ""
 
     @staticmethod
     def _map_execution_status(execution_status: str) -> AgentStatus:
