@@ -15,7 +15,6 @@ class Sandbox(Protocol):
         *,
         phase: CommandPhase,
         working_dir: str | None = None,
-        timeout_seconds: int | None = None,
     ) -> CommandResult: ...
 
     def __enter__(self) -> Self: ...
