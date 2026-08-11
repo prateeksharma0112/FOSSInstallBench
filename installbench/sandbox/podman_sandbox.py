@@ -2,6 +2,7 @@
 
 import shlex
 import subprocess
+import time
 from types import TracebackType
 
 import structlog
@@ -10,6 +11,8 @@ from installbench.config import settings
 from installbench.models.experiment_result import CommandPhase, CommandResult
 
 logger = structlog.get_logger(__name__)
+TIMEOUT_TERMINATION_GRACE_SECONDS = 5
+HOST_TIMEOUT_BUFFER_SECONDS = 10
 
 
 class PodmanSandbox:
@@ -73,12 +76,22 @@ class PodmanSandbox:
         shell_command += command
 
         timeout = timeout_seconds or settings.command_timeout_seconds
+        host_timeout = (
+            timeout
+            + TIMEOUT_TERMINATION_GRACE_SECONDS
+            + HOST_TIMEOUT_BUFFER_SECONDS
+        )
+        command_started_at = time.monotonic()
         try:
             result = subprocess.run(
                 [
                     "podman",
                     "exec",
                     self.container_id,
+                    "/usr/bin/timeout",
+                    "--signal=TERM",
+                    f"--kill-after={TIMEOUT_TERMINATION_GRACE_SECONDS}s",
+                    f"{timeout}s",
                     "/bin/bash",
                     "-lc",
                     shell_command,
@@ -87,30 +100,41 @@ class PodmanSandbox:
                 text=True,
                 encoding="utf-8",
                 errors="replace",
-                timeout=timeout,
+                timeout=host_timeout,
                 check=False,
             )
+            elapsed_seconds = time.monotonic() - command_started_at
+            timed_out = (
+                result.returncode in {124, 137} and elapsed_seconds >= timeout
+            )
+            stderr = result.stderr
+            if timed_out:
+                message = f"Command timed out after {timeout} seconds."
+                stderr = f"{stderr.rstrip()}\n{message}".lstrip()
+                logger.warning(
+                    "command_timed_out",
+                    command=command,
+                    timeout=timeout,
+                )
             return CommandResult(
                 phase=phase,
                 command=command,
                 exit_code=result.returncode,
                 stdout=result.stdout,
-                stderr=result.stderr,
+                stderr=stderr,
+                timed_out=timed_out,
             )
         except subprocess.TimeoutExpired as exc:
-            stdout = self._timeout_text(exc.stdout)
-            stderr = self._timeout_text(exc.stderr)
-            message = f"Command timed out after {timeout} seconds."
-            stderr = f"{stderr.rstrip()}\n{message}".lstrip()
-            logger.warning("command_timed_out", command=command, timeout=timeout)
-            return CommandResult(
-                phase=phase,
+            logger.error(
+                "command_timeout_enforcement_failed",
                 command=command,
-                exit_code=124,
-                stdout=stdout,
-                stderr=stderr,
-                timed_out=True,
+                configured_timeout=timeout,
+                host_timeout=host_timeout,
             )
+            raise RuntimeError(
+                "The in-container timeout did not terminate the command; "
+                "the sandbox can no longer be trusted."
+            ) from exc
         except OSError as exc:
             logger.exception("command_execution_failed", command=command)
             return CommandResult(
@@ -156,11 +180,4 @@ class PodmanSandbox:
         exc_tb: TracebackType | None,
     ) -> None:
         self.destroy()
-
-    @staticmethod
-    def _timeout_text(value: str | bytes | None) -> str:
-        if value is None:
-            return ""
-        if isinstance(value, bytes):
-            return value.decode("utf-8", errors="replace")
-        return value
+ 

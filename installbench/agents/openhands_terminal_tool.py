@@ -66,6 +66,7 @@ class PodmanTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
             is_error=result.exit_code != 0,
             command=command,
             exit_code=result.exit_code,
+            timeout=result.timed_out,
             metadata=CmdOutputMetadata(
                 exit_code=result.exit_code,
                 working_dir=self.working_dir,
