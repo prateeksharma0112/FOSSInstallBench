@@ -69,7 +69,7 @@ class PodmanSandbox:
         )
         shell_command = "set -o pipefail\n"
         if working_dir:
-            shell_command += f"cd {shlex.quote(working_dir)}\n"
+            shell_command += f"cd {shlex.quote(working_dir)} || exit 125\n"
         shell_command += command
 
         timeout = timeout_seconds or settings.command_timeout_seconds
