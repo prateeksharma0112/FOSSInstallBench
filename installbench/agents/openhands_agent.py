@@ -93,7 +93,7 @@ class OpenHandsAgent:
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
                 return AgentExecutionResult(
-                    agent_status=self._map_execution_status(execution_status.value),
+                    agent_status=AgentStatus.FAILED,
                     commands=command_log,
                     logs=json.dumps(
                         {
@@ -178,14 +178,3 @@ class OpenHandsAgent:
             if isinstance(action, FinishAction):
                 return action.message
         return ""
-
-    @staticmethod
-    def _map_execution_status(execution_status: str) -> AgentStatus:
-        """Map SDK stop reasons without treating a stopped agent as installation success."""
-
-        normalized = execution_status.lower().replace("-", "_").replace(" ", "_")
-        if "max" in normalized and "iteration" in normalized:
-            return AgentStatus.MAX_ITERATIONS
-        if normalized in {"interrupted", "stopped", "paused", "cancelled", "canceled"}:
-            return AgentStatus.INTERRUPTED
-        return AgentStatus.ERROR

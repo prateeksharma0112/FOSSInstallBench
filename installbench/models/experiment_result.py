@@ -22,9 +22,8 @@ class AgentStatus(StrEnum):
     """How the agent execution itself ended."""
 
     FINISHED = "finished"
-    MAX_ITERATIONS = "max_iterations"
+    FAILED = "failed"
     ERROR = "error"
-    INTERRUPTED = "interrupted"
 
 
 class InstallationStatus(StrEnum):
