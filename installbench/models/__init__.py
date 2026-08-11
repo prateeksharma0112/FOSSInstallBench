@@ -16,6 +16,6 @@ __all__ = [
     "ExperimentMetrics",
     "ExperimentResult",
     "InstallationStatus",
-    "RunStatus",
     "InstallationTask",
+    "RunStatus",
 ]

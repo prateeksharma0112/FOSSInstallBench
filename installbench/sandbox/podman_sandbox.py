@@ -180,4 +180,3 @@ class PodmanSandbox:
         exc_tb: TracebackType | None,
     ) -> None:
         self.destroy()
- 

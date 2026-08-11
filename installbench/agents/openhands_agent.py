@@ -8,8 +8,8 @@ from pathlib import Path
 import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
-from openhands.sdk.tool.registry import register_tool
 from openhands.sdk.tool.builtins.finish import FinishAction
+from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
