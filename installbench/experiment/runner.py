@@ -1,8 +1,8 @@
 """Orchestrate one installation experiment from input to stored result."""
 
 import time
-import uuid
 from collections.abc import Callable
+from datetime import datetime
 
 import structlog
 
@@ -80,9 +80,12 @@ class ExperimentRunner:
         )
 
     def run(self, task_id: str) -> ExperimentResult:
+        started_at_timestamp = datetime.now().astimezone()
         started_at = time.monotonic()
-        experiment_id = uuid.uuid4().hex
         task = self.task_loader.load(task_id)
+        experiment_id = (
+            f"{task.task_id}_{started_at_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}"
+        )
 
         logger.info(
             "experiment_started",
@@ -156,6 +159,7 @@ class ExperimentRunner:
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
             agent_model=self.agent.model_name,
+            timestamp=started_at_timestamp,
             run_status=run_status,
             agent_status=agent_result.agent_status if agent_result else None,
             installation_status=(

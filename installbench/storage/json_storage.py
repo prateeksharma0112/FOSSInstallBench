@@ -25,8 +25,8 @@ class JsonStorage:
         self.base_results_dir.mkdir(parents=True, exist_ok=True)
 
     def save(self, result: ExperimentResult) -> None:
-        experiment_dir = self.base_results_dir / f"experiment_{result.experiment_id}"
-        experiment_dir.mkdir(parents=True, exist_ok=True)
+        experiment_dir = self.base_results_dir / result.experiment_id
+        experiment_dir.mkdir(parents=True, exist_ok=False)
 
         result_data = result.model_dump(
             mode="json",

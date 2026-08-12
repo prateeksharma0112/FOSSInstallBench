@@ -58,8 +58,8 @@ class OpenHandsAgent:
             experiment_id=experiment_id,
         )
 
-        workspace_dir = settings.workspace_dir / task.task_id / experiment_id
-        workspace_dir.mkdir(parents=True, exist_ok=True)
+        workspace_dir = settings.workspace_dir / experiment_id
+        workspace_dir.mkdir(parents=True, exist_ok=False)
         persistence_dir = workspace_dir / ".openhands"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 

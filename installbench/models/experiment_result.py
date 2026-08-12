@@ -1,6 +1,6 @@
 """Domain models for one installation experiment."""
 
-from datetime import UTC, datetime
+from datetime import datetime
 from enum import StrEnum
 from typing import Literal
 
@@ -80,7 +80,7 @@ class ExperimentResult(BaseModel):
     container_image: str
     container_engine: Literal["podman", "docker"]
     agent_model: str
-    timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
+    timestamp: datetime
     run_status: RunStatus
     agent_status: AgentStatus | None = None
     installation_status: InstallationStatus = InstallationStatus.UNKNOWN
