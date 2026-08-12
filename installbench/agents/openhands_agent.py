@@ -3,7 +3,6 @@
 from __future__ import annotations
 
 import json
-from pathlib import Path
 
 import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
@@ -22,7 +21,6 @@ from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 
 logger = structlog.get_logger(__name__)
-PROMPT_PATH = Path(__file__).resolve().parent.parent / "prompts" / "installation_prompt.txt"
 
 
 class OpenHandsAgent:
@@ -30,14 +28,17 @@ class OpenHandsAgent:
 
     def __init__(self) -> None:
         if not settings.llm_model:
-            raise ValueError("LLM_MODEL or INSTALLBENCH_LLM_MODEL must be configured.")
+            raise ValueError("LLM_MODEL must be configured.")
 
         self.model_name = settings.llm_model
 
         logger.info("initialized_openhands_agent", model=self.model_name)
 
         if not settings.llm_api_key:
-            logger.warning("missing_llm_api_key", message="LLM_API_KEY is empty.")
+            logger.warning(
+                "missing_llm_api_key",
+                message="LLM_API_KEY is empty.",
+            )
 
         self.llm = LLM(
             model=self.model_name,
@@ -149,7 +150,7 @@ class OpenHandsAgent:
         )
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
-        template = PROMPT_PATH.read_text(encoding="utf-8")
+        template = settings.installation_prompt_path.read_text(encoding="utf-8")
         return template.format(
             task_id=task.task_id,
             task_name=task.name,
