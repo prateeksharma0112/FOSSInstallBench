@@ -1,4 +1,4 @@
-from .podman_sandbox import PodmanSandbox
+from .container_sandbox import ContainerSandbox
 from .protocol import Sandbox
 
-__all__ = ["PodmanSandbox", "Sandbox"]
+__all__ = ["ContainerSandbox", "Sandbox"]

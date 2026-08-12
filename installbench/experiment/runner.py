@@ -19,7 +19,7 @@ from installbench.models.experiment_result import (
     RunStatus,
 )
 from installbench.models.installation_task import InstallationTask
-from installbench.sandbox.podman_sandbox import PodmanSandbox
+from installbench.sandbox.container_sandbox import ContainerSandbox
 from installbench.sandbox.protocol import Sandbox
 from installbench.storage.json_storage import JsonStorage, ResultStorage
 from installbench.tasks_loader.loader import TaskLoader
@@ -37,7 +37,7 @@ class ExperimentRunner:
         *,
         task_loader: TaskLoader | None = None,
         storage: ResultStorage | None = None,
-        sandbox_factory: SandboxFactory = PodmanSandbox,
+        sandbox_factory: SandboxFactory = ContainerSandbox,
     ) -> None:
         self.agent = agent
         self.task_loader = task_loader or TaskLoader(settings.tasks_dir)
@@ -154,6 +154,7 @@ class ExperimentRunner:
             repository_url=task.repository_url,
             commit_sha=task.commit_sha.lower(),
             container_image=settings.default_container_image,
+            container_engine=settings.container_engine,
             agent_model=self.agent.model_name,
             run_status=run_status,
             agent_status=agent_result.agent_status if agent_result else None,

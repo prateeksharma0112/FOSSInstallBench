@@ -78,6 +78,7 @@ class ExperimentResult(BaseModel):
     repository_url: str
     commit_sha: str
     container_image: str
+    container_engine: Literal["podman", "docker"]
     agent_model: str
     timestamp: datetime = Field(default_factory=lambda: datetime.now(UTC))
     run_status: RunStatus

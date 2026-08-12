@@ -1,4 +1,4 @@
-"""Lifecycle and command execution for a disposable Podman container."""
+"""Lifecycle and command execution for a disposable container."""
 
 import shlex
 import subprocess
@@ -15,41 +15,58 @@ TIMEOUT_TERMINATION_GRACE_SECONDS = 5
 HOST_TIMEOUT_BUFFER_SECONDS = 10
 
 
-class PodmanSandbox:
-    """A fresh container used for exactly one experiment."""
+class ContainerSandbox:
+    """A fresh Docker or Podman container used for exactly one experiment."""
 
     def __init__(self, base_image: str) -> None:
         self.base_image = base_image
+        self.engine = settings.container_engine
         self.container_id: str | None = None
 
     def create(self) -> None:
         if self.container_id is not None:
             raise RuntimeError("Sandbox is already active.")
 
-        logger.info("creating_podman_sandbox", image=self.base_image)
-        result = subprocess.run(
-            [
-                "podman",
-                "run",
-                "--detach",
-                "--label",
-                "framework=installbench",
-                self.base_image,
-                "sleep",
-                "infinity",
-            ],
-            capture_output=True,
-            text=True,
-            timeout=settings.command_timeout_seconds,
-            check=False,
+        logger.info(
+            "creating_container_sandbox",
+            engine=self.engine,
+            image=self.base_image,
         )
+        try:
+            result = subprocess.run(
+                [
+                    self.engine,
+                    "run",
+                    "--detach",
+                    "--label",
+                    "framework=installbench",
+                    self.base_image,
+                    "sleep",
+                    "infinity",
+                ],
+                capture_output=True,
+                text=True,
+                timeout=settings.command_timeout_seconds,
+                check=False,
+            )
+        except FileNotFoundError as exc:
+            raise RuntimeError(
+                f"Configured container engine is not installed: {self.engine}"
+            ) from exc
+
         container_id = result.stdout.strip()
         if result.returncode != 0 or not container_id:
-            detail = result.stderr.strip() or "Podman returned no container ID."
-            raise RuntimeError(f"Failed to create Podman sandbox: {detail}")
+            detail = result.stderr.strip() or "Container engine returned no ID."
+            raise RuntimeError(
+                f"Failed to create {self.engine} sandbox: {detail}"
+            )
 
         self.container_id = container_id
-        logger.info("sandbox_started", container_id=container_id[:12])
+        logger.info(
+            "container_sandbox_started",
+            engine=self.engine,
+            container_id=container_id[:12],
+        )
 
     def execute_command(
         self,
@@ -65,6 +82,7 @@ class PodmanSandbox:
 
         logger.debug(
             "executing_command",
+            engine=self.engine,
             container=self.container_id[:12],
             phase=phase,
             command=command,
@@ -84,7 +102,7 @@ class PodmanSandbox:
         try:
             result = subprocess.run(
                 [
-                    "podman",
+                    self.engine,
                     "exec",
                     self.container_id,
                     "/usr/bin/timeout",
@@ -112,6 +130,7 @@ class PodmanSandbox:
                 stderr = f"{stderr.rstrip()}\n{message}".lstrip()
                 logger.warning(
                     "command_timed_out",
+                    engine=self.engine,
                     command=command,
                     timeout=timeout,
                 )
@@ -126,6 +145,7 @@ class PodmanSandbox:
         except subprocess.TimeoutExpired as exc:
             logger.error(
                 "command_timeout_enforcement_failed",
+                engine=self.engine,
                 command=command,
                 configured_timeout=timeout,
                 host_timeout=host_timeout,
@@ -135,7 +155,11 @@ class PodmanSandbox:
                 "the sandbox can no longer be trusted."
             ) from exc
         except OSError as exc:
-            logger.exception("command_execution_failed", command=command)
+            logger.exception(
+                "command_execution_failed",
+                engine=self.engine,
+                command=command,
+            )
             return CommandResult(
                 phase=phase,
                 command=command,
@@ -148,10 +172,14 @@ class PodmanSandbox:
         if container_id is None:
             return
 
-        logger.info("destroying_podman_sandbox", container=container_id[:12])
+        logger.info(
+            "destroying_container_sandbox",
+            engine=self.engine,
+            container=container_id[:12],
+        )
         try:
             result = subprocess.run(
-                ["podman", "rm", "--force", container_id],
+                [self.engine, "rm", "--force", container_id],
                 capture_output=True,
                 text=True,
                 timeout=60,
@@ -160,15 +188,20 @@ class PodmanSandbox:
             if result.returncode != 0:
                 logger.warning(
                     "sandbox_cleanup_failed",
+                    engine=self.engine,
                     container=container_id[:12],
                     stderr=result.stderr.strip(),
                 )
         except (OSError, subprocess.TimeoutExpired) as exc:
-            logger.warning("sandbox_cleanup_error", error=str(exc))
+            logger.warning(
+                "sandbox_cleanup_error",
+                engine=self.engine,
+                error=str(exc),
+            )
         finally:
             self.container_id = None
 
-    def __enter__(self) -> "PodmanSandbox":
+    def __enter__(self) -> "ContainerSandbox":
         self.create()
         return self
 

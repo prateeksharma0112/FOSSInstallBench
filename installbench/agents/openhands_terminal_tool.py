@@ -1,4 +1,4 @@
-"""OpenHands terminal bridge for the active Podman sandbox."""
+"""OpenHands terminal bridge for the active container sandbox."""
 
 from __future__ import annotations
 
@@ -16,7 +16,7 @@ from installbench.models.experiment_result import CommandResult
 from installbench.sandbox.protocol import Sandbox
 
 
-class PodmanTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
+class ContainerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
     """Execute agent terminal actions inside the repository checkout."""
 
     def __init__(
@@ -88,7 +88,7 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
             cls(
                 description=(
                     "Execute one non-interactive shell command inside the source "
-                    "repository. The shell runs as root in a fresh Podman container."
+                    "repository. The shell runs as root in a fresh container."
                 ),
                 action_type=TerminalAction,
                 observation_type=TerminalObservation,
@@ -99,7 +99,7 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
                     idempotentHint=False,
                     openWorldHint=True,
                 ),
-                executor=PodmanTerminalExecutor(
+                executor=ContainerTerminalExecutor(
                     sandbox=sandbox,
                     command_log=command_log,
                     working_dir=working_dir,

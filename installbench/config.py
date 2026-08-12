@@ -1,6 +1,7 @@
 """Application configuration loaded from environment variables and ``.env``."""
 
 from pathlib import Path
+from typing import Literal
 
 from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -22,6 +23,7 @@ class Settings(BaseSettings):
     workspace_dir: Path = base_dir / "workspace"
 
     default_container_image: str = "ubuntu:22.04"
+    container_engine: Literal["podman", "docker"] = "podman"
     repository_dir: str = "/workspace/repository"
     command_timeout_seconds: int = 300
     max_agent_iterations: int = 50
