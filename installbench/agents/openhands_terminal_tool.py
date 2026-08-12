@@ -5,18 +5,28 @@ from __future__ import annotations
 from collections.abc import Sequence
 from typing import Any
 
+from openhands.sdk import Action
 from openhands.sdk.tool.tool import ToolAnnotations, ToolDefinition, ToolExecutor
 from openhands.tools.terminal.definition import (
     CmdOutputMetadata,
-    TerminalAction,
     TerminalObservation,
 )
+from pydantic import Field
 
+from installbench.config import settings
 from installbench.models.experiment_result import CommandResult
 from installbench.sandbox.protocol import Sandbox
 
 
-class ContainerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation]):
+class InstallBenchTerminalAction(Action):
+    """One non-interactive command executed with the benchmark timeout."""
+
+    command: str = Field(description="Shell command to execute inside the container.")
+
+
+class ContainerTerminalExecutor(
+    ToolExecutor[InstallBenchTerminalAction, TerminalObservation]
+):
     """Execute agent terminal actions inside the repository checkout."""
 
     def __init__(
@@ -31,18 +41,9 @@ class ContainerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation
 
     def __call__(
         self,
-        action: TerminalAction,
+        action: InstallBenchTerminalAction,
         conversation: Any | None = None,
     ) -> TerminalObservation:
-        if action.is_input:
-            return TerminalObservation.from_text(
-                text="Interactive terminal input is not supported.",
-                is_error=True,
-                command=action.command,
-                exit_code=1,
-                metadata=CmdOutputMetadata(exit_code=1, working_dir=self.working_dir),
-            )
-
         command = action.command.strip()
         if not command:
             return TerminalObservation.from_text(
@@ -74,7 +75,9 @@ class ContainerTerminalExecutor(ToolExecutor[TerminalAction, TerminalObservation
         )
 
 
-class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservation]):
+class InstallBenchTerminalTool(
+    ToolDefinition[InstallBenchTerminalAction, TerminalObservation]
+):
     """OpenHands terminal tool backed by the active benchmark sandbox."""
 
     name = "terminal"
@@ -88,9 +91,11 @@ class InstallBenchTerminalTool(ToolDefinition[TerminalAction, TerminalObservatio
             cls(
                 description=(
                     "Execute one non-interactive shell command inside the source "
-                    "repository. The shell runs as root in a fresh container."
+                    "repository. The shell runs as root in a fresh container. "
+                    f"Every command has a fixed {settings.command_timeout_seconds}-second "
+                    "timeout that cannot be overridden."
                 ),
-                action_type=TerminalAction,
+                action_type=InstallBenchTerminalAction,
                 observation_type=TerminalObservation,
                 annotations=ToolAnnotations(
                     title="terminal",
