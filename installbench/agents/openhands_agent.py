@@ -110,12 +110,9 @@ class OpenHandsAgent:
                 return AgentExecutionResult(
                     agent_status=AgentStatus.FAILED,
                     commands=command_log,
-                    logs=json.dumps(
-                        {
-                            "agent": "openhands",
-                            "execution_status": execution_status.value,
-                        },
-                        indent=2,
+                    logs=self._serialize_log(
+                        agent="openhands",
+                        execution_status=execution_status.value,
                     ),
                     prompt=prompt,
                     final_response=final_response,
@@ -131,7 +128,7 @@ class OpenHandsAgent:
             return AgentExecutionResult(
                 agent_status=AgentStatus.ERROR,
                 commands=command_log,
-                logs=json.dumps({"error": error_message}, indent=2),
+                logs=self._serialize_log(error=error_message),
                 prompt=prompt,
                 final_response=(
                     self._extract_final_response(conversation) if conversation else ""
@@ -139,7 +136,7 @@ class OpenHandsAgent:
                 error_message=error_message,
             )
         finally:
-            close = getattr(conversation, "close", None) if conversation else None
+            close = getattr(conversation, "close", None)
             if callable(close):
                 try:
                     close()
@@ -155,15 +152,12 @@ class OpenHandsAgent:
             ),
             installation_report=installation_report,
             commands=command_log,
-            logs=json.dumps(
-                {
-                    "agent": "openhands",
-                    "finished": True,
-                    "execution_status": ConversationExecutionStatus.FINISHED.value,
-                    "max_iterations": settings.max_agent_iterations,
-                    "commands_logged": len(command_log),
-                },
-                indent=2,
+            logs=self._serialize_log(
+                agent="openhands",
+                finished=True,
+                execution_status=ConversationExecutionStatus.FINISHED.value,
+                max_iterations=settings.max_agent_iterations,
+                commands_logged=len(command_log),
             ),
             prompt=prompt,
             final_response=final_response,
@@ -183,6 +177,10 @@ class OpenHandsAgent:
     @staticmethod
     def _safe_text(text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")
+
+    @staticmethod
+    def _serialize_log(**entries: object) -> str:
+        return json.dumps(entries, indent=2)
 
     @staticmethod
     def _extract_final_response(conversation: Conversation) -> str:
