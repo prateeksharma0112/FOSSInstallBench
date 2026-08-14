@@ -25,8 +25,7 @@ class TaskLoader:
         if not metadata_path.is_file():
             raise FileNotFoundError(f"Task metadata not found: {metadata_path}")
 
-        with metadata_path.open(encoding="utf-8") as file:
-            metadata = json.load(file)
+        metadata = json.loads(metadata_path.read_text(encoding="utf-8"))
         if not isinstance(metadata, dict):
             raise ValueError(f"Task metadata must be a JSON object: {metadata_path}")
 
@@ -44,8 +43,7 @@ class TaskLoader:
         if not docs_dir.is_dir():
             return {}
 
-        main_guide_names = ("Installation.md", "installation.md")
-        for guide_name in main_guide_names:
+        for guide_name in ("Installation.md", "installation.md"):
             guide_path = docs_dir / guide_name
             if guide_path.is_file():
                 return {guide_name: guide_path.read_text(encoding="utf-8")}

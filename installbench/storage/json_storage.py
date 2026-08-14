@@ -56,8 +56,7 @@ class JsonStorage:
 
     @staticmethod
     def _write_json(path: Path, data: dict[str, Any]) -> None:
-        with path.open("w", encoding="utf-8") as file:
-            json.dump(data, file, indent=2)
+        path.write_text(json.dumps(data, indent=2), encoding="utf-8")
 
     @staticmethod
     def _write_text(path: Path, text: str) -> None:
