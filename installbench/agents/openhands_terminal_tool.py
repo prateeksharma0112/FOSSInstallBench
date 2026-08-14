@@ -24,9 +24,7 @@ class InstallBenchTerminalAction(Action):
     command: str = Field(description="Shell command to execute inside the container.")
 
 
-class ContainerTerminalExecutor(
-    ToolExecutor[InstallBenchTerminalAction, TerminalObservation]
-):
+class ContainerTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, TerminalObservation]):
     """Execute agent terminal actions inside the repository checkout."""
 
     def __init__(
@@ -77,9 +75,7 @@ class ContainerTerminalExecutor(
         )
 
 
-class InstallBenchTerminalTool(
-    ToolDefinition[InstallBenchTerminalAction, TerminalObservation]
-):
+class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, TerminalObservation]):
     """OpenHands terminal tool backed by the active benchmark sandbox."""
 
     name = "terminal"

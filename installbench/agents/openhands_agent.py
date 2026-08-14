@@ -130,9 +130,7 @@ class OpenHandsAgent:
                 commands=command_log,
                 logs=self._serialize_log(error=error_message),
                 prompt=prompt,
-                final_response=(
-                    self._extract_final_response(conversation) if conversation else ""
-                ),
+                final_response=(self._extract_final_response(conversation) if conversation else ""),
                 error_message=error_message,
             )
         finally:

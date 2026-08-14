@@ -13,12 +13,11 @@ console = Console()
 
 @app.command(name="run")
 def run_task(
-    task_id: str = typer.Option(..., "--task-id", "-t", help="The ID of the task to run")
+    task_id: str = typer.Option(..., "--task-id", "-t", help="The ID of the task to run"),
 ) -> None:
     """Run an installation evaluation task."""
     console.print(
-        f"[bold blue]Starting InstallBench[/bold blue] for task: "
-        f"[bold green]{task_id}[/bold green]"
+        f"[bold blue]Starting InstallBench[/bold blue] for task: [bold green]{task_id}[/bold green]"
     )
 
     try:
@@ -47,6 +46,7 @@ def run_task(
     if experiment_result.error_message:
         console.print(f"[red]{experiment_result.error_message}[/red]")
     raise typer.Exit(code=1)
+
 
 if __name__ == "__main__":
     app()

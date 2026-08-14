@@ -38,18 +38,14 @@ class InstallationStatus(StrEnum):
 class AgentInstallationReport(BaseModel):
     """Structured installation assessment reported by the agent."""
 
-    outcome: InstallationStatus = Field(
-        description="Agent-reported installation outcome."
-    )
+    outcome: InstallationStatus = Field(description="Agent-reported installation outcome.")
     installation_summary: str = Field(
         description="Brief account of what was completed during installation."
     )
     additional_actions: list[str] = Field(
         description="Actions taken that were not stated in the installation guide."
     )
-    verification: str = Field(
-        description="Verification command, exit code, and observed result."
-    )
+    verification: str = Field(description="Verification command, exit code, and observed result.")
     unresolved_issues: list[str] = Field(
         description="Errors or requirements that remained unresolved."
     )

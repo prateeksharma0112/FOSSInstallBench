@@ -44,7 +44,6 @@ class ExperimentRunner:
         self.storage = storage or JsonStorage(settings.results_dir)
         self.sandbox_factory = sandbox_factory
 
-
     @staticmethod
     def _format_documentation(task: InstallationTask) -> str:
         sections = [
@@ -83,9 +82,7 @@ class ExperimentRunner:
         started_at_timestamp = datetime.now().astimezone()
         started_at = time.monotonic()
         task = self.task_loader.load(task_id)
-        experiment_id = (
-            f"{task.task_id}_{started_at_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}"
-        )
+        experiment_id = f"{task.task_id}_{started_at_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}"
 
         logger.info(
             "experiment_started",
@@ -163,13 +160,9 @@ class ExperimentRunner:
             run_status=run_status,
             agent_status=agent_result.agent_status if agent_result else None,
             installation_status=(
-                agent_result.installation_status
-                if agent_result
-                else InstallationStatus.UNKNOWN
+                agent_result.installation_status if agent_result else InstallationStatus.UNKNOWN
             ),
-            installation_report=(
-                agent_result.installation_report if agent_result else None
-            ),
+            installation_report=(agent_result.installation_report if agent_result else None),
             metrics=self._build_metrics(
                 started_at=started_at,
                 setup_duration=setup_duration,
@@ -192,4 +185,3 @@ class ExperimentRunner:
             duration_seconds=experiment_result.metrics.duration_seconds,
         )
         return experiment_result
-

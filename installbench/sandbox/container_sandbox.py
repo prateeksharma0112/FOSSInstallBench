@@ -57,9 +57,7 @@ class ContainerSandbox:
         container_id = process.stdout.strip()
         if process.returncode != 0 or not container_id:
             detail = process.stderr.strip() or "Container engine returned no ID."
-            raise RuntimeError(
-                f"Failed to create {self.engine} sandbox: {detail}"
-            )
+            raise RuntimeError(f"Failed to create {self.engine} sandbox: {detail}")
 
         self.container_id = container_id
         logger.info(
@@ -93,11 +91,7 @@ class ContainerSandbox:
         shell_command += command
 
         timeout = settings.command_timeout_seconds
-        host_timeout = (
-            timeout
-            + TIMEOUT_TERMINATION_GRACE_SECONDS
-            + HOST_TIMEOUT_BUFFER_SECONDS
-        )
+        host_timeout = timeout + TIMEOUT_TERMINATION_GRACE_SECONDS + HOST_TIMEOUT_BUFFER_SECONDS
         command_started_at = time.monotonic()
         try:
             process = subprocess.run(
@@ -121,9 +115,7 @@ class ContainerSandbox:
                 check=False,
             )
             elapsed_seconds = time.monotonic() - command_started_at
-            timed_out = (
-                process.returncode in {124, 137} and elapsed_seconds >= timeout
-            )
+            timed_out = process.returncode in {124, 137} and elapsed_seconds >= timeout
             stderr = process.stderr
             if timed_out:
                 message = f"Command timed out after {timeout} seconds."
