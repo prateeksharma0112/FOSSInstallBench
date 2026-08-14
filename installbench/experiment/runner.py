@@ -150,7 +150,7 @@ class ExperimentRunner:
             run_status = RunStatus.SYSTEM_ERROR
             error_message = str(exc)
 
-        result = ExperimentResult(
+        experiment_result = ExperimentResult(
             experiment_id=experiment_id,
             task_id=task.task_id,
             task_name=task.name,
@@ -182,14 +182,14 @@ class ExperimentRunner:
             agent_final_response=(agent_result.final_response if agent_result else ""),
             error_message=error_message,
         )
-        self.storage.save(result)
+        self.storage.save(experiment_result)
 
         logger.info(
             "experiment_finished",
             experiment_id=experiment_id,
             run_status=run_status.value,
             commands_count=len(commands),
-            duration_seconds=result.metrics.duration_seconds,
+            duration_seconds=experiment_result.metrics.duration_seconds,
         )
-        return result
+        return experiment_result
 

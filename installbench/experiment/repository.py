@@ -29,10 +29,10 @@ def prepare_repository(
         f'test "$(git -C {quoted_dir} rev-parse HEAD)" = {quoted_commit}',
     ]
 
-    results: list[CommandResult] = []
+    command_results: list[CommandResult] = []
     for command in commands:
-        result = sandbox.execute_command(command, phase="setup")
-        results.append(result)
-        if result.exit_code != 0:
+        command_result = sandbox.execute_command(command, phase="setup")
+        command_results.append(command_result)
+        if command_result.exit_code != 0:
             break
-    return results
+    return command_results

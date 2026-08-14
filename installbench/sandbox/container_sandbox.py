@@ -33,7 +33,7 @@ class ContainerSandbox:
             image=self.base_image,
         )
         try:
-            result = subprocess.run(
+            process = subprocess.run(
                 [
                     self.engine,
                     "run",
@@ -54,9 +54,9 @@ class ContainerSandbox:
                 f"Configured container engine is not installed: {self.engine}"
             ) from exc
 
-        container_id = result.stdout.strip()
-        if result.returncode != 0 or not container_id:
-            detail = result.stderr.strip() or "Container engine returned no ID."
+        container_id = process.stdout.strip()
+        if process.returncode != 0 or not container_id:
+            detail = process.stderr.strip() or "Container engine returned no ID."
             raise RuntimeError(
                 f"Failed to create {self.engine} sandbox: {detail}"
             )
@@ -100,7 +100,7 @@ class ContainerSandbox:
         )
         command_started_at = time.monotonic()
         try:
-            result = subprocess.run(
+            process = subprocess.run(
                 [
                     self.engine,
                     "exec",
@@ -122,9 +122,9 @@ class ContainerSandbox:
             )
             elapsed_seconds = time.monotonic() - command_started_at
             timed_out = (
-                result.returncode in {124, 137} and elapsed_seconds >= timeout
+                process.returncode in {124, 137} and elapsed_seconds >= timeout
             )
-            stderr = result.stderr
+            stderr = process.stderr
             if timed_out:
                 message = f"Command timed out after {timeout} seconds."
                 stderr = f"{stderr.rstrip()}\n{message}".lstrip()
@@ -137,8 +137,8 @@ class ContainerSandbox:
             return CommandResult(
                 phase=phase,
                 command=command,
-                exit_code=result.returncode,
-                stdout=result.stdout,
+                exit_code=process.returncode,
+                stdout=process.stdout,
                 stderr=stderr,
                 timed_out=timed_out,
             )
@@ -178,19 +178,19 @@ class ContainerSandbox:
             container=container_id[:12],
         )
         try:
-            result = subprocess.run(
+            process = subprocess.run(
                 [self.engine, "rm", "--force", container_id],
                 capture_output=True,
                 text=True,
                 timeout=60,
                 check=False,
             )
-            if result.returncode != 0:
+            if process.returncode != 0:
                 logger.warning(
                     "sandbox_cleanup_failed",
                     engine=self.engine,
                     container=container_id[:12],
-                    stderr=result.stderr.strip(),
+                    stderr=process.stderr.strip(),
                 )
         except (OSError, subprocess.TimeoutExpired) as exc:
             logger.warning(

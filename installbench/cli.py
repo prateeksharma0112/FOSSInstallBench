@@ -24,27 +24,28 @@ def run_task(
     try:
         agent = OpenHandsAgent()
         runner = ExperimentRunner(agent=agent)
-        result = runner.run(task_id=task_id)
+        experiment_result = runner.run(task_id=task_id)
     except Exception as exc:
         console.print(f"[bold red]Could not run experiment:[/bold red] {exc}")
         raise typer.Exit(code=1) from exc
 
-    if result.run_status is RunStatus.COMPLETED:
+    if experiment_result.run_status is RunStatus.COMPLETED:
+        agent_status = experiment_result.agent_status
         console.print(
-            f"[bold green]Experiment {result.experiment_id} completed.[/bold green]"
+            f"[bold green]Experiment {experiment_result.experiment_id} completed.[/bold green]"
         )
         console.print(
-            f"Agent: {result.agent_status.value if result.agent_status else 'not_run'}; "
-            f"installation: {result.installation_status.value}."
+            f"Agent: {agent_status.value if agent_status else 'not_run'}; "
+            f"installation: {experiment_result.installation_status.value}."
         )
         return
 
     console.print(
-        f"[bold red]Experiment {result.experiment_id}: "
-        f"{result.run_status.value}.[/bold red]"
+        f"[bold red]Experiment {experiment_result.experiment_id}: "
+        f"{experiment_result.run_status.value}.[/bold red]"
     )
-    if result.error_message:
-        console.print(f"[red]{result.error_message}[/red]")
+    if experiment_result.error_message:
+        console.print(f"[red]{experiment_result.error_message}[/red]")
     raise typer.Exit(code=1)
 
 if __name__ == "__main__":

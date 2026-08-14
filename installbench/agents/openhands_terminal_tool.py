@@ -54,22 +54,24 @@ class ContainerTerminalExecutor(
                 metadata=CmdOutputMetadata(exit_code=0, working_dir=self.working_dir),
             )
 
-        result = self.sandbox.execute_command(
+        command_result = self.sandbox.execute_command(
             command,
             phase="agent",
             working_dir=self.working_dir,
         )
-        self.command_log.append(result)
-        output = "\n".join(part for part in (result.stdout, result.stderr) if part).strip()
+        self.command_log.append(command_result)
+        output = "\n".join(
+            part for part in (command_result.stdout, command_result.stderr) if part
+        ).strip()
 
         return TerminalObservation.from_text(
             text=output,
-            is_error=result.exit_code != 0,
+            is_error=command_result.exit_code != 0,
             command=command,
-            exit_code=result.exit_code,
-            timeout=result.timed_out,
+            exit_code=command_result.exit_code,
+            timeout=command_result.timed_out,
             metadata=CmdOutputMetadata(
-                exit_code=result.exit_code,
+                exit_code=command_result.exit_code,
                 working_dir=self.working_dir,
             ),
         )
