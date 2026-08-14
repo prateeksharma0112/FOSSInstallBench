@@ -35,6 +35,29 @@ class InstallationStatus(StrEnum):
     UNKNOWN = "unknown"
 
 
+class AgentInstallationReport(BaseModel):
+    """Structured installation assessment reported by the agent."""
+
+    outcome: InstallationStatus = Field(
+        description="Agent-reported installation outcome."
+    )
+    installation_summary: str = Field(
+        description="Brief account of what was completed during installation."
+    )
+    additional_actions: list[str] = Field(
+        description="Actions taken that were not stated in the installation guide."
+    )
+    verification: str = Field(
+        description="Verification command, exit code, and observed result."
+    )
+    unresolved_issues: list[str] = Field(
+        description="Errors or requirements that remained unresolved."
+    )
+    outcome_evidence: list[str] = Field(
+        description="Observed command results supporting the reported outcome."
+    )
+
+
 class CommandResult(BaseModel):
     """One command executed inside the benchmark sandbox."""
 
@@ -51,6 +74,7 @@ class AgentExecutionResult(BaseModel):
 
     agent_status: AgentStatus
     installation_status: InstallationStatus = InstallationStatus.UNKNOWN
+    installation_report: AgentInstallationReport | None = None
     commands: list[CommandResult] = Field(default_factory=list)
     logs: str = ""
     prompt: str = ""
@@ -84,6 +108,7 @@ class ExperimentResult(BaseModel):
     run_status: RunStatus
     agent_status: AgentStatus | None = None
     installation_status: InstallationStatus = InstallationStatus.UNKNOWN
+    installation_report: AgentInstallationReport | None = None
     metrics: ExperimentMetrics
     commands: list[CommandResult] = Field(default_factory=list)
     agent_log: str = ""

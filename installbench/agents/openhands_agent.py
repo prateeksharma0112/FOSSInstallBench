@@ -7,15 +7,17 @@ import json
 import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
-from openhands.sdk.tool.builtins.finish import FinishAction
+from openhands.sdk.tool.builtins.finish import FinishAction, FinishTool
 from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.experiment_result import (
     AgentExecutionResult,
+    AgentInstallationReport,
     AgentStatus,
     CommandResult,
+    InstallationStatus,
 )
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
@@ -73,12 +75,20 @@ class OpenHandsAgent:
             working_dir=settings.repository_dir,
         )[0]
         register_tool("InstallBenchTerminalTool", terminal_tool)
+        register_tool("InstallBenchFinishTool", FinishTool)
 
         conversation: Conversation | None = None
         try:
             agent = Agent(
                 llm=self.llm,
-                tools=[Tool(name="InstallBenchTerminalTool")],
+                tools=[
+                    Tool(name="InstallBenchTerminalTool"),
+                    Tool(
+                        name="InstallBenchFinishTool",
+                        params={"response_schema": AgentInstallationReport},
+                    ),
+                ],
+                include_default_tools=["ThinkTool"],
             )
             conversation = Conversation(
                 agent=agent,
@@ -91,6 +101,10 @@ class OpenHandsAgent:
             conversation.run()
             execution_status = conversation.state.execution_status
             final_response = self._extract_final_response(conversation)
+            installation_report = self._extract_installation_report(
+                agent,
+                conversation,
+            )
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
                 return AgentExecutionResult(
@@ -134,6 +148,12 @@ class OpenHandsAgent:
 
         return AgentExecutionResult(
             agent_status=AgentStatus.FINISHED,
+            installation_status=(
+                installation_report.outcome
+                if installation_report is not None
+                else InstallationStatus.UNKNOWN
+            ),
+            installation_report=installation_report,
             commands=command_log,
             logs=json.dumps(
                 {
@@ -179,3 +199,17 @@ class OpenHandsAgent:
             if isinstance(action, FinishAction):
                 return action.message
         return ""
+
+    @staticmethod
+    def _extract_installation_report(
+        agent: Agent,
+        conversation: Conversation,
+    ) -> AgentInstallationReport | None:
+        """Read the validated report attached to the latest FinishTool call."""
+
+        finish_tool = agent.tools_map["finish"]
+        report = finish_tool.parse_last_response(conversation.state.events)
+        if report is None:
+            logger.warning("structured_installation_report_missing")
+            return None
+        return AgentInstallationReport.model_validate(report)

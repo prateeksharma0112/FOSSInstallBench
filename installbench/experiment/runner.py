@@ -167,6 +167,9 @@ class ExperimentRunner:
                 if agent_result
                 else InstallationStatus.UNKNOWN
             ),
+            installation_report=(
+                agent_result.installation_report if agent_result else None
+            ),
             metrics=self._build_metrics(
                 started_at=started_at,
                 setup_duration=setup_duration,
