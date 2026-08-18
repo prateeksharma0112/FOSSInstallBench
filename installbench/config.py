@@ -15,7 +15,7 @@ class Settings(BaseSettings):
     tasks_dir: Path = Path("tasks")
     results_dir: Path = Path("results")
     workspace_dir: Path = Path("workspace")
-    installation_prompt_path: Path = Path("installbench/prompts/installation_instructions.txt")
+    installation_prompt_path: Path = Path("installbench/prompts/installation_prompt.md")
 
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
