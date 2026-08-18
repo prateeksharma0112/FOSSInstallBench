@@ -1,23 +1,23 @@
-from .experiment_result import (
-    AgentExecutionResult,
-    AgentInstallationReport,
-    AgentStatus,
-    CommandResult,
-    ExperimentMetrics,
-    ExperimentResult,
-    InstallationStatus,
+from .benchmark_run import (
+    AgentRunResult,
+    AgentRunStatus,
+    BenchmarkRunResult,
+    CommandExecution,
+    InstallationOutcome,
+    InstallationReport,
+    RunMetrics,
     RunStatus,
 )
 from .installation_task import InstallationTask
 
 __all__ = [
-    "AgentExecutionResult",
-    "AgentInstallationReport",
-    "AgentStatus",
-    "CommandResult",
-    "ExperimentMetrics",
-    "ExperimentResult",
-    "InstallationStatus",
+    "AgentRunResult",
+    "AgentRunStatus",
+    "BenchmarkRunResult",
+    "CommandExecution",
+    "InstallationOutcome",
+    "InstallationReport",
     "InstallationTask",
+    "RunMetrics",
     "RunStatus",
 ]

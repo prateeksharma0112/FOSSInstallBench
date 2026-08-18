@@ -1,8 +1,8 @@
-"""Framework-controlled repository preparation."""
+"""Prepare the repository used by a benchmark run."""
 
 import shlex
 
-from installbench.models.experiment_result import CommandResult
+from installbench.models.benchmark_run import CommandExecution
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 
@@ -11,8 +11,8 @@ def prepare_repository(
     task: InstallationTask,
     sandbox: Sandbox,
     repository_dir: str,
-) -> list[CommandResult]:
-    """Clone the pinned repository revision and return the command evidence."""
+) -> list[CommandExecution]:
+    """Clone the pinned repository revision and return command evidence."""
 
     quoted_url = shlex.quote(task.repository_url)
     quoted_dir = shlex.quote(repository_dir)
@@ -29,10 +29,10 @@ def prepare_repository(
         f'test "$(git -C {quoted_dir} rev-parse HEAD)" = {quoted_commit}',
     ]
 
-    command_results: list[CommandResult] = []
+    command_executions: list[CommandExecution] = []
     for command in commands:
-        command_result = sandbox.execute_command(command, phase="setup")
-        command_results.append(command_result)
-        if command_result.exit_code != 0:
+        command_execution = sandbox.execute_command(command, phase="repository_setup")
+        command_executions.append(command_execution)
+        if command_execution.exit_code != 0:
             break
-    return command_results
+    return command_executions

@@ -1,14 +1,14 @@
-"""Typing contract for installation agents."""
+"""Interface implemented by installation agents."""
 
 from typing import Protocol
 
-from installbench.models.experiment_result import AgentExecutionResult
+from installbench.models.benchmark_run import AgentRunResult
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 
 
-class AgentProtocol(Protocol):
-    """An agent capable of attempting a documented installation."""
+class AgentInterface(Protocol):
+    """An agent capable of attempting a documented software installation."""
 
     model_name: str
 
@@ -18,5 +18,5 @@ class AgentProtocol(Protocol):
         task: InstallationTask,
         sandbox: Sandbox,
         installation_guide: str,
-        experiment_id: str,
-    ) -> AgentExecutionResult: ...
+        run_id: str,
+    ) -> AgentRunResult: ...

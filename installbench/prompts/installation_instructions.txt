@@ -1,5 +1,5 @@
 ## ROLE:
-You are responsible for installing and configuring the supplied project.
+You are the installation agent responsible for installing and configuring the supplied project.
 
 
 ## PROJECT INFORMATION:

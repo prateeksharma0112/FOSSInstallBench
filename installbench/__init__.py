@@ -1,5 +1,3 @@
 """
-InstallBench - AI Software Agent Evaluation Framework.
+FOSSInstallBench — benchmark for Agent-driven open-source software installation.
 """
-
-__version__ = "0.1.0"

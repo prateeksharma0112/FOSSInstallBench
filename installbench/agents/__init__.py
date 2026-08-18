@@ -1,3 +1,3 @@
-from .protocol import AgentProtocol
+from .agent_interface import AgentInterface
 
-__all__ = ["AgentProtocol"]
+__all__ = ["AgentInterface"]

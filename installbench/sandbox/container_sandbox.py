@@ -1,4 +1,4 @@
-"""Lifecycle and command execution for a disposable container."""
+"""Disposable container lifecycle and command execution for benchmark runs."""
 
 import shlex
 import subprocess
@@ -8,7 +8,7 @@ from types import TracebackType
 import structlog
 
 from installbench.config import settings
-from installbench.models.experiment_result import CommandPhase, CommandResult
+from installbench.models.benchmark_run import CommandExecution, RunPhase
 
 logger = structlog.get_logger(__name__)
 TIMEOUT_TERMINATION_GRACE_SECONDS = 5
@@ -16,7 +16,7 @@ HOST_TIMEOUT_BUFFER_SECONDS = 10
 
 
 class ContainerSandbox:
-    """A fresh Docker or Podman container used for exactly one experiment."""
+    """A fresh Docker or Podman container used for one benchmark run."""
 
     def __init__(self, base_image: str) -> None:
         self.base_image = base_image
@@ -28,7 +28,7 @@ class ContainerSandbox:
             raise RuntimeError("Sandbox is already active.")
 
         logger.info(
-            "creating_container_sandbox",
+            "container_sandbox_starting",
             engine=self.engine,
             image=self.base_image,
         )
@@ -70,16 +70,16 @@ class ContainerSandbox:
         self,
         command: str,
         *,
-        phase: CommandPhase,
+        phase: RunPhase,
         working_dir: str | None = None,
-    ) -> CommandResult:
-        """Execute a non-interactive Bash command and preserve all evidence."""
+    ) -> CommandExecution:
+        """Execute a non-interactive Bash command and preserve its evidence."""
 
         if self.container_id is None:
             raise RuntimeError("Sandbox is not active.")
 
         logger.debug(
-            "executing_command",
+            "command_execution_started",
             engine=self.engine,
             container=self.container_id[:12],
             phase=phase,
@@ -126,7 +126,7 @@ class ContainerSandbox:
                     command=command,
                     timeout=timeout,
                 )
-            return CommandResult(
+            return CommandExecution(
                 phase=phase,
                 command=command,
                 exit_code=process.returncode,
@@ -152,7 +152,7 @@ class ContainerSandbox:
                 engine=self.engine,
                 command=command,
             )
-            return CommandResult(
+            return CommandExecution(
                 phase=phase,
                 command=command,
                 exit_code=1,
@@ -165,7 +165,7 @@ class ContainerSandbox:
             return
 
         logger.info(
-            "destroying_container_sandbox",
+            "container_sandbox_stopping",
             engine=self.engine,
             container=container_id[:12],
         )
@@ -179,14 +179,14 @@ class ContainerSandbox:
             )
             if process.returncode != 0:
                 logger.warning(
-                    "sandbox_cleanup_failed",
+                    "container_sandbox_cleanup_failed",
                     engine=self.engine,
                     container=container_id[:12],
                     stderr=process.stderr.strip(),
                 )
         except (OSError, subprocess.TimeoutExpired) as exc:
             logger.warning(
-                "sandbox_cleanup_error",
+                "container_sandbox_cleanup_error",
                 engine=self.engine,
                 error=str(exc),
             )

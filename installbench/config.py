@@ -1,4 +1,4 @@
-"""Experiment settings loaded automatically from the ``.env`` file."""
+"""Benchmark settings loaded automatically from the ``.env`` file."""
 
 from pathlib import Path
 from typing import Literal
@@ -15,13 +15,13 @@ class Settings(BaseSettings):
     tasks_dir: Path = Path("tasks")
     results_dir: Path = Path("results")
     workspace_dir: Path = Path("workspace")
-    installation_prompt_path: Path = Path("installbench/prompts/installation_prompt.txt")
+    installation_prompt_path: Path = Path("installbench/prompts/installation_instructions.txt")
 
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
     repository_dir: str = Field(
         default="/workspace/repository",
-        description="Repository location inside the experiment container.",
+        description="Repository location inside the benchmark container.",
     )
     command_timeout_seconds: int = Field(
         default=300,

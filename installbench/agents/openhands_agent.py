@@ -1,4 +1,4 @@
-"""OpenHands SDK integration for installation experiments."""
+"""OpenHands SDK integration for installation benchmark runs."""
 
 from __future__ import annotations
 
@@ -10,14 +10,14 @@ from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.builtins.finish import FinishAction, FinishTool
 from openhands.sdk.tool.registry import register_tool
 
-from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
+from installbench.agents.openhands_terminal import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.experiment_result import (
-    AgentExecutionResult,
-    AgentInstallationReport,
-    AgentStatus,
-    CommandResult,
-    InstallationStatus,
+from installbench.models.benchmark_run import (
+    AgentRunResult,
+    AgentRunStatus,
+    CommandExecution,
+    InstallationOutcome,
+    InstallationReport,
 )
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
@@ -53,25 +53,25 @@ class OpenHandsAgent:
         task: InstallationTask,
         sandbox: Sandbox,
         installation_guide: str,
-        experiment_id: str,
-    ) -> AgentExecutionResult:
+        run_id: str,
+    ) -> AgentRunResult:
         logger.info(
-            "invoking_openhands_agent",
+            "agent_run_started",
             task_id=task.task_id,
-            experiment_id=experiment_id,
+            run_id=run_id,
         )
 
-        workspace_dir = settings.workspace_dir / experiment_id
+        workspace_dir = settings.workspace_dir / run_id
         workspace_dir.mkdir(parents=True, exist_ok=False)
         persistence_dir = workspace_dir / ".openhands"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 
         prompt = self._build_prompt(task, installation_guide)
 
-        command_log: list[CommandResult] = []
+        command_executions: list[CommandExecution] = []
         terminal_tool = InstallBenchTerminalTool.create(
             sandbox=sandbox,
-            command_log=command_log,
+            command_executions=command_executions,
             working_dir=settings.repository_dir,
         )[0]
         register_tool("InstallBenchTerminalTool", terminal_tool)
@@ -85,7 +85,7 @@ class OpenHandsAgent:
                     Tool(name="InstallBenchTerminalTool"),
                     Tool(
                         name="InstallBenchFinishTool",
-                        params={"response_schema": AgentInstallationReport},
+                        params={"response_schema": InstallationReport},
                     ),
                 ],
                 include_default_tools=["ThinkTool"],
@@ -107,30 +107,32 @@ class OpenHandsAgent:
             )
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Agent stopped with status: {execution_status.value}"
-                return AgentExecutionResult(
-                    agent_status=AgentStatus.FAILED,
-                    commands=command_log,
-                    logs=self._serialize_log(
+                return AgentRunResult(
+                    agent_run_status=AgentRunStatus.STOPPED,
+                    command_executions=command_executions,
+                    agent_run_log=self._serialize_log(
                         agent="openhands",
                         execution_status=execution_status.value,
                     ),
-                    prompt=prompt,
-                    final_response=final_response,
+                    installation_prompt=prompt,
+                    agent_final_response=final_response,
                     error_message=error_message,
                 )
         except Exception as exc:
             error_message = self._safe_text(str(exc))
             logger.error(
-                "openhands_execution_error",
+                "agent_run_error",
                 task_id=task.task_id,
                 error=error_message,
             )
-            return AgentExecutionResult(
-                agent_status=AgentStatus.ERROR,
-                commands=command_log,
-                logs=self._serialize_log(error=error_message),
-                prompt=prompt,
-                final_response=(self._extract_final_response(conversation) if conversation else ""),
+            return AgentRunResult(
+                agent_run_status=AgentRunStatus.ERROR,
+                command_executions=command_executions,
+                agent_run_log=self._serialize_log(error=error_message),
+                installation_prompt=prompt,
+                agent_final_response=(
+                    self._extract_final_response(conversation) if conversation else ""
+                ),
                 error_message=error_message,
             )
         finally:
@@ -141,24 +143,24 @@ class OpenHandsAgent:
                 except Exception as exc:
                     logger.warning("conversation_close_failed", error=str(exc))
 
-        return AgentExecutionResult(
-            agent_status=AgentStatus.FINISHED,
-            installation_status=(
+        return AgentRunResult(
+            agent_run_status=AgentRunStatus.COMPLETED,
+            installation_outcome=(
                 installation_report.outcome
                 if installation_report is not None
-                else InstallationStatus.UNKNOWN
+                else InstallationOutcome.UNKNOWN
             ),
             installation_report=installation_report,
-            commands=command_log,
-            logs=self._serialize_log(
+            command_executions=command_executions,
+            agent_run_log=self._serialize_log(
                 agent="openhands",
                 finished=True,
                 execution_status=ConversationExecutionStatus.FINISHED.value,
                 max_iterations=settings.max_agent_iterations,
-                commands_logged=len(command_log),
+                commands_logged=len(command_executions),
             ),
-            prompt=prompt,
-            final_response=final_response,
+            installation_prompt=prompt,
+            agent_final_response=final_response,
         )
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
@@ -200,7 +202,7 @@ class OpenHandsAgent:
     def _extract_installation_report(
         agent: Agent,
         conversation: Conversation,
-    ) -> AgentInstallationReport | None:
+    ) -> InstallationReport | None:
         """Read the validated report attached to the latest FinishTool call."""
 
         finish_tool = agent.tools_map["finish"]
@@ -208,4 +210,4 @@ class OpenHandsAgent:
         if report is None:
             logger.warning("structured_installation_report_missing")
             return None
-        return AgentInstallationReport.model_validate(report)
+        return InstallationReport.model_validate(report)

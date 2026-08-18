@@ -1,3 +1,5 @@
+"""Disposable benchmark execution environments."""
+
 from .container_sandbox import ContainerSandbox
 from .protocol import Sandbox
 

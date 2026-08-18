@@ -1,9 +1,9 @@
-"""Typing contract for disposable experiment sandboxes."""
+"""Interface for disposable benchmark execution environments."""
 
 from types import TracebackType
 from typing import Protocol, Self
 
-from installbench.models.experiment_result import CommandPhase, CommandResult
+from installbench.models.benchmark_run import CommandExecution, RunPhase
 
 
 class Sandbox(Protocol):
@@ -13,9 +13,9 @@ class Sandbox(Protocol):
         self,
         command: str,
         *,
-        phase: CommandPhase,
+        phase: RunPhase,
         working_dir: str | None = None,
-    ) -> CommandResult: ...
+    ) -> CommandExecution: ...
 
     def __enter__(self) -> Self: ...
 

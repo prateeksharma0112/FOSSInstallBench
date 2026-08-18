@@ -1,4 +1,4 @@
-"""Load installation tasks from the local task directory."""
+"""Load and validate installation task definitions."""
 
 import json
 from pathlib import Path
@@ -7,7 +7,7 @@ from installbench.models.installation_task import InstallationTask
 
 
 class TaskLoader:
-    """Load and validate one installation task."""
+    """Load one installation task from the configured task directory."""
 
     def __init__(self, tasks_dir: Path) -> None:
         self.tasks_dir = tasks_dir

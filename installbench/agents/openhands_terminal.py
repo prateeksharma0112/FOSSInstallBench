@@ -14,7 +14,7 @@ from openhands.tools.terminal.definition import (
 from pydantic import Field
 
 from installbench.config import settings
-from installbench.models.experiment_result import CommandResult
+from installbench.models.benchmark_run import CommandExecution
 from installbench.sandbox.protocol import Sandbox
 
 
@@ -30,11 +30,11 @@ class ContainerTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, Termina
     def __init__(
         self,
         sandbox: Sandbox,
-        command_log: list[CommandResult],
+        command_executions: list[CommandExecution],
         working_dir: str,
     ) -> None:
         self.sandbox = sandbox
-        self.command_log = command_log
+        self.command_executions = command_executions
         self.working_dir = working_dir
 
     def __call__(
@@ -52,24 +52,24 @@ class ContainerTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, Termina
                 metadata=CmdOutputMetadata(exit_code=0, working_dir=self.working_dir),
             )
 
-        command_result = self.sandbox.execute_command(
+        command_execution = self.sandbox.execute_command(
             command,
             phase="agent",
             working_dir=self.working_dir,
         )
-        self.command_log.append(command_result)
+        self.command_executions.append(command_execution)
         output = "\n".join(
-            part for part in (command_result.stdout, command_result.stderr) if part
+            part for part in (command_execution.stdout, command_execution.stderr) if part
         ).strip()
 
         return TerminalObservation.from_text(
             text=output,
-            is_error=command_result.exit_code != 0,
+            is_error=command_execution.exit_code != 0,
             command=command,
-            exit_code=command_result.exit_code,
-            timeout=command_result.timed_out,
+            exit_code=command_execution.exit_code,
+            timeout=command_execution.timed_out,
             metadata=CmdOutputMetadata(
-                exit_code=command_result.exit_code,
+                exit_code=command_execution.exit_code,
                 working_dir=self.working_dir,
             ),
         )
@@ -83,7 +83,7 @@ class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, Termin
     @classmethod
     def create(cls, *args: Any, **kwargs: Any) -> Sequence[InstallBenchTerminalTool]:
         sandbox = kwargs["sandbox"]
-        command_log = kwargs["command_log"]
+        command_executions = kwargs["command_executions"]
         working_dir = kwargs["working_dir"]
         return [
             cls(
@@ -104,7 +104,7 @@ class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, Termin
                 ),
                 executor=ContainerTerminalExecutor(
                     sandbox=sandbox,
-                    command_log=command_log,
+                    command_executions=command_executions,
                     working_dir=working_dir,
                 ),
             )
