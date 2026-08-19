@@ -32,12 +32,17 @@ class JsonResultWriter:
             mode="json",
             exclude={
                 "command_executions",
-                "agent_run_log",
+                "installation_report",
                 "installation_prompt",
                 "agent_final_response",
             },
         )
         self._write_json(run_dir / "result.json", result_data)
+        if result.installation_report is not None:
+            self._write_json(
+                run_dir / "installation_report.json",
+                result.installation_report.model_dump(mode="json"),
+            )
         self._write_json(
             run_dir / "commands.json",
             {
@@ -46,7 +51,6 @@ class JsonResultWriter:
                 ]
             },
         )
-        self._write_text(run_dir / "agent.log", result.agent_run_log)
         self._write_text(run_dir / "installation_prompt.md", result.installation_prompt)
         self._write_text(run_dir / "agent_final_response.txt", result.agent_final_response)
 

@@ -72,7 +72,6 @@ class AgentRunResult(BaseModel):
     installation_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
     installation_report: InstallationReport | None = None
     command_executions: list[CommandExecution] = Field(default_factory=list)
-    agent_run_log: str = ""
     installation_prompt: str = ""
     agent_final_response: str = ""
     error_message: str | None = None
@@ -107,7 +106,6 @@ class BenchmarkRunResult(BaseModel):
     installation_report: InstallationReport | None = None
     metrics: RunMetrics
     command_executions: list[CommandExecution] = Field(default_factory=list)
-    agent_run_log: str = ""
     installation_prompt: str = ""
     agent_final_response: str = ""
     error_message: str | None = None

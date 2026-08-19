@@ -181,7 +181,6 @@ class BenchmarkRunner:
                 command_executions=command_executions,
             ),
             command_executions=command_executions,
-            agent_run_log=(agent_run_result.agent_run_log if agent_run_result else ""),
             installation_prompt=(agent_run_result.installation_prompt if agent_run_result else ""),
             agent_final_response=(
                 agent_run_result.agent_final_response if agent_run_result else ""

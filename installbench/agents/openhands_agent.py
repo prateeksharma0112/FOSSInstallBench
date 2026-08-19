@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-import json
-
 import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
@@ -110,10 +108,6 @@ class OpenHandsAgent:
                 return AgentRunResult(
                     agent_run_status=AgentRunStatus.STOPPED,
                     command_executions=command_executions,
-                    agent_run_log=self._serialize_log(
-                        agent="openhands",
-                        execution_status=execution_status.value,
-                    ),
                     installation_prompt=prompt,
                     agent_final_response=final_response,
                     error_message=error_message,
@@ -128,7 +122,6 @@ class OpenHandsAgent:
             return AgentRunResult(
                 agent_run_status=AgentRunStatus.ERROR,
                 command_executions=command_executions,
-                agent_run_log=self._serialize_log(error=error_message),
                 installation_prompt=prompt,
                 agent_final_response=(
                     self._extract_final_response(conversation) if conversation else ""
@@ -152,13 +145,6 @@ class OpenHandsAgent:
             ),
             installation_report=installation_report,
             command_executions=command_executions,
-            agent_run_log=self._serialize_log(
-                agent="openhands",
-                finished=True,
-                execution_status=ConversationExecutionStatus.FINISHED.value,
-                max_iterations=settings.max_agent_iterations,
-                commands_logged=len(command_executions),
-            ),
             installation_prompt=prompt,
             agent_final_response=final_response,
         )
@@ -177,10 +163,6 @@ class OpenHandsAgent:
     @staticmethod
     def _safe_text(text: str) -> str:
         return text.encode("ascii", errors="replace").decode("ascii")
-
-    @staticmethod
-    def _serialize_log(**entries: object) -> str:
-        return json.dumps(entries, indent=2)
 
     @staticmethod
     def _extract_final_response(conversation: Conversation) -> str:
