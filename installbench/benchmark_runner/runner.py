@@ -154,6 +154,7 @@ class BenchmarkRunner:
             run_status = RunStatus.SYSTEM_ERROR
             error_message = str(exc)
 
+        finished_at_timestamp = datetime.now().astimezone()
         run_result = BenchmarkRunResult(
             run_id=run_id,
             task_id=task.task_id,
@@ -164,6 +165,7 @@ class BenchmarkRunner:
             container_engine=settings.container_engine,
             agent_model=self.agent.model_name,
             started_at=started_at_timestamp,
+            finished_at=finished_at_timestamp,
             run_status=run_status,
             agent_run_status=(agent_run_result.agent_run_status if agent_run_result else None),
             installation_outcome=(

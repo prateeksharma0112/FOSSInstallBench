@@ -100,6 +100,7 @@ class BenchmarkRunResult(BaseModel):
     container_engine: Literal["podman", "docker"]
     agent_model: str
     started_at: datetime
+    finished_at: datetime
     run_status: RunStatus
     agent_run_status: AgentRunStatus | None = None
     installation_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
