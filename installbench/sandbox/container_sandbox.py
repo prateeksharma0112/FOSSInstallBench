@@ -27,6 +27,17 @@ class ContainerSandbox:
         if self.container_id is not None:
             raise RuntimeError("Sandbox is already active.")
 
+        run_command = [
+            self.engine,
+            "run",
+            "--detach",
+            "--label",
+            "framework=installbench",
+        ]
+        if settings.docker_socket_mount:
+            run_command.extend(["--volume", settings.docker_socket_mount])
+        run_command.extend([self.base_image, "sleep", "infinity"])
+
         logger.info(
             "container_sandbox_starting",
             engine=self.engine,
@@ -34,16 +45,7 @@ class ContainerSandbox:
         )
         try:
             process = subprocess.run(
-                [
-                    self.engine,
-                    "run",
-                    "--detach",
-                    "--label",
-                    "framework=installbench",
-                    self.base_image,
-                    "sleep",
-                    "infinity",
-                ],
+                run_command,
                 capture_output=True,
                 text=True,
                 timeout=settings.command_timeout_seconds,
