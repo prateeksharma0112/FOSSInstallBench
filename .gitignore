@@ -4,12 +4,10 @@ __pycache__/
 .venv/
 *.egg-info/
 
-
 # Environment variables
 .env
 
 # Project-specific
 results/
 tasks/
-old_tasks/
 workspace/
