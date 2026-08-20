@@ -1,0 +1,22 @@
+FROM ubuntu:22.04
+
+# Make sure installation of packages does not fail becuase of not having an interactive tty.
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install only the shared tools the benchmark runner needs before the agent starts.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        # HTTPS certificates for package downloads
+        ca-certificates \
+        # Command-line downloader used by many install guides
+        curl \
+        # Needed to clone the repository in repository setup
+        git \
+        # Archive utilities used by common binary installers
+        tar \
+        gzip \
+        xz-utils \
+    && rm -rf /var/lib/apt/lists/*
+
+# Shared working directory inside benchmark containers.
+WORKDIR /workspace

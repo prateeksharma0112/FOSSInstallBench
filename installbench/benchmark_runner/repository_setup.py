@@ -18,11 +18,6 @@ def prepare_repository(
     quoted_dir = shlex.quote(repository_dir)
     quoted_commit = shlex.quote(task.commit_sha.lower())
     commands = [
-        "apt-get update",
-        (
-            "DEBIAN_FRONTEND=noninteractive apt-get install -y "
-            "--no-install-recommends git ca-certificates"
-        ),
         f"git clone --no-checkout --depth 1 {quoted_url} {quoted_dir}",
         f"git -C {quoted_dir} fetch --depth 1 origin {quoted_commit}",
         f"git -C {quoted_dir} checkout --detach {quoted_commit}",
