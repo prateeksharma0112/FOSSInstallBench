@@ -47,22 +47,28 @@ class FailureAttribution(str, Enum):
 class InstallationReport(BaseModel):
     """Structured installation assessment reported by the agent."""
 
-    outcome: InstallationOutcome = Field(description="Agent-reported installation outcome.")
+    outcome: InstallationOutcome = Field(
+        description="Agent-reported installation outcome."
+    )
     installation_summary: str = Field(
         description="Brief account of what was completed during installation."
     )
     additional_actions: list[str] = Field(
         description="Actions taken that were not stated in the installation guide."
     )
-    verification: str = Field(description="Verification command, exit code, and observed result.")
+    verification: str = Field(
+        description="Verification command, exit code, and observed result."
+    )
     outcome_evidence: list[str] = Field(
         description="Observed command results supporting the reported outcome."
     )
     failure_mode: str | None = Field(
-        description="Evidence-based failure description; null for a successful installation."
+        default=None,
+        description="Evidence-based failure description; null for a successful installation.",
     )
     failure_attribution: FailureAttribution | None = Field(
-        description="Primary failure attribution; null for a successful installation."
+        default=None,
+        description="Primary failure attribution; null for a successful installation.",
     )
 
 
