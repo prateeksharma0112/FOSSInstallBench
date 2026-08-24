@@ -1,7 +1,7 @@
 """Domain models for one benchmark run."""
 
 from datetime import datetime
-from enum import StrEnum
+from enum import Enum, StrEnum
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -31,8 +31,17 @@ class InstallationOutcome(StrEnum):
 
     SUCCESS = "success"
     FAILURE = "failure"
-    BLOCKED = "blocked"
     UNKNOWN = "unknown"
+
+
+class FailureAttribution(str, Enum):
+    """Primary cause of an unsuccessful installation attempt."""
+
+    DOCUMENTATION = "DOCUMENTATION"
+    AGENT = "AGENT"
+    INFRASTRUCTURE = "INFRASTRUCTURE"
+    EXTERNAL_RESOURCE = "EXTERNAL_RESOURCE"
+    INDETERMINATE = "INDETERMINATE"
 
 
 class InstallationReport(BaseModel):
@@ -46,11 +55,14 @@ class InstallationReport(BaseModel):
         description="Actions taken that were not stated in the installation guide."
     )
     verification: str = Field(description="Verification command, exit code, and observed result.")
-    unresolved_issues: list[str] = Field(
-        description="Errors or requirements that remained unresolved."
-    )
     outcome_evidence: list[str] = Field(
         description="Observed command results supporting the reported outcome."
+    )
+    failure_mode: str | None = Field(
+        description="Evidence-based failure description; null for a successful installation."
+    )
+    failure_attribution: FailureAttribution | None = Field(
+        description="Primary failure attribution; null for a successful installation."
     )
 
 
