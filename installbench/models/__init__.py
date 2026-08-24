@@ -8,7 +8,11 @@ from .benchmark_run import (
     RunMetrics,
     RunStatus,
 )
-from .installation_task import InstallationTask
+from .installation_task import (
+    InstallationGuideMetadata,
+    InstallationTask,
+    SoftwareMetadata,
+)
 
 __all__ = [
     "AgentRunResult",
@@ -17,7 +21,9 @@ __all__ = [
     "CommandExecution",
     "InstallationOutcome",
     "InstallationReport",
+    "InstallationGuideMetadata",
     "InstallationTask",
     "RunMetrics",
     "RunStatus",
+    "SoftwareMetadata",
 ]
