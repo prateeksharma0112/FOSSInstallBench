@@ -157,6 +157,7 @@ class BenchmarkRunner:
         finished_at_timestamp = datetime.now().astimezone()
         run_result = BenchmarkRunResult(
             run_id=run_id,
+            dataset_id=task.dataset_id,
             task_id=task.task_id,
             task_name=task.name,
             repository_url=task.repository_url,

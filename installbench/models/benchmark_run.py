@@ -110,6 +110,7 @@ class BenchmarkRunResult(BaseModel):
     """Complete, reproducible evidence for one benchmark run."""
 
     run_id: str
+    dataset_id: str
     task_id: str
     task_name: str
     repository_url: str
