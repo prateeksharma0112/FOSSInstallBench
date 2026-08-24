@@ -152,10 +152,7 @@ class OpenHandsAgent:
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
         template = settings.installation_prompt_path.read_text(encoding="utf-8")
         return template.format(
-            task_id=task.task_id,
             task_name=task.name,
-            repository_url=task.repository_url,
-            commit_sha=task.commit_sha.lower(),
             description=task.description,
             installation_guide=installation_guide,
         )
