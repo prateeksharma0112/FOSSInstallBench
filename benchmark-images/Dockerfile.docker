@@ -1,0 +1,49 @@
+FROM ubuntu:22.04
+
+# Make sure installation of packages does not fail becuase of not having an interactive tty.
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Install only the shared tools the benchmark runner needs before the agent starts.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    # HTTPS certificates for package downloads
+    ca-certificates \
+    # Command-line downloader used by many install guides
+    curl \
+    # Needed to clone the repository in repository setup
+    git \
+    # Archive utilities used by common binary installers
+    tar \
+    gzip \
+    xz-utils \
+    && install -m 0755 -d /etc/apt/keyrings \
+    && curl -fsSL https://download.docker.com/linux/ubuntu/gpg \
+    -o /etc/apt/keyrings/docker.asc \
+    && chmod a+r /etc/apt/keyrings/docker.asc \
+    && rm -rf /var/lib/apt/lists/*
+
+# Configure Docker's official Ubuntu package repository.
+RUN set -eux; \
+    architecture="$(dpkg --print-architecture)"; \
+    . /etc/os-release; \
+    ubuntu_codename="${UBUNTU_CODENAME:-$VERSION_CODENAME}"; \
+    printf '%s\n' \
+    'Types: deb' \
+    'URIs: https://download.docker.com/linux/ubuntu' \
+    "Suites: ${ubuntu_codename}" \
+    'Components: stable' \
+    "Architectures: ${architecture}" \
+    'Signed-By: /etc/apt/keyrings/docker.asc' \
+    > /etc/apt/sources.list.d/docker.sources
+
+# Install the Docker client, Buildx, and Compose.
+# The Docker daemon is supplied through the mounted host socket.
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    docker-ce-cli \
+    docker-buildx-plugin \
+    docker-compose-plugin \
+    && rm -rf /var/lib/apt/lists/*
+
+# Shared working directory inside benchmark containers.
+WORKDIR /workspace
