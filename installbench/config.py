@@ -40,6 +40,10 @@ class Settings(BaseSettings):
 
     llm_model: str = Field(description="LLM name in provider/model format.")
     llm_api_key: str = Field(description="API key used by the configured LLM.")
+    llm_base_url: str | None = Field(
+        default=None,
+        description="Optional custom base URL for the configured LLM.",
+    )
 
 
 # Creating Settings reads and validates the values from .env.

@@ -43,6 +43,7 @@ class OpenHandsAgent:
         self.llm = LLM(
             model=self.model_name,
             api_key=settings.llm_api_key or None,
+            base_url=settings.llm_base_url,
         )
 
     def run(
