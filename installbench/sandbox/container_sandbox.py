@@ -34,8 +34,6 @@ class ContainerSandbox:
             "--label",
             "framework=installbench",
         ]
-        if settings.docker_socket_mount:
-            run_command.extend(["--volume", settings.docker_socket_mount])
         run_command.extend([self.base_image, "sleep", "infinity"])
 
         logger.info(

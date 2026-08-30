@@ -19,10 +19,6 @@ class Settings(BaseSettings):
 
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
-    docker_socket_mount: str | None = Field(
-        default=None,
-        description=("Optional bind mount for the host Docker socket"),
-    )
     repository_dir: str = Field(
         default="/workspace/repository",
         description="Repository location inside the benchmark container.",
