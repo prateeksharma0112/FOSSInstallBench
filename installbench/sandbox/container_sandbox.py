@@ -13,6 +13,8 @@ from installbench.models.benchmark_run import CommandExecution, RunPhase
 logger = structlog.get_logger(__name__)
 TIMEOUT_TERMINATION_GRACE_SECONDS = 5
 HOST_TIMEOUT_BUFFER_SECONDS = 10
+DIND_READY_TIMEOUT_SECONDS = 75
+DIND_HEALTHCHECK_TIMEOUT_SECONDS = 5
 
 
 class ContainerSandbox:
@@ -34,12 +36,15 @@ class ContainerSandbox:
             "--label",
             "framework=installbench",
         ]
+        if settings.sandbox_mode == "dind":
+            run_command.extend(["--privileged", "--volume", "/var/lib/docker"])
         run_command.extend([self.base_image, "sleep", "infinity"])
 
         logger.info(
             "container_sandbox_starting",
             engine=self.engine,
             image=self.base_image,
+            sandbox_mode=settings.sandbox_mode,
         )
         try:
             process = subprocess.run(
@@ -64,6 +69,63 @@ class ContainerSandbox:
             "container_sandbox_started",
             engine=self.engine,
             container_id=container_id[:12],
+        )
+
+        if settings.sandbox_mode == "dind":
+            try:
+                self._wait_for_docker()
+            except BaseException:
+                self.destroy()
+                raise
+
+    def _wait_for_docker(self) -> None:
+        """Wait until the private Docker daemon accepts commands."""
+
+        if self.container_id is None:
+            raise RuntimeError("Sandbox is not active.")
+
+        deadline = time.monotonic() + DIND_READY_TIMEOUT_SECONDS
+        last_error = "The Docker health check returned no diagnostic output."
+        while time.monotonic() < deadline:
+            try:
+                process = subprocess.run(
+                    [self.engine, "exec", self.container_id, "docker", "info"],
+                    capture_output=True,
+                    text=True,
+                    timeout=DIND_HEALTHCHECK_TIMEOUT_SECONDS,
+                    check=False,
+                )
+            except subprocess.TimeoutExpired:
+                last_error = "The Docker health check timed out."
+            except OSError as exc:
+                last_error = str(exc)
+            else:
+                if process.returncode == 0:
+                    logger.info(
+                        "dind_daemon_ready",
+                        engine=self.engine,
+                        container_id=self.container_id[:12],
+                    )
+                    return
+                last_error = process.stderr.strip() or process.stdout.strip() or last_error
+            time.sleep(1)
+
+        try:
+            logs_process = subprocess.run(
+                [self.engine, "logs", self.container_id],
+                capture_output=True,
+                text=True,
+                timeout=10,
+                check=False,
+            )
+            container_logs = logs_process.stderr.strip() or logs_process.stdout.strip()
+        except (OSError, subprocess.TimeoutExpired):
+            container_logs = ""
+
+        detail = container_logs or last_error
+        raise RuntimeError(
+            f"Private Docker daemon was not ready after "
+            f"{DIND_READY_TIMEOUT_SECONDS} seconds: {detail}"
         )
 
     def execute_command(
@@ -170,8 +232,12 @@ class ContainerSandbox:
             container=container_id[:12],
         )
         try:
+            remove_command = [self.engine, "rm", "--force"]
+            if settings.sandbox_mode == "dind":
+                remove_command.append("--volumes")
+            remove_command.append(container_id)
             process = subprocess.run(
-                [self.engine, "rm", "--force", container_id],
+                remove_command,
                 capture_output=True,
                 text=True,
                 timeout=60,

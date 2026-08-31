@@ -19,6 +19,7 @@ class Settings(BaseSettings):
 
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
+    sandbox_mode: Literal["standard", "dind"] = "standard"
     repository_dir: str = Field(
         default="/workspace/repository",
         description="Repository location inside the benchmark container.",

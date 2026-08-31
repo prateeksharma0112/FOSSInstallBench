@@ -117,6 +117,7 @@ class BenchmarkRunResult(BaseModel):
     commit_sha: str
     container_image: str
     container_engine: Literal["podman", "docker"]
+    sandbox_mode: Literal["standard", "dind"]
     agent_model: str
     started_at: datetime
     finished_at: datetime

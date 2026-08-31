@@ -164,6 +164,7 @@ class BenchmarkRunner:
             commit_sha=task.commit_sha.lower(),
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
+            sandbox_mode=settings.sandbox_mode,
             agent_model=self.agent.model_name,
             started_at=started_at_timestamp,
             finished_at=finished_at_timestamp,
