@@ -1,7 +1,7 @@
 """Domain models for one benchmark run."""
 
 from datetime import datetime
-from enum import Enum, StrEnum
+from enum import StrEnum
 from typing import Literal
 
 from pydantic import BaseModel, Field
@@ -34,7 +34,7 @@ class InstallationOutcome(StrEnum):
     UNKNOWN = "unknown"
 
 
-class FailureAttribution(str, Enum):
+class FailureAttribution(StrEnum):
     """Primary cause of an unsuccessful installation attempt."""
 
     DOCUMENTATION = "DOCUMENTATION"
