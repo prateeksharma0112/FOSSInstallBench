@@ -1,0 +1,21 @@
+{
+    "dataset_id": "P009",
+    "name": "Easy Appointments",
+    "description": "Easy Appointments is an open-source scheduling system that gives you full control over your booking workflow.",
+    "repository_url": "https://github.com/alextselegidis/easyappointments.git",
+    "commit_sha": "359c3649dc1977fa3fe882b422a462d77c8abce4",
+    "license": "GPL-3.0 license",
+    "software": {
+        "type": "full-stack",
+        "primary_language": "PHP",
+        "platforms": [
+            "web"
+        ]
+    },
+    "install_guide": {
+        "source": "repository_readme",
+        "link": "https://github.com/alextselegidis/easyappointments/blob/main/README.md#-quick-start-development",
+        "language": "English",
+        "word_count": 157
+    }
+}

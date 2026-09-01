@@ -1,0 +1,21 @@
+{
+    "dataset_id": "P003",
+    "name": "Django CRM",
+    "description": "CRM and Task management software, Email marketing and many more. Django CRM software app is built for individual use by businesses of any size or freelancers and is designed to provide easy customization and quick development.",
+    "repository_url": "https://github.com/DjangoCRM/django-crm",
+    "commit_sha": "cfb58492ead2ed8c1f0b3f4c44223c30be3cdccb",
+    "license": "AGPL-3.0 license",
+    "software": {
+        "type": "web_application",
+        "primary_language": "Python",
+        "platforms": [
+            "web"
+        ]
+    },
+    "install_guide": {
+        "source": "repository_documentation",
+        "link": "https://github.com/DjangoCRM/django-crm/blob/main/docs/installation_and_configuration_guide.md",
+        "language": "English",
+        "word_count": 4352
+    }
+}

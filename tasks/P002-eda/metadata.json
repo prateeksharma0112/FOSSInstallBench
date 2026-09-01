@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P002",
+  "name": "Edalitics",
+  "description": "Edalitics is an open-source business intelligence platform that lets you build interactive dashboards, analyze data from multiple sources, and connect AI assistants to your business data in minutes.",
+  "repository_url": "https://github.com/jortilles/EDA",
+  "commit_sha": "1c8e9fb21d22f993df69a0ce91bad130861f1d44",
+  "license": "AGPL-3.0",
+  "software": {
+    "type": "web_application",
+    "primary_language": "TypeScript",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_readme",
+    "link": "https://github.com/jortilles/EDA/blob/1c8e9fb21d22f993df69a0ce91bad130861f1d44/README.md",
+    "language": "English",
+    "word_count": 140
+  }
+}

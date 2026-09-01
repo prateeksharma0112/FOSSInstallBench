@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P011",
+  "name": "Entwicklungsportal",
+  "description": "The Federal Development Portal (FEP) consolidates technical information for the development and integration of digital administrative services in Germany. It provides documentation, standards, API descriptions, help texts, background information, and further resources in one central location.",
+  "repository_url": "https://gitlab.opencode.de/fitko/docs/portal.git",
+  "commit_sha": "be2916f0b27364073bf4416bcd2cd20c598c6d78",
+  "license": "EUPL-1.2",
+  "software": {
+    "type": "frontend",
+    "primary_language": "TypeScript",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_readme",
+    "link": "https://gitlab.opencode.de/fitko/docs/portal/-/blob/cc2302f5d39c6f85e47730f27113f4debb1e92cb/README.md",
+    "language": "English",
+    "word_count": 157
+  }
+}

@@ -1,0 +1,22 @@
+{
+    "dataset_id": "P013",
+    "name": "Strahlenexposition",
+    "description": "The Python package includes functions for automating the import of Excel files with error correction, data storage in a database, PDF reporting, and data science visualizations and analyses of radiation dose data. The package was developed for a specific process at the Federal Office for Radiation Protection with a fixed data structure. It replaces the manual processing and correction of Excel files. The package is not directly applicable to other data structures.",
+    "repository_url": "https://gitlab.opencode.de/uba-ki-lab/strahlenexposition.git",
+    "commit_sha": "1dd9cd8ca823a7998b729adce6957848cf241d54",
+    "license": "GPL-3.0-or-later",
+    "software": {
+        "type": "cli",
+        "primary_language": "Python",
+        "platforms": [
+            "Linux",
+            "Windows"
+        ]
+    },
+    "install_guide": {
+        "source": "repository_readme",
+        "link": "https://gitlab.opencode.de/uba-ki-lab/strahlenexposition/-/blob/1dd9cd8ca823a7998b729adce6957848cf241d54/README.md",
+        "language": "English",
+        "word_count": 1147
+    }
+}

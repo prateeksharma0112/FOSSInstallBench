@@ -1,0 +1,21 @@
+{
+	"dataset_id": "P020",
+	"name": "CyberChef",
+	"description": "CyberChef is a browser-based application for performing data-analysis and transformation operations such as encoding, decoding, encryption, compression, hashing, and format conversion.",
+	"repository_url": "https://github.com/gchq/CyberChef",
+	"commit_sha": "2e048b0290854781db61e20638dca62978379032",
+	"license": "Apache-2.0",
+	"software": {
+		"type": "frontend",
+		"primary_language": "JavaScript",
+		"platforms": [
+			"web"
+		]
+	},
+	"install_guide": {
+		"source": "repository_readme",
+		"link": "https://github.com/gchq/CyberChef/blob/2e048b0290854781db61e20638dca62978379032/README.md#Running-Locally",
+		"language": "English",
+		"word_count": 263
+	}
+}

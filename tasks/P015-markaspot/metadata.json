@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P015",
+  "name": "Mark-a-Spot",
+  "description": "An open-source civic issue tracking and Open311 platform for reporting, managing, and tracking municipal service requests and public infrastructure issues.",
+  "repository_url": "https://github.com/markaspot/mark-a-spot.git",
+  "commit_sha": "5490b83f42d30be39bd9c04625212f6cfab31b6d",
+  "license": "GPL-2.0-or-later",
+  "software": {
+    "type": "full_stack",
+    "primary_language": "PHP",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_readme",
+    "link": "https://github.com/markaspot/mark-a-spot/blob/5490b83f42d30be39bd9c04625212f6cfab31b6d/README.md#docker-compose-workflow",
+    "language": "English",
+    "word_count": 777
+  }
+}

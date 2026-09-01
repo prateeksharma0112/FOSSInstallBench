@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P016",
+  "name": "GraphHopper",
+  "description": "GraphHopper is a high-performance, German-developed open-source routing engine based on OpenStreetMap data; it serves as the technological core of the federal routing service operated by the BKG and powers numerous regional mobility portals. Municipalities benefit from an extremely fast, vendor-independent solution for optimizing specialized services—such as winter maintenance and waste management—that integrates seamlessly into existing geographic information systems (GIS).",
+  "repository_url": "https://github.com/graphhopper/graphhopper.git",
+  "commit_sha": "ba88c3787adbd8e79bbe5bb06f0b91c47b5fd21d",
+  "license": "Apache-2.0",
+  "software": {
+    "type": "backend",
+    "primary_language": "Java",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_readme",
+    "link": "https://github.com/graphhopper/graphhopper/blob/ba88c3787adbd8e79bbe5bb06f0b91c47b5fd21d/README.md#installation",
+    "language": "English",
+    "word_count": "148"
+  }
+}

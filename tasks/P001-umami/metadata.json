@@ -1,0 +1,21 @@
+{
+	"dataset_id": "P001",
+	"name": "umami",
+	"description": "Umami is an open-source web analytics platform that respects user privacy. No cookies, no tracking across sites, no personal data collection. GDPR compliant out of the box",
+	"repository_url": "https://github.com/umami-software/umami",
+	"commit_sha": "ca661c7057984aa98ed4f7083d84dae2f65bfcb0",
+	"license": "MIT",
+	"software": {
+		"type": "web_application",
+		"primary_language": "TypeScript",
+		"platforms": [
+			"web"
+		]
+	},
+	"install_guide": {
+		"source": "Official documentation",
+		"link": "https://github.com/umami-software/umami/blob/ca661c7057984aa98ed4f7083d84dae2f65bfcb0/README.md",
+		"language": "english",
+		"word_count": 404
+	}
+}

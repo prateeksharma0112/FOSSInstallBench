@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P014",
+  "name": "OpenRemote",
+  "description": "An open-source IoT platform for building IoT device management solutions, including device management and auto-provisioning, asset customization, automation, data analytics, protocol connectivity and APIs, multi-tenancy, user and role management, edge gateway functionality, and web-based user interfaces.",
+  "repository_url": "https://github.com/openremote/openremote.git",
+  "commit_sha": "c11b6dc346f4cef0400fc72b58c9993a70830e02",
+  "license": "AGPL-3.0-or-later",
+  "software": {
+    "type": "full_stack",
+    "primary_language": "Java",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_readme",
+    "link": "https://github.com/openremote/openremote/blob/c11b6dc346f4cef0400fc72b58c9993a70830e02/README.md#quickstart",
+    "language": "English",
+    "word_count": 214
+  }
+}

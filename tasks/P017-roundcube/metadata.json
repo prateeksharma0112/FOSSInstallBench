@@ -1,0 +1,21 @@
+{
+	"dataset_id": "P017",
+	"name": "Roundcube Webmail",
+	"description": "Roundcube Webmail is an open-source, browser-based IMAP email client with address-book, folder-management, message-search, spell-checking, plugin, and theme support.",
+	"repository_url": "https://github.com/roundcube/roundcubemail",
+	"commit_sha": "278c3e139e44e6488e51eea2d0a78f8f41300806",
+	"license": "GPL-3.0-or-later",
+	"software": {
+		"type": "full_stack",
+		"primary_language": "PHP",
+		"platforms": [
+			"web"
+		]
+	},
+	"install_guide": {
+		"source": "Repository documentation – docs/INSTALL.md",
+		"link": "https://github.com/roundcube/roundcubemail/blob/278c3e139e44e6488e51eea2d0a78f8f41300806/docs/INSTALL.md",
+		"language": "English",
+		"word_count": 1030
+	}
+}

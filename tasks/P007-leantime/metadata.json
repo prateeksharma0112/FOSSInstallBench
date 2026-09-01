@@ -1,0 +1,21 @@
+{
+    "dataset_id": "P007",
+    "name": "Leantime",
+    "description": "Leantime is a goals focused project management system for non-project managers. Building with ADHD, Autism, and dyslexia in mind.",
+    "repository_url": "https://github.com/Leantime/leantime",
+    "commit_sha": "9a9f49f1008f4782b30f6723c54228f4f992e636",
+    "license": "AGPL-3.0 license",
+    "software": {
+        "type": "web_application",
+        "primary_language": "PHP",
+        "platforms": [
+            "web"
+        ]
+    },
+    "install_guide": {
+        "source": "repository_readme",
+        "link": "https://github.com/Leantime/leantime/blob/9a9f49f1008f4782b30f6723c54228f4f992e636/README.md",
+        "language": "English",
+        "word_count": 921
+    }
+}

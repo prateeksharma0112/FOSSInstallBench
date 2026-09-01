@@ -1,0 +1,21 @@
+{
+  "dataset_id": "P006",
+  "name": "Actual",
+  "description": "Actual is an open-source, local-first personal finance application with optional server-based synchronization across devices.",
+  "repository_url": "https://github.com/actualbudget/actual",
+  "commit_sha": "2ffb81f72b7992d1cfd7a5e7c4b1c26301a7a68a",
+  "license": "MIT",
+  "software": {
+    "type": "web_application",
+    "primary_language": "TypeScript",
+    "platforms": [
+      "web"
+    ]
+  },
+  "install_guide": {
+    "source": "repository_documentation",
+    "link": "https://github.com/actualbudget/actual/blob/2ffb81f72b7992d1cfd7a5e7c4b1c26301a7a68a/packages/docs/docs/install/build-from-source.md",
+    "language": "English",
+    "word_count": 776
+  }
+}

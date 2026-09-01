@@ -1,0 +1,21 @@
+{
+    "dataset_id": "P012",
+    "name": "ingrid-editor",
+    "description": "The InGrid Editor is a central component of the InGrid software family , a powerful and flexible software solution for the collection, management and provision of data and metadata, developed and continuously maintained within the framework of a federal-state administrative cooperation.",
+    "repository_url": "https://gitlab.opencode.de/informationgrid/ingrid-editor.git",
+    "commit_sha": "ba5dffbcb02d24ff765b37a69f2761e1acdc3ddc",
+    "license": "EUPL-1.2",
+    "software": {
+        "type": "full_stack",
+        "primary_language": "Kotlin",
+        "platforms": [
+            "web"
+        ]
+    },
+    "install_guide": {
+        "source": "repository_readme",
+        "link": "https://gitlab.opencode.de/informationgrid/ingrid-editor/-/blob/ba5dffbcb02d24ff765b37a69f2761e1acdc3ddc/README.md",
+        "language": "English",
+        "word_count": 655
+    }
+}

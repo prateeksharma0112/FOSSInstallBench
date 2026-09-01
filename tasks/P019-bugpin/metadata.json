@@ -1,0 +1,21 @@
+{
+	"dataset_id": "P019",
+	"name": "BugPin",
+	"description": "BugPin is a self-hosted visual bug-reporting tool for web applications that captures screenshots, annotations, browser diagnostics, and issue reports.",
+	"repository_url": "https://github.com/aranticlabs/bugpin",
+	"commit_sha": "c81ef2c833a7cbdb960e8863f18c3288c1910bd5",
+	"license": "AGPL-3.0-only (server and admin console); MIT (widget)",
+	"software": {
+		"type": "full_stack",
+		"primary_language": "TypeScript",
+		"platforms": [
+			"web"
+		]
+	},
+	"install_guide": {
+		"source": "Repository README – Quick Start",
+		"link": "https://github.com/aranticlabs/bugpin/blob/c81ef2c833a7cbdb960e8863f18c3288c1910bd5/README.md#quick-start",
+		"language": "English",
+		"word_count": 80
+	}
+}
