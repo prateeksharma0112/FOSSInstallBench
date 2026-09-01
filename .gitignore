@@ -1,13 +1,9 @@
-# Byte-compiled / optimized / DLL files
+# Python cache
 __pycache__/
-*.py[cod]
-.venv/
-*.egg-info/
 
-# Environment variables
+# Secrets
 .env
 
-# Project-specific
+# Generated experiment data
 results/
-tasks/
 workspace/
