@@ -4,7 +4,6 @@ import re
 from dataclasses import dataclass
 from pathlib import Path
 
-
 _RUN_DIRECTORY_PATTERN = re.compile(r"^run-(\d+)$")
 
 
