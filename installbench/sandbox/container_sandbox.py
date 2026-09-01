@@ -68,7 +68,7 @@ class ContainerSandbox:
         logger.info(
             "container_sandbox_started",
             engine=self.engine,
-            container_id=container_id[:12],
+            container=container_id[:12],
         )
 
         if settings.sandbox_mode == "dind":
@@ -104,7 +104,7 @@ class ContainerSandbox:
                     logger.info(
                         "dind_daemon_ready",
                         engine=self.engine,
-                        container_id=self.container_id[:12],
+                        container=self.container_id[:12],
                     )
                     return
                 last_error = process.stderr.strip() or process.stdout.strip() or last_error
