@@ -15,6 +15,11 @@ class Settings(BaseSettings):
     tasks_dir: Path = Path("tasks")
     results_dir: Path = Path("results")
     workspace_dir: Path = Path("workspace")
+    experiment_id: str = Field(
+        default="default-experiment",
+        pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$",
+        description="Name shared by all runs in one experimental batch.",
+    )
     installation_prompt_path: Path = Path("installbench/prompts/installation_prompt.md")
 
     default_container_image: str = "ubuntu:22.04"

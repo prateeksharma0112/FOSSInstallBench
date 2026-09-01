@@ -7,6 +7,7 @@ from typing import Any, Protocol
 import structlog
 
 from installbench.models.benchmark_run import BenchmarkRunResult
+from installbench.run_layout import run_relative_path
 
 logger = structlog.get_logger(__name__)
 
@@ -25,8 +26,15 @@ class JsonResultWriter:
         self.results_dir.mkdir(parents=True, exist_ok=True)
 
     def write(self, result: BenchmarkRunResult) -> None:
-        run_dir = self.results_dir / result.run_id
-        run_dir.mkdir(parents=True, exist_ok=False)
+        run_dir = self.results_dir / run_relative_path(
+            result.experiment_id,
+            result.task_id,
+            result.run_number,
+        )
+        run_dir.mkdir(parents=True, exist_ok=True)
+        result_path = run_dir / "result.json"
+        if result_path.exists():
+            raise FileExistsError(f"Run result already exists: {result_path}")
 
         result_data = result.model_dump(
             mode="json",
@@ -37,7 +45,7 @@ class JsonResultWriter:
                 "agent_final_response",
             },
         )
-        self._write_json(run_dir / "result.json", result_data)
+        self._write_json(result_path, result_data)
         if result.installation_report is not None:
             self._write_json(
                 run_dir / "installation_report.json",

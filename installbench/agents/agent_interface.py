@@ -1,5 +1,6 @@
 """Interface implemented by installation agents."""
 
+from pathlib import Path
 from typing import Protocol
 
 from installbench.models.benchmark_run import AgentRunResult
@@ -19,4 +20,5 @@ class AgentInterface(Protocol):
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
+        workspace_dir: Path,
     ) -> AgentRunResult: ...

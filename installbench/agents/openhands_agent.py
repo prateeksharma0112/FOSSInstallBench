@@ -2,6 +2,8 @@
 
 from __future__ import annotations
 
+from pathlib import Path
+
 import structlog
 from openhands.sdk import LLM, Agent, Conversation, Tool
 from openhands.sdk.conversation.state import ConversationExecutionStatus
@@ -53,6 +55,7 @@ class OpenHandsAgent:
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
+        workspace_dir: Path,
     ) -> AgentRunResult:
         logger.info(
             "agent_run_started",
@@ -60,8 +63,6 @@ class OpenHandsAgent:
             run_id=run_id,
         )
 
-        workspace_dir = settings.workspace_dir / run_id
-        workspace_dir.mkdir(parents=True, exist_ok=False)
         persistence_dir = workspace_dir / ".openhands"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 

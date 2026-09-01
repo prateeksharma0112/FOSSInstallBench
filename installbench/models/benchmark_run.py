@@ -110,6 +110,8 @@ class BenchmarkRunResult(BaseModel):
     """Complete, reproducible evidence for one benchmark run."""
 
     run_id: str
+    experiment_id: str
+    run_number: int = Field(ge=1)
     dataset_id: str
     task_id: str
     task_name: str
@@ -119,6 +121,9 @@ class BenchmarkRunResult(BaseModel):
     container_engine: Literal["podman", "docker"]
     sandbox_mode: Literal["standard", "dind"]
     agent_model: str
+    workspace_path: str
+    command_timeout_seconds: int
+    max_agent_iterations: int
     started_at: datetime
     finished_at: datetime
     run_status: RunStatus

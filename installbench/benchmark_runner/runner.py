@@ -20,6 +20,7 @@ from installbench.models.benchmark_run import (
 )
 from installbench.models.installation_task import InstallationTask
 from installbench.result_writer import JsonResultWriter, ResultWriter
+from installbench.run_layout import allocate_run_layout
 from installbench.sandbox.container_sandbox import ContainerSandbox
 from installbench.sandbox.protocol import Sandbox
 from installbench.task_loader import TaskLoader
@@ -89,7 +90,13 @@ class BenchmarkRunner:
         started_at_timestamp = datetime.now().astimezone()
         started_at = time.monotonic()
         task = self.task_loader.load(task_id)
-        run_id = f"{task.task_id}_{started_at_timestamp.strftime('%Y-%m-%d_%H-%M-%S')}"
+        run_layout = allocate_run_layout(
+            experiment_id=settings.experiment_id,
+            task_id=task.task_id,
+            results_dir=settings.results_dir,
+            workspace_dir=settings.workspace_dir,
+        )
+        run_id = run_layout.run_id
 
         logger.info(
             "benchmark_run_started",
@@ -131,6 +138,7 @@ class BenchmarkRunner:
                         sandbox=sandbox,
                         installation_guide=installation_guide,
                         run_id=run_id,
+                        workspace_dir=run_layout.workspace_dir,
                     )
                     agent_run_duration = time.monotonic() - phase_started
                     command_executions.extend(agent_run_result.command_executions)
@@ -157,6 +165,8 @@ class BenchmarkRunner:
         finished_at_timestamp = datetime.now().astimezone()
         run_result = BenchmarkRunResult(
             run_id=run_id,
+            experiment_id=run_layout.experiment_id,
+            run_number=run_layout.run_number,
             dataset_id=task.dataset_id,
             task_id=task.task_id,
             task_name=task.name,
@@ -166,6 +176,9 @@ class BenchmarkRunner:
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,
             agent_model=self.agent.model_name,
+            workspace_path=run_layout.workspace_dir.as_posix(),
+            command_timeout_seconds=settings.command_timeout_seconds,
+            max_agent_iterations=settings.max_agent_iterations,
             started_at=started_at_timestamp,
             finished_at=finished_at_timestamp,
             run_status=run_status,
