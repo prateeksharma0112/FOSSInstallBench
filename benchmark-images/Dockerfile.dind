@@ -22,6 +22,11 @@ RUN apt-get update \
     && chmod a+r /etc/apt/keyrings/docker.asc \
     && rm -rf /var/lib/apt/lists/*
 
+# Git 2.34/libcurl on Ubuntu 22.04 can receive an authentication-style 401
+# from GitHub when negotiating smart HTTP over HTTP/2. Use HTTP/1.1 for
+# reliable anonymous repository setup.
+RUN git config --system http.version HTTP/1.1
+
 RUN set -eux; \
     architecture="$(dpkg --print-architecture)"; \
     . /etc/os-release; \
