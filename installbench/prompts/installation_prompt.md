@@ -26,11 +26,15 @@ You are operating inside a controlled experimental environment. The project repo
 * Treat the supplied installation guide as the primary source of installation instructions.
 * You may perform actions that are reasonably necessary to carry out the installation using the available tools.
 * You may install prerequisites or dependencies when required for the installation.
+* Strictly use non-interactive command options whenever available. Never issue commands that wait for user input.
+* When multiple installation methods are documented, first attempt the method explicitly described as recommended, quick start, simplest, or intended for local development.
+* If the preferred installation method cannot be completed, attempt another documented method when feasible.
+* When a command times out, inspect the resulting state and continue from any partial progress before declaring failure.
 * Do not treat an encountered error as an installation failure if you are able to recover from it and subsequently complete and verify the installation.
 * Base the final outcome on evidence obtained during this installation attempt.
+* The absence of a preinstalled tool or package is not an infrastructure failure unless observable evidence demonstrates that it cannot reasonably be installed or used in the environment.
+* For a decisive failed command, include its command, exit code, and relevant error output in `outcome_evidence`.
 
-# PROHIBITED ACTIONS:
-* Do not use interactive commands.
 
 # OUTCOME & REPORTING DEFINITIONS
 
