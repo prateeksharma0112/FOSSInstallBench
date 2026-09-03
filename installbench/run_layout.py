@@ -15,7 +15,6 @@ class RunLayout:
     task_id: str
     run_number: int
     run_id: str
-    result_dir: Path
     workspace_dir: Path
 
 
@@ -63,6 +62,5 @@ def allocate_run_layout(
         task_id=task_id,
         run_number=run_number,
         run_id=f"{experiment_id}__{task_id}__{run_name}",
-        result_dir=result_run_dir,
         workspace_dir=workspace_run_dir,
     )
