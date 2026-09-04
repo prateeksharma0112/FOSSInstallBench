@@ -58,9 +58,10 @@ class Settings(BaseSettings):
         validation_alias=AliasChoices("INSTALLATION_LLM_MODEL", "LLM_MODEL"),
         description="Installation LLM in provider/model format.",
     )
-    installation_llm_api_key: str = Field(
+    installation_llm_api_key: str | None = Field(
+        default=None,
         validation_alias=AliasChoices("INSTALLATION_LLM_API_KEY", "LLM_API_KEY"),
-        description="API key used by the installation LLM.",
+        description="Optional API key used by the installation LLM.",
     )
     installation_llm_base_url: str | None = Field(
         default=None,
