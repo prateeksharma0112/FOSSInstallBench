@@ -1,3 +1,3 @@
-from .agent_interface import AgentInterface
+from .agent_protocol import BenchmarkAgent
 
-__all__ = ["AgentInterface"]
+__all__ = ["BenchmarkAgent"]

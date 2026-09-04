@@ -1,4 +1,4 @@
-"""OpenHands terminal bridge for the active container sandbox."""
+"""Custom OpenHands terminal tool backed by a benchmark sandbox."""
 
 from __future__ import annotations
 
@@ -14,7 +14,7 @@ from openhands.tools.terminal.definition import (
 from pydantic import Field
 
 from installbench.config import settings
-from installbench.models.benchmark_run import CommandExecution
+from installbench.models.benchmark_run import CommandExecution, RunPhase
 from installbench.sandbox.protocol import Sandbox
 
 
@@ -24,18 +24,20 @@ class InstallBenchTerminalAction(Action):
     command: str = Field(description="Shell command to execute inside the container.")
 
 
-class ContainerTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, TerminalObservation]):
-    """Execute agent terminal actions inside the repository checkout."""
+class SandboxTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, TerminalObservation]):
+    """Execute OpenHands terminal actions through a benchmark sandbox."""
 
     def __init__(
         self,
         sandbox: Sandbox,
         command_executions: list[CommandExecution],
         working_dir: str,
+        phase: RunPhase,
     ) -> None:
         self.sandbox = sandbox
         self.command_executions = command_executions
         self.working_dir = working_dir
+        self.phase = phase
 
     def __call__(
         self,
@@ -54,7 +56,7 @@ class ContainerTerminalExecutor(ToolExecutor[InstallBenchTerminalAction, Termina
 
         command_execution = self.sandbox.execute_command(
             command,
-            phase="agent",
+            phase=self.phase,
             working_dir=self.working_dir,
         )
         self.command_executions.append(command_execution)
@@ -85,6 +87,7 @@ class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, Termin
         sandbox = kwargs["sandbox"]
         command_executions = kwargs["command_executions"]
         working_dir = kwargs["working_dir"]
+        phase = kwargs["phase"]
         return [
             cls(
                 description=(
@@ -102,10 +105,11 @@ class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, Termin
                     idempotentHint=False,
                     openWorldHint=True,
                 ),
-                executor=ContainerTerminalExecutor(
+                executor=SandboxTerminalExecutor(
                     sandbox=sandbox,
                     command_executions=command_executions,
                     working_dir=working_dir,
+                    phase=phase,
                 ),
             )
         ]

@@ -1,15 +1,16 @@
-"""Interface implemented by installation agents."""
+"""SDK-independent contract for benchmark agents."""
 
 from pathlib import Path
-from typing import Protocol
+from typing import Protocol, TypeVar
 
-from installbench.models.benchmark_run import AgentRunResult
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 
+AgentResultT = TypeVar("AgentResultT", covariant=True)
 
-class AgentInterface(Protocol):
-    """An agent capable of attempting a documented software installation."""
+
+class BenchmarkAgent(Protocol[AgentResultT]):
+    """An agent operating on a benchmark task and its sandbox."""
 
     model_name: str
 
@@ -21,4 +22,4 @@ class AgentInterface(Protocol):
         installation_guide: str,
         run_id: str,
         workspace_dir: Path,
-    ) -> AgentRunResult: ...
+    ) -> AgentResultT: ...

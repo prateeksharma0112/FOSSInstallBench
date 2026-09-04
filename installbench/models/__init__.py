@@ -14,6 +14,7 @@ from .installation_task import (
     SoftwareMetadata,
 )
 from .validation_task import (
+    ValidationAgentResult,
     ValidationCheck,
     ValidationCheckStatus,
     ValidationReport,
@@ -32,6 +33,7 @@ __all__ = [
     "RunMetrics",
     "RunStatus",
     "SoftwareMetadata",
+    "ValidationAgentResult",
     "ValidationCheck",
     "ValidationCheckStatus",
     "ValidationReport",

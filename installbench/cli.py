@@ -3,7 +3,7 @@
 import typer
 from rich.console import Console
 
-from installbench.agents.openhands_agent import OpenHandsAgent
+from installbench.agents.openhands_installation_agent import OpenHandsInstallationAgent
 from installbench.benchmark_runner import BenchmarkRunner
 from installbench.models.benchmark_run import RunStatus
 
@@ -22,8 +22,8 @@ def run_task(
     )
 
     try:
-        agent = OpenHandsAgent()
-        runner = BenchmarkRunner(agent=agent)
+        installation_agent = OpenHandsInstallationAgent()
+        runner = BenchmarkRunner(installation_agent=installation_agent)
         run_result = runner.run(task_id=task_id)
     except Exception as exc:
         console.print(f"[bold red]Could not complete benchmark run:[/bold red] {exc}")

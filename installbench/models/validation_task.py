@@ -4,6 +4,8 @@ from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
+from installbench.models.benchmark_run import AgentRunStatus, CommandExecution
+
 
 class ValidationModel(BaseModel):
     """Strict base model for validator output."""
@@ -44,3 +46,14 @@ class ValidationReport(ValidationModel):
     summary: str = Field(min_length=1)
     checks: list[ValidationCheck] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
+
+
+class ValidationAgentResult(ValidationModel):
+    """Evidence returned after an independent validation run."""
+
+    agent_run_status: AgentRunStatus
+    validation_report: ValidationReport | None = None
+    command_executions: list[CommandExecution] = Field(default_factory=list)
+    validation_prompt: str = ""
+    agent_final_response: str = ""
+    error_message: str | None = None

@@ -1,4 +1,4 @@
-"""OpenHands SDK integration for installation benchmark runs."""
+"""OpenHands SDK integration for independent installation validation."""
 
 from __future__ import annotations
 
@@ -10,42 +10,37 @@ from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.builtins.finish import FinishAction, FinishTool
 from openhands.sdk.tool.registry import register_tool
 
-from installbench.agents.openhands_terminal import InstallBenchTerminalTool
+from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.benchmark_run import (
-    AgentRunResult,
-    AgentRunStatus,
-    CommandExecution,
-    InstallationOutcome,
-    InstallationReport,
-)
+from installbench.models.benchmark_run import AgentRunStatus, CommandExecution
 from installbench.models.installation_task import InstallationTask
+from installbench.models.validation_task import ValidationAgentResult, ValidationReport
 from installbench.sandbox.protocol import Sandbox
 
 logger = structlog.get_logger(__name__)
 
 
-class OpenHandsAgent:
-    """Runs installation tasks with the OpenHands Software Agent SDK."""
+class OpenHandsValidationAgent:
+    """Independently validate an installation in its existing sandbox."""
 
     def __init__(self) -> None:
-        if not settings.llm_model:
-            raise ValueError("LLM_MODEL must be configured.")
+        if not settings.validator_llm_model:
+            raise ValueError("VALIDATOR_LLM_MODEL must be configured.")
 
-        self.model_name = settings.llm_model
+        self.model_name = settings.validator_llm_model
 
-        logger.info("initialized_openhands_agent", model=self.model_name)
+        logger.info("initialized_openhands_validation_agent", model=self.model_name)
 
-        if not settings.llm_api_key:
+        if not settings.validator_llm_api_key:
             logger.warning(
-                "missing_llm_api_key",
-                message="LLM_API_KEY is empty.",
+                "missing_validator_llm_api_key",
+                message="VALIDATOR_LLM_API_KEY is empty.",
             )
 
         self.llm = LLM(
             model=self.model_name,
-            api_key=settings.llm_api_key or None,
-            base_url=settings.llm_base_url,
+            api_key=settings.validator_llm_api_key or None,
+            base_url=settings.validator_llm_base_url,
         )
 
     def run(
@@ -56,16 +51,15 @@ class OpenHandsAgent:
         installation_guide: str,
         run_id: str,
         workspace_dir: Path,
-    ) -> AgentRunResult:
+    ) -> ValidationAgentResult:
         logger.info(
-            "agent_run_started",
+            "validation_agent_run_started",
             task_id=task.task_id,
             run_id=run_id,
         )
 
-        persistence_dir = workspace_dir / ".openhands"
+        persistence_dir = workspace_dir / ".openhands-validation"
         persistence_dir.mkdir(parents=True, exist_ok=True)
-
         prompt = self._build_prompt(task, installation_guide)
 
         command_executions: list[CommandExecution] = []
@@ -73,19 +67,20 @@ class OpenHandsAgent:
             sandbox=sandbox,
             command_executions=command_executions,
             working_dir=settings.repository_dir,
+            phase="validation",
         )[0]
-        register_tool("InstallBenchTerminalTool", terminal_tool)
-        register_tool("InstallBenchFinishTool", FinishTool)
+        register_tool("InstallBenchValidationTerminalTool", terminal_tool)
+        register_tool("InstallBenchValidationFinishTool", FinishTool)
 
         conversation: Conversation | None = None
         try:
             agent = Agent(
                 llm=self.llm,
                 tools=[
-                    Tool(name="InstallBenchTerminalTool"),
+                    Tool(name="InstallBenchValidationTerminalTool"),
                     Tool(
-                        name="InstallBenchFinishTool",
-                        params={"response_schema": InstallationReport},
+                        name="InstallBenchValidationFinishTool",
+                        params={"response_schema": ValidationReport},
                     ),
                 ],
                 include_default_tools=["ThinkTool"],
@@ -94,37 +89,35 @@ class OpenHandsAgent:
                 agent=agent,
                 workspace=str(workspace_dir),
                 persistence_dir=str(persistence_dir),
-                max_iteration_per_run=settings.max_agent_iterations,
+                max_iteration_per_run=settings.max_validator_iterations,
                 visualizer=None,
             )
             conversation.send_message(prompt)
             conversation.run()
             execution_status = conversation.state.execution_status
             final_response = self._extract_final_response(conversation)
-            installation_report = self._extract_installation_report(
-                agent,
-                conversation,
-            )
+            validation_report = self._extract_validation_report(agent, conversation)
+
             if execution_status != ConversationExecutionStatus.FINISHED:
-                error_message = f"Agent stopped with status: {execution_status.value}"
-                return AgentRunResult(
+                error_message = f"Validation agent stopped with status: {execution_status.value}"
+                return ValidationAgentResult(
                     agent_run_status=AgentRunStatus.STOPPED,
                     command_executions=command_executions,
-                    installation_prompt=prompt,
+                    validation_prompt=prompt,
                     agent_final_response=final_response,
                     error_message=error_message,
                 )
         except Exception as exc:
             error_message = self._safe_text(str(exc))
             logger.error(
-                "agent_run_error",
+                "validation_agent_run_error",
                 task_id=task.task_id,
                 error=error_message,
             )
-            return AgentRunResult(
+            return ValidationAgentResult(
                 agent_run_status=AgentRunStatus.ERROR,
                 command_executions=command_executions,
-                installation_prompt=prompt,
+                validation_prompt=prompt,
                 agent_final_response=(
                     self._extract_final_response(conversation) if conversation else ""
                 ),
@@ -136,23 +129,19 @@ class OpenHandsAgent:
                 try:
                     close()
                 except Exception as exc:
-                    logger.warning("conversation_close_failed", error=str(exc))
+                    logger.warning("validation_conversation_close_failed", error=str(exc))
 
-        return AgentRunResult(
+        return ValidationAgentResult(
             agent_run_status=AgentRunStatus.COMPLETED,
-            installation_outcome=(
-                installation_report.outcome
-                if installation_report is not None
-                else InstallationOutcome.UNKNOWN
-            ),
-            installation_report=installation_report,
+            validation_report=validation_report,
             command_executions=command_executions,
-            installation_prompt=prompt,
+            validation_prompt=prompt,
             agent_final_response=final_response,
         )
 
-    def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
-        template = settings.installation_prompt_path.read_text(encoding="utf-8")
+    @staticmethod
+    def _build_prompt(task: InstallationTask, installation_guide: str) -> str:
+        template = settings.validation_prompt_path.read_text(encoding="utf-8")
         return template.format(
             task_name=task.name,
             description=task.description,
@@ -165,12 +154,10 @@ class OpenHandsAgent:
 
     @staticmethod
     def _extract_final_response(conversation: Conversation) -> str:
-        """Return the exact message supplied to the SDK's final Finish action."""
-
         try:
             events = list(conversation.state.events)
         except Exception as exc:
-            logger.warning("final_response_events_unavailable", error=str(exc))
+            logger.warning("validation_final_response_events_unavailable", error=str(exc))
             return ""
 
         for event in reversed(events):
@@ -180,15 +167,13 @@ class OpenHandsAgent:
         return ""
 
     @staticmethod
-    def _extract_installation_report(
+    def _extract_validation_report(
         agent: Agent,
         conversation: Conversation,
-    ) -> InstallationReport | None:
-        """Read the validated report attached to the latest FinishTool call."""
-
+    ) -> ValidationReport | None:
         finish_tool = agent.tools_map["finish"]
         report = finish_tool.parse_last_response(conversation.state.events)
         if report is None:
-            logger.warning("structured_installation_report_missing")
+            logger.warning("structured_validation_report_missing")
             return None
-        return InstallationReport.model_validate(report)
+        return ValidationReport.model_validate(report)

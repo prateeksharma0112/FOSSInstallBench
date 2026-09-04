@@ -6,7 +6,7 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-RunPhase = Literal["repository_setup", "agent"]
+RunPhase = Literal["repository_setup", "installation", "validation"]
 
 
 class RunStatus(StrEnum):
@@ -103,7 +103,7 @@ class RunMetrics(BaseModel):
     agent_run_duration_seconds: float
     command_count: int
     repository_setup_command_count: int
-    agent_command_count: int
+    installation_command_count: int
 
 
 class BenchmarkRunResult(BaseModel):

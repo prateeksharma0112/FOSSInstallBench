@@ -6,7 +6,7 @@ from datetime import datetime
 
 import structlog
 
-from installbench.agents.agent_interface import AgentInterface
+from installbench.agents.agent_protocol import BenchmarkAgent
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
 from installbench.models.benchmark_run import (
@@ -34,13 +34,13 @@ class BenchmarkRunner:
 
     def __init__(
         self,
-        agent: AgentInterface,
+        installation_agent: BenchmarkAgent[AgentRunResult],
         *,
         task_loader: TaskLoader | None = None,
         result_writer: ResultWriter | None = None,
         sandbox_factory: SandboxFactory = ContainerSandbox,
     ) -> None:
-        self.agent = agent
+        self.installation_agent = installation_agent
         self.task_loader = task_loader or TaskLoader(settings.tasks_dir)
         self.result_writer = result_writer or JsonResultWriter(settings.results_dir)
         self.sandbox_factory = sandbox_factory
@@ -83,7 +83,9 @@ class BenchmarkRunner:
             repository_setup_command_count=sum(
                 execution.phase == "repository_setup" for execution in command_executions
             ),
-            agent_command_count=sum(execution.phase == "agent" for execution in command_executions),
+            installation_command_count=sum(
+                execution.phase == "installation" for execution in command_executions
+            ),
         )
 
     def run(self, task_id: str) -> BenchmarkRunResult:
@@ -133,7 +135,7 @@ class BenchmarkRunner:
                 else:
                     installation_guide = self._format_documentation(task)
                     phase_started = time.monotonic()
-                    agent_run_result = self.agent.run(
+                    agent_run_result = self.installation_agent.run(
                         task=task,
                         sandbox=sandbox,
                         installation_guide=installation_guide,
@@ -175,7 +177,7 @@ class BenchmarkRunner:
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,
-            agent_model=self.agent.model_name,
+            agent_model=self.installation_agent.model_name,
             workspace_path=run_layout.workspace_dir.as_posix(),
             command_timeout_seconds=settings.command_timeout_seconds,
             max_agent_iterations=settings.max_agent_iterations,
