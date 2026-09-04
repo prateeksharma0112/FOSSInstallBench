@@ -43,7 +43,7 @@ class ValidationReport(ValidationModel):
     """Independent assessment of an installation's resulting state."""
 
     verdict: ValidationVerdict
-    summary: str = Field(min_length=1)
+    validation_summary: str = Field(min_length=1)
     checks: list[ValidationCheck] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
 
