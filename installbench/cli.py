@@ -4,6 +4,7 @@ import typer
 from rich.console import Console
 
 from installbench.agents.openhands_installation_agent import OpenHandsInstallationAgent
+from installbench.agents.openhands_validation_agent import OpenHandsValidationAgent
 from installbench.benchmark_runner import BenchmarkRunner
 from installbench.models.benchmark_run import RunStatus
 
@@ -23,7 +24,11 @@ def run_task(
 
     try:
         installation_agent = OpenHandsInstallationAgent()
-        runner = BenchmarkRunner(installation_agent=installation_agent)
+        validation_agent = OpenHandsValidationAgent()
+        runner = BenchmarkRunner(
+            installation_agent=installation_agent,
+            validation_agent=validation_agent,
+        )
         run_result = runner.run(task_id=task_id)
     except Exception as exc:
         console.print(f"[bold red]Could not complete benchmark run:[/bold red] {exc}")
@@ -31,11 +36,18 @@ def run_task(
 
     if run_result.run_status is RunStatus.COMPLETED:
         installation_agent_status = run_result.installation_agent_status
+        validation_agent_status = run_result.validation_agent_status
+        validation_verdict = run_result.validation_verdict
         console.print(f"[bold green]Benchmark run {run_result.run_id} completed.[/bold green]")
         console.print(
             "Installation agent: "
             f"{installation_agent_status.value if installation_agent_status else 'not_run'}; "
             f"outcome: {run_result.installation_agent_outcome.value}."
+        )
+        console.print(
+            "Validation agent: "
+            f"{validation_agent_status.value if validation_agent_status else 'not_run'}; "
+            f"verdict: {validation_verdict.value if validation_verdict else 'not_available'}."
         )
         return
 

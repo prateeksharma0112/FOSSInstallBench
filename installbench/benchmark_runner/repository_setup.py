@@ -2,7 +2,7 @@
 
 import shlex
 
-from installbench.models.benchmark_run import CommandExecution
+from installbench.models.agent_run import CommandExecution
 from installbench.models.installation_task import InstallationTask
 from installbench.sandbox.protocol import Sandbox
 

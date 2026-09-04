@@ -9,16 +9,16 @@ import structlog
 from installbench.agents.agent_protocol import BenchmarkAgent
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
+from installbench.models.agent_run import AgentRunStatus, CommandExecution
 from installbench.models.benchmark_run import (
-    AgentRunStatus,
     BenchmarkRunResult,
-    CommandExecution,
-    InstallationOutcome,
     InstallationAgentResult,
+    InstallationOutcome,
     RunMetrics,
     RunStatus,
 )
 from installbench.models.installation_task import InstallationTask
+from installbench.models.validation import ValidationAgentResult
 from installbench.result_writer import JsonResultWriter, ResultWriter
 from installbench.run_layout import allocate_run_layout
 from installbench.sandbox.container_sandbox import ContainerSandbox
@@ -35,12 +35,14 @@ class BenchmarkRunner:
     def __init__(
         self,
         installation_agent: BenchmarkAgent[InstallationAgentResult],
+        validation_agent: BenchmarkAgent[ValidationAgentResult],
         *,
         task_loader: TaskLoader | None = None,
         result_writer: ResultWriter | None = None,
         sandbox_factory: SandboxFactory = ContainerSandbox,
     ) -> None:
         self.installation_agent = installation_agent
+        self.validation_agent = validation_agent
         self.task_loader = task_loader or TaskLoader(settings.tasks_dir)
         self.result_writer = result_writer or JsonResultWriter(settings.results_dir)
         self.sandbox_factory = sandbox_factory
@@ -73,18 +75,23 @@ class BenchmarkRunner:
         started_at: float,
         repository_setup_duration: float,
         installation_duration: float,
+        validation_duration: float,
         command_executions: list[CommandExecution],
     ) -> RunMetrics:
         return RunMetrics(
             duration_seconds=time.monotonic() - started_at,
             repository_setup_duration_seconds=repository_setup_duration,
             installation_duration_seconds=installation_duration,
+            validation_duration_seconds=validation_duration,
             command_count=len(command_executions),
             repository_setup_command_count=sum(
                 execution.phase == "repository_setup" for execution in command_executions
             ),
             installation_command_count=sum(
                 execution.phase == "installation" for execution in command_executions
+            ),
+            validation_command_count=sum(
+                execution.phase == "validation" for execution in command_executions
             ),
         )
 
@@ -109,8 +116,10 @@ class BenchmarkRunner:
 
         repository_setup_duration = 0.0
         installation_duration = 0.0
+        validation_duration = 0.0
         command_executions: list[CommandExecution] = []
         installation_result: InstallationAgentResult | None = None
+        validation_result: ValidationAgentResult | None = None
         run_status = RunStatus.SYSTEM_ERROR
         error_message: str | None = None
 
@@ -144,20 +153,31 @@ class BenchmarkRunner:
                     )
                     installation_duration = time.monotonic() - phase_started
                     command_executions.extend(installation_result.command_executions)
-                    error_message = installation_result.error_message
-                    run_status = (
-                        RunStatus.COMPLETED
-                        if installation_result.status is AgentRunStatus.COMPLETED
-                        else RunStatus.INSTALLATION_AGENT_FAILED
+                    phase_started = time.monotonic()
+                    validation_result = self.validation_agent.run(
+                        task=task,
+                        sandbox=sandbox,
+                        installation_guide=installation_guide,
+                        run_id=run_id,
+                        workspace_dir=run_layout.workspace_dir,
                     )
-                    if (
-                        run_status is RunStatus.INSTALLATION_AGENT_FAILED
-                        and error_message is None
-                    ):
-                        error_message = (
+                    validation_duration = time.monotonic() - phase_started
+                    command_executions.extend(validation_result.command_executions)
+
+                    if installation_result.status is not AgentRunStatus.COMPLETED:
+                        run_status = RunStatus.INSTALLATION_AGENT_FAILED
+                        error_message = installation_result.error_message or (
                             "The installation agent stopped with status: "
                             f"{installation_result.status.value}."
                         )
+                    elif validation_result.status is not AgentRunStatus.COMPLETED:
+                        run_status = RunStatus.VALIDATION_AGENT_FAILED
+                        error_message = validation_result.error_message or (
+                            "The validation agent stopped with status: "
+                            f"{validation_result.status.value}."
+                        )
+                    else:
+                        run_status = RunStatus.COMPLETED
         except Exception as exc:
             logger.exception(
                 "benchmark_run_system_error",
@@ -181,9 +201,11 @@ class BenchmarkRunner:
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,
             installation_agent_model=self.installation_agent.model_name,
+            validation_agent_model=self.validation_agent.model_name,
             workspace_path=run_layout.workspace_dir.as_posix(),
             command_timeout_seconds=settings.command_timeout_seconds,
             max_installation_iterations=settings.max_installation_iterations,
+            max_validation_iterations=settings.max_validation_iterations,
             started_at=started_at_timestamp,
             finished_at=finished_at_timestamp,
             run_status=run_status,
@@ -198,16 +220,36 @@ class BenchmarkRunner:
             installation_report=(
                 installation_result.report if installation_result else None
             ),
+            validation_agent_status=(
+                validation_result.status if validation_result else None
+            ),
+            validation_verdict=(
+                validation_result.report.verdict
+                if validation_result and validation_result.report
+                else None
+            ),
+            validation_report=(validation_result.report if validation_result else None),
             metrics=self._build_metrics(
                 started_at=started_at,
                 repository_setup_duration=repository_setup_duration,
                 installation_duration=installation_duration,
+                validation_duration=validation_duration,
                 command_executions=command_executions,
             ),
             command_executions=command_executions,
             installation_prompt=(installation_result.prompt if installation_result else ""),
             installation_agent_response=(
                 installation_result.final_response if installation_result else ""
+            ),
+            installation_error_message=(
+                installation_result.error_message if installation_result else None
+            ),
+            validation_prompt=(validation_result.prompt if validation_result else ""),
+            validation_agent_response=(
+                validation_result.final_response if validation_result else ""
+            ),
+            validation_error_message=(
+                validation_result.error_message if validation_result else None
             ),
             error_message=error_message,
         )

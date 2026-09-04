@@ -12,7 +12,7 @@ from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.benchmark_run import AgentRunStatus, CommandExecution
+from installbench.models.agent_run import AgentRunStatus, CommandExecution
 from installbench.models.installation_task import InstallationTask
 from installbench.models.validation import ValidationAgentResult, ValidationReport
 from installbench.sandbox.protocol import Sandbox
@@ -106,6 +106,14 @@ class OpenHandsValidationAgent:
                     prompt=prompt,
                     final_response=final_response,
                     error_message=error_message,
+                )
+            if validation_report is None:
+                return ValidationAgentResult(
+                    status=AgentRunStatus.ERROR,
+                    command_executions=command_executions,
+                    prompt=prompt,
+                    final_response=final_response,
+                    error_message="Validation agent returned no structured report.",
                 )
         except Exception as exc:
             error_message = self._safe_text(str(exc))

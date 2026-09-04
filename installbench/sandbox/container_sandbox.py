@@ -8,7 +8,7 @@ from types import TracebackType
 import structlog
 
 from installbench.config import settings
-from installbench.models.benchmark_run import CommandExecution, RunPhase
+from installbench.models.agent_run import CommandExecution, RunPhase
 
 logger = structlog.get_logger(__name__)
 TIMEOUT_TERMINATION_GRACE_SECONDS = 5

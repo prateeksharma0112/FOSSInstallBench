@@ -14,7 +14,7 @@ from openhands.tools.terminal.definition import (
 from pydantic import Field
 
 from installbench.config import settings
-from installbench.models.benchmark_run import CommandExecution, RunPhase
+from installbench.models.agent_run import CommandExecution, RunPhase
 from installbench.sandbox.protocol import Sandbox
 
 

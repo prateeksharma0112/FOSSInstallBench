@@ -43,6 +43,9 @@ class JsonResultWriter:
                 "installation_report",
                 "installation_prompt",
                 "installation_agent_response",
+                "validation_report",
+                "validation_prompt",
+                "validation_agent_response",
             },
         )
         self._write_json(result_path, result_data)
@@ -50,6 +53,11 @@ class JsonResultWriter:
             self._write_json(
                 run_dir / "installation_report.json",
                 result.installation_report.model_dump(mode="json"),
+            )
+        if result.validation_report is not None:
+            self._write_json(
+                run_dir / "validation_report.json",
+                result.validation_report.model_dump(mode="json"),
             )
         self._write_json(
             run_dir / "commands.json",
@@ -63,6 +71,11 @@ class JsonResultWriter:
         self._write_text(
             run_dir / "installation_agent_response.txt",
             result.installation_agent_response,
+        )
+        self._write_text(run_dir / "validation_prompt.md", result.validation_prompt)
+        self._write_text(
+            run_dir / "validation_agent_response.txt",
+            result.validation_agent_response,
         )
 
         logger.info("benchmark_run_result_saved", path=str(run_dir))

@@ -1,7 +1,6 @@
+from .agent_run import AgentRunStatus, CommandExecution
 from .benchmark_run import (
-    AgentRunStatus,
     BenchmarkRunResult,
-    CommandExecution,
     InstallationOutcome,
     InstallationAgentResult,
     InstallationReport,

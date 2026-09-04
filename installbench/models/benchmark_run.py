@@ -6,7 +6,8 @@ from typing import Literal
 
 from pydantic import BaseModel, Field
 
-RunPhase = Literal["repository_setup", "installation", "validation"]
+from installbench.models.agent_run import AgentRunStatus, CommandExecution
+from installbench.models.validation import ValidationReport, ValidationVerdict
 
 
 class RunStatus(StrEnum):
@@ -15,15 +16,8 @@ class RunStatus(StrEnum):
     COMPLETED = "completed"
     REPOSITORY_SETUP_FAILED = "repository_setup_failed"
     INSTALLATION_AGENT_FAILED = "installation_agent_failed"
+    VALIDATION_AGENT_FAILED = "validation_agent_failed"
     SYSTEM_ERROR = "system_error"
-
-
-class AgentRunStatus(StrEnum):
-    """How an agent run ended."""
-
-    COMPLETED = "completed"
-    STOPPED = "stopped"
-    ERROR = "error"
 
 
 class InstallationOutcome(StrEnum):
@@ -72,17 +66,6 @@ class InstallationReport(BaseModel):
     )
 
 
-class CommandExecution(BaseModel):
-    """One command executed inside the benchmark sandbox."""
-
-    phase: RunPhase
-    command: str
-    exit_code: int
-    stdout: str = ""
-    stderr: str = ""
-    timed_out: bool = False
-
-
 class InstallationAgentResult(BaseModel):
     """Evidence returned after an installation agent run."""
 
@@ -101,9 +84,11 @@ class RunMetrics(BaseModel):
     duration_seconds: float
     repository_setup_duration_seconds: float
     installation_duration_seconds: float
+    validation_duration_seconds: float
     command_count: int
     repository_setup_command_count: int
     installation_command_count: int
+    validation_command_count: int
 
 
 class BenchmarkRunResult(BaseModel):
@@ -121,17 +106,26 @@ class BenchmarkRunResult(BaseModel):
     container_engine: Literal["podman", "docker"]
     sandbox_mode: Literal["standard", "dind"]
     installation_agent_model: str
+    validation_agent_model: str
     workspace_path: str
     command_timeout_seconds: int
     max_installation_iterations: int
+    max_validation_iterations: int
     started_at: datetime
     finished_at: datetime
     run_status: RunStatus
     installation_agent_status: AgentRunStatus | None = None
     installation_agent_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
     installation_report: InstallationReport | None = None
+    validation_agent_status: AgentRunStatus | None = None
+    validation_verdict: ValidationVerdict | None = None
+    validation_report: ValidationReport | None = None
     metrics: RunMetrics
     command_executions: list[CommandExecution] = Field(default_factory=list)
     installation_prompt: str = ""
     installation_agent_response: str = ""
+    installation_error_message: str | None = None
+    validation_prompt: str = ""
+    validation_agent_response: str = ""
+    validation_error_message: str | None = None
     error_message: str | None = None

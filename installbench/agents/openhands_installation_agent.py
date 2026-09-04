@@ -12,9 +12,8 @@ from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
+from installbench.models.agent_run import AgentRunStatus, CommandExecution
 from installbench.models.benchmark_run import (
-    AgentRunStatus,
-    CommandExecution,
     InstallationAgentResult,
     InstallationOutcome,
     InstallationReport,
