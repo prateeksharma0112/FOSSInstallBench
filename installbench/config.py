@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import AliasChoices, Field
+from pydantic import Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -38,83 +38,48 @@ class Settings(BaseSettings):
     max_installation_iterations: int = Field(
         default=50,
         gt=0,
-        validation_alias=AliasChoices(
-            "MAX_INSTALLATION_ITERATIONS",
-            "MAX_AGENT_ITERATIONS",
-        ),
         description="Maximum number of installation-agent iterations in one run.",
     )
     max_validation_iterations: int = Field(
         default=25,
         gt=0,
-        validation_alias=AliasChoices(
-            "MAX_VALIDATION_ITERATIONS",
-            "MAX_VALIDATOR_ITERATIONS",
-        ),
         description="Maximum number of validation-agent iterations in one run.",
     )
 
     installation_llm_model: str = Field(
-        validation_alias=AliasChoices("INSTALLATION_LLM_MODEL", "LLM_MODEL"),
         description="Installation LLM in provider/model format.",
     )
     installation_llm_api_key: str | None = Field(
         default=None,
-        validation_alias=AliasChoices("INSTALLATION_LLM_API_KEY", "LLM_API_KEY"),
         description="Optional API key used by the installation LLM.",
     )
     installation_llm_base_url: str | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "INSTALLATION_LLM_BASE_URL",
-            "LLM_BASE_URL",
-        ),
         description="Optional custom base URL for the installation LLM.",
     )
     installation_llm_reasoning_effort: Literal[
         "none", "low", "medium", "high", "xhigh"
     ] | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "INSTALLATION_LLM_REASONING_EFFORT",
-            "LLM_REASONING_EFFORT",
-        ),
         description="Optional reasoning effort for the installation LLM.",
     )
 
     validation_llm_model: str | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "VALIDATION_LLM_MODEL",
-            "VALIDATOR_LLM_MODEL",
-        ),
         description="LLM used for independent installation validation.",
     )
     validation_llm_api_key: str | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "VALIDATION_LLM_API_KEY",
-            "VALIDATOR_LLM_API_KEY",
-        ),
         description="API key used by the independent validation LLM.",
     )
     validation_llm_base_url: str | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "VALIDATION_LLM_BASE_URL",
-            "VALIDATOR_LLM_BASE_URL",
-        ),
         description="Optional custom base URL for the validation LLM.",
     )
     validation_llm_reasoning_effort: Literal[
         "none", "low", "medium", "high", "xhigh"
     ] | None = Field(
         default=None,
-        validation_alias=AliasChoices(
-            "VALIDATION_LLM_REASONING_EFFORT",
-            "VALIDATOR_LLM_REASONING_EFFORT",
-            "LLM_REASONING_EFFORT",
-        ),
         description="Optional reasoning effort for the validation LLM.",
     )
 
