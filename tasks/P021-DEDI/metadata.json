@@ -1,0 +1,21 @@
+{
+	"dataset_id": "P021",
+	"name": "DEDI",
+	"description": "The DEUTSCHLAND. DIGITAL Platform is the basis for a digital ecosystem to improve the public services of citizens in rural districts",
+	"repository_url": "https://gitlab.opencode.de/DEUTSCHLAND.DIGITAL/plattform/plattform.git",
+	"commit_sha": "efb655ef0f9d73277f811544e5b3d7f83d30273d",
+	"license": "AGPL-3.0-or-later",
+	"software": {
+		"type": "fullstack",
+		"primary_language": "NA",
+		"platforms": [
+			"web"
+		]
+	},
+	"install_guide": {
+		"source": "repository_documentation",
+		"link": "https://gitlab.opencode.de/DEUTSCHLAND.DIGITAL/plattform/plattform/-/blob/efb655ef0f9d73277f811544e5b3d7f83d30273d/docs/LocalSetup.md",
+		"language": "English",
+		"word_count": 163
+	}
+}
