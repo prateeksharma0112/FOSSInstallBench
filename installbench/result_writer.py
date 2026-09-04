@@ -48,8 +48,6 @@ class JsonResultWriter:
                 "validation_agent_response",
             },
         )
-        self._write_json(run_path, result_data)
-
         self._write_json(
             run_dir / "commands.json",
             {
@@ -80,6 +78,7 @@ class JsonResultWriter:
             prompt=result.validation_prompt,
             response=result.validation_agent_response,
         )
+        self._write_json(run_path, result_data)
 
         logger.info("benchmark_run_result_saved", path=str(run_dir))
 
