@@ -116,6 +116,14 @@ class OpenHandsInstallationAgent:
                     final_response=final_response,
                     error_message=error_message,
                 )
+            if installation_report is None:
+                return InstallationAgentResult(
+                    status=AgentRunStatus.ERROR,
+                    command_executions=command_executions,
+                    prompt=prompt,
+                    final_response=final_response,
+                    error_message="Installation agent returned no structured report.",
+                )
         except Exception as exc:
             error_message = self._safe_text(str(exc))
             logger.error(

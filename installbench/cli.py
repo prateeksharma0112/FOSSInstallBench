@@ -35,26 +35,36 @@ def run_task(
         raise typer.Exit(code=1) from exc
 
     if run_result.run_status is RunStatus.COMPLETED:
-        installation_agent_status = run_result.installation_agent_status
-        validation_agent_status = run_result.validation_agent_status
-        assessed_outcome = run_result.validation_agent_assessed_outcome
         console.print(f"[bold green]Benchmark run {run_result.run_id} completed.[/bold green]")
+    else:
+        console.print(
+            f"[bold red]Benchmark run {run_result.run_id}: "
+            f"{run_result.run_status.value}.[/bold red]"
+        )
+
+    if run_result.installation_agent_status is None:
+        console.print("Installation agent: not run.")
+    else:
         console.print(
             "Installation agent: "
-            f"{installation_agent_status.value if installation_agent_status else 'not_run'}; "
+            f"{run_result.installation_agent_status.value}; "
             f"reported outcome: {run_result.installation_agent_reported_outcome.value}."
         )
+
+    if run_result.validation_agent_status is None:
+        console.print("Validation agent: not run.")
+    else:
+        assessed_outcome = run_result.validation_agent_assessed_outcome
         console.print(
             "Validation agent: "
-            f"{validation_agent_status.value if validation_agent_status else 'not_run'}; "
+            f"{run_result.validation_agent_status.value}; "
             "assessed outcome: "
             f"{assessed_outcome.value if assessed_outcome else 'not_available'}."
         )
+
+    if run_result.run_status is RunStatus.COMPLETED:
         return
 
-    console.print(
-        f"[bold red]Benchmark run {run_result.run_id}: {run_result.run_status.value}.[/bold red]"
-    )
     if run_result.error_message:
         console.print(f"[red]{run_result.error_message}[/red]")
     raise typer.Exit(code=1)

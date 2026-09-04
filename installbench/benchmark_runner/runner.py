@@ -127,6 +127,7 @@ class BenchmarkRunner:
 
         try:
             with self.sandbox_factory(settings.default_container_image) as sandbox:
+                logger.info("repository_setup_started", run_id=run_id)
                 phase_started = time.monotonic()
                 setup_executions = prepare_repository(
                     task,
@@ -137,6 +138,12 @@ class BenchmarkRunner:
                 command_executions.extend(setup_executions)
 
                 setup_failure = self._first_failure(setup_executions)
+                logger.info(
+                    "repository_setup_finished",
+                    run_id=run_id,
+                    status="failed" if setup_failure else "completed",
+                    duration_seconds=repository_setup_duration,
+                )
                 if setup_failure is not None:
                     run_status = RunStatus.REPOSITORY_SETUP_FAILED
                     error_message = self._command_failure(
@@ -155,16 +162,12 @@ class BenchmarkRunner:
                     )
                     installation_duration = time.monotonic() - phase_started
                     command_executions.extend(installation_result.command_executions)
-                    phase_started = time.monotonic()
-                    validation_result = self.validation_agent.run(
-                        task=task,
-                        sandbox=sandbox,
-                        installation_guide=installation_guide,
+                    logger.info(
+                        "installation_agent_run_finished",
                         run_id=run_id,
-                        workspace_dir=run_layout.workspace_dir,
+                        status=installation_result.status.value,
+                        duration_seconds=installation_duration,
                     )
-                    validation_duration = time.monotonic() - phase_started
-                    command_executions.extend(validation_result.command_executions)
 
                     if installation_result.status is not AgentRunStatus.COMPLETED:
                         run_status = RunStatus.INSTALLATION_AGENT_FAILED
@@ -172,14 +175,37 @@ class BenchmarkRunner:
                             "The installation agent stopped with status: "
                             f"{installation_result.status.value}."
                         )
-                    elif validation_result.status is not AgentRunStatus.COMPLETED:
-                        run_status = RunStatus.VALIDATION_AGENT_FAILED
-                        error_message = validation_result.error_message or (
-                            "The validation agent stopped with status: "
-                            f"{validation_result.status.value}."
+                        logger.info(
+                            "validation_agent_run_skipped",
+                            run_id=run_id,
+                            reason="installation_agent_not_completed",
                         )
                     else:
-                        run_status = RunStatus.COMPLETED
+                        phase_started = time.monotonic()
+                        validation_result = self.validation_agent.run(
+                            task=task,
+                            sandbox=sandbox,
+                            installation_guide=installation_guide,
+                            run_id=run_id,
+                            workspace_dir=run_layout.workspace_dir,
+                        )
+                        validation_duration = time.monotonic() - phase_started
+                        command_executions.extend(validation_result.command_executions)
+                        logger.info(
+                            "validation_agent_run_finished",
+                            run_id=run_id,
+                            status=validation_result.status.value,
+                            duration_seconds=validation_duration,
+                        )
+
+                        if validation_result.status is not AgentRunStatus.COMPLETED:
+                            run_status = RunStatus.VALIDATION_AGENT_FAILED
+                            error_message = validation_result.error_message or (
+                                "The validation agent stopped with status: "
+                                f"{validation_result.status.value}."
+                            )
+                        else:
+                            run_status = RunStatus.COMPLETED
         except Exception as exc:
             logger.exception(
                 "benchmark_run_system_error",

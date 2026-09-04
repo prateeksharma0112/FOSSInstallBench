@@ -44,7 +44,7 @@ class ValidationReport(ValidationModel):
 
     assessed_outcome: AssessedInstallationOutcome
     assessment_summary: str = Field(min_length=1)
-    checks: list[ValidationCheck] = Field(default_factory=list)
+    checks: list[ValidationCheck] = Field(min_length=1)
     limitations: list[str] = Field(default_factory=list)
 
 
