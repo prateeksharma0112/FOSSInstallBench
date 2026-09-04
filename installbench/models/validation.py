@@ -4,7 +4,7 @@ from enum import StrEnum
 
 from pydantic import BaseModel, ConfigDict, Field
 
-from installbench.models.agent_run import AgentRunStatus, CommandExecution
+from installbench.models.execution import AgentRunStatus, CommandExecution
 
 
 class ValidationModel(BaseModel):

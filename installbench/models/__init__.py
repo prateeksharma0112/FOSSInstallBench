@@ -1,15 +1,18 @@
-from .agent_run import AgentRunStatus, CommandExecution
 from .benchmark_run import (
     BenchmarkRunResult,
-    InstallationOutcome,
-    InstallationAgentResult,
-    InstallationReport,
     RunMetrics,
     RunStatus,
 )
-from .installation_task import (
+from .execution import AgentRunStatus, CommandExecution
+from .installation import (
+    FailureAttribution,
+    InstallationAgentResult,
+    InstallationOutcome,
+    InstallationReport,
+)
+from .task import (
+    BenchmarkTask,
     InstallationGuideMetadata,
-    InstallationTask,
     SoftwareMetadata,
 )
 from .validation import (
@@ -23,12 +26,13 @@ from .validation import (
 __all__ = [
     "AgentRunStatus",
     "BenchmarkRunResult",
+    "BenchmarkTask",
     "CommandExecution",
+    "FailureAttribution",
     "InstallationGuideMetadata",
     "InstallationAgentResult",
     "InstallationOutcome",
     "InstallationReport",
-    "InstallationTask",
     "RunMetrics",
     "RunStatus",
     "SoftwareMetadata",

@@ -12,8 +12,8 @@ from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.agent_run import AgentRunStatus, CommandExecution
-from installbench.models.installation_task import InstallationTask
+from installbench.models.execution import AgentRunStatus, CommandExecution
+from installbench.models.task import BenchmarkTask
 from installbench.models.validation import ValidationAgentResult, ValidationReport
 from installbench.sandbox.protocol import Sandbox
 
@@ -46,7 +46,7 @@ class OpenHandsValidationAgent:
     def run(
         self,
         *,
-        task: InstallationTask,
+        task: BenchmarkTask,
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
@@ -148,7 +148,7 @@ class OpenHandsValidationAgent:
         )
 
     @staticmethod
-    def _build_prompt(task: InstallationTask, installation_guide: str) -> str:
+    def _build_prompt(task: BenchmarkTask, installation_guide: str) -> str:
         template = settings.validation_prompt_path.read_text(encoding="utf-8")
         return template.format(
             task_name=task.name,

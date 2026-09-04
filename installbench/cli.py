@@ -16,7 +16,7 @@ console = Console()
 def run_task(
     task_id: str = typer.Option(..., "--task-id", "-t", help="The ID of the task to run"),
 ) -> None:
-    """Run an installation evaluation task."""
+    """Run an installation and independent-validation benchmark task."""
     console.print(
         f"[bold blue]Starting FOSSInstallBench[/bold blue] for task: "
         f"[bold green]{task_id}[/bold green]"

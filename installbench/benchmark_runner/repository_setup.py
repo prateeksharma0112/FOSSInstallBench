@@ -2,13 +2,13 @@
 
 import shlex
 
-from installbench.models.agent_run import CommandExecution
-from installbench.models.installation_task import InstallationTask
+from installbench.models.execution import CommandExecution
+from installbench.models.task import BenchmarkTask
 from installbench.sandbox.protocol import Sandbox
 
 
 def prepare_repository(
-    task: InstallationTask,
+    task: BenchmarkTask,
     sandbox: Sandbox,
     repository_dir: str,
 ) -> list[CommandExecution]:

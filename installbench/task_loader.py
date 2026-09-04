@@ -1,18 +1,18 @@
-"""Load and validate installation task definitions."""
+"""Load and validate benchmark task definitions."""
 
 import json
 from pathlib import Path
 
-from installbench.models.installation_task import InstallationTask
+from installbench.models.task import BenchmarkTask
 
 
 class TaskLoader:
-    """Load one installation task from the configured task directory."""
+    """Load one benchmark task from the configured task directory."""
 
     def __init__(self, tasks_dir: Path) -> None:
         self.tasks_dir = tasks_dir
 
-    def load(self, task_id: str) -> InstallationTask:
+    def load(self, task_id: str) -> BenchmarkTask:
         tasks_root = self.tasks_dir.resolve()
         task_dir = (tasks_root / task_id).resolve()
 
@@ -30,7 +30,7 @@ class TaskLoader:
             raise ValueError(f"Task metadata must be a JSON object: {metadata_path}")
 
         documentation = self._load_documentation(task_dir / "docs")
-        return InstallationTask.model_validate(
+        return BenchmarkTask.model_validate(
             {
                 **metadata,
                 "task_id": task_id,

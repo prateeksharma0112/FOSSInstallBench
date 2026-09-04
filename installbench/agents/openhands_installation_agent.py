@@ -12,13 +12,13 @@ from openhands.sdk.tool.registry import register_tool
 
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
-from installbench.models.agent_run import AgentRunStatus, CommandExecution
-from installbench.models.benchmark_run import (
+from installbench.models.execution import AgentRunStatus, CommandExecution
+from installbench.models.installation import (
     InstallationAgentResult,
     InstallationOutcome,
     InstallationReport,
 )
-from installbench.models.installation_task import InstallationTask
+from installbench.models.task import BenchmarkTask
 from installbench.sandbox.protocol import Sandbox
 
 logger = structlog.get_logger(__name__)
@@ -50,7 +50,7 @@ class OpenHandsInstallationAgent:
     def run(
         self,
         *,
-        task: InstallationTask,
+        task: BenchmarkTask,
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
@@ -153,7 +153,7 @@ class OpenHandsInstallationAgent:
             final_response=final_response,
         )
 
-    def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
+    def _build_prompt(self, task: BenchmarkTask, installation_guide: str) -> str:
         template = settings.installation_prompt_path.read_text(encoding="utf-8")
         return template.format(
             task_name=task.name,

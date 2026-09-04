@@ -9,15 +9,14 @@ import structlog
 from installbench.agents.agent_protocol import BenchmarkAgent
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
-from installbench.models.agent_run import AgentRunStatus, CommandExecution
 from installbench.models.benchmark_run import (
     BenchmarkRunResult,
-    InstallationAgentResult,
-    InstallationOutcome,
     RunMetrics,
     RunStatus,
 )
-from installbench.models.installation_task import InstallationTask
+from installbench.models.execution import AgentRunStatus, CommandExecution
+from installbench.models.installation import InstallationAgentResult, InstallationOutcome
+from installbench.models.task import BenchmarkTask
 from installbench.models.validation import ValidationAgentResult
 from installbench.result_writer import JsonResultWriter, ResultWriter
 from installbench.run_layout import allocate_run_layout
@@ -30,7 +29,7 @@ SandboxFactory = Callable[[str], Sandbox]
 
 
 class BenchmarkRunner:
-    """Execute an installation benchmark run and record its evidence."""
+    """Execute a benchmark run and record its installation and validation evidence."""
 
     def __init__(
         self,
@@ -48,7 +47,7 @@ class BenchmarkRunner:
         self.sandbox_factory = sandbox_factory
 
     @staticmethod
-    def _format_documentation(task: InstallationTask) -> str:
+    def _format_documentation(task: BenchmarkTask) -> str:
         sections = [
             f"## Guide: {name}\n\n{content.strip()}"
             for name, content in task.documentation_files.items()

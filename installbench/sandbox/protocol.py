@@ -3,7 +3,7 @@
 from types import TracebackType
 from typing import Protocol, Self
 
-from installbench.models.agent_run import CommandExecution, RunPhase
+from installbench.models.execution import CommandExecution, RunPhase
 
 
 class Sandbox(Protocol):

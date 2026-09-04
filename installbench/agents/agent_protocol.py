@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Protocol, TypeVar
 
-from installbench.models.installation_task import InstallationTask
+from installbench.models.task import BenchmarkTask
 from installbench.sandbox.protocol import Sandbox
 
 AgentResultT = TypeVar("AgentResultT", covariant=True)
@@ -17,7 +17,7 @@ class BenchmarkAgent(Protocol[AgentResultT]):
     def run(
         self,
         *,
-        task: InstallationTask,
+        task: BenchmarkTask,
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,

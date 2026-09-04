@@ -1,4 +1,4 @@
-"""Models shared by installation and validation agent runs."""
+"""Models shared across benchmark execution phases."""
 
 from enum import StrEnum
 from typing import Literal

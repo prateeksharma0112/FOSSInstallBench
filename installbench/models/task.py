@@ -1,4 +1,4 @@
-"""Domain model for source-based installation tasks."""
+"""Domain models for benchmark tasks."""
 
 from pydantic import BaseModel, ConfigDict, Field
 
@@ -26,7 +26,7 @@ class InstallationGuideMetadata(TaskMetadataModel):
     word_count: int = Field(ge=0)
 
 
-class InstallationTask(TaskMetadataModel):
+class BenchmarkTask(TaskMetadataModel):
     """A repository pinned to an immutable revision with supplied setup guides."""
 
     task_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
