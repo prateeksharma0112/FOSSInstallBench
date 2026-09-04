@@ -32,9 +32,9 @@ class JsonResultWriter:
             result.run_number,
         )
         run_dir.mkdir(parents=True, exist_ok=True)
-        result_path = run_dir / "result.json"
-        if result_path.exists():
-            raise FileExistsError(f"Run result already exists: {result_path}")
+        run_path = run_dir / "run.json"
+        if run_path.exists():
+            raise FileExistsError(f"Run result already exists: {run_path}")
 
         result_data = result.model_dump(
             mode="json",
@@ -48,37 +48,55 @@ class JsonResultWriter:
                 "validation_agent_response",
             },
         )
-        self._write_json(result_path, result_data)
-        if result.installation_report is not None:
-            self._write_json(
-                run_dir / "installation_report.json",
-                result.installation_report.model_dump(mode="json"),
-            )
-        if result.validation_report is not None:
-            self._write_json(
-                run_dir / "validation_report.json",
-                result.validation_report.model_dump(mode="json"),
-            )
+        self._write_json(run_path, result_data)
+
         self._write_json(
             run_dir / "commands.json",
             {
                 "command_executions": [
-                    execution.model_dump(mode="json") for execution in result.command_executions
+                    execution.model_dump(mode="json")
+                    for execution in result.command_executions
                 ]
             },
         )
-        self._write_text(run_dir / "installation_prompt.md", result.installation_prompt)
-        self._write_text(
-            run_dir / "installation_agent_response.txt",
-            result.installation_agent_response,
+
+        self._write_agent_artifacts(
+            directory=run_dir / "installation",
+            report=(
+                result.installation_report.model_dump(mode="json")
+                if result.installation_report is not None
+                else None
+            ),
+            prompt=result.installation_prompt,
+            response=result.installation_agent_response,
         )
-        self._write_text(run_dir / "validation_prompt.md", result.validation_prompt)
-        self._write_text(
-            run_dir / "validation_agent_response.txt",
-            result.validation_agent_response,
+        self._write_agent_artifacts(
+            directory=run_dir / "validation",
+            report=(
+                result.validation_report.model_dump(mode="json")
+                if result.validation_report is not None
+                else None
+            ),
+            prompt=result.validation_prompt,
+            response=result.validation_agent_response,
         )
 
         logger.info("benchmark_run_result_saved", path=str(run_dir))
+
+    @classmethod
+    def _write_agent_artifacts(
+        cls,
+        *,
+        directory: Path,
+        report: dict[str, Any] | None,
+        prompt: str,
+        response: str,
+    ) -> None:
+        directory.mkdir(exist_ok=True)
+        if report is not None:
+            cls._write_json(directory / "report.json", report)
+        cls._write_text(directory / "prompt.md", prompt)
+        cls._write_text(directory / "final_response.txt", response)
 
     @staticmethod
     def _write_json(path: Path, data: dict[str, Any]) -> None:
