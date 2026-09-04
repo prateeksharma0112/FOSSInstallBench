@@ -45,6 +45,7 @@ class OpenHandsInstallationAgent:
             model=self.model_name,
             api_key=settings.installation_llm_api_key or None,
             base_url=settings.installation_llm_base_url,
+            reasoning_effort=settings.installation_llm_reasoning_effort,
         )
 
     def run(

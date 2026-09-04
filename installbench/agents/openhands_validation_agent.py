@@ -41,6 +41,7 @@ class OpenHandsValidationAgent:
             model=self.model_name,
             api_key=settings.validation_llm_api_key or None,
             base_url=settings.validation_llm_base_url,
+            reasoning_effort=settings.validation_llm_reasoning_effort,
         )
 
     def run(

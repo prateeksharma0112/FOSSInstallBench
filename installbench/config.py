@@ -70,6 +70,16 @@ class Settings(BaseSettings):
         ),
         description="Optional custom base URL for the installation LLM.",
     )
+    installation_llm_reasoning_effort: Literal[
+        "none", "low", "medium", "high", "xhigh"
+    ] | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "INSTALLATION_LLM_REASONING_EFFORT",
+            "LLM_REASONING_EFFORT",
+        ),
+        description="Optional reasoning effort for the installation LLM.",
+    )
 
     validation_llm_model: str | None = Field(
         default=None,
@@ -94,6 +104,17 @@ class Settings(BaseSettings):
             "VALIDATOR_LLM_BASE_URL",
         ),
         description="Optional custom base URL for the validation LLM.",
+    )
+    validation_llm_reasoning_effort: Literal[
+        "none", "low", "medium", "high", "xhigh"
+    ] | None = Field(
+        default=None,
+        validation_alias=AliasChoices(
+            "VALIDATION_LLM_REASONING_EFFORT",
+            "VALIDATOR_LLM_REASONING_EFFORT",
+            "LLM_REASONING_EFFORT",
+        ),
+        description="Optional reasoning effort for the validation LLM.",
     )
 
 
