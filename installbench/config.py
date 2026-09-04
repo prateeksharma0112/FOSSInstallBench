@@ -21,6 +21,7 @@ class Settings(BaseSettings):
         description="Name shared by all runs in one experimental batch.",
     )
     installation_prompt_path: Path = Path("installbench/prompts/installation_prompt.md")
+    validation_prompt_path: Path = Path("installbench/prompts/validation_prompt.md")
 
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
@@ -39,12 +40,30 @@ class Settings(BaseSettings):
         gt=0,
         description="Maximum number of OpenHands agent iterations in one run.",
     )
+    max_validator_iterations: int = Field(
+        default=25,
+        gt=0,
+        description="Maximum number of OpenHands validator iterations in one run.",
+    )
 
     llm_model: str = Field(description="LLM name in provider/model format.")
     llm_api_key: str = Field(description="API key used by the configured LLM.")
     llm_base_url: str | None = Field(
         default=None,
         description="Optional custom base URL for the configured LLM.",
+    )
+
+    validator_llm_model: str | None = Field(
+        default=None,
+        description="LLM used for independent installation validation.",
+    )
+    validator_llm_api_key: str | None = Field(
+        default=None,
+        description="API key used by the independent validation LLM.",
+    )
+    validator_llm_base_url: str | None = Field(
+        default=None,
+        description="Optional custom base URL for the validation LLM.",
     )
 
 
