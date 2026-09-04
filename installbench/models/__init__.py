@@ -7,8 +7,8 @@ from .execution import AgentRunStatus, CommandExecution
 from .installation import (
     FailureAttribution,
     InstallationAgentResult,
-    InstallationOutcome,
     InstallationReport,
+    ReportedInstallationOutcome,
 )
 from .task import (
     BenchmarkTask,
@@ -16,23 +16,24 @@ from .task import (
     SoftwareMetadata,
 )
 from .validation import (
+    AssessedInstallationOutcome,
     ValidationAgentResult,
     ValidationCheck,
     ValidationCheckStatus,
     ValidationReport,
-    ValidationVerdict,
 )
 
 __all__ = [
     "AgentRunStatus",
+    "AssessedInstallationOutcome",
     "BenchmarkRunResult",
     "BenchmarkTask",
     "CommandExecution",
     "FailureAttribution",
     "InstallationGuideMetadata",
     "InstallationAgentResult",
-    "InstallationOutcome",
     "InstallationReport",
+    "ReportedInstallationOutcome",
     "RunMetrics",
     "RunStatus",
     "SoftwareMetadata",
@@ -40,5 +41,4 @@ __all__ = [
     "ValidationCheck",
     "ValidationCheckStatus",
     "ValidationReport",
-    "ValidationVerdict",
 ]

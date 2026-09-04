@@ -15,7 +15,10 @@ from installbench.models.benchmark_run import (
     RunStatus,
 )
 from installbench.models.execution import AgentRunStatus, CommandExecution
-from installbench.models.installation import InstallationAgentResult, InstallationOutcome
+from installbench.models.installation import (
+    InstallationAgentResult,
+    ReportedInstallationOutcome,
+)
 from installbench.models.task import BenchmarkTask
 from installbench.models.validation import ValidationAgentResult
 from installbench.result_writer import JsonResultWriter, ResultWriter
@@ -211,10 +214,10 @@ class BenchmarkRunner:
             installation_agent_status=(
                 installation_result.status if installation_result else None
             ),
-            installation_agent_outcome=(
-                installation_result.outcome
+            installation_agent_reported_outcome=(
+                installation_result.reported_outcome
                 if installation_result
-                else InstallationOutcome.UNKNOWN
+                else ReportedInstallationOutcome.UNKNOWN
             ),
             installation_report=(
                 installation_result.report if installation_result else None
@@ -222,8 +225,8 @@ class BenchmarkRunner:
             validation_agent_status=(
                 validation_result.status if validation_result else None
             ),
-            validation_verdict=(
-                validation_result.report.verdict
+            validation_agent_assessed_outcome=(
+                validation_result.report.assessed_outcome
                 if validation_result and validation_result.report
                 else None
             ),

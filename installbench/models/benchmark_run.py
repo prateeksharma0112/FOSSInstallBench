@@ -8,10 +8,10 @@ from pydantic import BaseModel, Field
 
 from installbench.models.execution import AgentRunStatus, CommandExecution
 from installbench.models.installation import (
-    InstallationOutcome,
     InstallationReport,
+    ReportedInstallationOutcome,
 )
-from installbench.models.validation import ValidationReport, ValidationVerdict
+from installbench.models.validation import AssessedInstallationOutcome, ValidationReport
 
 
 class RunStatus(StrEnum):
@@ -61,10 +61,12 @@ class BenchmarkRunResult(BaseModel):
     finished_at: datetime
     run_status: RunStatus
     installation_agent_status: AgentRunStatus | None = None
-    installation_agent_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
+    installation_agent_reported_outcome: ReportedInstallationOutcome = (
+        ReportedInstallationOutcome.UNKNOWN
+    )
     installation_report: InstallationReport | None = None
     validation_agent_status: AgentRunStatus | None = None
-    validation_verdict: ValidationVerdict | None = None
+    validation_agent_assessed_outcome: AssessedInstallationOutcome | None = None
     validation_report: ValidationReport | None = None
     metrics: RunMetrics
     command_executions: list[CommandExecution] = Field(default_factory=list)

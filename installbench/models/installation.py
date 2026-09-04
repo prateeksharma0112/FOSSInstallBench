@@ -7,8 +7,8 @@ from pydantic import BaseModel, Field
 from installbench.models.execution import AgentRunStatus, CommandExecution
 
 
-class InstallationOutcome(StrEnum):
-    """Possible outcome of a software installation attempt."""
+class ReportedInstallationOutcome(StrEnum):
+    """Installation outcome reported by the installation agent."""
 
     SUCCESS = "success"
     FAILURE = "failure"
@@ -28,7 +28,7 @@ class FailureAttribution(StrEnum):
 class InstallationReport(BaseModel):
     """Installation agent's structured account of the installation attempt."""
 
-    outcome: InstallationOutcome = Field(
+    reported_outcome: ReportedInstallationOutcome = Field(
         description="Agent-reported installation outcome."
     )
     installation_summary: str = Field(
@@ -40,7 +40,7 @@ class InstallationReport(BaseModel):
     verification: str = Field(
         description="Verification command, exit code, and observed result."
     )
-    outcome_evidence: list[str] = Field(
+    reported_outcome_evidence: list[str] = Field(
         description="Observed command results supporting the reported outcome."
     )
     failure_mode: str | None = Field(
@@ -57,7 +57,7 @@ class InstallationAgentResult(BaseModel):
     """Evidence returned after an installation agent run."""
 
     status: AgentRunStatus
-    outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
+    reported_outcome: ReportedInstallationOutcome = ReportedInstallationOutcome.UNKNOWN
     report: InstallationReport | None = None
     command_executions: list[CommandExecution] = Field(default_factory=list)
     prompt: str = ""

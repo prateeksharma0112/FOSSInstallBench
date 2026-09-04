@@ -37,17 +37,18 @@ def run_task(
     if run_result.run_status is RunStatus.COMPLETED:
         installation_agent_status = run_result.installation_agent_status
         validation_agent_status = run_result.validation_agent_status
-        validation_verdict = run_result.validation_verdict
+        assessed_outcome = run_result.validation_agent_assessed_outcome
         console.print(f"[bold green]Benchmark run {run_result.run_id} completed.[/bold green]")
         console.print(
             "Installation agent: "
             f"{installation_agent_status.value if installation_agent_status else 'not_run'}; "
-            f"outcome: {run_result.installation_agent_outcome.value}."
+            f"reported outcome: {run_result.installation_agent_reported_outcome.value}."
         )
         console.print(
             "Validation agent: "
             f"{validation_agent_status.value if validation_agent_status else 'not_run'}; "
-            f"verdict: {validation_verdict.value if validation_verdict else 'not_available'}."
+            "assessed outcome: "
+            f"{assessed_outcome.value if assessed_outcome else 'not_available'}."
         )
         return
 

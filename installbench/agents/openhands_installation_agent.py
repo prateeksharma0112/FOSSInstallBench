@@ -15,8 +15,8 @@ from installbench.config import settings
 from installbench.models.execution import AgentRunStatus, CommandExecution
 from installbench.models.installation import (
     InstallationAgentResult,
-    InstallationOutcome,
     InstallationReport,
+    ReportedInstallationOutcome,
 )
 from installbench.models.task import BenchmarkTask
 from installbench.sandbox.protocol import Sandbox
@@ -142,10 +142,10 @@ class OpenHandsInstallationAgent:
 
         return InstallationAgentResult(
             status=AgentRunStatus.COMPLETED,
-            outcome=(
-                installation_report.outcome
+            reported_outcome=(
+                installation_report.reported_outcome
                 if installation_report is not None
-                else InstallationOutcome.UNKNOWN
+                else ReportedInstallationOutcome.UNKNOWN
             ),
             report=installation_report,
             command_executions=command_executions,

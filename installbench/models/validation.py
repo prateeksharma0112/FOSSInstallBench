@@ -13,11 +13,11 @@ class ValidationModel(BaseModel):
     model_config = ConfigDict(extra="forbid", str_strip_whitespace=True)
 
 
-class ValidationVerdict(StrEnum):
-    """Independent verdict about the resulting installation state."""
+class AssessedInstallationOutcome(StrEnum):
+    """Installation outcome assessed by the independent validation agent."""
 
-    VERIFIED_SUCCESS = "verified_success"
-    VERIFIED_FAILURE = "verified_failure"
+    SUCCESS = "success"
+    FAILURE = "failure"
     INCONCLUSIVE = "inconclusive"
 
 
@@ -42,8 +42,8 @@ class ValidationCheck(ValidationModel):
 class ValidationReport(ValidationModel):
     """Independent assessment of an installation's resulting state."""
 
-    verdict: ValidationVerdict
-    validation_summary: str = Field(min_length=1)
+    assessed_outcome: AssessedInstallationOutcome
+    assessment_summary: str = Field(min_length=1)
     checks: list[ValidationCheck] = Field(default_factory=list)
     limitations: list[str] = Field(default_factory=list)
 
