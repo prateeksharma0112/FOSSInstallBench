@@ -58,26 +58,28 @@ class JsonResultWriter:
             },
         )
 
-        self._write_agent_artifacts(
-            directory=run_dir / "installation",
-            report=(
-                result.installation_report.model_dump(mode="json")
-                if result.installation_report is not None
-                else None
-            ),
-            prompt=result.installation_prompt,
-            response=result.installation_agent_response,
-        )
-        self._write_agent_artifacts(
-            directory=run_dir / "validation",
-            report=(
-                result.validation_report.model_dump(mode="json")
-                if result.validation_report is not None
-                else None
-            ),
-            prompt=result.validation_prompt,
-            response=result.validation_agent_response,
-        )
+        if result.installation_agent_status is not None:
+            self._write_agent_artifacts(
+                directory=run_dir / "installation",
+                report=(
+                    result.installation_report.model_dump(mode="json")
+                    if result.installation_report is not None
+                    else None
+                ),
+                prompt=result.installation_prompt,
+                response=result.installation_agent_response,
+            )
+        if result.validation_agent_status is not None:
+            self._write_agent_artifacts(
+                directory=run_dir / "validation",
+                report=(
+                    result.validation_report.model_dump(mode="json")
+                    if result.validation_report is not None
+                    else None
+                ),
+                prompt=result.validation_prompt,
+                response=result.validation_agent_response,
+            )
         self._write_json(run_path, result_data)
 
         logger.info("benchmark_run_result_saved", path=str(run_dir))
