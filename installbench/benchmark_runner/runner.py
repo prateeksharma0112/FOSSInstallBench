@@ -10,11 +10,11 @@ from installbench.agents.agent_protocol import BenchmarkAgent
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
 from installbench.models.benchmark_run import (
-    AgentRunResult,
     AgentRunStatus,
     BenchmarkRunResult,
     CommandExecution,
     InstallationOutcome,
+    InstallationAgentResult,
     RunMetrics,
     RunStatus,
 )
@@ -34,7 +34,7 @@ class BenchmarkRunner:
 
     def __init__(
         self,
-        installation_agent: BenchmarkAgent[AgentRunResult],
+        installation_agent: BenchmarkAgent[InstallationAgentResult],
         *,
         task_loader: TaskLoader | None = None,
         result_writer: ResultWriter | None = None,
@@ -72,13 +72,13 @@ class BenchmarkRunner:
         *,
         started_at: float,
         repository_setup_duration: float,
-        agent_run_duration: float,
+        installation_duration: float,
         command_executions: list[CommandExecution],
     ) -> RunMetrics:
         return RunMetrics(
             duration_seconds=time.monotonic() - started_at,
             repository_setup_duration_seconds=repository_setup_duration,
-            agent_run_duration_seconds=agent_run_duration,
+            installation_duration_seconds=installation_duration,
             command_count=len(command_executions),
             repository_setup_command_count=sum(
                 execution.phase == "repository_setup" for execution in command_executions
@@ -108,9 +108,9 @@ class BenchmarkRunner:
         )
 
         repository_setup_duration = 0.0
-        agent_run_duration = 0.0
+        installation_duration = 0.0
         command_executions: list[CommandExecution] = []
-        agent_run_result: AgentRunResult | None = None
+        installation_result: InstallationAgentResult | None = None
         run_status = RunStatus.SYSTEM_ERROR
         error_message: str | None = None
 
@@ -135,25 +135,28 @@ class BenchmarkRunner:
                 else:
                     installation_guide = self._format_documentation(task)
                     phase_started = time.monotonic()
-                    agent_run_result = self.installation_agent.run(
+                    installation_result = self.installation_agent.run(
                         task=task,
                         sandbox=sandbox,
                         installation_guide=installation_guide,
                         run_id=run_id,
                         workspace_dir=run_layout.workspace_dir,
                     )
-                    agent_run_duration = time.monotonic() - phase_started
-                    command_executions.extend(agent_run_result.command_executions)
-                    error_message = agent_run_result.error_message
+                    installation_duration = time.monotonic() - phase_started
+                    command_executions.extend(installation_result.command_executions)
+                    error_message = installation_result.error_message
                     run_status = (
                         RunStatus.COMPLETED
-                        if agent_run_result.agent_run_status is AgentRunStatus.COMPLETED
-                        else RunStatus.AGENT_RUN_FAILED
+                        if installation_result.status is AgentRunStatus.COMPLETED
+                        else RunStatus.INSTALLATION_AGENT_FAILED
                     )
-                    if run_status is RunStatus.AGENT_RUN_FAILED and error_message is None:
+                    if (
+                        run_status is RunStatus.INSTALLATION_AGENT_FAILED
+                        and error_message is None
+                    ):
                         error_message = (
                             "The installation agent stopped with status: "
-                            f"{agent_run_result.agent_run_status.value}."
+                            f"{installation_result.status.value}."
                         )
         except Exception as exc:
             logger.exception(
@@ -177,32 +180,34 @@ class BenchmarkRunner:
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,
-            agent_model=self.installation_agent.model_name,
+            installation_agent_model=self.installation_agent.model_name,
             workspace_path=run_layout.workspace_dir.as_posix(),
             command_timeout_seconds=settings.command_timeout_seconds,
-            max_agent_iterations=settings.max_agent_iterations,
+            max_installation_iterations=settings.max_installation_iterations,
             started_at=started_at_timestamp,
             finished_at=finished_at_timestamp,
             run_status=run_status,
-            agent_run_status=(agent_run_result.agent_run_status if agent_run_result else None),
-            installation_outcome=(
-                agent_run_result.installation_outcome
-                if agent_run_result
+            installation_agent_status=(
+                installation_result.status if installation_result else None
+            ),
+            installation_agent_outcome=(
+                installation_result.outcome
+                if installation_result
                 else InstallationOutcome.UNKNOWN
             ),
             installation_report=(
-                agent_run_result.installation_report if agent_run_result else None
+                installation_result.report if installation_result else None
             ),
             metrics=self._build_metrics(
                 started_at=started_at,
                 repository_setup_duration=repository_setup_duration,
-                agent_run_duration=agent_run_duration,
+                installation_duration=installation_duration,
                 command_executions=command_executions,
             ),
             command_executions=command_executions,
-            installation_prompt=(agent_run_result.installation_prompt if agent_run_result else ""),
-            agent_final_response=(
-                agent_run_result.agent_final_response if agent_run_result else ""
+            installation_prompt=(installation_result.prompt if installation_result else ""),
+            installation_agent_response=(
+                installation_result.final_response if installation_result else ""
             ),
             error_message=error_message,
         )

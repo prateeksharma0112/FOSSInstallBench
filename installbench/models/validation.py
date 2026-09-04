@@ -51,9 +51,9 @@ class ValidationReport(ValidationModel):
 class ValidationAgentResult(ValidationModel):
     """Evidence returned after an independent validation run."""
 
-    agent_run_status: AgentRunStatus
-    validation_report: ValidationReport | None = None
+    status: AgentRunStatus
+    report: ValidationReport | None = None
     command_executions: list[CommandExecution] = Field(default_factory=list)
-    validation_prompt: str = ""
-    agent_final_response: str = ""
+    prompt: str = ""
+    final_response: str = ""
     error_message: str | None = None

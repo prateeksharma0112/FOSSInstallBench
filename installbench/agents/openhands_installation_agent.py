@@ -13,9 +13,9 @@ from openhands.sdk.tool.registry import register_tool
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.benchmark_run import (
-    AgentRunResult,
     AgentRunStatus,
     CommandExecution,
+    InstallationAgentResult,
     InstallationOutcome,
     InstallationReport,
 )
@@ -29,23 +29,23 @@ class OpenHandsInstallationAgent:
     """Runs installation tasks with the OpenHands Software Agent SDK."""
 
     def __init__(self) -> None:
-        if not settings.llm_model:
-            raise ValueError("LLM_MODEL must be configured.")
+        if not settings.installation_llm_model:
+            raise ValueError("INSTALLATION_LLM_MODEL must be configured.")
 
-        self.model_name = settings.llm_model
+        self.model_name = settings.installation_llm_model
 
         logger.info("initialized_openhands_installation_agent", model=self.model_name)
 
-        if not settings.llm_api_key:
+        if not settings.installation_llm_api_key:
             logger.warning(
-                "missing_llm_api_key",
-                message="LLM_API_KEY is empty.",
+                "missing_installation_llm_api_key",
+                message="INSTALLATION_LLM_API_KEY is empty.",
             )
 
         self.llm = LLM(
             model=self.model_name,
-            api_key=settings.llm_api_key or None,
-            base_url=settings.llm_base_url,
+            api_key=settings.installation_llm_api_key or None,
+            base_url=settings.installation_llm_base_url,
         )
 
     def run(
@@ -56,14 +56,14 @@ class OpenHandsInstallationAgent:
         installation_guide: str,
         run_id: str,
         workspace_dir: Path,
-    ) -> AgentRunResult:
+    ) -> InstallationAgentResult:
         logger.info(
             "installation_agent_run_started",
             task_id=task.task_id,
             run_id=run_id,
         )
 
-        persistence_dir = workspace_dir / ".openhands"
+        persistence_dir = workspace_dir / ".openhands-installation"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 
         prompt = self._build_prompt(task, installation_guide)
@@ -75,17 +75,17 @@ class OpenHandsInstallationAgent:
             working_dir=settings.repository_dir,
             phase="installation",
         )[0]
-        register_tool("InstallBenchTerminalTool", terminal_tool)
-        register_tool("InstallBenchFinishTool", FinishTool)
+        register_tool("InstallBenchInstallationTerminalTool", terminal_tool)
+        register_tool("InstallBenchInstallationFinishTool", FinishTool)
 
         conversation: Conversation | None = None
         try:
             agent = Agent(
                 llm=self.llm,
                 tools=[
-                    Tool(name="InstallBenchTerminalTool"),
+                    Tool(name="InstallBenchInstallationTerminalTool"),
                     Tool(
-                        name="InstallBenchFinishTool",
+                        name="InstallBenchInstallationFinishTool",
                         params={"response_schema": InstallationReport},
                     ),
                 ],
@@ -95,7 +95,7 @@ class OpenHandsInstallationAgent:
                 agent=agent,
                 workspace=str(workspace_dir),
                 persistence_dir=str(persistence_dir),
-                max_iteration_per_run=settings.max_agent_iterations,
+                max_iteration_per_run=settings.max_installation_iterations,
                 visualizer=None,
             )
             conversation.send_message(prompt)
@@ -107,12 +107,14 @@ class OpenHandsInstallationAgent:
                 conversation,
             )
             if execution_status != ConversationExecutionStatus.FINISHED:
-                error_message = f"Agent stopped with status: {execution_status.value}"
-                return AgentRunResult(
-                    agent_run_status=AgentRunStatus.STOPPED,
+                error_message = (
+                    f"Installation agent stopped with status: {execution_status.value}"
+                )
+                return InstallationAgentResult(
+                    status=AgentRunStatus.STOPPED,
                     command_executions=command_executions,
-                    installation_prompt=prompt,
-                    agent_final_response=final_response,
+                    prompt=prompt,
+                    final_response=final_response,
                     error_message=error_message,
                 )
         except Exception as exc:
@@ -122,11 +124,11 @@ class OpenHandsInstallationAgent:
                 task_id=task.task_id,
                 error=error_message,
             )
-            return AgentRunResult(
-                agent_run_status=AgentRunStatus.ERROR,
+            return InstallationAgentResult(
+                status=AgentRunStatus.ERROR,
                 command_executions=command_executions,
-                installation_prompt=prompt,
-                agent_final_response=(
+                prompt=prompt,
+                final_response=(
                     self._extract_final_response(conversation) if conversation else ""
                 ),
                 error_message=error_message,
@@ -137,19 +139,19 @@ class OpenHandsInstallationAgent:
                 try:
                     close()
                 except Exception as exc:
-                    logger.warning("conversation_close_failed", error=str(exc))
+                    logger.warning("installation_conversation_close_failed", error=str(exc))
 
-        return AgentRunResult(
-            agent_run_status=AgentRunStatus.COMPLETED,
-            installation_outcome=(
+        return InstallationAgentResult(
+            status=AgentRunStatus.COMPLETED,
+            outcome=(
                 installation_report.outcome
                 if installation_report is not None
                 else InstallationOutcome.UNKNOWN
             ),
-            installation_report=installation_report,
+            report=installation_report,
             command_executions=command_executions,
-            installation_prompt=prompt,
-            agent_final_response=final_response,
+            prompt=prompt,
+            final_response=final_response,
         )
 
     def _build_prompt(self, task: InstallationTask, installation_guide: str) -> str:
@@ -171,7 +173,7 @@ class OpenHandsInstallationAgent:
         try:
             events = list(conversation.state.events)
         except Exception as exc:
-            logger.warning("final_response_events_unavailable", error=str(exc))
+            logger.warning("installation_final_response_events_unavailable", error=str(exc))
             return ""
 
         for event in reversed(events):

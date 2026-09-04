@@ -14,12 +14,12 @@ class RunStatus(StrEnum):
 
     COMPLETED = "completed"
     REPOSITORY_SETUP_FAILED = "repository_setup_failed"
-    AGENT_RUN_FAILED = "agent_run_failed"
+    INSTALLATION_AGENT_FAILED = "installation_agent_failed"
     SYSTEM_ERROR = "system_error"
 
 
 class AgentRunStatus(StrEnum):
-    """How the installation agent run ended."""
+    """How an agent run ended."""
 
     COMPLETED = "completed"
     STOPPED = "stopped"
@@ -27,7 +27,7 @@ class AgentRunStatus(StrEnum):
 
 
 class InstallationOutcome(StrEnum):
-    """Observed outcome of the software installation attempt."""
+    """Possible outcome of a software installation attempt."""
 
     SUCCESS = "success"
     FAILURE = "failure"
@@ -45,7 +45,7 @@ class FailureAttribution(StrEnum):
 
 
 class InstallationReport(BaseModel):
-    """Structured installation assessment reported by the agent."""
+    """Installation agent's structured account of the installation attempt."""
 
     outcome: InstallationOutcome = Field(
         description="Agent-reported installation outcome."
@@ -83,15 +83,15 @@ class CommandExecution(BaseModel):
     timed_out: bool = False
 
 
-class AgentRunResult(BaseModel):
+class InstallationAgentResult(BaseModel):
     """Evidence returned after an installation agent run."""
 
-    agent_run_status: AgentRunStatus
-    installation_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
-    installation_report: InstallationReport | None = None
+    status: AgentRunStatus
+    outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
+    report: InstallationReport | None = None
     command_executions: list[CommandExecution] = Field(default_factory=list)
-    installation_prompt: str = ""
-    agent_final_response: str = ""
+    prompt: str = ""
+    final_response: str = ""
     error_message: str | None = None
 
 
@@ -100,7 +100,7 @@ class RunMetrics(BaseModel):
 
     duration_seconds: float
     repository_setup_duration_seconds: float
-    agent_run_duration_seconds: float
+    installation_duration_seconds: float
     command_count: int
     repository_setup_command_count: int
     installation_command_count: int
@@ -120,18 +120,18 @@ class BenchmarkRunResult(BaseModel):
     container_image: str
     container_engine: Literal["podman", "docker"]
     sandbox_mode: Literal["standard", "dind"]
-    agent_model: str
+    installation_agent_model: str
     workspace_path: str
     command_timeout_seconds: int
-    max_agent_iterations: int
+    max_installation_iterations: int
     started_at: datetime
     finished_at: datetime
     run_status: RunStatus
-    agent_run_status: AgentRunStatus | None = None
-    installation_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
+    installation_agent_status: AgentRunStatus | None = None
+    installation_agent_outcome: InstallationOutcome = InstallationOutcome.UNKNOWN
     installation_report: InstallationReport | None = None
     metrics: RunMetrics
     command_executions: list[CommandExecution] = Field(default_factory=list)
     installation_prompt: str = ""
-    agent_final_response: str = ""
+    installation_agent_response: str = ""
     error_message: str | None = None

@@ -14,7 +14,7 @@ from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.benchmark_run import AgentRunStatus, CommandExecution
 from installbench.models.installation_task import InstallationTask
-from installbench.models.validation_task import ValidationAgentResult, ValidationReport
+from installbench.models.validation import ValidationAgentResult, ValidationReport
 from installbench.sandbox.protocol import Sandbox
 
 logger = structlog.get_logger(__name__)
@@ -24,23 +24,23 @@ class OpenHandsValidationAgent:
     """Independently validate an installation in its existing sandbox."""
 
     def __init__(self) -> None:
-        if not settings.validator_llm_model:
-            raise ValueError("VALIDATOR_LLM_MODEL must be configured.")
+        if not settings.validation_llm_model:
+            raise ValueError("VALIDATION_LLM_MODEL must be configured.")
 
-        self.model_name = settings.validator_llm_model
+        self.model_name = settings.validation_llm_model
 
         logger.info("initialized_openhands_validation_agent", model=self.model_name)
 
-        if not settings.validator_llm_api_key:
+        if not settings.validation_llm_api_key:
             logger.warning(
-                "missing_validator_llm_api_key",
-                message="VALIDATOR_LLM_API_KEY is empty.",
+                "missing_validation_llm_api_key",
+                message="VALIDATION_LLM_API_KEY is empty.",
             )
 
         self.llm = LLM(
             model=self.model_name,
-            api_key=settings.validator_llm_api_key or None,
-            base_url=settings.validator_llm_base_url,
+            api_key=settings.validation_llm_api_key or None,
+            base_url=settings.validation_llm_base_url,
         )
 
     def run(
@@ -89,7 +89,7 @@ class OpenHandsValidationAgent:
                 agent=agent,
                 workspace=str(workspace_dir),
                 persistence_dir=str(persistence_dir),
-                max_iteration_per_run=settings.max_validator_iterations,
+                max_iteration_per_run=settings.max_validation_iterations,
                 visualizer=None,
             )
             conversation.send_message(prompt)
@@ -101,10 +101,10 @@ class OpenHandsValidationAgent:
             if execution_status != ConversationExecutionStatus.FINISHED:
                 error_message = f"Validation agent stopped with status: {execution_status.value}"
                 return ValidationAgentResult(
-                    agent_run_status=AgentRunStatus.STOPPED,
+                    status=AgentRunStatus.STOPPED,
                     command_executions=command_executions,
-                    validation_prompt=prompt,
-                    agent_final_response=final_response,
+                    prompt=prompt,
+                    final_response=final_response,
                     error_message=error_message,
                 )
         except Exception as exc:
@@ -115,10 +115,10 @@ class OpenHandsValidationAgent:
                 error=error_message,
             )
             return ValidationAgentResult(
-                agent_run_status=AgentRunStatus.ERROR,
+                status=AgentRunStatus.ERROR,
                 command_executions=command_executions,
-                validation_prompt=prompt,
-                agent_final_response=(
+                prompt=prompt,
+                final_response=(
                     self._extract_final_response(conversation) if conversation else ""
                 ),
                 error_message=error_message,
@@ -132,11 +132,11 @@ class OpenHandsValidationAgent:
                     logger.warning("validation_conversation_close_failed", error=str(exc))
 
         return ValidationAgentResult(
-            agent_run_status=AgentRunStatus.COMPLETED,
-            validation_report=validation_report,
+            status=AgentRunStatus.COMPLETED,
+            report=validation_report,
             command_executions=command_executions,
-            validation_prompt=prompt,
-            agent_final_response=final_response,
+            prompt=prompt,
+            final_response=final_response,
         )
 
     @staticmethod

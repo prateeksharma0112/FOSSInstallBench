@@ -42,7 +42,7 @@ class JsonResultWriter:
                 "command_executions",
                 "installation_report",
                 "installation_prompt",
-                "agent_final_response",
+                "installation_agent_response",
             },
         )
         self._write_json(result_path, result_data)
@@ -60,7 +60,10 @@ class JsonResultWriter:
             },
         )
         self._write_text(run_dir / "installation_prompt.md", result.installation_prompt)
-        self._write_text(run_dir / "agent_final_response.txt", result.agent_final_response)
+        self._write_text(
+            run_dir / "installation_agent_response.txt",
+            result.installation_agent_response,
+        )
 
         logger.info("benchmark_run_result_saved", path=str(run_dir))
 

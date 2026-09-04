@@ -3,7 +3,7 @@
 from pathlib import Path
 from typing import Literal
 
-from pydantic import Field
+from pydantic import AliasChoices, Field
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
@@ -35,34 +35,64 @@ class Settings(BaseSettings):
         gt=0,
         description="Maximum runtime of one command before it is terminated.",
     )
-    max_agent_iterations: int = Field(
+    max_installation_iterations: int = Field(
         default=50,
         gt=0,
-        description="Maximum number of OpenHands agent iterations in one run.",
+        validation_alias=AliasChoices(
+            "MAX_INSTALLATION_ITERATIONS",
+            "MAX_AGENT_ITERATIONS",
+        ),
+        description="Maximum number of installation-agent iterations in one run.",
     )
-    max_validator_iterations: int = Field(
+    max_validation_iterations: int = Field(
         default=25,
         gt=0,
-        description="Maximum number of OpenHands validator iterations in one run.",
+        validation_alias=AliasChoices(
+            "MAX_VALIDATION_ITERATIONS",
+            "MAX_VALIDATOR_ITERATIONS",
+        ),
+        description="Maximum number of validation-agent iterations in one run.",
     )
 
-    llm_model: str = Field(description="LLM name in provider/model format.")
-    llm_api_key: str = Field(description="API key used by the configured LLM.")
-    llm_base_url: str | None = Field(
+    installation_llm_model: str = Field(
+        validation_alias=AliasChoices("INSTALLATION_LLM_MODEL", "LLM_MODEL"),
+        description="Installation LLM in provider/model format.",
+    )
+    installation_llm_api_key: str = Field(
+        validation_alias=AliasChoices("INSTALLATION_LLM_API_KEY", "LLM_API_KEY"),
+        description="API key used by the installation LLM.",
+    )
+    installation_llm_base_url: str | None = Field(
         default=None,
-        description="Optional custom base URL for the configured LLM.",
+        validation_alias=AliasChoices(
+            "INSTALLATION_LLM_BASE_URL",
+            "LLM_BASE_URL",
+        ),
+        description="Optional custom base URL for the installation LLM.",
     )
 
-    validator_llm_model: str | None = Field(
+    validation_llm_model: str | None = Field(
         default=None,
+        validation_alias=AliasChoices(
+            "VALIDATION_LLM_MODEL",
+            "VALIDATOR_LLM_MODEL",
+        ),
         description="LLM used for independent installation validation.",
     )
-    validator_llm_api_key: str | None = Field(
+    validation_llm_api_key: str | None = Field(
         default=None,
+        validation_alias=AliasChoices(
+            "VALIDATION_LLM_API_KEY",
+            "VALIDATOR_LLM_API_KEY",
+        ),
         description="API key used by the independent validation LLM.",
     )
-    validator_llm_base_url: str | None = Field(
+    validation_llm_base_url: str | None = Field(
         default=None,
+        validation_alias=AliasChoices(
+            "VALIDATION_LLM_BASE_URL",
+            "VALIDATOR_LLM_BASE_URL",
+        ),
         description="Optional custom base URL for the validation LLM.",
     )
 

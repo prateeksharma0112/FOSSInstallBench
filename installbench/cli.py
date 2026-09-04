@@ -30,11 +30,12 @@ def run_task(
         raise typer.Exit(code=1) from exc
 
     if run_result.run_status is RunStatus.COMPLETED:
-        agent_run_status = run_result.agent_run_status
+        installation_agent_status = run_result.installation_agent_status
         console.print(f"[bold green]Benchmark run {run_result.run_id} completed.[/bold green]")
         console.print(
-            f"Agent run: {agent_run_status.value if agent_run_status else 'not_run'}; "
-            f"installation outcome: {run_result.installation_outcome.value}."
+            "Installation agent: "
+            f"{installation_agent_status.value if installation_agent_status else 'not_run'}; "
+            f"outcome: {run_result.installation_agent_outcome.value}."
         )
         return
 
