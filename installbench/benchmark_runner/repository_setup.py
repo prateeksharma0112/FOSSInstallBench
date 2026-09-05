@@ -10,12 +10,12 @@ from installbench.sandbox.protocol import Sandbox
 def prepare_repository(
     task: BenchmarkTask,
     sandbox: Sandbox,
-    repository_dir: str,
+    installation_workspace_dir: str,
 ) -> list[CommandExecution]:
-    """Clone the pinned repository revision and return command evidence."""
+    """Prepare the pinned repository in the shared installation workspace."""
 
     quoted_url = shlex.quote(task.repository_url)
-    quoted_dir = shlex.quote(repository_dir)
+    quoted_dir = shlex.quote(installation_workspace_dir)
     quoted_commit = shlex.quote(task.commit_sha.lower())
     commands = [
         f"git clone --no-checkout --depth 1 {quoted_url} {quoted_dir}",

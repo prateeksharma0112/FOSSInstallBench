@@ -91,8 +91,9 @@ class InstallBenchTerminalTool(ToolDefinition[InstallBenchTerminalAction, Termin
         return [
             cls(
                 description=(
-                    "Execute one non-interactive shell command inside the source "
-                    "repository. The shell runs as root in a fresh container. "
+                    "Execute one non-interactive shell command inside the shared "
+                    "installation workspace. The shell runs as root in the active "
+                    "benchmark container. "
                     f"Every command has a fixed {settings.command_timeout_seconds}-second "
                     "timeout that cannot be overridden."
                 ),

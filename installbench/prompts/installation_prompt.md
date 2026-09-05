@@ -17,7 +17,7 @@ Install the assigned software and report the outcome based on objective evidence
 {installation_guide}
 
 # ENVIRONMENT
-The project repository has already been checked out at the predefined commit SHA for this task and is available in the current working directory.
+The project repository has already been checked out at the predefined commit SHA in the current working directory. This directory is the shared installation workspace; keep additional project repositories and project-local artifacts within it.
 
 # RULES
 * Treat the supplied installation guide as the primary source of installation instructions.

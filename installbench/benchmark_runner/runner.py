@@ -105,7 +105,7 @@ class BenchmarkRunner:
             experiment_id=settings.experiment_id,
             task_id=task.task_id,
             results_dir=settings.results_dir,
-            workspace_dir=settings.workspace_dir,
+            agent_run_data_dir=settings.agent_run_data_dir,
         )
         run_id = run_layout.run_id
 
@@ -132,7 +132,7 @@ class BenchmarkRunner:
                 setup_executions = prepare_repository(
                     task,
                     sandbox,
-                    settings.repository_dir,
+                    settings.installation_workspace_dir,
                 )
                 repository_setup_duration = time.monotonic() - phase_started
                 command_executions.extend(setup_executions)
@@ -158,7 +158,7 @@ class BenchmarkRunner:
                         sandbox=sandbox,
                         installation_guide=installation_guide,
                         run_id=run_id,
-                        workspace_dir=run_layout.workspace_dir,
+                        agent_run_data_dir=run_layout.agent_run_data_dir,
                     )
                     installation_duration = time.monotonic() - phase_started
                     command_executions.extend(installation_result.command_executions)
@@ -187,7 +187,7 @@ class BenchmarkRunner:
                             sandbox=sandbox,
                             installation_guide=installation_guide,
                             run_id=run_id,
-                            workspace_dir=run_layout.workspace_dir,
+                            agent_run_data_dir=run_layout.agent_run_data_dir,
                         )
                         validation_duration = time.monotonic() - phase_started
                         command_executions.extend(validation_result.command_executions)
@@ -230,7 +230,7 @@ class BenchmarkRunner:
             sandbox_mode=settings.sandbox_mode,
             installation_agent_model=self.installation_agent.model_name,
             validation_agent_model=self.validation_agent.model_name,
-            workspace_path=run_layout.workspace_dir.as_posix(),
+            agent_run_data_path=run_layout.agent_run_data_dir.as_posix(),
             command_timeout_seconds=settings.command_timeout_seconds,
             max_installation_iterations=settings.max_installation_iterations,
             max_validation_iterations=settings.max_validation_iterations,

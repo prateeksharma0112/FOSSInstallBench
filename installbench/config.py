@@ -14,7 +14,7 @@ class Settings(BaseSettings):
 
     tasks_dir: Path = Path("tasks")
     results_dir: Path = Path("results")
-    workspace_dir: Path = Path("workspace")
+    agent_run_data_dir: Path = Path("workspace")
     experiment_id: str = Field(
         default="default-experiment",
         pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$",
@@ -26,9 +26,12 @@ class Settings(BaseSettings):
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
     sandbox_mode: Literal["standard", "dind"] = "standard"
-    repository_dir: str = Field(
-        default="/workspace/repository",
-        description="Repository location inside the benchmark container.",
+    installation_workspace_dir: str = Field(
+        default="/workspace",
+        description=(
+            "Shared container directory used for repository setup, installation, "
+            "and validation."
+        ),
     )
     command_timeout_seconds: int = Field(
         default=300,

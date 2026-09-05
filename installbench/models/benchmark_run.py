@@ -53,7 +53,7 @@ class BenchmarkRunResult(BaseModel):
     sandbox_mode: Literal["standard", "dind"]
     installation_agent_model: str
     validation_agent_model: str
-    workspace_path: str
+    agent_run_data_path: str
     command_timeout_seconds: int
     max_installation_iterations: int
     max_validation_iterations: int

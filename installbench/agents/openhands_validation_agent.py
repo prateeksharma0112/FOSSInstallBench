@@ -51,7 +51,7 @@ class OpenHandsValidationAgent:
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
-        workspace_dir: Path,
+        agent_run_data_dir: Path,
     ) -> ValidationAgentResult:
         logger.info(
             "validation_agent_run_started",
@@ -59,7 +59,7 @@ class OpenHandsValidationAgent:
             run_id=run_id,
         )
 
-        persistence_dir = workspace_dir / ".openhands-validation"
+        persistence_dir = agent_run_data_dir / ".openhands-validation"
         persistence_dir.mkdir(parents=True, exist_ok=True)
         prompt = self._build_prompt(task, installation_guide)
 
@@ -67,7 +67,7 @@ class OpenHandsValidationAgent:
         terminal_tool = InstallBenchTerminalTool.create(
             sandbox=sandbox,
             command_executions=command_executions,
-            working_dir=settings.repository_dir,
+            working_dir=settings.installation_workspace_dir,
             phase="validation",
         )[0]
         register_tool("InstallBenchValidationTerminalTool", terminal_tool)
@@ -88,7 +88,7 @@ class OpenHandsValidationAgent:
             )
             conversation = Conversation(
                 agent=agent,
-                workspace=str(workspace_dir),
+                workspace=str(agent_run_data_dir),
                 persistence_dir=str(persistence_dir),
                 max_iteration_per_run=settings.max_validation_iterations,
                 visualizer=None,

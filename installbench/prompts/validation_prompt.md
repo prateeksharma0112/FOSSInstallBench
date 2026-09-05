@@ -18,6 +18,8 @@ Determine whether the resulting environment contains an operational installation
 
 # PROCEDURE
 
+The current working directory is the same installation workspace used for the installation attempt. Inspect the complete resulting state within this workspace.
+
 1. Use the guide to identify the expected executable, startup command, local interface, port, or other observable success condition.
 2. Inspect the current repository and environment before running checks.
 3. Select the smallest set of checks that can provide decisive evidence.

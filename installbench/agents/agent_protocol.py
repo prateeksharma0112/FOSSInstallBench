@@ -21,5 +21,5 @@ class BenchmarkAgent(Protocol[AgentResultT]):
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
-        workspace_dir: Path,
+        agent_run_data_dir: Path,
     ) -> AgentResultT: ...

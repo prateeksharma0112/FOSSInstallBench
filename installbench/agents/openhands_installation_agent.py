@@ -55,7 +55,7 @@ class OpenHandsInstallationAgent:
         sandbox: Sandbox,
         installation_guide: str,
         run_id: str,
-        workspace_dir: Path,
+        agent_run_data_dir: Path,
     ) -> InstallationAgentResult:
         logger.info(
             "installation_agent_run_started",
@@ -63,7 +63,7 @@ class OpenHandsInstallationAgent:
             run_id=run_id,
         )
 
-        persistence_dir = workspace_dir / ".openhands-installation"
+        persistence_dir = agent_run_data_dir / ".openhands-installation"
         persistence_dir.mkdir(parents=True, exist_ok=True)
 
         prompt = self._build_prompt(task, installation_guide)
@@ -72,7 +72,7 @@ class OpenHandsInstallationAgent:
         terminal_tool = InstallBenchTerminalTool.create(
             sandbox=sandbox,
             command_executions=command_executions,
-            working_dir=settings.repository_dir,
+            working_dir=settings.installation_workspace_dir,
             phase="installation",
         )[0]
         register_tool("InstallBenchInstallationTerminalTool", terminal_tool)
@@ -93,7 +93,7 @@ class OpenHandsInstallationAgent:
             )
             conversation = Conversation(
                 agent=agent,
-                workspace=str(workspace_dir),
+                workspace=str(agent_run_data_dir),
                 persistence_dir=str(persistence_dir),
                 max_iteration_per_run=settings.max_installation_iterations,
                 visualizer=None,
