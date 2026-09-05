@@ -12,17 +12,18 @@ class Settings(BaseSettings):
 
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
+    # Run inputs, outputs, and identity
     tasks_dir: Path = Path("tasks")
     results_dir: Path = Path("results")
     agent_run_data_dir: Path = Path("workspace")
     experiment_id: str = Field(
-        default="default-experiment",
         pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$",
         description="Name shared by all runs in one experimental batch.",
     )
     installation_prompt_path: Path = Path("installbench/prompts/installation_prompt.md")
     validation_prompt_path: Path = Path("installbench/prompts/validation_prompt.md")
 
+    # Sandbox and execution limits
     default_container_image: str = "ubuntu:22.04"
     container_engine: Literal["podman", "docker"] = "podman"
     sandbox_mode: Literal["standard", "dind"] = "standard"
@@ -49,6 +50,7 @@ class Settings(BaseSettings):
         description="Maximum number of validation-agent iterations in one run.",
     )
 
+    # Installation agent model
     installation_llm_model: str = Field(
         description="Installation LLM in provider/model format.",
     )
@@ -60,15 +62,15 @@ class Settings(BaseSettings):
         default=None,
         description="Optional custom base URL for the installation LLM.",
     )
-    installation_llm_reasoning_effort: Literal[
-        "none", "low", "medium", "high", "xhigh"
-    ] | None = Field(
+    installation_llm_reasoning_effort: (
+        Literal["none", "low", "medium", "high", "xhigh"] | None
+    ) = Field(
         default=None,
         description="Optional reasoning effort for the installation LLM.",
     )
 
-    validation_llm_model: str | None = Field(
-        default=None,
+    # Validation agent model
+    validation_llm_model: str = Field(
         description="LLM used for independent installation validation.",
     )
     validation_llm_api_key: str | None = Field(
@@ -79,9 +81,9 @@ class Settings(BaseSettings):
         default=None,
         description="Optional custom base URL for the validation LLM.",
     )
-    validation_llm_reasoning_effort: Literal[
-        "none", "low", "medium", "high", "xhigh"
-    ] | None = Field(
+    validation_llm_reasoning_effort: (
+        Literal["none", "low", "medium", "high", "xhigh"] | None
+    ) = Field(
         default=None,
         description="Optional reasoning effort for the validation LLM.",
     )
