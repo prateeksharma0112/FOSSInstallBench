@@ -35,17 +35,17 @@ class Settings(BaseSettings):
         ),
     )
     command_timeout_seconds: int = Field(
-        default=300,
+        default=600,
         gt=0,
         description="Maximum runtime of one command before it is terminated.",
     )
     max_installation_iterations: int = Field(
-        default=50,
+        default=300,
         gt=0,
         description="Maximum number of installation-agent iterations in one run.",
     )
     max_validation_iterations: int = Field(
-        default=25,
+        default=200,
         gt=0,
         description="Maximum number of validation-agent iterations in one run.",
     )
