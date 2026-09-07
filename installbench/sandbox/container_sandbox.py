@@ -33,6 +33,8 @@ class ContainerSandbox:
             self.engine,
             "run",
             "--detach",
+            "--env",
+            "DEBIAN_FRONTEND=noninteractive",
             "--label",
             "framework=installbench",
         ]
