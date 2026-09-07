@@ -10,6 +10,7 @@ from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.builtins.finish import FinishAction, FinishTool
 from openhands.sdk.tool.registry import register_tool
 
+from installbench.agents.llm_retry_logging import create_retry_listener
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.execution import AgentRunStatus, CommandExecution
@@ -45,6 +46,7 @@ class OpenHandsInstallationAgent:
             api_key=settings.installation_llm_api_key or None,
             base_url=settings.installation_llm_base_url,
             reasoning_effort=settings.installation_llm_reasoning_effort,
+            retry_listener=create_retry_listener("installation"),
         )
 
     def run(

@@ -10,6 +10,7 @@ from openhands.sdk.conversation.state import ConversationExecutionStatus
 from openhands.sdk.tool.builtins.finish import FinishAction, FinishTool
 from openhands.sdk.tool.registry import register_tool
 
+from installbench.agents.llm_retry_logging import create_retry_listener
 from installbench.agents.openhands_terminal_tool import InstallBenchTerminalTool
 from installbench.config import settings
 from installbench.models.execution import AgentRunStatus, CommandExecution
@@ -42,6 +43,7 @@ class OpenHandsValidationAgent:
             api_key=settings.validation_llm_api_key or None,
             base_url=settings.validation_llm_base_url,
             reasoning_effort=settings.validation_llm_reasoning_effort,
+            retry_listener=create_retry_listener("validation"),
         )
 
     def run(
