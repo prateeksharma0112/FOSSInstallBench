@@ -6,7 +6,7 @@ from datetime import datetime
 
 import structlog
 
-from installbench.agents.agent_protocol import BenchmarkAgent, ValidationAgent
+from installbench.agents.agent_protocol import InstallationAgent, ValidationAgent
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
 from installbench.models.benchmark_run import (
@@ -36,7 +36,7 @@ class BenchmarkRunner:
 
     def __init__(
         self,
-        installation_agent: BenchmarkAgent[InstallationAgentResult],
+        installation_agent: InstallationAgent,
         validation_agent: ValidationAgent,
         *,
         task_loader: TaskLoader | None = None,
