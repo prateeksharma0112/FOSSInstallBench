@@ -59,16 +59,22 @@ Select exactly one primary attribution from the following categories:
 
 Select an attribution based on observed evidence rather than speculation.
 
+## Installation summary
+
+Describe in Markdown what was done during installation and the resulting state: the method used, relevant absolute paths and working directories, actions performed, known startup commands or access points, and any incomplete work or unknown state. Include the execution context needed to interpret paths and commands, such as an application container or virtual environment. Distinguish the final method from abandoned attempts where applicable.
+
+Provide factual context for independent inspection, without outcome judgments or recommendations.
+
 # FINAL OUTPUT
 
 Return the final installation report using the required structured output fields.
 
 - `reported_outcome`: Report `success` or `failure` according to the criteria defined above.
-- `installation_summary`: Briefly summarize the installation attempt and what was completed.
+- `installation_summary`: Describe complete summary of the installation attempt as defined above.
 - `additional_actions`: List installation or configuration actions performed that were not explicitly stated in the supplied installation guide. Return an empty list if none were performed.
 - `verification`: Report the verification method used and the observed result. Include the command and exit code where applicable. If verification was not performed, state this and provide the reason.
 - `reported_outcome_evidence`: Record the observable command results or execution evidence that directly support the reported outcome.
 - `failure_mode`: For a failed attempt, provide a concise, evidence-based description of how the installation failed. For a successful attempt, return `null`.
 - `failure_attribution`: For a failed attempt, select exactly one predefined failure-attribution category. For a successful attempt, return `null`.
 
-Base the reported outcome only on evidence observed during the installation attempt
+Base the reported outcome only on evidence observed during the installation attempt.

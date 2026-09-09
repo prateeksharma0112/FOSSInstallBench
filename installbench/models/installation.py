@@ -32,7 +32,7 @@ class InstallationReport(BaseModel):
         description="Agent-reported installation outcome."
     )
     installation_summary: str = Field(
-        description="Brief account of what was completed during installation."
+        description="Summary of the installation attempt, including all relevant details.",
     )
     additional_actions: list[str] = Field(
         description="Actions taken that were not stated in the installation guide."

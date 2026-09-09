@@ -21,31 +21,20 @@ class AssessedInstallationOutcome(StrEnum):
     INCONCLUSIVE = "inconclusive"
 
 
-class ValidationCheckStatus(StrEnum):
-    """Observed result of one validation check."""
-
-    PASS = "pass"
-    FAIL = "fail"
-    INCONCLUSIVE = "inconclusive"
-
-
-class ValidationCheck(ValidationModel):
-    """One command-backed check performed by the validator."""
-
-    purpose: str = Field(min_length=1)
-    command: str = Field(min_length=1)
-    exit_code: int
-    status: ValidationCheckStatus
-    observation: str = Field(min_length=1)
-
-
 class ValidationReport(ValidationModel):
     """Independent assessment of an installation's resulting state."""
 
-    assessed_outcome: AssessedInstallationOutcome
-    assessment_summary: str = Field(min_length=1)
-    checks: list[ValidationCheck] = Field(min_length=1)
-    limitations: list[str] = Field(default_factory=list)
+    assessed_outcome: AssessedInstallationOutcome = Field(
+        description="Independently assessed installation outcome."
+    )
+    outcome_evidence: list[str] = Field(
+        min_length=1,
+        description="Observed command results supporting the assessed outcome.",
+    )
+    assessment_summary: str = Field(
+        min_length=1,
+        description="Validation actions, findings, assessment rationale, and limitations.",
+    )
 
 
 class ValidationAgentResult(ValidationModel):

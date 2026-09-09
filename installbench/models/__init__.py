@@ -18,8 +18,6 @@ from .task import (
 from .validation import (
     AssessedInstallationOutcome,
     ValidationAgentResult,
-    ValidationCheck,
-    ValidationCheckStatus,
     ValidationReport,
 )
 
@@ -38,7 +36,5 @@ __all__ = [
     "RunStatus",
     "SoftwareMetadata",
     "ValidationAgentResult",
-    "ValidationCheck",
-    "ValidationCheckStatus",
     "ValidationReport",
 ]

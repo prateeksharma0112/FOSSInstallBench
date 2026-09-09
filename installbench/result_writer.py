@@ -69,6 +69,11 @@ class JsonResultWriter:
                 prompt=result.installation_prompt,
                 response=result.installation_agent_response,
             )
+            if result.installation_report is not None:
+                self._write_text(
+                    run_dir / "installation" / "installation_summary.md",
+                    result.installation_report.installation_summary,
+                )
         if result.validation_agent_status is not None:
             self._write_agent_artifacts(
                 directory=run_dir / "validation",

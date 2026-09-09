@@ -52,6 +52,7 @@ class OpenHandsValidationAgent:
         task: BenchmarkTask,
         sandbox: Sandbox,
         installation_guide: str,
+        installation_summary: str,
         run_id: str,
         agent_run_data_dir: Path,
     ) -> ValidationAgentResult:
@@ -63,7 +64,7 @@ class OpenHandsValidationAgent:
 
         persistence_dir = agent_run_data_dir / ".openhands-validation"
         persistence_dir.mkdir(parents=True, exist_ok=True)
-        prompt = self._build_prompt(task, installation_guide)
+        prompt = self._build_prompt(task, installation_guide, installation_summary)
 
         command_executions: list[CommandExecution] = []
         terminal_tool = InstallBenchTerminalTool.create(
@@ -151,12 +152,14 @@ class OpenHandsValidationAgent:
         )
 
     @staticmethod
-    def _build_prompt(task: BenchmarkTask, installation_guide: str) -> str:
+    def _build_prompt(task: BenchmarkTask, installation_guide: str, installation_summary: str) -> str:
         template = settings.validation_prompt_path.read_text(encoding="utf-8")
         return template.format(
             task_name=task.name,
             description=task.description,
             installation_guide=installation_guide,
+            installation_summary=installation_summary,
+            workspace_dir=settings.installation_workspace_dir,
         )
 
     @staticmethod
