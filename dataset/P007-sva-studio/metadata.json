@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P007",
+  "project": {
+    "opencode_id": "10719",
+    "name": "SVA Studio",
+    "description": "SVA Studio is a modular open-source platform for municipal content management, user management, app design, modules and interfaces.",
+    "catalogue_url": "https://opencode.de/de/software/sva-studio-10719",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/bad-belzig/sva-studio/sva-studio",
+    "commit_sha": "6394d99a129a3429ae15ede67ae843647cf9b831",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/bad-belzig/sva-studio/sva-studio/-/blob/6394d99a129a3429ae15ede67ae843647cf9b831/docs/development/runtime-profile-betrieb.md",
+    "source": "Repository Installation Guide",
+    "language": "German",
+    "word_count": 3358
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P001",
+  "project": {
+    "opencode_id": "9857",
+    "name": "Smart City Hub",
+    "description": "Open-source platform for data management, app hosting and identity management for municipalities and regions.",
+    "catalogue_url": "https://opencode.de/de/software/smart-city-hub-9857",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/wuerzburg/smart-city-hub",
+    "commit_sha": "7b1730e51e1b7d44a10fc753d0adc8d079eb44dd",
+    "license": "MIT"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/wuerzburg/smart-city-hub/-/blob/7b1730e51e1b7d44a10fc753d0adc8d079eb44dd/README.md#quickstart",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 52
+  }
+}

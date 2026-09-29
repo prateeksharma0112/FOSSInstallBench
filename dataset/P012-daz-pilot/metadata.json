@@ -1,0 +1,29 @@
+{
+  "dataset_id": "P012",
+  "project": {
+    "opencode_id": "7690",
+    "name": "DaZ-Pilot",
+    "description": "Digital language co-pilot for inclusive vocational school teaching: Learn specialist vocabulary via image recognition, pronunciation and quizzes.",
+    "catalogue_url": "https://opencode.de/de/software/da-z-pilot-7690",
+    "type": "Application",
+    "platforms": [
+      "android",
+      "ios",
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/daz-pilot",
+    "commit_sha": "ba32aab7cd2282d9a5e2c4b1845d014c8c6800b9",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/daz-pilot/-/blob/ba32aab7cd2282d9a5e2c4b1845d014c8c6800b9/INSTALLATION.md",
+    "source": "Repository documentation",
+    "language": "German",
+    "word_count": 1166
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P006",
+  "project": {
+    "opencode_id": "12530",
+    "name": "Qisutu",
+    "description": "Open-source service desk for ticket management, customer portal, automation, knowledge base, CMDB and REST API.",
+    "catalogue_url": "https://opencode.de/de/software/qisutu-12530",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/qisutu/qisutu",
+    "commit_sha": "9df263585032413c785e1ce78426e929bbe19424",
+    "license": "AGPL-3.0-or-later"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/qisutu/qisutu/-/blob/9df263585032413c785e1ce78426e929bbe19424/INSTALL.md",
+    "source": "Repository Installation Guide",
+    "language": "German",
+    "word_count": 2253
+  }
+}

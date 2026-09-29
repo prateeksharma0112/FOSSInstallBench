@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P015",
+  "project": {
+    "opencode_id": "10117",
+    "name": "SPARK Workflow",
+    "description": "AI assistance solution for complex planning and approval processes in public administration",
+    "catalogue_url": "https://opencode.de/de/software/spark-workflow-10117",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-workflow",
+    "commit_sha": "0cd030a7dfb56fab01268c405a1e0d28d7247733",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-workflow/-/blob/0cd030a7dfb56fab01268c405a1e0d28d7247733/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 918
+  }
+}

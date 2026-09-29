@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P016",
+  "project": {
+    "opencode_id": "7647",
+    "name": "samarbeid",
+    "description": "A collaboration hub for all tasks, processes, data, documents, and chats within an organization.",
+    "catalogue_url": "https://opencode.de/de/software/samarbeid-7647",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/samarbeid/samarbeid",
+    "commit_sha": "25cce0af912bb5b99552fa4414764e14f53305ae",
+    "license": "MIT"
+  },
+  "installation": {
+    "complexity": "Medium"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/samarbeid/samarbeid/-/blob/25cce0af912bb5b99552fa4414764e14f53305ae/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 47
+  }
+}

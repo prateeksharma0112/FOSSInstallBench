@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P017",
+  "project": {
+    "opencode_id": "12600",
+    "name": "open_taki",
+    "description": "AI-powered document analysis as a drop-in replacement for Apache Tika: OCR, summarization, classification and transcription on your own infrastructure.",
+    "catalogue_url": "https://opencode.de/de/software/open-taki-12600",
+    "type": "Application",
+    "platforms": [
+      "linux"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/kosmos/open_taki",
+    "commit_sha": "ba6891a9ac6bc9f7e044ea63c2600228a4dffe98",
+    "license": "AGPL-3.0-or-later"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/kosmos/open_taki/-/blob/ba6891a9ac6bc9f7e044ea63c2600228a4dffe98/DEPLOYMENT.md",
+    "source": "Repository deployment guide",
+    "language": "English",
+    "word_count": 630
+  }
+}

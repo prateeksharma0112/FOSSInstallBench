@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P018",
+  "project": {
+    "opencode_id": "159",
+    "name": "ozgxplanung",
+    "description": "The application serves to map urban planning and landscape design based on the XPlanung standard.",
+    "catalogue_url": "https://opencode.de/de/software/ozgxplanung-159",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/diplanung/ozgxplanung",
+    "commit_sha": "239d434c4b6596572aeeb60330a76bd0b3d88fba",
+    "license": "AGPL-3.0"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/diplanung/ozgxplanung/-/blob/239d434c4b6596572aeeb60330a76bd0b3d88fba/xplan-documentation/xplan-betriebshandbuch/src/main/asciidoc/installation/main.adoc",
+    "source": "Repository documentation",
+    "language": "German",
+    "word_count": 3389
+  }
+}

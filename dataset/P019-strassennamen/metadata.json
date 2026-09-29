@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P019",
+  "project": {
+    "opencode_id": "8356",
+    "name": "Straßennamen",
+    "description": "Web application providing an overview of streets, focusing on their names and renamings, as well as related municipal processes.",
+    "catalogue_url": "https://opencode.de/de/software/strassennamen-8356",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen",
+    "commit_sha": "b1eae252f8ab54c59cda7c3ac10f440ecca46906",
+    "license": "AFL-2.0"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen/-/blob/b1eae252f8ab54c59cda7c3ac10f440ecca46906/README.md",
+    "source": "Repository README",
+    "language": "German",
+    "word_count": 555
+  }
+}
