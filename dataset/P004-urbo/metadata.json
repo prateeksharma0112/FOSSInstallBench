@@ -2,9 +2,9 @@
   "dataset_id": "P004",
   "project": {
     "opencode_id": "11309",
-    "name": "SoestApp",
-    "description": "The SoestApp is an open source city app that retrieves services and information about the city of Soest and makes them available",
-    "catalogue_url": "https://opencode.de/de/software/soest-app-11309",
+    "name": "URBO",
+    "description": "Urbo is an open source city app platform that aggregates services and information from various sources for citizens.",
+    "catalogue_url": "https://opencode.de/de/software/urbo-11309",
     "type": "Application",
     "platforms": [
       "ios",
