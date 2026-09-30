@@ -1,0 +1,25 @@
+{
+  "dataset_id": "P030",
+  "project": {
+    "opencode_id": "12861",
+    "name": "SPARK Workflow",
+    "description": "AI assistance solution for complex planning and approval processes in public administration",
+    "catalogue_url": "https://opencode.de/de/software/spark-workflow-12861",
+    "type": "Application",
+    "platforms": []
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/oc000167773669/spark-workflow-fork",
+    "commit_sha": "",
+    "license": ""
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/oc000167773669/spark-workflow-fork-deletion_scheduled-12861/-/blob/main/README.md",
+    "source": "",
+    "language": "English",
+    "word_count": null
+  }
+}

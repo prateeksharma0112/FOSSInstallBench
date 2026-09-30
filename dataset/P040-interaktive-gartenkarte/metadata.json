@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P040",
+  "project": {
+    "opencode_id": "10037",
+    "name": "Interaktive Gartenkarte",
+    "description": "Interactive web application for visualizing live sensor data (LoRaWAN) in the Ochsenfurt climate garden on a graphic map.",
+    "catalogue_url": "https://opencode.de/de/software/interaktive-gartenkarte-10037",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/wuerzburg/heimatforum/mitmachgarten",
+    "commit_sha": "7edb795d5724ce47959b6132ec697e2270480e7b",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/wuerzburg/heimatforum/mitmachgarten/-/blob/7edb795d5724ce47959b6132ec697e2270480e7b/INSTALL.md",
+    "source": "Repository documentation",
+    "language": "German",
+    "word_count": 306
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P034",
+  "project": {
+    "opencode_id": "10273",
+    "name": "Mitmachportal Würzburg",
+    "description": "Digital participation platform of the city and district of Würzburg for participatory budgeting, proposals and other participation formats.",
+    "catalogue_url": "https://opencode.de/de/software/mitmachportal-wurzburg-10273",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/wuerzburg/mitmachportal/mitmachportal",
+    "commit_sha": "5c3c7e15b27b371387054f5000dbeec64a16632a",
+    "license": "AGPL-3.0"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/wuerzburg/mitmachportal/mitmachportal/-/blob/5c3c7e15b27b371387054f5000dbeec64a16632a/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 939
+  }
+}

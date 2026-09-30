@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P024",
+  "project": {
+    "opencode_id": "3166",
+    "name": "Zammad",
+    "description": "Zammad is a web-based, open-source helpdesk/customer support system.",
+    "catalogue_url": "https://opencode.de/de/software/zammad-3166",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/zammad/zammad",
+    "commit_sha": "154eb34c45907f964eb6194aba61775caa070635",
+    "license": "AGPL-3.0-only"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/zammad/zammad/-/blob/154eb34c45907f964eb6194aba61775caa070635/doc/developer_manual/development_environment/getting-started.md",
+    "source": "Repository documentation",
+    "language": "English",
+    "word_count": 193
+  }
+}
