@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P044",
+  "project": {
+    "opencode_id": "2546",
+    "name": "IT-Fachplanung",
+    "description": "More efficient IT departmental planning for the highest state authorities and their business units.",
+    "catalogue_url": "https://opencode.de/de/software/it-fachplanung-2546",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung",
+    "commit_sha": "786839b35393c508cf73e75e6424d9dbb2fe221f",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung/-/blob/786839b35393c508cf73e75e6424d9dbb2fe221f/README.md",
+    "source": "Repository README",
+    "language": "German",
+    "word_count": 347
+  }
+}

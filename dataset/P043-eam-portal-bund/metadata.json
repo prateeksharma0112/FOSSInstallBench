@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P043",
+  "project": {
+    "opencode_id": "9575",
+    "name": "EAM-Portal Bund",
+    "description": "Central platform for enterprise architecture management in public administration.",
+    "catalogue_url": "https://opencode.de/de/software/eam-portal-bund-9575",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/egovlab/eam-portal",
+    "commit_sha": "38e7f2d5f88686e9e292f4d67ea0b570e19886e2",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "Low"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/egovlab/eam-portal/-/blob/38e7f2d5f88686e9e292f4d67ea0b570e19886e2/README.md",
+    "source": "Repository README",
+    "language": "German",
+    "word_count": 27
+  }
+}
