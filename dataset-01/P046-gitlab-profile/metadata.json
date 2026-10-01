@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P046",
+  "project": {
+    "opencode_id": "7927",
+    "name": "gitlab-profile",
+    "description": "Web-based application for the collection, management and evaluation of energy data from public properties.",
+    "catalogue_url": "https://opencode.de/de/software/gitlab-profile-7927",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/kommunalenergie/gitlab-profile",
+    "commit_sha": "6f9c4eae322987ca1d99e53931d3663eedc5208c",
+    "license": "MIT"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/kommunalenergie/gitlab-profile/-/blob/6f9c4eae322987ca1d99e53931d3663eedc5208c/SETUP.md",
+    "source": "Repository documentation",
+    "language": "German",
+    "word_count": 357
+  }
+}

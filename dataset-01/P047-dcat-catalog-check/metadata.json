@@ -1,0 +1,28 @@
+{
+  "dataset_id": "P047",
+  "project": {
+    "opencode_id": "4123",
+    "name": "DCAT Catalog Check",
+    "description": "Checking links and formats in a DCAT catalog.",
+    "catalogue_url": "https://opencode.de/de/software/dcat-catalog-check-4123",
+    "type": "Application",
+    "platforms": [
+      "linux",
+      "windows"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check",
+    "commit_sha": "44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "Low"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check/-/blob/44583b12709bbb64ef18ec470e8a13b53fb4abe9/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 605
+  }
+}

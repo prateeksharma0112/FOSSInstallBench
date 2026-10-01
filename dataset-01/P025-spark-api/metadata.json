@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P025",
+  "project": {
+    "opencode_id": "11326",
+    "name": "SPARK API",
+    "description": "Modular AI toolkit for legally compliant and transparent end-to-end support of all planning and approval processes",
+    "catalogue_url": "https://opencode.de/de/software/spark-api-11326",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-api",
+    "commit_sha": "520d93f96241be2de7ea025b4d2325ded86389d8",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-api/-/blob/520d93f96241be2de7ea025b4d2325ded86389d8/DEPLOYMENT.md?plain=0",
+    "source": "Repository deployment guide",
+    "language": "English",
+    "word_count": 554
+  }
+}

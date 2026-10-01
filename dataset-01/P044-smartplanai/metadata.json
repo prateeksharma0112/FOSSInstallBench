@@ -1,0 +1,29 @@
+{
+  "dataset_id": "P044",
+  "project": {
+    "opencode_id": "10162",
+    "name": "SmartPlanAI",
+    "description": "AI-supported application for the digitization of building plans and conversion to the XPlan standard (XPlan.gml).",
+    "catalogue_url": "https://opencode.de/de/software/smart-plan-ai-10162",
+    "type": "Application",
+    "platforms": [
+      "windows",
+      "linux",
+      "mac"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung",
+    "commit_sha": "1d70807d48a8fae19711b10422c3417ab5d05d0f",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "Low"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung/-/blob/1d70807d48a8fae19711b10422c3417ab5d05d0f/README.md",
+    "source": "Repository README",
+    "language": "German",
+    "word_count": 128
+  }
+}

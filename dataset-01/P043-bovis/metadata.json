@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P043",
+  "project": {
+    "opencode_id": "3487",
+    "name": "BoVis",
+    "description": "BoVis drill column visualization",
+    "catalogue_url": "https://opencode.de/de/software/bo-vis-3487",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/oc000047244955/bovis.net",
+    "commit_sha": "cd2c942dda5e774422fdd9bc7a05c2925db05d41",
+    "license": "EUPL-1.2"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/oc000047244955/bovis.net/-/blob/cd2c942dda5e774422fdd9bc7a05c2925db05d41/README.md",
+    "source": "Repository README — Schnellstart section",
+    "language": "German",
+    "word_count": 35
+  }
+}

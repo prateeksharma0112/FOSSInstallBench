@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P029",
+  "project": {
+    "opencode_id": "10032",
+    "name": "HAL-Plan Open Code",
+    "description": "HAL-Plan is a digital twin for the areas of urban development and strategic land management.",
+    "catalogue_url": "https://opencode.de/de/software/hal-plan-open-code-10032",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan",
+    "commit_sha": "28ec2910c6636ad9767cb9a3a07ad44590018b85",
+    "license": "AGPL-3.0-or-later"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan/-/blob/28ec2910c6636ad9767cb9a3a07ad44590018b85/_docs/get-started/installation.md",
+    "source": "Repository Installation Guide",
+    "language": "English",
+    "word_count": 436
+  }
+}

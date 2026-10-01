@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P031",
+  "project": {
+    "opencode_id": "9727",
+    "name": "Formulardesigner",
+    "description": "Modular form designer for creating and maintaining digital, accessible forms in JSON format – KERN-UX based and ready for your adaptation.",
+    "catalogue_url": "https://opencode.de/de/software/formulardesigner-9727",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/OC000097948268/formulardesigner",
+    "commit_sha": "7acedda5483d76c071b62c287574e8332549638c",
+    "license": "MPL-2.0"
+  },
+  "installation": {
+    "complexity": "Low"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/OC000097948268/formulardesigner/-/blob/7acedda5483d76c071b62c287574e8332549638c/README.md",
+    "source": "Repository README",
+    "language": "German",
+    "word_count": 142
+  }
+}

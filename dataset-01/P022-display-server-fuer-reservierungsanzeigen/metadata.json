@@ -1,0 +1,28 @@
+{
+  "dataset_id": "P022",
+  "project": {
+    "opencode_id": "9952",
+    "name": "Display Server für Reservierungsanzeigen",
+    "description": "Digital display system for bookings and reservations of rooms and other resources.",
+    "catalogue_url": "https://opencode.de/de/software/display-server-fur-reservierungsanzeigen-9952",
+    "type": "Application",
+    "platforms": [
+      "web",
+      "linux"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/smart-city-ulm/co-learning-spaces/display-server",
+    "commit_sha": "fccc32fc009ae5c5592417314cc81d01e3f0b68d",
+    "license": "GPL-3.0-or-later"
+  },
+  "installation": {
+    "complexity": "High"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/smart-city-ulm/co-learning-spaces/display-server/-/blob/fccc32fc009ae5c5592417314cc81d01e3f0b68d/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 128
+  }
+}

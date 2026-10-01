@@ -1,0 +1,27 @@
+{
+  "dataset_id": "P034",
+  "project": {
+    "opencode_id": "6811",
+    "name": "Startuphafen",
+    "description": "Startuphafen is a webapplication designed to help users navigate the german company application process.",
+    "catalogue_url": "https://opencode.de/de/software/startuphafen-6811",
+    "type": "Application",
+    "platforms": [
+      "web"
+    ]
+  },
+  "repository": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/startuphafen-sh",
+    "commit_sha": "868cad507ba7527e901abf06e1197aa9b29c4369",
+    "license": "GPL-3.0-or-later"
+  },
+  "installation": {
+    "complexity": "Medium"
+  },
+  "installation_guide": {
+    "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/startuphafen-sh/-/blob/868cad507ba7527e901abf06e1197aa9b29c4369/README.md",
+    "source": "Repository README",
+    "language": "English",
+    "word_count": 1031
+  }
+}
