@@ -36,7 +36,7 @@ class JsonResultWriter:
         if run_path.exists():
             raise FileExistsError(f"Run result already exists: {run_path}")
 
-        result_data = result.model_dump(
+        flat_data = result.model_dump(
             mode="json",
             exclude={
                 "command_executions",
@@ -46,8 +46,63 @@ class JsonResultWriter:
                 "validation_report",
                 "validation_prompt",
                 "validation_agent_response",
+                # These values are already present in the task metadata snapshot.
+                "dataset_id",
+                "task_name",
+                "repository_url",
+                "commit_sha",
             },
         )
+        # Group run fields and store the dataset entry once, directly as the task.
+        def take(*names: str) -> dict[str, Any]:
+            return {name: flat_data.pop(name) for name in names}
+
+        result_data = {
+            "schema_version": 2,
+            "run": take(
+                "run_id", "experiment_id", "run_number", "started_at",
+                "finished_at", "run_status", "error_message",
+            ),
+            "task": {
+                "task_id": flat_data.pop("task_id"),
+                **flat_data.pop("dataset_metadata"),
+            },
+            "environment": take(
+                "container_image", "container_engine", "sandbox_mode",
+                "command_timeout_seconds",
+            ),
+            "agents": {
+                "installation": take(
+                    "installation_agent_model", "max_installation_iterations",
+                    "installation_agent_status", "installation_agent_reported_outcome",
+                    "installation_error_message",
+                ),
+                "validation": take(
+                    "validation_agent_model", "max_validation_iterations",
+                    "validation_agent_status", "validation_agent_assessed_outcome",
+                    "validation_error_message",
+                ),
+            },
+            "metrics": flat_data.pop("metrics"),
+            "artifacts": take("agent_run_data_path"),
+        }
+        if flat_data:
+            raise ValueError(f"Ungrouped run result fields: {sorted(flat_data)}")
+
+        # Artifact paths below are relative to run.json; only reference files written.
+        artifacts = result_data["artifacts"]
+        artifacts["commands_path"] = "commands.json"
+        for phase in ("installation", "validation"):
+            if getattr(result, f"{phase}_agent_status") is not None:
+                paths = {
+                    "prompt_path": f"{phase}/prompt.md",
+                    "response_path": f"{phase}/final_response.txt",
+                }
+                if getattr(result, f"{phase}_report") is not None:
+                    paths["report_path"] = f"{phase}/report.json"
+                    if phase == "installation":
+                        paths["summary_path"] = "installation/installation_summary.md"
+                artifacts[phase] = paths
         self._write_json(
             run_dir / "commands.json",
             {

@@ -43,13 +43,18 @@ class InstallationGuideMetadata(TaskMetadataModel):
     word_count: int = Field(ge=0)
 
 
-class BenchmarkTask(TaskMetadataModel):
-    """A repository pinned to an immutable revision with supplied setup guides."""
+class DatasetMetadata(TaskMetadataModel):
+    """Metadata snapshot preserved with each benchmark result."""
 
-    task_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
     dataset_id: str = Field(pattern=r"^P[0-9]{3}$")
     project: ProjectMetadata
     repository: RepositoryMetadata
     installation: InstallationMetadata
     installation_guide: InstallationGuideMetadata
+
+
+class BenchmarkTask(DatasetMetadata):
+    """A repository pinned to an immutable revision with supplied setup guides."""
+
+    task_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
     documentation_files: dict[str, str] = Field(min_length=1)

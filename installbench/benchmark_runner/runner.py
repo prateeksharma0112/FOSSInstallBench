@@ -226,6 +226,7 @@ class BenchmarkRunner:
             task_name=task.project.name,
             repository_url=task.repository.url,
             commit_sha=task.repository.commit_sha.lower(),
+            dataset_metadata=task.model_dump(exclude={"task_id", "documentation_files"}),
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,

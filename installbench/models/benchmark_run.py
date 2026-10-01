@@ -12,6 +12,7 @@ from installbench.models.installation import (
     ReportedInstallationOutcome,
 )
 from installbench.models.validation import AssessedInstallationOutcome, ValidationReport
+from installbench.models.task import DatasetMetadata
 
 
 class RunStatus(StrEnum):
@@ -48,6 +49,7 @@ class BenchmarkRunResult(BaseModel):
     task_name: str
     repository_url: str
     commit_sha: str
+    dataset_metadata: DatasetMetadata
     container_image: str
     container_engine: Literal["podman", "docker"]
     sandbox_mode: Literal["standard", "dind"]
