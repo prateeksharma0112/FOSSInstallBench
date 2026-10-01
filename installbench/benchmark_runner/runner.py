@@ -10,16 +10,22 @@ from installbench.agents.agent_protocol import InstallationAgent, ValidationAgen
 from installbench.benchmark_runner.repository_setup import prepare_repository
 from installbench.config import settings
 from installbench.models.benchmark_run import (
+    AgentRuns,
     BenchmarkRunResult,
+    InstallationAgentRun,
+    RunArtifacts,
+    RunEnvironment,
+    RunMetadata,
     RunMetrics,
     RunStatus,
+    ValidationAgentRun,
 )
 from installbench.models.execution import AgentRunStatus, CommandExecution
 from installbench.models.installation import (
     InstallationAgentResult,
     ReportedInstallationOutcome,
 )
-from installbench.models.task import BenchmarkTask
+from installbench.models.task import BenchmarkTask, TaskSnapshot
 from installbench.models.validation import ValidationAgentResult
 from installbench.result_writer import JsonResultWriter, ResultWriter
 from installbench.run_layout import allocate_run_layout
@@ -87,7 +93,8 @@ class BenchmarkRunner:
             validation_duration_seconds=validation_duration,
             command_count=len(command_executions),
             repository_setup_command_count=sum(
-                execution.phase == "repository_setup" for execution in command_executions
+                execution.phase == "repository_setup"
+                for execution in command_executions
             ),
             installation_command_count=sum(
                 execution.phase == "installation" for execution in command_executions
@@ -218,47 +225,55 @@ class BenchmarkRunner:
 
         finished_at_timestamp = datetime.now().astimezone()
         run_result = BenchmarkRunResult(
-            run_id=run_id,
-            experiment_id=run_layout.experiment_id,
-            run_number=run_layout.run_number,
-            dataset_id=task.dataset_id,
-            task_id=task.task_id,
-            task_name=task.project.name,
-            repository_url=task.repository.url,
-            commit_sha=task.repository.commit_sha.lower(),
-            dataset_metadata=task.model_dump(exclude={"task_id", "documentation_files"}),
-            container_image=settings.default_container_image,
-            container_engine=settings.container_engine,
-            sandbox_mode=settings.sandbox_mode,
-            installation_agent_model=self.installation_agent.model_name,
-            validation_agent_model=self.validation_agent.model_name,
-            agent_run_data_path=run_layout.agent_run_data_dir.as_posix(),
-            command_timeout_seconds=settings.command_timeout_seconds,
-            max_installation_iterations=settings.max_installation_iterations,
-            max_validation_iterations=settings.max_validation_iterations,
-            started_at=started_at_timestamp,
-            finished_at=finished_at_timestamp,
-            run_status=run_status,
-            installation_agent_status=(
-                installation_result.status if installation_result else None
+            run=RunMetadata(
+                run_id=run_id,
+                experiment_id=run_layout.experiment_id,
+                run_number=run_layout.run_number,
+                started_at=started_at_timestamp,
+                finished_at=finished_at_timestamp,
+                status=run_status,
+                error_message=error_message,
             ),
-            installation_agent_reported_outcome=(
-                installation_result.reported_outcome
-                if installation_result
-                else ReportedInstallationOutcome.UNKNOWN
+            task=TaskSnapshot.model_validate(
+                task.model_dump(exclude={"documentation_files"})
             ),
-            installation_report=(
-                installation_result.report if installation_result else None
+            environment=RunEnvironment(
+                container_image=settings.default_container_image,
+                container_engine=settings.container_engine,
+                sandbox_mode=settings.sandbox_mode,
+                command_timeout_seconds=settings.command_timeout_seconds,
             ),
-            validation_agent_status=(
-                validation_result.status if validation_result else None
+            agents=AgentRuns(
+                installation=InstallationAgentRun(
+                    model=self.installation_agent.model_name,
+                    max_iterations=settings.max_installation_iterations,
+                    status=installation_result.status
+                    if installation_result
+                    else None,
+                    reported_outcome=installation_result.reported_outcome
+                    if installation_result
+                    else ReportedInstallationOutcome.UNKNOWN,
+                    error_message=installation_result.error_message
+                    if installation_result
+                    else None,
+                ),
+                validation=ValidationAgentRun(
+                    model=self.validation_agent.model_name,
+                    max_iterations=settings.max_validation_iterations,
+                    status=validation_result.status
+                    if validation_result
+                    else None,
+                    assessed_outcome=validation_result.report.assessed_outcome
+                    if validation_result and validation_result.report
+                    else None,
+                    error_message=validation_result.error_message
+                    if validation_result
+                    else None,
+                ),
             ),
-            validation_agent_assessed_outcome=(
-                validation_result.report.assessed_outcome
-                if validation_result and validation_result.report
-                else None
+            artifacts=RunArtifacts(
+                agent_run_data_path=run_layout.agent_run_data_dir.as_posix(),
             ),
-            validation_report=(validation_result.report if validation_result else None),
             metrics=self._build_metrics(
                 started_at=started_at,
                 repository_setup_duration=repository_setup_duration,
@@ -267,21 +282,20 @@ class BenchmarkRunner:
                 command_executions=command_executions,
             ),
             command_executions=command_executions,
-            installation_prompt=(installation_result.prompt if installation_result else ""),
-            installation_agent_response=(
-                installation_result.final_response if installation_result else ""
-            ),
-            installation_error_message=(
-                installation_result.error_message if installation_result else None
-            ),
-            validation_prompt=(validation_result.prompt if validation_result else ""),
-            validation_agent_response=(
-                validation_result.final_response if validation_result else ""
-            ),
-            validation_error_message=(
-                validation_result.error_message if validation_result else None
-            ),
-            error_message=error_message,
+            installation_report=installation_result.report
+            if installation_result
+            else None,
+            validation_report=validation_result.report if validation_result else None,
+            installation_prompt=installation_result.prompt
+            if installation_result
+            else "",
+            installation_agent_response=installation_result.final_response
+            if installation_result
+            else "",
+            validation_prompt=validation_result.prompt if validation_result else "",
+            validation_agent_response=validation_result.final_response
+            if validation_result
+            else "",
         )
         self.result_writer.write(run_result)
 

@@ -53,8 +53,13 @@ class DatasetMetadata(TaskMetadataModel):
     installation_guide: InstallationGuideMetadata
 
 
-class BenchmarkTask(DatasetMetadata):
-    """A repository pinned to an immutable revision with supplied setup guides."""
+class TaskSnapshot(DatasetMetadata):
+    """Task identity and metadata recorded in run.json."""
 
     task_id: str = Field(pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]*$")
+
+
+class BenchmarkTask(TaskSnapshot):
+    """A repository pinned to an immutable revision with supplied setup guides."""
+
     documentation_files: dict[str, str] = Field(min_length=1)

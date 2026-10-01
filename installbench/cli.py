@@ -8,13 +8,17 @@ from installbench.agents.openhands_validation_agent import OpenHandsValidationAg
 from installbench.benchmark_runner import BenchmarkRunner
 from installbench.models.benchmark_run import RunStatus
 
-app = typer.Typer(help="FOSSInstallBench - benchmark for AI-driven open-source installation")
+app = typer.Typer(
+    help="FOSSInstallBench - benchmark for AI-driven open-source installation"
+)
 console = Console()
 
 
 @app.command(name="run")
 def run_task(
-    task_id: str = typer.Option(..., "--task-id", "-t", help="The ID of the task to run"),
+    task_id: str = typer.Option(
+        ..., "--task-id", "-t", help="The ID of the task to run"
+    ),
 ) -> None:
     """Run an installation and independent-validation benchmark task."""
     console.print(
@@ -34,39 +38,43 @@ def run_task(
         console.print(f"[bold red]Could not complete benchmark run:[/bold red] {exc}")
         raise typer.Exit(code=1) from exc
 
-    if run_result.run_status is RunStatus.COMPLETED:
-        console.print(f"[bold green]Benchmark run {run_result.run_id} completed.[/bold green]")
+    if run_result.run.status is RunStatus.COMPLETED:
+        console.print(
+            f"[bold green]Benchmark run {run_result.run.run_id} completed.[/bold green]"
+        )
     else:
         console.print(
-            f"[bold red]Benchmark run {run_result.run_id}: "
-            f"{run_result.run_status.value}.[/bold red]"
+            f"[bold red]Benchmark run {run_result.run.run_id}: "
+            f"{run_result.run.status.value}.[/bold red]"
         )
 
-    if run_result.installation_agent_status is None:
+    if run_result.agents.installation.status is None:
         console.print("Installation agent: not run.")
     else:
         console.print(
             "Installation agent: "
-            f"{run_result.installation_agent_status.value}; "
-            f"reported outcome: {run_result.installation_agent_reported_outcome.value}."
+            f"{run_result.agents.installation.status.value}; "
+            f"reported outcome: {run_result.agents.installation.reported_outcome.value}."
         )
 
-    if run_result.validation_agent_status is None:
+    if run_result.agents.validation.status is None:
         console.print("Validation agent: not run.")
     else:
-        assessed_outcome = run_result.validation_agent_assessed_outcome
+        assessed_outcome = (
+            run_result.agents.validation.assessed_outcome
+        )
         console.print(
             "Validation agent: "
-            f"{run_result.validation_agent_status.value}; "
+            f"{run_result.agents.validation.status.value}; "
             "assessed outcome: "
             f"{assessed_outcome.value if assessed_outcome else 'not_available'}."
         )
 
-    if run_result.run_status is RunStatus.COMPLETED:
+    if run_result.run.status is RunStatus.COMPLETED:
         return
 
-    if run_result.error_message:
-        console.print(f"[red]{run_result.error_message}[/red]")
+    if run_result.run.error_message:
+        console.print(f"[red]{run_result.run.error_message}[/red]")
     raise typer.Exit(code=1)
 
 
