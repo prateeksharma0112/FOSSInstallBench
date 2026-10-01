@@ -162,8 +162,8 @@ class OpenHandsInstallationAgent:
     def _build_prompt(self, task: BenchmarkTask, installation_guide: str) -> str:
         template = settings.installation_prompt_path.read_text(encoding="utf-8")
         return template.format(
-            task_name=task.name,
-            description=task.description,
+            task_name=task.project.name,
+            description=task.project.description,
             installation_guide=installation_guide,
         )
 

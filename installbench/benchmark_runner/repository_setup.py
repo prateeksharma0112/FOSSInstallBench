@@ -14,9 +14,9 @@ def prepare_repository(
 ) -> list[CommandExecution]:
     """Prepare the pinned repository in the shared installation workspace."""
 
-    quoted_url = shlex.quote(task.repository_url)
+    quoted_url = shlex.quote(task.repository.url)
     quoted_dir = shlex.quote(installation_workspace_dir)
-    quoted_commit = shlex.quote(task.commit_sha.lower())
+    quoted_commit = shlex.quote(task.repository.commit_sha.lower())
     commands = [
         f"git clone --no-checkout --depth 1 {quoted_url} {quoted_dir}",
         f"git -C {quoted_dir} fetch --depth 1 origin {quoted_commit}",

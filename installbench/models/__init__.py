@@ -13,7 +13,9 @@ from .installation import (
 from .task import (
     BenchmarkTask,
     InstallationGuideMetadata,
-    SoftwareMetadata,
+    InstallationMetadata,
+    ProjectMetadata,
+    RepositoryMetadata,
 )
 from .validation import (
     AssessedInstallationOutcome,
@@ -34,7 +36,9 @@ __all__ = [
     "ReportedInstallationOutcome",
     "RunMetrics",
     "RunStatus",
-    "SoftwareMetadata",
+    "InstallationMetadata",
+    "ProjectMetadata",
+    "RepositoryMetadata",
     "ValidationAgentResult",
     "ValidationReport",
 ]

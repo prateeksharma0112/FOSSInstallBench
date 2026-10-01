@@ -13,7 +13,7 @@ class Settings(BaseSettings):
     model_config = SettingsConfigDict(env_file=".env", extra="ignore")
 
     # Run inputs, outputs, and identity
-    tasks_dir: Path = Path("tasks")
+    tasks_dir: Path = Path("dataset")
     results_dir: Path = Path("results")
     agent_run_data_dir: Path = Path("workspace")
     experiment_id: str = Field(

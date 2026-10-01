@@ -155,8 +155,8 @@ class OpenHandsValidationAgent:
     def _build_prompt(task: BenchmarkTask, installation_guide: str, installation_summary: str) -> str:
         template = settings.validation_prompt_path.read_text(encoding="utf-8")
         return template.format(
-            task_name=task.name,
-            description=task.description,
+            task_name=task.project.name,
+            description=task.project.description,
             installation_guide=installation_guide,
             installation_summary=installation_summary,
             workspace_dir=settings.installation_workspace_dir,

@@ -113,7 +113,7 @@ class BenchmarkRunner:
             "benchmark_run_started",
             run_id=run_id,
             task_id=task.task_id,
-            commit_sha=task.commit_sha,
+            commit_sha=task.repository.commit_sha,
         )
 
         repository_setup_duration = 0.0
@@ -223,9 +223,9 @@ class BenchmarkRunner:
             run_number=run_layout.run_number,
             dataset_id=task.dataset_id,
             task_id=task.task_id,
-            task_name=task.name,
-            repository_url=task.repository_url,
-            commit_sha=task.commit_sha.lower(),
+            task_name=task.project.name,
+            repository_url=task.repository.url,
+            commit_sha=task.repository.commit_sha.lower(),
             container_image=settings.default_container_image,
             container_engine=settings.container_engine,
             sandbox_mode=settings.sandbox_mode,
