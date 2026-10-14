@@ -1,0 +1,20 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## QuattroMap installation\n\n**Working directory / repo:** `/workspace` (git commit 24041c0, \"Update .gitlab-ci.yml\"). This is the shared installation workspace on Ubuntu 22.04.\n\n**Prerequisite \u2014 Node.js:**\n- The environment had no `node`/`npm` (`exit code 127`). The Ubuntu 22.04 apt candidate is only `nodejs 12.22.9`, too old for the project's toolchain.\n- Added the NodeSource `setup_20.x` repo and ran `apt-get install -y nodejs`, yielding `node v20.20.2` and `npm 10.8.2`.\n- Downloaded the NodeSource setup script from `https://deb.nodesource.com/setup_20.x` (a non-apt-source registry), so this step is a non-guide prerequisite action.\n\n**Method used (per the guide's Develop section):**\n1. `npm install` in `/workspace` \u2192 `added 403 packages` (exit 0). Emitted EBADENGINE warnings: `webpack-dev-server@6.0.0` requires `node >= 22.15.0`, `p-retry@8.0.0` requires `node >=22`; these were warnings only and did not block execution.\n2. `npm run build` (`webpack`) \u2192 `webpack 5.110.3 compiled with 4 warnings` (exit 0). Warnings are performance/size and a maplibre dynamic-require notice, not errors. Output produced at `/workspace/dist/`: `bundle.js` (~1.29 MB), `index.html`, `oss-licenses.json`, `img/`, `vendor/`.\n3. `npm start` (`webpack serve`) \u2192 dev server compiled successfully (`152 modules`) and served the app.\n\n**Verification (evidence):**\n- `curl http://localhost:8080/` \u2192 HTTP 200, `<title>QuattroMap</title>`, 9372 bytes.\n- `curl http://localhost:8080/bundle.js` \u2192 HTTP 200, 1,356,256 bytes.\n- Dev server log: `[webpack-dev-server] Project is running at: ... http://localhost:8080/`.\n\n**Access points / startup commands:**\n- Production build served from `/workspace/dist` (any static server).\n- Dev server: `npm start` in `/workspace`, default `http://localhost:8080/` (one run bound `8081` because a previous instance still held `8080`).\n\n**Cleanup:** All webpack/dev-server processes started during verification were terminated.\n\n**Unknown/incomplete:** None material. The only caveat is the Node engine mismatch warning from `webpack-dev-server@6.0.0` (declares Node >= 22.15.0) while the installed runtime is Node 20; build and dev server nonetheless functioned and served correctly.",
+  "additional_actions": [
+    "Installed Node.js 20.20.2 and npm 10.8.2 via the NodeSource setup_20.x repository (apt itself only offered Node 12), since no Node.js was preinstalled.",
+    "Ran `apt-get update` to refresh package lists before installing Node.js."
+  ],
+  "verification": "Ran `npm install` (exit 0, 403 packages), `npm run build` (webpack 5.110.3 compiled, exit 0, artifacts in /workspace/dist), and `npm start` which compiled and served. `curl -sf http://localhost:8080/` returned HTTP 200 with `<title>QuattroMap</title>` (9372 bytes); `curl http://localhost:8080/bundle.js` returned HTTP 200 (1,356,256 bytes). Dev server log confirmed \"Project is running at: http://localhost:8080/\".",
+  "reported_outcome_evidence": [
+    "`node --version` => v20.20.2 ; `npm --version` => 10.8.2 (after NodeSource install)",
+    "`npm install` => 'added 403 packages, and audited 404 packages' (exit 0)",
+    "`npm run build` => 'webpack 5.110.3 compiled with 4 warnings in 12794 ms' (exit 0)",
+    "`ls /workspace/dist` => bundle.js, img, index.html, oss-licenses.json, vendor",
+    "`curl http://localhost:8080/` => HTTP 200, size=9372, contains <title>QuattroMap</title>",
+    "`curl http://localhost:8080/bundle.js` => HTTP 200, size=1356256",
+    "webpack-dev-server log => 'Project is running at: http://localhost:8080/'"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

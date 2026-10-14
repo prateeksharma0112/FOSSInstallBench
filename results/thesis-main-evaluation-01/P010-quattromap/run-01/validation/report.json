@@ -1,0 +1,16 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "`/workspace`: git commit 24041c0; `node -v` \u2192 v20.20.2; `npm -v` \u2192 10.8.2 (exit 0)",
+    "`ls node_modules | wc -l` \u2192 283; `node_modules/maplibre-gl`, `node_modules/webpack`, `node_modules/webpack-dev-server`, `node_modules/webpack-cli` all present",
+    "`ls -la dist/` \u2192 bundle.js 1295148 bytes, index.html 9372, oss-licenses.json 29763, img/, vendor/ (build output exists as guide specifies)",
+    "`npm start` (webpack serve) log: 'Project is running at http://localhost:8080/', '152 modules', 'webpack 5.110.3 compiled with 5 warnings' (no errors)",
+    "`curl http://localhost:8080/` \u2192 HTTP 200, size=9372, `<title>QuattroMap</title>`",
+    "`curl http://localhost:8080/bundle.js` \u2192 HTTP 200, size=1356256",
+    "`curl http://localhost:8080/vendor/maplibre/maplibre-gl-worker.mjs` \u2192 HTTP 200, size=18966",
+    "Static serve of dist/ on :9090 \u2192 `/` 200, `/bundle.js` 200, `/vendor/maplibre/maplibre-gl-worker.mjs` 200, `/oss-licenses.json` 200; index.html contains `<script src=\"bundle.js\"`",
+    "`node --check dist/bundle.js` \u2192 exit 0; bundle contains maplibre-gl, 19 'crosshair' and 92 'geocoder' markers and config value 'NRW Luftbild Farbe'",
+    "Cleanup: killed webpack PIDs 1829/1830; `ps`/`ss` confirm no webpack/http.server processes and no 8080/9090 listeners remain"
+  ],
+  "assessment_summary": "Reviewed the guide (Develop section: npm install, npm start on http://localhost:8080/, npm run build \u2192 dist/) and the installation summary; validated on the same container. Inspected the repo at /workspace (commit 24041c0), confirmed Node v20.20.2/npm 10.8.2 on PATH, and verified dependencies (~283 node_modules incl. maplibre-gl, webpack, webpack-cli, webpack-dev-server) with package-lock.json. Confirmed the built artifacts in dist/ (bundle.js ~1.295 MB, index.html, oss-licenses.json, img/, vendor/maplibre). Ran the actual software: `npm start` (webpack serve) compiled 152 modules with only warnings and served the app; curl returned HTTP 200 for `/` (9372 bytes, <title>QuattroMap</title>), `/bundle.js` (1,356,256 bytes) and the vendored maplibre worker. Additionally served the production dist/ independently (all key paths HTTP 200) and validated bundle integrity with `node --check` (exit 0) plus app feature markers (crosshair/geocoder/config layer name) embedded in the bundle. All validation-spawned processes were terminated and ports released. Limitations: no GUI browser was available, so live map-tile rendering from external WMS/XYZ services was not exercised; and webpack-dev-server@6.0.0 emits an EBADENGINE warning (declares node >=22.15.0) against the installed Node 20, but this did not prevent compilation or serving. These are warnings/environmental constraints, not installation defects. The documented install method is complete and the application builds, starts, and serves as described \u2014 objective evidence supports success."
+}

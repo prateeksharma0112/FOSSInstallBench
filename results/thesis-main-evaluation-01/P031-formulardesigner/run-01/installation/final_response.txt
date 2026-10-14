@@ -1,0 +1,12 @@
+Installation of Formulardesigner completed successfully.
+
+**What was done:**
+- The environment had no Node.js/npm. Installed Node.js v24.21.0 and npm 11.19.0 via the NodeSource apt repository (matching the project's CI image `node:24-alpine`).
+- Ran `npm install` at `/workspace` (root library) — added 287 packages.
+- Ran `npm run build` (tsc + vite) — produced `dist/formulardesigner.es.js`, `dist/assets/index.css`, and `dist/src/**` type declarations.
+- Ran `npm install` in `/workspace/example` (128 packages) and `npm run dev`, serving the example app at `http://localhost:5173` (HTTP 200).
+- Also verified `tsc -b && vite build` of the example app succeeds.
+
+Verification: dev server returned HTTP 200 for `/` and `/src/main.tsx`; the library resolves through the `file:..` symlink. A plain-Node `import` fails only on the `.css` asset (expected for a browser/Vite library); bundler-based consumption (the actual target workflow) succeeds.
+
+Note: the dev server was stopped after verification.

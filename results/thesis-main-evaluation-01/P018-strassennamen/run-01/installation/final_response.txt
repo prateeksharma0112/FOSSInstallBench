@@ -1,0 +1,36 @@
+Installation of the **Straßennamen** web application (Angular frontend + .NET backend, with Keycloak and SQL Server) was completed successfully and verified end-to-end.
+
+## What was done
+
+**Prerequisites (Ubuntu 22.04 container, no node/dotnet preinstalled)**
+- Installed Node.js v22.23.3 + npm 10.9.9 via the NodeSource repository.
+- Installed .NET SDK 9.0.318 into `/usr/share/dotnet` via `dotnet-install.sh`, symlinked to `/usr/local/bin/dotnet`, and installed `libicu70` (required for .NET globalization).
+
+**Frontend** (`/workspace/src/Frontend/Strassennamen`)
+- `npm i` installed 742 packages successfully.
+- `npm run build` produced the production bundle in `./dist` (exit 0).
+- Configured `public/configs/config.development.json` with `endPointUrl: http://localhost:5000/api` and a `keycloak` block (`realm: my-realm`, `authServerUrl: http://localhost:8080/`, `resource: strassennamen`). Note: the code reads `appSettings.keycloak` (the repo's committed default used a stale `auth` key), so the guide's example is correct.
+- `npm run start` served the app; `http://localhost:4200/` returned HTTP 200.
+
+**Backend** (`/workspace/src/Backend`)
+- `dotnet restore` and `dotnet build Lecos.Strassennamen.sln` (Debug) succeeded — **0 errors**.
+- Configured `Lecos.Strassennamen.RestAPI/appsettings.Development.json` per the guide (Keycloak block, `CorsOrigins`, SQL `ConnectionStrings:DB`, Serilog, Jobs).
+- Started `Lecos.Strassennamen.RestAPI` on `http://localhost:5000`. FluentMigrator applied all migrations creating 14 tables in the `Strassennamen` database. Swagger UI/JSON returned HTTP 200.
+
+**Supporting infrastructure (Docker, provided by the environment)**
+- SQL Server 2022 container `strassennamen-sql` on port 1433; created the `Strassennamen` database.
+- Keycloak 26.0 container `strassennamen-keycloak` on port 8080; created realm `my-realm`, public client `strassennamen`, client roles `app-access` and `editor`, and a `testuser`.
+
+**End-to-end verification**
+- Obtained a Keycloak token for `testuser`; the token contained `resource_access.strassennamen.roles = [editor, app-access]`.
+- `GET http://localhost:5000/api/strasse` with the bearer token returned **HTTP 200** (body `[]`); without a token it returns 401/403 as designed.
+
+## Startup commands
+- Backend: `cd /workspace/src/Backend && PATH=$PATH:/usr/share/dotnet dotnet run --project Lecos.Strassennamen.RestAPI --urls http://localhost:5000` (ASPNETCORE_ENVIRONMENT=Development)
+- Frontend: `cd /workspace/src/Frontend/Strassennamen && npm run start` → http://localhost:4200
+- Keycloak: http://localhost:8080 (admin/admin) — realm `my-realm`, test login `testuser` / `Test1234!`
+
+## State notes
+- The frontend dev server and backend process were left running; both Docker containers are up.
+- Modified tracked files: `src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json`, `src/Frontend/Strassennamen/public/configs/config.development.json`, `src/Frontend/Strassennamen/package-lock.json`; new untracked dir `src/Backend/Lecos.Strassennamen.RestAPI/Export/`.
+- Backend integration tests reported "no test available" (test discovery) but this did not affect build or runtime; it was not required for installation verification.

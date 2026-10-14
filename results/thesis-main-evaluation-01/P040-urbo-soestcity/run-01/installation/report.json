@@ -1,0 +1,26 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed URBO from /workspace (commit 4320065) using the guide's primary method `just up --detach` with instance `workspace`. No prerequisites were preinstalled, so Node.js 24.21.0, pnpm 12.10.1, just 1.58.0, libatomic1, and OpenJDK 21 were installed first. pnpm initially failed (exit 127, missing libatomic.so.1) and the app `prepare` step failed with `/bin/sh: 1: java: not found` (openapi-generator-cli needs Java); both were resolved by installing libatomic1 and a JDK. A GITHUB_TOKEN is demanded by preflight; none was available in the environment, so a placeholder was exported. The full stack then came up: preflight passed, frontend deps installed, backend Docker image built (Gradle), 9 compose containers reached healthy state, and sample data seeded successfully (loader exit 0, seeded marker written). Verified via docker ps (all healthy) and HTTP through the shared proxy on 127.0.0.1:80 using Host headers: api /v3/api-docs=>200 (212 paths), /v1/events=>200 with seeded content, keycloak=>302, meilisearch/mailpit/localstack=>200. `just serve` also started the three Angular dev servers; cms and boards were verified returning 200 through the proxy, while app was still completing its first bundle build. Working directory: /workspace; URLs: http://app|cms|boards|api|keycloak|meilisearch|mailpit|localstack|imgproxy|sendinblue.workspace.localhost; Postgres on localhost:32768. Note: the sandbox container later became unstable and was torn down by the environment during long dev-server builds, which killed subsequent verification commands.",
+  "additional_actions": [
+    "Installed Node.js 24.21.0 + npm from NodeSource (not in guide)",
+    "Installed pnpm 12.10.1 globally via npm",
+    "Installed just 1.58.0 via just.systems install script",
+    "Installed libatomic1 to fix pnpm shared-library load failure",
+    "Installed openjdk-21-jdk-headless for the app openapi-generator-cli prepare step",
+    "Exported a placeholder GITHUB_TOKEN value since the preflight requires one and none exists in the environment; the actual OSS backend build did not require a valid token"
+  ],
+  "verification": "docker ps => all 9 stack containers Up/healthy (spring-app, keycloak, meilisearch, localstack, mailpit, sendinblue-api, imgproxy, sample-images, urbo-backend-postgres) plus urbo-proxy; just status confirmed the same. HTTP checks through shared proxy: curl -H 'Host: api.workspace.localhost' http://127.0.0.1/v3/api-docs => 200 (212 paths), /v1/events?size=2 => 200 with seeded 'Familientag im Freibad'; keycloak realm => 302/200; meilisearch/mailpit/localstack => 200. Seeding: sample-data-loader exited 0, log line 'Sample data import completed successfully', .urbo/workspace/seeded marker present. Dev servers: curl -H 'Host: cms.workspace.localhost' => 200 and boards => 200 after 'Application bundle generation complete'. Exit codes observed: just up --detach reached the final URL banner and returned; docker ps exit 0; curl endpoints exit 0.",
+  "reported_outcome_evidence": [
+    "just up --detach log (/tmp/justup3.log) ended with the URL banner and 'Postgres psql postgresql://postgres:postgres@localhost:32768/urbo', no error",
+    "sample-data-loader-1 | [sample-data-loader] Sample data import completed successfully.",
+    "^[Ksample-data-loader-1 exited with code 0",
+    "docker ps: urbo-workspace-spring-app-1 Up (healthy), urbo-workspace-keycloak-1 Up (healthy), urbo-workspace-localstack-1 Up (healthy), urbo-workspace-mailpit-1 Up (healthy), urbo-workspace-sendinblue-api-1 Up (healthy), urbo-workspace-urbo-backend-postgres-1 Up (healthy)",
+    "curl -H 'Host: api.workspace.localhost' http://127.0.0.1/v3/api-docs => 200; content {\"openapi\":\"3.1.0\",...\"servers\":[{\"url\":\"http://api.workspace.localhost\"...}]}",
+    "curl -H 'Host: api.workspace.localhost' 'http://127.0.0.1/v1/events?size=2' => 200 with seeded event 'Familientag im Freibad' and image http://sample-images.workspace.localhost/family.jpg",
+    "curl -H 'Host: cms.workspace.localhost' http://127.0.0.1/ => 200 and -H 'Host: boards.workspace.localhost' => 200",
+    "/workspace/.urbo/workspace/seeded contains 2026-10-09T14:37:05.752Z",
+    "docker inspect urbo-workspace-spring-app-1 label io.swcode.urbo.instance=workspace"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P016-open_taki__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T00:33:59.437002+02:00",
+    "finished_at": "2026-10-06T00:38:03.988759+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P016",
+    "project": {
+      "opencode_id": "12600",
+      "name": "open_taki",
+      "description": "AI-powered document analysis as a drop-in replacement for Apache Tika: OCR, summarization, classification and transcription on your own infrastructure.",
+      "catalogue_url": "https://opencode.de/de/software/open-taki-12600",
+      "type": "Application",
+      "platforms": [
+        "linux"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/kosmos/open_taki",
+      "commit_sha": "ba6891a9ac6bc9f7e044ea63c2600228a4dffe98",
+      "license": "AGPL-3.0-or-later"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository deployment guide",
+      "url": "https://gitlab.opencode.de/kosmos/open_taki/-/blob/ba6891a9ac6bc9f7e044ea63c2600228a4dffe98/DEPLOYMENT.md",
+      "language": "English",
+      "word_count": 630
+    },
+    "task_id": "P016-open_taki"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 244.56299999999464,
+    "repository_setup_duration_seconds": 5.4060000000026776,
+    "installation_duration_seconds": 181.54699999999139,
+    "validation_duration_seconds": 49.73400000001129,
+    "command_count": 40,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 26,
+    "validation_command_count": 10
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P016-open_taki/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

@@ -1,0 +1,20 @@
+Installation of EAM-Portal Bund completed successfully. Node.js 22 was installed (not preinstalled), dependencies installed via `npm ci`, and the documented install/build/lint/dev commands all verified.
+
+## Summary
+
+**Working directory:** `/workspace` (git repo at predefined commit)
+
+**Prerequisite installed:**
+- Node.js was absent. Installed Node.js v22.11.0 from the official binary tarball (`https://nodejs.org/dist/v22.11.0/node-v22.11.0-linux-x64.tar.xz`) into `/opt/node-v22.11.0-linux-x64`, with symlinks at `/usr/local/bin/{node,npm,npx}`. Resulting versions: node `v22.11.0`, npm `10.9.0`.
+
+**Guide steps executed:**
+1. `npm ci` → exit 0, "added 382 packages, and audited 383 packages" (audit warnings only; install succeeded).
+2. `npm run lint` → exit 0, "✔ No ESLint warnings or errors".
+3. `npm run build` → exit 0, "✓ Compiled successfully", "✓ Exporting (3/3)", static pages generated (10/10), static export written to `/workspace/out/` (index.html, route .html/.txt files, _next assets).
+4. `npm run dev` (documented dev server on port 3000) → started "✓ Ready in 2.5s"; `GET /` returned HTTP 200.
+
+**Access points:**
+- Dev server: http://localhost:3000 (`npm run dev`)
+- Static export: `/workspace/out/` (servable via any static file server)
+
+All documented commands completed and were verified with observable evidence.

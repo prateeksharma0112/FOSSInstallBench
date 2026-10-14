@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P017-ozgxplanung__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T00:39:09.732086+02:00",
+    "finished_at": "2026-10-06T01:08:50.008916+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P017",
+    "project": {
+      "opencode_id": "159",
+      "name": "ozgxplanung",
+      "description": "The application serves to map urban planning and landscape design based on the XPlanung standard.",
+      "catalogue_url": "https://opencode.de/de/software/ozgxplanung-159",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/diplanung/ozgxplanung",
+      "commit_sha": "239d434c4b6596572aeeb60330a76bd0b3d88fba",
+      "license": "AGPL-3.0"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/diplanung/ozgxplanung/-/blob/239d434c4b6596572aeeb60330a76bd0b3d88fba/xplan-documentation/xplan-betriebshandbuch/src/main/asciidoc/installation/main.adoc",
+      "language": "German",
+      "word_count": 3389
+    },
+    "task_id": "P017-ozgxplanung"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "failure",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1780.297000000006,
+    "repository_setup_duration_seconds": 149.0619999999908,
+    "installation_duration_seconds": 1494.7030000000086,
+    "validation_duration_seconds": 131.65699999999197,
+    "command_count": 62,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 29,
+    "validation_command_count": 29
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P017-ozgxplanung/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

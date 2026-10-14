@@ -1,0 +1,24 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed Qisutu 2.0.2 from /workspace to /opt/qisutu per INSTALL.md. Ran `QISUTU_INSTALL_LANGUAGE=de bash ./install.sh` (exit 0), which installed Apache2, MariaDB, Perl modules (incl. Authen::SASL, Net::LDAP), created the qisutu system user, generated var/secure/security.key, wrote var/install/instance.conf, deployed /etc/apache2/sites-available/qisutu.conf (symlinked to sites-enabled), and installed /etc/systemd/system/qisutu-daemon.service plus temporary install-complete units. Then executed the browser web installer over HTTP on http://localhost/qisutu/install.pl through all six steps (welcome/system check, license, database, system settings, mail skipped, completion). It created MariaDB database `qisutu` with 138 tables (schema.sql + insert.sql), DB user `qisutu`, first admin user `admin`, wrote core/config/QisutuConfig.pm, and created var/install/installed.lock. Verified: index.pl HTTP 200, authenticated login HTTP 302 with dashboard, api.pl HTTP 401 (unauthenticated), Apache/MariaDB running, qisutu-daemon.pl running as user qisutu, ownership of program tree qisutu:www-data. Environment note: the container has tini as PID 1 with no systemd; a minimal /usr/local/bin/systemctl shim was created to map start/stop/enable/is-active to the Apache/MariaDB services so the documented installer could run, and the daemon was started directly with the completion units applied manually. Files live at /opt/qisutu; login at http://localhost/qisutu/index.pl (admin / PLEUTQQVHW7G3ED+C7PN%%LK).",
+  "additional_actions": [
+    "Copied the repository from /workspace to /opt/qisutu (documented normal-install path) with `cp -a`, excluding the .git directory, because install.sh requires an installation path and the guide expects /opt/qisutu.",
+    "Installed the `systemd`/`systemd-sysv`/`dbus` packages and created a minimal `/usr/local/bin/systemctl` shim (container has no systemd PID 1) mapping enable/start/stop/is-active to the real Apache/MariaDB services, so install.sh's systemctl calls could succeed.",
+    "Recreated the MariaDB bootstrap installer user and `/opt/qisutu/var/install/database-bootstrap.conf` after an aborted first web-installer attempt deleted the original (the installer removes the bootstrap file on partial failure).",
+    "Manually applied the temporary install-complete systemd unit actions: started qisutu-daemon.pl as user qisutu and removed qisutu-install-complete.path/.service, since systemd path activation could not run without real systemd.",
+    "Set web-installer system settings: protocol http, FQDN localhost, admin email admin@example.org, default language de, timezone Europe/Berlin, ticket hook Qisutu, attachment max size 25."
+  ],
+  "verification": "Web/HTTP verification plus service and database inspection. Commands and results: `curl -s -o /dev/null -w \"%{http_code}\" http://localhost/qisutu/index.pl` \u2192 200; POST login as admin returned HTTP/1.1 302 Found with Set-Cookie QISUTU_SESSION, and a follow-up authenticated request rendered the Dashboard/Logout UI; `curl -o /dev/null -w \"%{http_code}\" http://localhost/qisutu/api.pl` \u2192 401; `mariadb -uroot qisutu -e \"SELECT COUNT(*) FROM information_schema.tables WHERE table_schema='qisutu';\"` \u2192 138; `SELECT version,installed_at FROM database_version` \u2192 2.0.2; `user_account` contains login=admin; `apache2ctl configtest` \u2192 Syntax OK; symlink /etc/apache2/sites-enabled/qisutu.conf present; `pgrep` shows apache2, mariadbd and qisutu-daemon.pl running; /opt/qisutu/var/install/installed.lock exists; re-running install.sh reports \"bereits vollst\u00e4ndig installiert\" (exit 1) as documented.",
+  "reported_outcome_evidence": [
+    "install.sh output ended: 'Die Systemvorbereitung f\u00fcr die Instanz 'qisutu' wurde erfolgreich abgeschlossen.' with INSTALL_EXIT=0",
+    "Web installer reached 'Installation abgeschlossen - Qisutu Installation' (Step 6), showing 'Qisutu wurde erfolgreich installiert.' and credentials for admin",
+    "curl http://localhost/qisutu/index.pl \u2192 HTTP 200 with <title>Qisutu login</title>; authenticated POST login \u2192 HTTP/1.1 302 Found + QISUTU_SESSION cookie, subsequent page shows Dashboard/Logout",
+    "curl http://localhost/qisutu/api.pl \u2192 HTTP 401",
+    "mariadb -uroot qisutu: 138 tables; database_version row version=2.0.2 installed_at=2026-10-04 21:04:00; user_account row login=admin email=admin@example.org with password hash",
+    "installed.lock present: installed_at=2026-10-04 21:04:01, instance_id=qisutu, web_path=/qisutu",
+    "apache2ctl configtest \u2192 'Syntax OK'; apache2, mariadbd and qisutu-daemon.pl processes running",
+    "Re-running install.sh \u2192 'Diese Qisutu-Instanz ist bereits vollst\u00e4ndig installiert.' (exit 1)"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

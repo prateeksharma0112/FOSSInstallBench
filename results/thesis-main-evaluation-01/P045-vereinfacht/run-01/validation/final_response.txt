@@ -1,0 +1,22 @@
+## Validation Report — `vereinfacht`
+
+**Assessed outcome: `success`**
+
+The installation is complete and the software is fully operational per the supplied guide. The Docker Compose stack was verified running, and all four documented access points were exercised with real functional checks (not just file/port existence).
+
+### Evidence
+- **Containers up** (`docker ps`): `vereinfacht-database-1` (3306), `vereinfacht-api-1` (3001→80), `vereinfacht-api-docs-1` (3002→8080), `vereinfacht-tooling-1` (3000), `vereinfacht-web_application-1` (3003→3000).
+- **API/admin (3001)**: `GET /` → 302 → 200 with title "Login - Admin Console verein". Authenticated JSON:API works with the generated bearer token: `GET /api/v1/clubs`, `/members`, `/users` all returned `HTTP 200` with valid JSON:API payloads (e.g. club `tsv-muster`).
+- **Swagger docs (3002)**: `HTTP 200`, title "Swagger UI", and `swagger-initializer.js` correctly points at `http://localhost:3001/v1_openapi.json` which serves `HTTP 200` (spec exists in `/api/public`).
+- **Web dev frontend (3000)**: `GET /` → 200 at `/en/admin/auth/login`, title "vereinfacht – digitale Vereinsverwaltung". Full end-to-end login succeeded: POST `/api/auth/callback/credentials` with `club-admin-1@example.org/password` returned the redirect URL, and `/api/auth/session` returned the real user `Jane Doe`. Authenticated `/en/admin/users` → 200 rendering user list; unauthenticated access → 307 redirect to login (auth guard works). Public seeded apply page `/de/tsv-muster/apply` → 200.
+- **Dockerized web frontend (3003)**: `GET /` → 200 with the same title.
+- **Database**: seeded — 28 tables; users include `hello@vereinfacht.digital` (id 1, super admin) and `club-admin-1@example.org` (id 2); seeded clubs present.
+- **Toolchain present**: PHP 8.3.35, Composer 2.10.3, Node v20.20.2, npm 10.8.2 in tooling container; dev server (`next dev`) listening on :3000 inside tooling.
+- **Backend tests**: `php artisan test` inside tooling → `83 passed (323 assertions)`.
+- **Build artifacts present**: Filament assets (`public/js|css/filament`), API Vite build (`public/build`), Next.js `.next`.
+
+### Notes / limitations
+- The Cypress `e2e` project referenced in the guide's End-to-End section is absent from the repository; however the guide itself states the repo "does not yet include the End-to-End testing functionality" (README line 164), so this does not constitute a defect.
+- Plain form POST to `/admin/login` returns 405 as expected because Filament uses Livewire; the login page itself renders correctly (HTTP 200).
+- Two tracked files were modified during the attempt (`docker/tooling/tooling.Dockerfile` — removed an incompatible `COPY --from=node /usr/lib` that broke `apk`; `docker-compose.yml` — added env wiring for the web service). These were verification-driven fixes and the resulting stack operates correctly.
+- I did not install, migrate, build, or repair anything during validation; only read/inspect and queried running services, plus ran the existing test suite (read-only w.r.t. install state).

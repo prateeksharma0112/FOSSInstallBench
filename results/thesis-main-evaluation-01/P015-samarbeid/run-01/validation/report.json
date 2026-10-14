@@ -1,0 +1,17 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "ruby -v -> ruby 3.4.10 (matches .ruby-version); node -v -> v24.9.0; yarn -v -> 4.13.0 (match .tool-versions)",
+    "ps aux shows foreman + puma 7.2.1 (tcp://localhost:3000) + yarn/vite dev processes running",
+    "docker ps -> workspace-apache-tika-1 Up (9998), workspace-mailpit-1 Up healthy (1025/8025)",
+    "curl -sI http://localhost:3000/ -> HTTP/1.1 301 Moved Permanently, location: /users/sign-in",
+    "curl http://localhost:3000/users/sign-in -> 200, size 5251, <title>samarbeid</title>",
+    "curl /vite-dev/@vite/client -> 200 and /vite-dev/entrypoints/application.js -> 200",
+    "curl http://localhost:9998/ -> 200 (Tika); http://localhost:8025/ -> 200 (Mailpit)",
+    "psql samarbeid_development: users table has id=1, admin@example.org, role=2 (super_admin); 64 public tables",
+    "POST /users/sign-in with admin@example.org/UxbuS7Zp8BNM -> 302 redirect to /; subsequent GET / -> 200 with current_user id=1 email admin@example.org",
+    "bundle check -> The Gemfile's dependencies are satisfied",
+    "bin/rails runner -> boots successfully, User.count=1"
+  ],
+  "assessment_summary": "I inspected the workspace, runtime processes, ports, Docker containers, database, and exercised the application over HTTP. The guide's prerequisites are all present at the exact versions declared in .ruby-version/.tool-versions, dependencies are satisfied, PostgreSQL has a migrated schema (64 tables) and the seeded super_admin user, and the docker-compose dependencies (Tika, Mailpit) are running. The app is reachable on localhost:3000 following the documented bin/dev method, serves the Vue/Vite frontend, and a full Devise login using the seeded admin credentials succeeds and yields an authenticated session. I could not observe the browser-rendered SPA (no headless browser), but the server-rendered shell plus the 200 responses for Vite entry modules and successful authentication provide strong behavioral evidence. Some environment shell quirks (a couple of curl/sed one-liners exited non-zero) did not affect the decisive checks, which were re-run successfully. Overall the installation is complete and operational."
+}

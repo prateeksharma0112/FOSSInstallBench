@@ -1,0 +1,25 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed IT-Fachplanung at commit 786839b in /workspace using DDEV (ddev v1.25.4, Docker 29.7.2, Ubuntu 22.04).\n\nSteps:\n1. Docker present, ddev absent. Installed ddev manually (verified GitHub release tarball ddev_linux-amd64.v1.25.4.tar.gz \u2192 /usr/local/bin) because the official installer refuses root.\n2. Created non-root user `ddevuser` (uid 1000, docker group), chowned /workspace; run all ddev commands via `su - ddevuser -c`.\n3. `ddev start`: initially the openldap container crash-looped because `.ddev/docker-compose.ldap.yaml` bind-mounted test_users.ldif as a single read-only file (chown/sed/rm failures). Fixed by mounting directory `.ddev/ldap-bootstrap/` and setting `LDAP_REMOVE_CONFIG_AFTER_SETUP=false`. All containers healthy.\n4. `ddev composer install --no-interaction` (47 pkgs) \u2014 OK.\n5. `ddev npm i` (592 pkgs) \u2014 OK.\n6. `ddev importDump` from dump/db.sql \u2014 OK, 9 tables in db schema.\n7. `cp config/web.config.local.php.example config/web.config.local.php`; aligned its LDAP block (host=openldap:389, dn=cn=admin,dc=example,dc=org, baseDn=dc=example,dc=org) to the LDAP service in the compose file, since the example referenced a stale planetexpress:10389 endpoint.\n8. `ddev setup-docu-data` \u2014 OK.\n\nEnvironment context: ddev project name `tfm-fachplanung`, docroot `public`, PHP 8.3, MariaDB 10.3, apache-fpm; containers ddev-tfm-fachplanung-{web,db,openldap,phpmyadmin,phpldapadmin}. Access at http://tfm-fachplanung.ddev.site. Commands must be run as user `ddevuser`; `ddev cypress` host command is unusable as-is, so Cypress was run directly with `cypress/included:13.17.0` attached to network ddev-tfm-fachplanung_default.\n\nVerification: ddev describe shows web/db/openldap/phpmyadmin OK; HTTP `/`\u2192302 and `/login`\u2192200 with rendered login page; LDAP returns 10 users; Cypress specs 01-infrastruktur_setup (4/4) and 02-benutzerverwaltung (5/5, incl. LDAP search) pass. 030-fachplanung_erstellen had 1/3 fail due to expected 2027 test data not present \u2014 a doc-data ordering artifact, not an install defect.",
+  "additional_actions": [
+    "Installed DDEV v1.25.4 manually from the GitHub release tarball via a non-root user because the official install script refuses to run as root and ddev refuses root execution.",
+    "Created a non-root user `ddevuser` (uid 1000) with docker group membership and chowned /workspace, then ran all ddev/composer/npm/cypress commands as that user.",
+    "Edited .ddev/docker-compose.ldap.yaml: changed the LDIF mount from a single read-only file (../test_users.ldif:ro) to a writable directory (./ldap-bootstrap) and set LDAP_REMOVE_CONFIG_AFTER_SETUP=false so the openldap init could complete.",
+    "Changed config/web.config.local.php LDAP settings from the stale example values (ldap:10389 / dc=planetexpress,dc=com) to the LDAP service defined in the project compose file (openldap:389 / dc=example,dc=org).",
+    "Ran Cypress directly with the cypress/included:13.17.0 image on the ddev network instead of `ddev cypress`, because the host command's standalone `docker compose` conflicted with the running ddev network and `cypress/included:latest` (Cypress 16) is incompatible with the repository tests."
+  ],
+  "verification": "Ran `su - ddevuser -c 'ddev describe'` \u2192 web/db/openldap/phpmyadmin status OK. HTTP check inside web container: `curl` \u2192 `/` returns 302 redirect to /login, `/login` returns 200 with the rendered IT-Fachplanung login page. LDAP: `ldapsearch ... \"(uid=*)\" uid` returned 10 entries. DB: 9 tables in schema `db`. Cypress run (image cypress/included:13.17.0) on spec cypress/e2e/01-infrastruktur_setup.cy.js \u2192 \"All specs passed! 4 passing, 0 failing\" (exit 0); spec cypress/e2e/02-benutzerverwaltung.cy.js \u2192 \"5 passing, 0 failing\" including \"erstellt Screenshot der LDAP-Suche\" (exit 0). All exit codes 0.",
+  "reported_outcome_evidence": [
+    "ddev --version \u2192 ddev version v1.25.4 (installed to /usr/local/bin/ddev)",
+    "ddev start final \u2192 'Successfully started tfm-fachplanung', containers ready",
+    "ddev composer install --no-interaction \u2192 exit 0, 'Generating autoload files' (47 packages installed)",
+    "ddev npm i \u2192 exit 0, 'added 592 packages'",
+    "ddev importDump \u2192 exit 0; `ddev mysql -e 'SHOW TABLES;'` lists antragsbuch, dienststelle, dynform_field, fachplanung, gesamtplan, massnahme, teilmassnahme, user, zweck",
+    "curl / \u2192 code=302 redirect=/login; curl /login \u2192 code=200 (full IT-Fachplanung login HTML returned)",
+    "ldapsearch -b dc=example,dc=org '(uid=*)' uid \u2192 10 entries (test users loaded)",
+    "Cypress 01-infrastruktur_setup.cy.js \u2192 'All specs passed!' Tests:4 Passing:4 Failing:0",
+    "Cypress 02-benutzerverwaltung.cy.js \u2192 Tests:5 Passing:5 Failing:0; individual test 'erstellt Screenshot der LDAP-Suche \u2713' passed after LDAP config alignment"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

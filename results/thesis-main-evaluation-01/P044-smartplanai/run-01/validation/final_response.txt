@@ -1,0 +1,28 @@
+## Validation Report — SmartPlanAI
+
+**Assessment: `success`**
+
+The documented Linux installation method (`make run`) was carried out successfully and the application is operational.
+
+### Checks performed and evidence
+
+1. **Resulting running state** — `docker ps` shows container `deployment-streamlit-pipeline-1` from image `blp-streamlit-pipeline:latest`, state `Up`, port `0.0.0.0:8501->8501/tcp`. `docker compose -f deployment/docker-compose.yml ps` confirms service `streamlit-pipeline` is Up.
+
+2. **Application endpoint responsive** — From the host:
+   - `curl -s -o /dev/null -w "%{http_code}" http://localhost:8501/_stcore/health` → `HTTP 200`
+   - `curl -s http://localhost:8501/` → `HTTP 200`, returns the Streamlit HTML shell (1522 bytes)
+   This matches the guide's expectation that the app is reachable at http://localhost:8501.
+
+3. **Server ready inside container** — `docker exec ... python3 -c "urlopen('http://localhost:8501/_stcore/health').read()"` → `b'ok'`.
+
+4. **App code and dependencies present** — `/app/blp_streamlit_pipeline` contains `run.py`, `pages`, `src`; all key imports succeed inside the container (`streamlit 1.55.0`, `paddleocr`, `paddlepaddle`, `cv2`, `geopandas`, `onnxruntime`, `pdf2image`). Preloaded PaddleOCR German models present under `/home/appuser/.paddlex/official_models/` (`PP-OCRv5_server_det`, `latin_PP-OCRv5_mobile_rec`).
+
+5. **Startup logs clean** — Container logs show only the standard Streamlit "You can now view your Streamlit app in your browser" banner; no tracebacks or errors.
+
+6. **No failing prerequisites** — Docker 29.7.2 and Compose v5.5.0 present; image `blp-streamlit-pipeline:latest` exists.
+
+### Caveat (does NOT constitute an installation failure)
+Docker reports the container health as `unhealthy`. Inspection shows why: `HEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health` returns `ExitCode: 127`, `"/bin/sh: 1: curl: not found"` — the slim runtime image does not contain `curl`. This is a defect in the image's own healthcheck definition, not in the application: the health endpoint itself returns `200 / "ok"` when queried (via Python, since curl is absent), and the app serves pages normally. The supplied guide requires only that the app start and be reachable via `make run`; it specifies no healthcheck requirement. Therefore the installation is complete and the software is operational.
+
+### Limitations
+Full end-to-end interactive UI rendering (WebSocket-driven page execution) cannot be exercised from a non-browser shell; validation relied on HTTP endpoint responses, in-container dependency imports, process/log inspection, and file presence — all of which indicate a healthy, running deployment.

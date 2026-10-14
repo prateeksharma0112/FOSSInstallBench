@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P035-regensburger-ki-fuehrerschein__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-08T23:57:32.278719+02:00",
+    "finished_at": "2026-10-09T00:03:42.649696+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P035",
+    "project": {
+      "opencode_id": "10064",
+      "name": "Regensburger KI-F\u00fchrerschein",
+      "description": "Web-based learning platform with interactive stations",
+      "catalogue_url": "https://opencode.de/de/software/regensburger-ki-fuhrerschein-10064",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein",
+      "commit_sha": "07106747c55ab8a214bf52142ddcb28ed5a0faaf",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository Readme",
+      "url": "https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein/-/blob/07106747c55ab8a214bf52142ddcb28ed5a0faaf/README.md",
+      "language": "German",
+      "word_count": 79
+    },
+    "task_id": "P035-regensburger-ki-fuehrerschein"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 370.39100000000326,
+    "repository_setup_duration_seconds": 12.03100000001723,
+    "installation_duration_seconds": 305.030999999959,
+    "validation_duration_seconds": 47.81300000002375,
+    "command_count": 47,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 20,
+    "validation_command_count": 23
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P035-regensburger-ki-fuehrerschein/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

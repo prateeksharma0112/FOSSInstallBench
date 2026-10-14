@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P034-startuphafen__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-08T23:16:56.403506+02:00",
+    "finished_at": "2026-10-08T23:56:34.226909+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P034",
+    "project": {
+      "opencode_id": "6811",
+      "name": "Startuphafen",
+      "description": "Startuphafen is a webapplication designed to help users navigate the german company application process.",
+      "catalogue_url": "https://opencode.de/de/software/startuphafen-6811",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/startuphafen-sh",
+      "commit_sha": "868cad507ba7527e901abf06e1197aa9b29c4369",
+      "license": "GPL-3.0-or-later"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/startuphafen-sh/-/blob/868cad507ba7527e901abf06e1197aa9b29c4369/README.md",
+      "language": "English",
+      "word_count": 1031
+    },
+    "task_id": "P034-startuphafen"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2377.8910000000033,
+    "repository_setup_duration_seconds": 6.375,
+    "installation_duration_seconds": 2256.5619999999763,
+    "validation_duration_seconds": 82.93800000002375,
+    "command_count": 124,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 96,
+    "validation_command_count": 24
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P034-startuphafen/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

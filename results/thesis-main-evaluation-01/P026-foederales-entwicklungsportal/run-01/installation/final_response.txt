@@ -1,0 +1,1 @@
+Installed and verified the "Föderales Entwicklungsportal" project at /workspace using the documented Yarn/Next.js workflow. The production export (`yarn export`) completed successfully and produced a complete, servable `build` directory.

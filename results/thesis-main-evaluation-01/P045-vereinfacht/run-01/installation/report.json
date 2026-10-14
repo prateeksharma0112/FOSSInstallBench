@@ -1,0 +1,25 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## Method\nInstalled via Docker Compose from `/workspace` at commit `c2a2b2e`. The `vereinfacht` compose stack was built and started, then the Laravel API and Next.js frontend were configured following the supplied guide.\n\n## Key actions & state\n- **Images built**: `vereinfacht-api:latest`, `vereinfacht-web_application:latest`, `vereinfacht-tooling:latest` (plus pulled `mariadb:11.8`, `docker.swagger.io/swaggerapi/swagger-ui`).\n- **Containers running** (`docker compose ps`): `vereinfacht-database-1` (3306), `vereinfacht-api-1` (3001\u219280), `vereinfacht-api-docs-1` (3002\u21928080), `vereinfacht-tooling-1` (3000), `vereinfacht-web_application-1` (3003\u21923000).\n- **Blocking bug fixed**: `docker/tooling/tooling.Dockerfile` had `COPY --from=node /usr/lib /usr/lib`, which replaced the PHP image's newer `libapk.so.3.0.0` (apk-tools 3.0.8) with node image's older copy (apk-tools 3.0.6), breaking `apk` inside later RUN steps (`Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found`, exit 127). The line was commented out; `docker compose build tooling` then succeeded.\n- **API setup** (all inside `vereinfacht-tooling-1`, working dir `/var/www/html/api`): `composer install`; `cp .env.example .env`; `php artisan key:generate`; `php artisan migrate:fresh --seeder=FakeDatabaseSeeder`; `php artisan filament:assets`; `npm ci`; `npm run build`; super-admin token created with `php artisan tinker`.\n- **Web setup**: `cp .env.local.example .env.local` (in `/var/www/html/web_application`) with the API bearer token; `npm ci`; `npm run dev` started in the tooling container on port 3000.\n- **Permission fix**: `chown -R 1000:1000 api/storage api/bootstrap/cache` on the host \u2014 php-fpm worker runs as uid 1000 (`verein`) while files were root-owned, causing HTTP 500 on every request.\n- **Compose tweak**: added `env_file: ./web_application/.env.local` and `API_DOMAIN`/`NEXTAUTH_URL` to the `web_application` service so the dockerized build (port 3003) works (previously next-auth `NO_SECRET` 500).\n\n## Access points\n- API/admin: http://localhost:3001 (admin login `hello@vereinfacht.digital` / `password`)\n- Swagger docs: http://localhost:3002\n- Web dev frontend: http://localhost:3000 (test user `club-admin-1@example.org` / `password`)\n- Dockerized web frontend: http://localhost:3003\n\n## Files changed in repo\n`docker/tooling/tooling.Dockerfile` and `docker-compose.yml`. Local runtime config (`api/.env`, `web_application/.env.local`) and dependency dirs are gitignored. No incomplete work; the Cypress `e2e` project referenced by the guide is absent from the repository.",
+  "additional_actions": [
+    "Patched docker/tooling/tooling.Dockerfile to remove the node /usr/lib copy that broke apk (upstream image drift bug)",
+    "chown -R 1000:1000 api/storage api/bootstrap/cache to match the php-fpm 'verein' user and fix HTTP 500 permission errors",
+    "Added env_file (web_application/.env.local) and API_DOMAIN/NEXTAUTH_URL environment to the web_application service in docker-compose.yml so the dockerized frontend on port 3003 works",
+    "Supplied USER_ID=1000/GROUP_ID=1000 build args (unset in environment) to avoid blank build-arg warnings"
+  ],
+  "verification": "Endpoint checks (all returned HTTP 200): `curl` to http://localhost:3001/admin/login (200), http://localhost:3001/v1_openapi.json (200), http://localhost:3002/ (200), http://localhost:3000/ (200), http://localhost:3003/ (200). Authenticated JSON:API request `curl -H \"Authorization: Bearer 1|...\" http://localhost:3001/api/v1/clubs` returned 200. Backend test suite `php artisan test` (inside tooling container, /var/www/html/api) returned exit code 0 with \"Tests: 83 passed (323 assertions)\". `docker compose ps` showed all five services Up. `docker compose build tooling` completed successfully after the Dockerfile fix; the rebuilt image returned `apk-tools 3.0.8-r0`, node v20.20.2, Composer 2.10.3, and 7 required PHP extensions.",
+  "reported_outcome_evidence": [
+    "docker compose build tooling -> 'Image vereinfacht-tooling Built' (previously failed with: '#42 ERROR: process \"/bin/sh -c docker-php-ext-configure gd --with-freetype --with-jpeg\" did not complete successfully: exit code 127' and 'Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found')",
+    "curl -sL -o /dev/null -w '%{http_code}' http://localhost:3001/admin/login -> 200",
+    "curl ... http://localhost:3001/v1_openapi.json -> 200",
+    "curl ... http://localhost:3002/ -> 200",
+    "curl ... http://localhost:3000/ -> 200",
+    "curl ... http://localhost:3003/ -> 200",
+    "curl -H 'Authorization: Bearer 1|WEhI5anY...' http://localhost:3001/api/v1/clubs -> 200",
+    "cd api && php artisan test -> 'Tests: 83 passed (323 assertions)', exit code 0",
+    "php artisan migrate:fresh --seeder=FakeDatabaseSeeder -> all seeders DONE (e.g. DatabaseSeeder, DemoClubSeeder, FakeReceiptSeeder)",
+    "docker compose ps -> api, api-docs, database, tooling, web_application all 'Up'"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

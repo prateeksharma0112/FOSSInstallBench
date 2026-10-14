@@ -1,0 +1,24 @@
+SPARK Workflow was installed and brought up successfully on the local host using the documented Docker Compose + Process Compose workflow.
+
+Summary of what was done:
+1. Installed the documented prerequisites (none were preinstalled except Docker): uv 0.12.23, CPython 3.13.16 (via uv), Process Compose v1.122.0, Node.js 24.11.1, and pnpm 10.30.2 (via corepack).
+2. Ran `uv sync --locked --all-packages` (installed the whole Python monorepo workspace) and `pnpm install --frozen-lockfile` in `01-frontend/frontend`.
+3. Generated the root `.env` non-interactively via `uv run poe create-secrets` (piped the prompt answers), supplying local Keycloak user credentials and placeholder external LLM/Docling settings.
+4. Started shared infrastructure with `docker compose --env-file .env up -d --wait`.
+5. Started application services with `process-compose up -D`.
+
+Two issues were encountered and resolved:
+- The `minio/minio` and `minio/mc` Docker Hub repositories are no longer publicly pullable ("pull access denied"). Since other sources were also unauthorized, I added a `docker-compose.override.yaml` substituting `bitnamilegacy/minio` and `bitnamilegacy/minio-client` (same env/CLI contract).
+- The generated `S3_SECRET_ACCESS_KEY` began with `-`, which `mc` parsed as a CLI flag and broke `minio-init`. I replaced it with a valid value and restarted.
+- On the very first start, first-run Alembic migrations exceeded the 20s readiness-probe `initial_delay_seconds`, so several services were terminated; after the migrations completed I restarted the affected processes, and everything then passed its probe.
+
+Final verified state:
+- All 11 shared-infra containers healthy (Postgres/pgvector, Temporal + init + UI, MinIO + init + proxy, Qdrant, Keycloak + bootstrap, oauth2-proxy, SpiceDB).
+- All 38 Process Compose processes are OK: 33 Running, 5 Completed with exit=0 (the seed jobs), 0 failures.
+- Seed jobs ran successfully: project_logic (5 project_status, 1 project_type), formal_completeness (3 template_category, 24 template_document_type), administrative_file_draft (1 vae_template, 159 vae_node_template).
+- Law DB `gesetze-normen` seeded (satz=19792, absatz=7255, norm=2187, etc.).
+- Endpoints respond: frontend http://localhost:3000/app/ (302 to Keycloak login, which returns a Bearer token for the seeded user), Keycloak http://localhost:9090, Temporal UI http://localhost:8233, MinIO console http://localhost:9001, Qdrant http://localhost:6333/healthz, all backend `/docs` endpoints 200.
+
+Access point: open http://localhost:3000/app/ and sign in with the local Keycloak user (email spark@example.com, password SparkLocal123! as configured locally).
+
+Note: external LLM (LiteLLM) and Docling Serve endpoints were configured with placeholder values since no provider was available; the local stack itself is fully installed and running. The MinIO image substitution is a local workaround for the upstream registry change, documented in `docker-compose.override.yaml`.

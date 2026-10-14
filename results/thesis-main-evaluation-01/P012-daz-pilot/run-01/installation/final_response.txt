@@ -1,0 +1,12 @@
+Installation of DaZ-Pilot (Docker Compose on-premises stack) completed successfully in /workspace at commit ba32aab.
+
+What was done:
+- Generated all required secrets (SUPER_ADMIN_API_KEY, SECRETS_ENCRYPTION_KEY, MEDIA_URL_SIGNING_KEY, DB_PASS) per INSTALLATION.md §2.
+- Generated the age backup keypair using the backup image (age-keygen was not available via apt); set AGE_RECIPIENT in .env and kept the identity file off the working tree.
+- Configured .env (cp .env.example .env) with production values, generated secrets, SMTP placeholders and AGE_RECIPIENT.
+- Ran `docker compose up -d --build`, building backend, dashboard, ml-service and backup images and starting PostgreSQL, Qdrant, ml-service, migrate, backend, worker, dashboard and backup. The ml-service downloaded the 4.6 GB SigLIP weights (first `up` aborted on the dependency-health window, resolved by re-running up once ml-service was healthy).
+- Verified per §6: all services healthy, migration job exited 0, API health, dashboard, Swagger UI and ml-service health all return 200.
+- Performed §7 onboarding: created school "eckener-schule" and an admin teacher via the super-admin API (both HTTP 201).
+- Performed §10: one-off `docker compose run --rm backup backup.sh` completed a backup set successfully.
+
+Because no public DNS/TLS/reverse proxy exists in this environment, the documented docker-compose.local.yml overlay was used to publish ports for the functional checks instead of a proxy.

@@ -1,0 +1,27 @@
+The samarbeid installation is complete and operational.
+
+## Validation performed
+
+**Toolchain (per guide requirements):** `ruby 3.4.10` (matches `.ruby-version`), `node v24.9.0` and `yarn 4.13.0` (match `.tool-versions`), with Ruby/Node/yarn all resolved on PATH (`/usr/local/bin`).
+
+**Runtime:** `bin/dev` (foreman + `Procfile.dev`) is running: Puma on `localhost:3000` and Vite dev server. Docker Compose dependency services are up: `workspace-apache-tika-1` (9998) and `workspace-mailpit-1` (1025/8025), both healthy.
+
+**App behavior:**
+- `GET http://localhost:3000/` → `301` redirect to `/users/sign-in` for unauthenticated users (as expected).
+- `GET /users/sign-in` → `200`, page title `samarbeid`, Vue SPA shell rendered with Vite module scripts.
+- Vite assets served through Rails: `/vite-dev/@vite/client` → `200`, `/vite-dev/entrypoints/application.js` → `200`.
+- Apache Tika `9998` → `200`, Mailpit `8025` → `200`.
+
+**Database:** PostgreSQL 14 reachable; `samarbeid_development` has 64 public tables (schema migrated), and the seeded admin exists: `admin@example.org` (role 2 = super_admin). `bundle check` reports dependencies satisfied.
+
+**End-to-end auth test:** Fetched CSRF token from the sign-in page, POSTed `admin@example.org` / `UxbuS7Zp8BNM` to `/users/sign-in` → `302` redirect to `/`; authenticated `GET /` → `200` with `"current_user":{"type":"user","id":1,...,"email":"admin@example.org"}` confirming a valid session.
+
+**Rails boot:** `bin/rails runner` executed successfully (`User.count` = 1), confirming the full Rails stack loads.
+
+No prohibited actions were performed; the already-running `bin/dev` server was used as-is.
+
+### Assessment
+`success` — The documented method (`bin/setup`, then `bin/dev`) produced a running app reachable on port 3000, with authenticated access working and all declared dependencies (Ruby, Node/yarn, PostgreSQL, Docker services) present and functional.
+
+### Note / non-blocking observation
+`bin/dev` runs as a background process rather than a system service, but the guide only requires opening http://localhost:3000, which works.

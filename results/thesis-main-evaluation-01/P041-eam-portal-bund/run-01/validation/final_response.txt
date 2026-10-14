@@ -1,0 +1,12 @@
+Validation complete: EAM-Portal Bund is correctly installed and operational per the supplied guide.
+
+Verified:
+- Node.js v22.11.0 / npm 10.9.0 present via /usr/local/bin (matches Node 22 prerequisite).
+- Dependencies from npm ci present (317 top-level packages; next@15.3.0, react@19.1.0, react-dom@19.1.0 resolved via npm ls).
+- `npm run lint` → "✔ No ESLint warnings or errors", exit 0.
+- Static export `out/` present with all expected route HTML files + _next static assets.
+- `npm run dev` served http://localhost:3000 returning HTTP 200 for /, /ea-repository, /eam-unterstuetzung, /technologie-radar, /referenzarchitekturen, /prinzipien-richtlinien.
+- Static export served independently returns 200 with correct title for index.html and pages.
+- Not part of final method (abandoned attempt) — not required: no running process at start; started dev server only to validate.
+
+Limitation: `npm run build` was not re-run (boundaries prohibit building); validated via the already-produced `out/` and by running lint + dev.

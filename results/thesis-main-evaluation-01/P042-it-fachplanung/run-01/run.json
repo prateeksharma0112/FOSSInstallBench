@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P042-it-fachplanung__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-09T22:32:12.371567+02:00",
+    "finished_at": "2026-10-09T22:59:01.002442+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P042",
+    "project": {
+      "opencode_id": "2546",
+      "name": "IT-Fachplanung",
+      "description": "More efficient IT departmental planning for the highest state authorities and their business units.",
+      "catalogue_url": "https://opencode.de/de/software/it-fachplanung-2546",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung",
+      "commit_sha": "786839b35393c508cf73e75e6424d9dbb2fe221f",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung/-/blob/786839b35393c508cf73e75e6424d9dbb2fe221f/README.md",
+      "language": "German",
+      "word_count": 347
+    },
+    "task_id": "P042-it-fachplanung"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1609.545999999973,
+    "repository_setup_duration_seconds": 6.48399999999674,
+    "installation_duration_seconds": 919.125,
+    "validation_duration_seconds": 662.1720000000205,
+    "command_count": 171,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 62,
+    "validation_command_count": 105
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P042-it-fachplanung/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

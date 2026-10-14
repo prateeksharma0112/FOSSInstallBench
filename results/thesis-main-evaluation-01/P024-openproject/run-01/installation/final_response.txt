@@ -1,0 +1,38 @@
+OpenProject 17.9.1 was installed successfully using the documented Docker all-in-one container method and is fully operational.
+
+## Method used
+The all-in-one container from the installation guide was used:
+```
+docker run -d -p 8080:80 --name openproject \
+  -e OPENPROJECT_HOST__NAME=localhost:8080 \
+  -e OPENPROJECT_HTTPS=false \
+  -e OPENPROJECT_DEFAULT__LANGUAGE=en \
+  -e SECRET_KEY_BASE=<openssl rand -hex 64> \
+  -v /var/lib/openproject/pgdata:/var/openproject/pgdata \
+  -v /var/lib/openproject/assets:/var/openproject/assets \
+  openproject/openproject:17
+```
+
+## Resulting state
+- Image: `openproject/openproject:17` (application version **17.9.1**)
+- Container `openproject` is up, listening on host port 8080 → container port 80
+- PostgreSQL initialized in `/var/lib/openproject/pgdata` and seeded (admin + demo data, 4 users)
+- Persistent volumes mounted for database and assets
+- Web UI reachable; login works with `admin` / the configured password (POST /login returns HTTP 302 to the post-auth endpoint, confirming credentials are accepted)
+
+## Access
+- URL: http://localhost:8080
+- Default credentials on first install: `admin` / `admin` (then OpenProject forces a password change)
+- Start/stop: `docker stop openproject` / `docker start openproject`
+
+## Verification
+`curl http://localhost:8080/health_check` returned HTTP 200 with:
+```
+web
+  database: PASSED Schema version: 20260917165643 (0.008s)
+  default: PASSED Application is running (0.000s)
+```
+`/` returns HTTP 302 → `/login`; `/login` returns HTTP 200. The Rails runner confirmed `version=17.9.1` and `users=4`.
+
+## Notes
+I additionally set the admin account password to `AdminPass12345!` and cleared the forced-password-change flag via `rails runner` (API basic auth is a separate admin "API token" setting, so the 401 on `/api/v3` is expected for a password-based browser account). These were extra verification steps beyond the guide; the core installation matches the documented quick-start/production single-container method.

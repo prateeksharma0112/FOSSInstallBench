@@ -1,0 +1,19 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed the Regensburger KI-F\u00fchrerschein (Next.js 15 web learning platform) in the workspace `/workspace` (pre-checked-out commit 0710674). The base image lacked Node.js, Bun, npm and yarn. Prerequisites installed: `unzip` via apt, then Bun 1.4.2 via the official installer (https://bun.sh/install) into `~/.bun/bin` (PATH updated). Dependencies installed with `bun install` (511 packages; `node_modules` present with 412 top-level entries). The dev server was started with `bun dev` (`next dev --turbopack --port 5173`) and verified serving at http://localhost:5173 (HTTP 200, title 'KI F\u00fchrerschein Regensburg'). No `.env.local` was created; MongoDB variables are documented as optional and only affect the metrics/certificates features. A production `bun run build` was attempted and fails during page-data collection with 'Missing MONGODB_URI env var' for `/metrics` and `/api/certificates` \u2014 expected without a database and not part of the documented dev workflow. Final method: documented Bun workflow (bun install + bun dev).",
+  "additional_actions": [
+    "Installed the `unzip` package via apt-get because the official Bun installer requires it and it was absent.",
+    "Installed Bun 1.4.2 from the official https://bun.sh/install script (the environment had no Node.js/Bun/npm/yarn), placing it in ~/.bun/bin and adding it to PATH.",
+    "Ran a production build (`bun run build`) as an extra verification step; it fails at page-data collection due to the optional MONGODB_URI env var not being set (expected behavior, not required for dev)."
+  ],
+  "verification": "Started `bun dev` and probed http://localhost:5173/ with curl. Result: `curl -s -o /tmp/idx2.html -w \"HTTP %{http_code}\" http://localhost:5173/` returned `HTTP 200` with 21102 bytes of HTML containing `<title>KI F\u00fchrerschein Regensburg</title>`. Dev log showed `\u2713 Ready in 993ms`, `\u2713 Compiled / in 6.8s`, `GET / 200 in 7272ms`. Exit code 0. Dev server process `next dev` running (pid 1365).",
+  "reported_outcome_evidence": [
+    "`bash /tmp/bun-install.sh` -> 'bun was installed successfully to ~/.bun/bin/bun'; `bun --version` -> 1.4.2",
+    "`bun install` in /workspace -> '511 packages installed [145.23s]', exit 0; node_modules has 412 entries",
+    "`bun dev` log -> '$ next dev --turbopack --port 5173', '\u2713 Ready in 993ms', '\u2713 Compiled / in 6.8s', 'GET / 200 in 7272ms'",
+    "`curl -s -o /dev/null -w 'HTTP %{http_code}' http://localhost:5173/` -> 'HTTP 200'",
+    "Served HTML 21102 bytes with '<title>KI F\u00fchrerschein Regensburg</title>'"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

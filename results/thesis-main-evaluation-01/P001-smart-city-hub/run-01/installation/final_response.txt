@@ -1,0 +1,16 @@
+The Smart City Hub installation was completed and verified via the documented Docker Compose quickstart method.
+
+**What was done**
+- Repository present at `/workspace` at commit `7b1730e51e1b7d44a10fc753d0adc8d079eb44dd` (HEAD detached, clean tree).
+- Prerequisites installed: `make`, `python3` (via apt). Docker Engine 29.7.2 and Docker Compose v5.5.0 were already available.
+- Primary method — the guide's per-service Docker Compose quickstart:
+  `cd /workspace/deployment/runtimes/compose/dev && make up SCENARIO=data_store_backend`
+- First build failed because `api-logging==2.0.0` / `spg-*` are published on the project's GitLab PyPI registry, not public PyPI. The guide's own `packages/.env.example` and `deployment/runtimes/kubernetes/images/README.md` document `PIP_EXTRA_INDEX_URL`; that registry (`https://gitlab.opencode.de/api/v4/projects/9921/packages/pypi/simple`) is publicly reachable. Re-running with `PIP_EXTRA_INDEX_URL` exported made the image build succeed. This is a documented configuration input, not a failure of the install method.
+
+**Result / access points**
+- Container `data-store-backend-service` running, mapping host `8007` -> container `8000`.
+- `GET http://127.0.0.1:8007/healthz` -> `{"status":"ok"}` (HTTP 200).
+- `POST` + `GET /data/smoke/testtopic` round-trip returns the stored payload `{"hello":"world"}` (HTTP 200), files persisted under `/workspace/apps/data_store_backend/data_store/smoke/`.
+- Swagger UI at `http://127.0.0.1:8007/docs/`, OpenAPI at `/docs/openapi.json`.
+
+The Kubernetes reference path (`make local-up`) was not attempted since k3d/kubectl/helm are absent and it requires building/plumbing the full HA platform; the guide explicitly offers Compose for individual-service runs, and the requested quickstart `make up SCENARIO=data_store_backend` completed and verified successfully.

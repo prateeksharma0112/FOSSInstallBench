@@ -1,0 +1,12 @@
+Validation of the Nebu installation in /workspace (commit a4539d3) against the supplied guide.
+
+The full Docker Compose stack (final method: `make setup` + `docker compose up`) is installed, healthy, and operational:
+- All long-running containers (server, postgres, dex, minio, clamav) report Up (healthy) with 0 restarts; createbuckets exited 0.
+- Server applies all 34 migrations, boots an OTP release, and serves Bandit on 0.0.0.0:4000; /health returns 200 {"status":"ok"}.
+- Matrix API on :8008 works (/_matrix/client/versions 200, login flows m.login.sso + m.login.token, well-known client 200, E2EE force-disabled, unauthenticated requests correctly 401 on the fresh DB).
+- Admin/Bootstrap UI on :8080 works (/admin → 302 → /admin/bootstrap 200, wizard steps + static assets load, CSRF enforced).
+- Postgres has 34 migrations applied and 49 tables; MinIO has the nebu-media bucket; Dex is healthy with dev users and a static OIDC client; /etc/hosts contains 127.0.0.1 dex.
+
+The only gui de step not completed is the interactive Bootstrap Wizard login (step 4), which is browser/interactive and correctly leaves the server fail-closed as the documented fresh-install state. Noted doc drift: guide references a removed `nebu-admin` client/secret and a `Nebu.Application started` log token; the repo uses `nebu-gateway`/`nebu-dev-secret` and logs a Bandit listener — this is documentation drift, not an installation defect.
+
+Assessed outcome: success.

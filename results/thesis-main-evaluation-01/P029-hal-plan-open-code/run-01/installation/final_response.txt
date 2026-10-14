@@ -1,0 +1,29 @@
+The HAL-Plan / Buildplace application was successfully installed and verified using the manual setup path (Option 2) from the supplied Installation guide, with supporting details from the repository's README/devcontainer files.
+
+## Summary of what was done
+
+**Environment:** Ubuntu 22.04 container, `/workspace` (repo checked out at target SHA). Docker Engine 29.7.2 available; no preinstalled Node/pnpm.
+
+1. **Prerequisites** — None of Node/npm/pnpm existed. Installed:
+   - Node.js **24.15.0** (required `engines.node`) from `https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.xz` extracted to `/usr/local`.
+   - pnpm **11.2.2** via `npm install -g pnpm@11.2.2` (matches `packageManager`).
+2. **Backing services** (Docker):
+   - `postgis` = `postgis/postgis:17-3.5`, port 5432, `POSTGRES_PASSWORD=postgrespw`, DB `ffy_dev` (guide says `postgis/postgis`; pinned version taken from `.devcontainer/docker-compose.yml`).
+   - `valkey-cache` = `valkey/valkey:8.1.4` on 6379 (`allkeys-lru`).
+   - `valkey-queue` = `valkey/valkey:8.1.4` on 6380 (`noeviction`, appendonly).
+3. **Install & config:**
+   - `cp .env.defaults .env`; generated random `SESSION_KEY` and `CRYPTO_SECRET` (32-byte hex), set `WEBAPP_DEV_USER_PW`, and added `VALKEY_PERSISTENT_SERVER=localhost` / `VALKEY_PERSISTENT_PORT=6380`.
+   - `pnpm install` (installed from npm registry, 2m52s).
+   - `pnpm prisma generate`, `pnpm setupDb` (created `ffy_shadow`, `ffy_test`), `pnpm prisma migrate reset --force` (7 migrations + seed).
+   - `pnpm codegen` (GraphQL types + gql-tada).
+   - Copied `web-ifc` wasm files into `web/public/web-ifc/` per `.devcontainer/setup.sh`.
+4. **Start:** `pnpm dev` (background, log at `/tmp/dev.log`). Server listened on http://127.0.0.1:3000.
+
+## Verification (all observed, exit code 0)
+- `curl http://localhost:3000/` → **HTTP 200**, returns the app HTML shell.
+- `curl -X POST http://localhost:3000/api/graphql -d '{"query":"{ __typename }"}'` → `{"data":{"__typename":"Query"}}`.
+- `docker exec postgis psql -U postgres -d ffy_dev -c "select count(*) from information_schema.tables where table_schema='public';"` → **70** tables (schema/seed applied).
+- `docker exec valkey-cache valkey-cli ping` → `PONG`; `valkey-queue` → `PONG`.
+- `pnpm prisma migrate status` → "7 migrations found ... Database schema is up to date!"
+
+Note: the GraphQL endpoint is served at `/api/graphql`, not `/graphql`. The dev server is currently running in the background. No attempt was made to build the production bundle (`pnpm build`), which is outside the documented dev setup.

@@ -1,0 +1,17 @@
+Validation of the elterngeldrechner installation complete. The mise-based installation is complete and operational.
+
+**Verified working:**
+- mise 2026.10.6 at `/root/.local/bin/mise`; all 10 pinned tools resolve to the exact versions in `mise.toml` (node 24.18.0, npm 11.16.0, awscli 2.36.13, fnox 1.31.1, git-cliff 2.13.1, hk 1.53.0, jq 1.8.2, lychee 0.24.2, op 2.38.1, glab 1.111.0, trivy 0.72.0) with shims in `/root/.local/share/mise/shims`.
+- `npm ci` deps present (409 dirs, 48 bins).
+- `mise run start` served the widget at http://localhost:5173/ (HTTP 200, host page + `src/application/index.tsx`).
+- Static checks pass: `mise run format`, `type-check`, `lint` (0 warnings/0 errors across 514 files), `stylelint` — all exit 0.
+- `MISE_ENV=staging mise run build` succeeds; `mise run check-build-artifacts` confirms one JS / no CSS (inlined).
+- `mise run audit-licenses` exit 0.
+- Git hooks installed (`.git/hooks/pre-commit`, `commit-msg`); `hk check` runs.
+
+**Environmental/known limitations (not installation failures):**
+- Full `mise run test-suite`: 5148 passed / 1 skipped / 3 failed. All 3 failures are `Test timed out in 15000ms` under full-suite contention; both failing files pass in isolation.
+- `mise run link-check`: 3 external-link errors (1×404, 2×403) — external site behavior, not the install.
+- Deployment, `fnox` secret resolution, vulnerability/secret audits, and PostHog schema require 1Password vault/VPN and were not exercisable.
+
+**Assessed outcome: success**

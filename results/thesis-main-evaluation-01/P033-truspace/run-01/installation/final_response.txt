@@ -1,0 +1,15 @@
+TruSpace was installed and started successfully on the first documented `local-dev` path.
+
+**What was done**
+- Confirmed prerequisites: Docker 29.7.2, Docker Compose v5.5.0, git, curl, openssl present; 8 CPU / 7.6 GiB RAM / ~950 GiB free disk; Docker daemon reachable.
+- The provided guide's first-run path launches an interactive wizard (`scripts/configure-env.sh`) that waits for a profile selection and cannot run unattended. To keep execution non-interactive, I invoked the same documented configuration step directly with the default profile: `printf '1\n' | bash scripts/configure-env.sh`, which selects `1) local-dev`, applies all local-dev defaults, auto-generates `JWT_SECRET` and `WEBUI_SECRET_KEY`, and writes `/workspace/.env` (exit 0).
+- Ran the documented start command `./start.sh` from `/workspace` in the background (output to `/tmp/start.log`). `start.sh` detected the existing `.env`, used it, and executed `docker compose ... up -d` with `BUILD_OR_PULL_IMAGES=build`, building the backend and frontend images locally and pulling the IPFS, IPFS Cluster, and Open WebUI images.
+- Waited through the build/pull (large Open WebUI layers), then verified. `start.sh` completed its IPFS readiness check ("✔ IPFS API is ready") and all containers came up.
+
+**Resulting state**
+- All five services are running: `truspace-frontend` (Up, `:3000`), `truspace-backend` (Up, `:8000`), `ipfs0` (Up, healthy, `:5001`/`:8080`/`:4001`), `cluster0` (Up, `:9094`/`:9096`/`:9097`), `workspace-webui-1` (Up, healthy, `:3333`).
+- Frontend responds HTTP 200 at http://localhost:3000 with the TruSpace Next.js app; backend API is live (route `/api/health` returns 401, i.e. auth-protected and serving); IPFS API returns a valid peer ID; Open WebUI is healthy. Persistent data is under `/workspace/volumes/`.
+
+**Access points:** Frontend http://localhost:3000, API http://localhost:8000/api, Open WebUI http://localhost:3333, IPFS API http://localhost:5001.
+
+**Abandoned/alternate attempts:** none. Only the single `local-dev` method was used; it succeeded.

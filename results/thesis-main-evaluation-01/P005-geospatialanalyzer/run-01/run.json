@@ -1,0 +1,89 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P005-geospatialanalyzer__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-04T22:50:47.002506+02:00",
+    "finished_at": "2026-10-04T22:58:12.128867+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P005",
+    "project": {
+      "opencode_id": "4619",
+      "name": "GeospatialAnalyzer",
+      "description": "Open source software for providing a web service that enables the automated collection and analysis of geodata \u2013 e.g., as a basis for integration into digital application and administrative procedures.",
+      "catalogue_url": "https://opencode.de/de/software/geospatial-analyzer-4619",
+      "type": "Application",
+      "platforms": [
+        "web",
+        "linux",
+        "windows",
+        "mac"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/OC000024389631/GeospatialAnalyzer",
+      "commit_sha": "1b62187a74718590ee6e7ccda4d881983cc595af",
+      "license": "GPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository Development README",
+      "url": "https://gitlab.opencode.de/OC000024389631/GeospatialAnalyzer/-/blob/1b62187a74718590ee6e7ccda4d881983cc595af/README.development.md",
+      "language": "English",
+      "word_count": 986
+    },
+    "task_id": "P005-geospatialanalyzer"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 445.28099999999995,
+    "repository_setup_duration_seconds": 100.8599999999999,
+    "installation_duration_seconds": 300.922,
+    "validation_duration_seconds": 31.733999999999924,
+    "command_count": 46,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 23,
+    "validation_command_count": 19
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P005-geospatialanalyzer/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

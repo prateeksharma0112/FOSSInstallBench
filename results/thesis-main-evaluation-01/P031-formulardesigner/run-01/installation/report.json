@@ -1,0 +1,23 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "**Environment:** Ubuntu 22.04.5 LTS container, `/workspace` (git commit 7acedda). Node.js/npm were not preinstalled.\n\n**Steps performed:**\n1. Installed Node.js 24 via NodeSource: `curl -fsSL https://deb.nodesource.com/setup_24.x -o /tmp/nodesource_setup.sh`, `bash /tmp/nodesource_setup.sh`, `apt-get install -y nodejs`. Result: node v24.21.0, npm 11.19.0. (Chosen to match the repo's `.gitlab-ci.yml` image `node:24-alpine`; the project has no `engines` field.)\n2. Root library install: `cd /workspace && npm install` \u2192 \"added 287 packages\" (peer warnings for tiptap, 26 audit vulns reported; non-blocking).\n3. Library build: `cd /workspace && npm run build` (script: `tsc -p ./tsconfig.json && vite build && tsc -p ./tsconfig.json`) \u2192 exit 0, generated `dist/formulardesigner.es.js` (965 kB), `dist/assets/index.css`, and `dist/src/index.d.ts` + `dist/src/types/index.d.ts`.\n4. Example app install: `cd /workspace/example && npm install` \u2192 \"added 128 packages\", 0 vulnerabilities. The example depends on the library via `\"@seitenbau-dev/formulardesigner\": \"file:..\"`.\n5. Example app run: `cd /workspace/example && npm run dev` (vite) \u2192 server ready at `http://localhost:5173` in ~321 ms.\n6. Example app build: `npx tsc -b && npx vite build` \u2192 exit 0.\n\n**Final state / access:**\n- Library source build artifacts at `/workspace/dist/`.\n- Example app installable/startable from `/workspace/example` \u2014 the documented `npm run start:example` script (root) does `npm run build && cd example && npm install && npm run dev`; all its component commands were executed and succeeded.\n- Example app served at `http://localhost:5173` (HTTP 200); dev server was stopped after verification.\n\n**Method notes:** The guide documents both consuming via the published npm package (`npm install @seitenbau-dev/formulardesigner`) and running the bundled example. Network access to npmjs.org was available; the local `file:..` linked build path was used to verify the actual repository. A direct Node.js ESM `import` of the built package fails only on the imported `.css` file (expected for a browser/Vite component library); bundler-based consumption via the example app works.",
+  "additional_actions": [
+    "Installed Node.js 24.x and npm via the NodeSource apt repository (no Node runtime was preinstalled in the environment)",
+    "Built the example application (`example/`) with tsc + vite as an independent verification of library consumption",
+    "Stopped the example dev server after verification"
+  ],
+  "verification": "Commands and results: `node -v` \u2192 v24.21.0; `npm -v` \u2192 11.19.0. `npm run build` (root) exit 0 with dist artifacts listed. `curl -s -o /dev/null -w \"%{http_code}\" http://localhost:5173/` \u2192 200; `curl .../src/main.tsx` \u2192 200. `npx tsc -b && npx vite build` in example/ exit 0. A plain Node `import('@seitenbau-dev/formulardesigner')` failed with `Unknown file extension \".css\"`, which is expected for a browser/Vite library and does not indicate an install problem.",
+  "reported_outcome_evidence": [
+    "node -v => v24.21.0; npm -v => 11.19.0",
+    "root `npm install` => added 287 packages",
+    "root `npm run build` => exit 0; dist/formulardesigner.es.js (965.16 kB) and dist/assets/index.css (2,249.07 kB) generated; 'built in 1.88s'",
+    "example `npm install` => added 128 packages, found 0 vulnerabilities",
+    "example `npm run dev` => 'VITE v8.3.0 ready in 321 ms', 'Local: http://localhost:5173/'",
+    "curl http://localhost:5173/ => HTTP 200 with '<title>Formulardesigner Beispielapp</title>'",
+    "curl http://localhost:5173/src/main.tsx => HTTP 200, valid transformed React entry module",
+    "example `npx tsc -b && npx vite build` => exit 0, dist/assets/index-*.js (1,137.94 kB) generated",
+    "git commit checked out: 7acedda"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

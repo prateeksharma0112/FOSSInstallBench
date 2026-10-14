@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P015-samarbeid__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T00:18:43.873448+02:00",
+    "finished_at": "2026-10-06T00:32:29.531717+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P015",
+    "project": {
+      "opencode_id": "7647",
+      "name": "samarbeid",
+      "description": "A collaboration hub for all tasks, processes, data, documents, and chats within an organization.",
+      "catalogue_url": "https://opencode.de/de/software/samarbeid-7647",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/samarbeid/samarbeid",
+      "commit_sha": "25cce0af912bb5b99552fa4414764e14f53305ae",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/samarbeid/samarbeid/-/blob/25cce0af912bb5b99552fa4414764e14f53305ae/README.md",
+      "language": "English",
+      "word_count": 47
+    },
+    "task_id": "P015-samarbeid"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 825.75,
+    "repository_setup_duration_seconds": 17.64100000000326,
+    "installation_duration_seconds": 768.2810000000027,
+    "validation_duration_seconds": 24.546999999991385,
+    "command_count": 46,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 30,
+    "validation_command_count": 12
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P015-samarbeid/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

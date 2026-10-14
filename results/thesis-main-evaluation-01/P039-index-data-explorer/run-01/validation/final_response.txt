@@ -1,0 +1,16 @@
+Validation complete. The Index Data Explorer static web application is correctly installed and served by nginx.
+
+## Summary of validation
+
+**Environment inspected:** `/workspace` at git commit a8c4210, nginx 1.18.0 (Ubuntu 22.04) running as master PID 1328, listening on `0.0.0.0:8080`. Site config `/etc/nginx/sites-available/daexp` (`root /workspace`, `index index.html`, `try_files`), symlinked in `sites-enabled`, default site removed.
+
+**Checks performed and results:**
+- `nginx -t` → syntax OK; nginx master/worker processes confirmed live via `ps`/`ss`.
+- `GET http://localhost:8080/index.html` → 200, `<title>Data Explorer</title>`, 6724 bytes, correct `Content-Type: text/html`.
+- All 14 assets referenced by index.html (Materialize CSS/JS, d3, d3-scale-radial, Leaflet, markercluster, flatpickr, dataExplorer.css, and the 4 ES-module JS files) → all 200.
+- Recursive ES-module dependency graph crawl from `ProfilingController.js` → 25 modules fetched, **0 missing**.
+- Required guide folders all served: `config/baseConfig.json` (200, application/json, valid JSON), `i18n/en.json` & `de.json` (200, valid JSON), `src`, `externalPackages`, `php/dataExplorerProxy.php` (200).
+- All top-level HTML pages and 13 example pages (fcd, kosis, spotify) → 200, and each example's referenced assets/i18n/config resolve.
+- MIME types correct (`application/javascript`, `application/json`, `text/css`).
+
+**Limitations/uncertainty:** No browser or JS engine (node/chromium/firefox) exists in the container, so full DOM/JS runtime execution could not be exercised — validation is at the HTTP/asset-resolution level. Elasticsearch (listed as a prerequisite service) is not installed; `config/baseConfig.json` points at `http://localhost:9200` (connection refused). Therefore live index querying cannot be demonstrated, but Elasticsearch is an external runtime service, not part of this web-app installation, and the guide's installation steps concern only deploying the static files. The optional top-level `data/` folder referenced by some KOSIS import pages does not exist at `/workspace/data` (the `Satz_Einwohner*` XML samples are gitignored and absent); these affect only specific import workflows, not the core static app deployment.

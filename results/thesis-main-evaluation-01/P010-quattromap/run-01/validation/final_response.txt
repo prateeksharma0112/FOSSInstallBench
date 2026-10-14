@@ -1,0 +1,22 @@
+Validation complete. QuattroMap is installed correctly and is operational in `/workspace`.
+
+## What I inspected
+- **Repo & toolchain**: `/workspace` at git commit `24041c0`; `node v20.20.2` and `npm 10.8.2` present on PATH.
+- **Dependencies**: `node_modules/` populated (~283 entries incl. `maplibre-gl`, `webpack`, `webpack-cli`, `webpack-dev-server`) with `package-lock.json` present; matches `package.json`.
+- **Build artifacts**: `dist/` contains `bundle.js` (~1.295 MB), `index.html`, `oss-licenses.json`, `img/`, and `vendor/maplibre/maplibre-gl-worker.mjs` — matching the guide's documented build output location.
+
+## How I validated behavior
+- **Dev server (`npm start` = `webpack serve`)**: Started cleanly, compiled `152 modules` (`webpack 5.110.3 compiled with 5 warnings`, warnings only — maplibre dynamic-require notice and asset-size/performance recommendations). Served:
+  - `curl http://localhost:8080/` → **HTTP 200**, 9372 bytes, `<title>QuattroMap</title>`
+  - `curl http://localhost:8080/bundle.js` → **HTTP 200**, 1,356,256 bytes
+  - `curl http://localhost:8080/vendor/maplibre/maplibre-gl-worker.mjs` → **HTTP 200**, 18966 bytes
+- **Production build served standalone** (python static server on dist/): `/` → 200, `/bundle.js` → 200, `/vendor/maplibre/maplibre-gl-worker.mjs` → 200, `/oss-licenses.json` → 200; `dist/index.html` references `<script src="bundle.js">`.
+- **Bundle integrity**: `node --check dist/bundle.js` → exit 0 (valid JS); bundle contains `maplibre-gl` and application logic markers (`crosshair` ×19, `geocoder` ×92, `NRW Luftbild Farbe` config value). `config.json` is `import`ed at build time, so its absence as a standalone served path is expected, not a defect.
+- **Cleanup**: All webpack/dev-server/static-server processes started during validation were terminated; no listeners on 8080/9090 remain.
+
+## Caveats / limitations
+- The only anomaly is an `EBADENGINE` warning: `webpack-dev-server@6.0.0` declares `node >=22.15.0`, but the installed runtime is Node 20. It did not block compilation or serving, so the installation is functional despite the version-skew warning.
+- I did not perform in-browser rendering (no GUI browser available), so visual map-tile loading from external WMS/XYZ endpoints was not exercised; however server-side operation, HTTP 200 responses, correct HTML/title, and a valid application bundle with the expected feature code objectively demonstrate the software is installed, complete, and operational per the guide.
+
+## Assessment
+**success** — The documented installation method (npm install + build/serve) is complete and the application runs and serves as described.

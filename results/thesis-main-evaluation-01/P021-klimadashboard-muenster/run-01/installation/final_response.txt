@@ -1,0 +1,13 @@
+Installation of Klimadashboard Münster completed successfully per the supplied guide.
+
+**Environment:** Ubuntu 22.04 container, working dir `/workspace` (repo at commit `ffb429f`). No Node/npm/yarn were preinstalled.
+
+**Actions performed:**
+1. Installed Node.js v20.18.0 from the official nodejs.org tarball into `/usr/local` (Node 20 matches the project's Dockerfile `node:20-alpine`). `npm` 10.8.2 verified.
+2. Installed Yarn 1.22.22 globally via npm (guide uses `yarn`).
+3. Installed the `unzip` OS prerequisite via apt (used by the repo's data-download scripts).
+4. Ran `yarn install` from `/workspace` (exit 0). This resolved 609 packages (~810 MB in `node_modules`) and ran the `postinstall` script, which downloaded most data files into `assets/data/` and set up husky git hooks.
+
+**Verification:** Started the documented dev server with `yarn dev` from `/workspace`. Log showed `Next.js 15.5.27 Ready`, listening on `http://localhost:3000`. `curl http://localhost:3000/` returned **HTTP 200** with `<title>Klimadashboard Münster</title>`. The server was then stopped.
+
+**Known limitation:** Two `postinstall` data fetches (`scripts/bip-recent.sh`, `scripts/wachstum-recent.sh`, plus `einwohner.sh`) call the Regionalstatistik Genesis API and require `REGIONALSTATISTIK_USER`/`REGIONALSTATISTIK_SECRET` credentials (as the project's Dockerfile mounts these as build secrets). They return non-zip error payloads, so `assets/data/wachstum-recent.csv`, `bip-recent.csv`, and `einwohner.csv` are missing. Consequently the `/klima`, `/energie`, `/mobilitaet` routes return 500 (unresolved CSV imports) while `/` returns 200. This is a data-credential/upstream service limitation, not a dependency-installation failure. The application is installed and runnable per the guide.

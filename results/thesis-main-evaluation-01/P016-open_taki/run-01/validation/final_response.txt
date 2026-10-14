@@ -1,0 +1,31 @@
+## Validation Report: open_taki
+
+**Assessed outcome: `success`**
+
+The open_taki installation is complete and operational as a drop-in Apache Tika replacement, exactly as described in the supplied guide.
+
+### What I inspected
+- **Workspace** (`/workspace`, git `ba6891a`): confirmed the deployment artifacts created by the attempt — `taki-config.yaml` (exact guide content: listen :9998, llm/collabora/whisper/embedding/pdf/fallback/routing sections) and `tika.yml` (service `tika`, image `codeberg.org/kosmos-eu/open_taki:latest`, config bind-mount `./taki-config.yaml:/etc/open_taki/config.yaml:ro`, `restart: always`, port `9998`, `opencloud-net`).
+- **Runtime**: Docker 29.7.2; container `workspace-tika-1` running, image sha256:21956bb55d1d (394 MB), entrypoint `open_taki`, cmd `/etc/open_taki/config.yaml`, port `0.0.0.0:9998->9998/tcp`, RestartCount=0, restart policy `always`.
+- **Mount integrity**: config inside container is byte-identical to the host file (`diff` produced no output → IDENTICAL).
+
+### Behavioral evidence (guide-defined checks)
+| Check | Command | Result |
+|---|---|---|
+| Health `GET /` | `curl http://localhost:9998/` | HTTP 200, `{"name":"open_taki","version":"0.9.0","status":"ok","features":{...office:true,pdf:true,taki_v2:true...}}` |
+| Version | `curl /version` | `open_taki 0.9.0`, HTTP 200 |
+| Tika text endpoint | `PUT /rmeta/text` text/plain | HTTP 200, Tika JSON, `X-TAKI:method: passthrough` |
+| HTML extraction | `PUT /tika/text` text/html | HTTP 200, extracted via pandoc |
+| PDF extraction | `PUT /rmeta/text` application/pdf (2-page PDF built with PyMuPDF) | HTTP 200, both pages extracted via `pdftotext_partial` |
+| DOCX extraction | `PUT /rmeta/text` (docx built with container pandoc) | HTTP 200, extracted via `pandoc` |
+| Email extraction | `PUT /rmeta/text` message/rfc822 | HTTP 200, `X-TAKI:method: email` |
+| v2 protocol | `X-Taki-Protocol: v2` + features + source-ref | HTTP 200, extended response incl. `X-TAKI:routing` |
+| Startup log | `docker logs` | `open_taki 0.9.0 starting on :9998` |
+
+### Limitations / notes (non-blocking)
+- The guide documents version **0.7.0**; the pulled `:latest` image is **0.9.0** — a newer, backward-compatible release exposing the same documented Tika endpoints and v2 protocol.
+- Optional external enrichment backends (LLM :8012, Collabora :9980, Whisper, embedding) are not provisioned in this environment; their calls fail as expected (e.g. `dial tcp: lookup collabora ... no such host`) but these are optional services the guide explicitly describes as externally supplied. Core Tika-compatible extraction is unaffected.
+- `ffmpeg` is absent from the prebuilt image, so video transcription would not work; audio/whisper is disabled in config (`whisper: ""`), consistent with the optional nature. The `office` feature reports `true` because Collabora is configured, though that backend is unreachable here.
+
+### Conclusion
+The primary documented installation method (prebuilt image as Tika drop-in) was performed correctly. Objective, reproducible evidence confirms the service is running on port 9998, healthy, returns the documented health/version payloads, extracts real PDF/DOCX/HTML/email/plain-text content via the documented methods, and honors the v2 protocol. No further installation or repair work is required for the core documented functionality.

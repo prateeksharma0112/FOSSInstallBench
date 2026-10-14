@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P019-badge-api__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T01:29:48.628618+02:00",
+    "finished_at": "2026-10-06T01:37:41.239644+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P019",
+    "project": {
+      "opencode_id": "4058",
+      "name": "Badge API",
+      "description": "The badge program checks openCode repositories and awards badges that are displayed in the openCode software directory.",
+      "catalogue_url": "https://opencode.de/de/software/badge-api-4058",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/open-code/badgebackend/badge-api",
+      "commit_sha": "8b58a9fb936ca6e4be61e784ca929bee1c1d63c4",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/open-code/badgebackend/badge-api/-/blob/8b58a9fb936ca6e4be61e784ca929bee1c1d63c4/README.md",
+      "language": "English",
+      "word_count": 397
+    },
+    "task_id": "P019-badge-api"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 472.625,
+    "repository_setup_duration_seconds": 11.062000000005355,
+    "installation_duration_seconds": 398.75,
+    "validation_duration_seconds": 54.61000000000058,
+    "command_count": 33,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 18,
+    "validation_command_count": 11
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P019-badge-api/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

@@ -1,0 +1,23 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed Harbor v2.15.0 locally using the guide's manual Docker Compose method, pulling images from the documented remote registry 8gears.container-registry.com/8gcr/ (the guide's `task` CLI was not preinstalled, so its equivalent manual commands were used). Working directory: /workspace.\n\nActions:\n- Verified Docker Engine 29.7.2 / Compose v5.5.0, openssl, free ports 80/443, sufficient disk/memory.\n- Confirmed all 7 required Harbor images exist at tag v2.15.0 in 8gears.container-registry.com/8gcr/.\n- Generated deploy/compose/config/token_service_key.pem via openssl (RSA 4096, traditional format) and chmod 644.\n- Created deploy/compose/example/local/.env from .env.example with IMAGE_REPO=8gears.container-registry.com/8gcr/ (HARBOR_TAG=v2.15.0, TLS disabled via /dev/null mounts).\n- Pre-pulled the 7 images, then ran: docker compose -f ../../docker-compose.yaml --env-file .env up -d (from deploy/compose/example/local).\n\nResult: all 9 containers up and healthy (portal, core, jobservice, registry, registryctl, trivy-adapter, exporter, postgresql, redis). Harbor UI/API at http://localhost with admin/Harbor12345. Stack left running. No incomplete work.\n\nAccess points: http://localhost ; API http://localhost/api/v2.0/ping. Stop with `docker compose -f ../../docker-compose.yaml --env-file .env down` (add -v to drop volumes).",
+  "additional_actions": [
+    "Pre-pulled the 7 Harbor images individually before `compose up` (the guide relies on compose to pull on demand).",
+    "Set IMAGE_REPO=8gears.container-registry.com/8gcr/ in .env (guide shows it in a comment; needed since `task` was unavailable).",
+    "Validated the resolved compose configuration with `docker compose config` before starting.",
+    "Used the manual `docker compose` workflow instead of the Taskfile quick-start because the `task` binary is not installed in the environment."
+  ],
+  "verification": "Verification commands and results (all exit code 0):\n1. `docker compose -f ../../docker-compose.yaml --env-file .env ps` \u2014 all 9 containers STATUS \"Up ... (healthy)\".\n2. `curl -s http://localhost/api/v2.0/ping` \u2192 `Pong` (HTTP 200 via `-w`).\n3. `curl -s -o /dev/null -w '%{http_code}' http://localhost/` \u2192 200.\n4. `curl -s http://localhost/api/v2.0/systeminfo` \u2192 valid JSON (`auth_mode: db_auth`).\n5. Documented push/pull: `docker login localhost:80 -u admin` \u2192 \"Login Succeeded\"; `docker push localhost:80/library/alpine:test` \u2192 pushed, digest sha256:7cefa58b...; `docker pull localhost:80/library/alpine:test` \u2192 \"Downloaded newer image\".\n6. `curl -s -u admin:Harbor12345 http://localhost/api/v2.0/projects/library/repositories` \u2192 [{\"name\":\"library/alpine\",\"artifact_count\":1,...}].",
+  "reported_outcome_evidence": [
+    "docker compose ps shows 9/9 containers healthy: harbor-local-core-1 (healthy), portal (healthy), jobservice (healthy), registry (healthy), registryctl (healthy), trivy-adapter (healthy), exporter (healthy), postgresql (healthy), redis (healthy).",
+    "curl http://localhost/api/v2.0/ping -> HTTP 200, body 'Pong'.",
+    "curl http://localhost/ -> HTTP 200 (portal served).",
+    "curl http://localhost/api/v2.0/systeminfo -> {\"auth_mode\":\"db_auth\",...}.",
+    "docker login localhost:80 -u admin -> 'Login Succeeded'.",
+    "docker push localhost:80/library/alpine:test -> 'Pushed', digest sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25 size: 527.",
+    "docker pull localhost:80/library/alpine:test -> 'Downloaded newer image'.",
+    "Harbor API repositories listing -> [{\"artifact_count\":1,\"id\":1,\"name\":\"library/alpine\",...}]."
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

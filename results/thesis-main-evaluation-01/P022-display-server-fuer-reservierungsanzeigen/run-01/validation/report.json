@@ -1,0 +1,13 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "docker images \u2192 display-server:latest (167MB) built; docker compose config resolves service, port 127.0.0.1:8001->8001, external shared-net",
+    "docker run --rm --entrypoint sh display-server:latest -c 'pip list' \u2192 fastapi 0.139.2, uvicorn 0.51.0, httpx 0.28.1, authlib 1.7.2, Jinja2 3.1.6, Python 3.13.16",
+    "docker compose up -d with shipped .env \u2192 logs: httpx.ConnectError SSL CERTIFICATE_VERIFY_FAILED at /auth/signin; 'Application startup failed. Exiting.' (placeholder external Biletado API)",
+    "docker run display-server:latest with valid env against mock backend \u2192 logs: 'Application startup complete.', 'Uvicorn running on http://0.0.0.0:8001', 'Updated bookings cache.'",
+    "curl http://localhost:8001/resources/Room-A \u2192 HTTP 200 with rendered HTML containing 'Raum\u00fcbersicht' and 'Room-A'",
+    "curl 'http://localhost:8001/resources?ids=Room-A|Room-B' \u2192 HTTP 200 with both Room-A and Room-B rendered",
+    "curl http://localhost:8001/static/logo.png \u2192 HTTP 200"
+  ],
+  "assessment_summary": "I inspected the pre-checked-out repo at /workspace (commit fccc32f), the Dockerfile, requirements.txt, docker-compose.yml, the copied .env, the built image, and the rendered templates/source. I confirmed the image was built from python:3.13-slim and contains all dependencies pinned in requirements.txt at the exact versions. I then started the installation via `docker compose up -d`, which reproduced the documented behavior: with placeholder .env credentials the Uvicorn lifespan fails at the external Biletado signin URL (SSL cert error / startup failed), an inherent external-dependency condition noted in the guide rather than an installation defect. To obtain behavioral evidence of the software being operational, I ran the existing built image against a temporary mock Biletado backend on the shared-net network using only docker run env overrides (no files edited, no dependencies installed, no artifacts built). The service completed startup, fetched data, and served the expected HTML at /resources/Room-A (HTTP 200, 'Raum\u00fcbersicht'), /resources?ids=Room-A|Room-B (HTTP 200, both resources), and /static/logo.png (HTTP 200). Temporary containers/images were removed afterward, restoring the original state. Limitations: full end-to-end operation against the real Biletado API could not be tested because valid tenant credentials/reachable booking platform are external prerequisites unavailable here; verification relied on a mock consistent with the API contract used by the source."
+}

@@ -1,0 +1,23 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Built the Badge API Go backend from source at /workspace (commit 8b58a9f; go.mod requires Go 1.26.4). Installed the missing prerequisites: Go 1.26.4 to /usr/local/go from the official source (https://dl.google.com/go/go1.26.4.linux-amd64.tar.gz, symlinked into /usr/local/bin) and GNU Make via apt-get. Built the executable with `make badge-api` (equal to `go build -o badge-api -ldflags -w -trimpath main.go`), producing /workspace/badge-api (88 MB). `go build ./...` also completed (exit 0). Started the server with `./badge-api serve --port 8080`, which fetched the remote badge config from gitlab.opencode.de and began serving. Verified: GET /api/v1/info -> HTTP 200 with full config JSON; GET /metrics -> HTTP 200; ./badge-api --help -> exit 0. Ran `go test ./pkg/badges/... ./pkg/config/...` -> all ok, exit 0. Optional documented steps (PostgreSQL, .env, git tokens, nginx cache, demo frontend, golangci-lint, helm/kubectl deployment) were not performed as they need external credentials/services or separate repos and are not required to build/run the API. Final method: native Go build/run; no containerized or packaged install used.",
+  "additional_actions": [
+    "Installed Go 1.26.4 toolchain to /usr/local/go from the official golang.org download because Go was not present in the environment",
+    "Installed GNU Make via apt-get because make was not present and the guide's targets require it",
+    "Ran `go build ./...` to confirm all packages compile",
+    "Ran a subset of the unit tests (`go test ./pkg/badges/... ./pkg/config/...`) to validate the build",
+    "Started the server briefly and probed /api/v1/info and /metrics to verify runtime behavior, then stopped it"
+  ],
+  "verification": "Verification method: built the binary, executed it, and queried its HTTP endpoints plus ran unit tests. Commands/results: `./badge-api --help` -> exit 0; `./badge-api serve --port 8080` -> log line \"starting server port=8080\"; `curl http://localhost:8080/api/v1/info` -> HTTP 200 returning the full JSON config (gitClients, badges/levels/checks); `curl http://localhost:8080/metrics` -> HTTP 200; `go test ./pkg/badges/... ./pkg/config/...` -> exit 0 (ok).",
+  "reported_outcome_evidence": [
+    "`go version` -> go version go1.26.4 linux/amd64 (after installing toolchain)",
+    "`make badge-api` -> exit 0, produced /workspace/badge-api (88406058 bytes)",
+    "`go build ./...` -> build_all_exit=0",
+    "`./badge-api serve --port 8080` -> config fetched from https://gitlab.opencode.de/.../badge-config, log 'starting server port=8080'",
+    "`curl http://localhost:8080/api/v1/info` -> HTTP 200 with full config JSON",
+    "`curl http://localhost:8080/metrics` -> metrics=200",
+    "`go test ./pkg/badges/... ./pkg/config/...` -> test_exit=0 (ok for badges, badges/observe, config)"
+  ],
+  "failure_mode": "null",
+  "failure_attribution": null
+}

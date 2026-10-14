@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P030-masterportal__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-08T20:12:45.866457+02:00",
+    "finished_at": "2026-10-08T20:26:21.144076+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P030",
+    "project": {
+      "opencode_id": "12551",
+      "name": "Masterportal",
+      "description": "The Masterportal is a flexible modular system for geoportals on the web.",
+      "catalogue_url": "https://opencode.de/de/software/masterportal-12551",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal",
+      "commit_sha": "410dc25f07b22213fa85d37622a76f614e859eb8",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/blob/410dc25f07b22213fa85d37622a76f614e859eb8/docs/Setup/setup.md",
+      "language": "English",
+      "word_count": 420
+    },
+    "task_id": "P030-masterportal"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 815.295999999973,
+    "repository_setup_duration_seconds": 10.936999999976251,
+    "installation_duration_seconds": 130.1720000000205,
+    "validation_duration_seconds": 665.7339999999967,
+    "command_count": 62,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 18,
+    "validation_command_count": 40
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P030-masterportal/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

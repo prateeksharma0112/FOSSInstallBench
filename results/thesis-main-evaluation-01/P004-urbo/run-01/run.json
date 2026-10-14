@@ -1,0 +1,87 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P004-urbo__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-10T19:21:10.376731+02:00",
+    "finished_at": "2026-10-10T21:58:20.503876+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P004",
+    "project": {
+      "opencode_id": "11309",
+      "name": "URBO",
+      "description": "Urbo is an open source city app platform that aggregates services and information from various sources for citizens.",
+      "catalogue_url": "https://opencode.de/de/software/urbo-11309",
+      "type": "Application",
+      "platforms": [
+        "ios",
+        "android"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/urbo-community/urbo",
+      "commit_sha": "71cd0baf943270d1e1fad9d8a8b0485a79bbd4a2",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/urbo-community/urbo/-/blob/71cd0baf943270d1e1fad9d8a8b0485a79bbd4a2/README.md",
+      "language": "English",
+      "word_count": 803
+    },
+    "task_id": "P004-urbo"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "inconclusive",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 9437.969000000041,
+    "repository_setup_duration_seconds": 77.64100000000326,
+    "installation_duration_seconds": 8671.79700000002,
+    "validation_duration_seconds": 653.1410000000033,
+    "command_count": 265,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 240,
+    "validation_command_count": 21
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P004-urbo/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

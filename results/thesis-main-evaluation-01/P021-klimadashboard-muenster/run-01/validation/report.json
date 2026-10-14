@@ -1,0 +1,16 @@
+{
+  "assessed_outcome": "failure",
+  "outcome_evidence": [
+    "Toolchain: `node -v`=v20.18.0, `npm -v`=10.8.2, `yarn -v`=1.22.22 (all exit 0) in /workspace",
+    "Dependencies: `ls node_modules | wc -l`=609, `du -sh node_modules`=810M; `node_modules/next/package.json` version 15.5.27",
+    "Server start: `yarn dev` log shows '\u25b2 Next.js 15.5.27', '- Local: http://localhost:3000', '\u2713 Ready in 3.7s' (exit 0)",
+    "Root route fresh start: `curl -s -o /tmp/root.html -w '%{http_code}' http://localhost:3000/` -> HTTP 200, 708999 bytes, contains '<title>Klimadashboard M\u00fcnster</title>'",
+    "Category routes: `curl ... http://localhost:3000/{klima,energie,mobilitaet,gebaeude}` -> HTTP 500 (2630 bytes) each",
+    "Static routes: `/impressum`,`/datenschutz`,`/feedback`,`/sammlung` -> HTTP 500 each",
+    "Error payload/log: 'Module not found: Can't resolve \\'@/assets/data/wachstum-recent.csv\\'' at components/Tiles/Climate/Wachstum/WachstumChart.tsx:11",
+    "Root degradation: fresh server `GET /` -> 200,200,200; after `GET /klima`(500), `GET /` -> 500",
+    "Missing files: `test -f assets/data/{wachstum-recent.csv,bip-recent.csv,einwohner.csv}` all absent",
+    "Credential cause reproduced: POST to regionalstatistik.de genesisws tablefile without auth -> HTTP 401 body {\"Code\":15,\"Content\":\"Sie sind nicht berechtigt diesen Service aufzurufen...\"}; env has no REGIONALSTATISTIK_* vars"
+  ],
+  "assessment_summary": "I inspected /workspace (commit ffb429f) and confirmed the documented method (yarn install + yarn dev) was used. The toolchain is present (node v20.18.0, npm 10.8.2, yarn 1.22.22) and dependencies are installed (609 packages, 810M, Next 15.5.27). `yarn dev` starts successfully ('\u2713 Ready in 3.7s', serving http://localhost:3000). However, runtime validation shows the software is not operational: a fresh `GET /` returns HTTP 200 with the correct title and tiles, but all four core category routes (/klima, /energie, /mobilitaet, /gebaeude) return HTTP 500, as do static pages (/impressum, /datenschutz, /feedback, /sammlung). The dev-server log and page error payloads pin the failure to `Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'` (imported by WachstumChart.tsx). I confirmed the missing data files (wachstum-recent.csv, bip-recent.csv, einwohner.csv) and established the cause: their fetch scripts call the Regionalstatistik Genesis API which requires REGIONALSTATISTIK_USER/SECRET credentials (injected only as Docker build secrets in the project's Dockerfile). Reproducing the request without credentials yields HTTP 401. I also observed that the homepage, though working on a clean compile, degrades to HTTP 500 after any request to a broken route. Because the supplied guide does not provide these credentials and the resulting installation cannot serve its core pages, the installation is not complete/operational. Limitations: restoring credentials/data is outside validation boundaries, so I could not observe correct rendering with data present; a possible secondary filename mismatch for the bus-passenger CSV could not be conclusively established due to non-ASCII escaping in terminal output. I stopped the validation server and made no changes to the installation."
+}

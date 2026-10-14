@@ -1,0 +1,452 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check.git/\nFrom https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check\n * branch            44583b12709bbb64ef18ec470e8a13b53fb4abe9 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 44583b1 fix table style [ci skip]\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd / 2>/dev/null; pwd; ls -la; echo \"---\"; find / -maxdepth 3 -iname \"dcat_catalog_check.py\" 2>/dev/null; echo \"---\"; find / -maxdepth 4 -iname \"pyproject.toml\" 2>/dev/null | head -50",
+      "exit_code": 1,
+      "stdout": "/\ntotal 60\ndr-xr-xr-x   1 root   root    4096 Oct  9 22:18 .\ndr-xr-xr-x   1 root   root    4096 Oct  9 22:18 ..\nlrwxrwxrwx   1 root   root       7 Aug 10 14:50 bin -> usr/bin\ndrwxr-xr-x   2 root   root    4096 Apr 18  2022 boot\ndrwxr-xr-x  10 root   root    2460 Oct  9 22:18 dev\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:18 etc\ndrwxr-xr-x   2 root   root    4096 Apr 18  2022 home\nlrwxrwxrwx   1 root   root       7 Aug 10 14:50 lib -> usr/lib\nlrwxrwxrwx   1 root   root       9 Aug 10 14:50 lib32 -> usr/lib32\nlrwxrwxrwx   1 root   root       9 Aug 10 14:50 lib64 -> usr/lib64\nlrwxrwxrwx   1 root   root      10 Aug 10 14:50 libx32 -> usr/libx32\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 media\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 mnt\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:18 opt\ndr-xr-xr-x 458 nobody nogroup    0 Oct  9 22:18 proc\ndrwx------   2 root   root    4096 Aug 10 14:58 root\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:18 run\nlrwxrwxrwx   1 root   root       8 Aug 10 14:50 sbin -> usr/sbin\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 srv\ndr-xr-xr-x  13 nobody nogroup    0 Oct  7 20:47 sys\ndrwxrwxrwt   1 root   root    4096 Sep  2 16:03 tmp\ndrwxr-xr-x   1 root   root    4096 Aug 10 14:50 usr\ndrwxr-xr-x   1 root   root    4096 Aug 10 14:58 var\ndrwxr-xr-x   7 root   root    4096 Oct  9 22:18 workspace\n---\n/workspace/dcat_catalog_check.py\n---\n/workspace/pyproject.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls -la && echo \"---GIT---\" && git log --oneline -3 2>/dev/null && echo \"---PYPROJECT---\" && cat pyproject.toml && echo \"---PYTHON---\" && python3 --version && which python3 pip3 poetry 2>/dev/null",
+      "exit_code": 127,
+      "stdout": "total 324\ndrwxr-xr-x 7 root root   4096 Oct  9 22:18 .\ndr-xr-xr-x 1 root root   4096 Oct  9 22:18 ..\n-rw-r--r-- 1 root root     22 Oct  9 22:18 .coveragerc\ndrwxr-xr-x 8 root root   4096 Oct  9 22:18 .git\n-rw-r--r-- 1 root root     71 Oct  9 22:18 .gitignore\n-rw-r--r-- 1 root root   1571 Oct  9 22:18 .gitlab-ci.yml\n-rw-r--r-- 1 root root     64 Oct  9 22:18 .markdownlint.json\n-rw-r--r-- 1 root root   1119 Oct  9 22:18 CHANGELOG.md\n-rw-r--r-- 1 root root    650 Oct  9 22:18 Dockerfile\n-rw-r--r-- 1 root root  13792 Oct  9 22:18 LICENSE\n-rw-r--r-- 1 root root   9358 Oct  9 22:18 README.md\n-rwxr-xr-x 1 root root   7037 Oct  9 22:18 check_periodicity.py\n-rwxr-xr-x 1 root root  28099 Oct  9 22:18 dcat_catalog_check.py\n-rwxr-xr-x 1 root root   1176 Oct  9 22:18 download_catalog.py\ndrwxr-xr-x 2 root root   4096 Oct  9 22:18 formats\n-rw-r--r-- 1 root root   5154 Oct  9 22:18 logo.svg\n-rw-r--r-- 1 root root   9264 Oct  9 22:18 mqa.py\n-rw-r--r-- 1 root root 176934 Oct  9 22:18 poetry.lock\n-rw-r--r-- 1 root root   2556 Oct  9 22:18 publiccode.yml\n-rw-r--r-- 1 root root    711 Oct  9 22:18 pyproject.toml\ndrwxr-xr-x 2 root root   4096 Oct  9 22:18 resources\ndrwxr-xr-x 3 root root   4096 Oct  9 22:18 tests\ndrwxr-xr-x 2 root root   4096 Oct  9 22:18 tools\n---GIT---\n44583b1 fix table style [ci skip]\n---PYPROJECT---\n[tool.poetry]\n\nname = \"dcat-catalog-check\"\nversion = \"1.1.0\"\ndescription = \"DCAT Catalog Check\"\nauthors = [\n  \"Jesper Zedlitz <jesper.zedlitz@stk.landsh.de>\",\n  \"Thorge Petersen <petersen@rz.uni-kiel.de>\",\n]\nlicense = \"AGPL-3.0-or-later\"\nreadme = \"README.md\"\n\n[tool.poetry.dependencies]\npython = \"^3.10\"\nrequests = \"^2.32.3\"\npython-magic = \"^0.4.27\"\nfrictionless = {extras = [\"wkt\"], version = \"^5.18.1\"}\ngeopandas = \"^1.0.1\"\nrdflib = \"^7.1.1\"\npypdf = \"^5.1.0\"\npillow = \"^11.0.0\"\nfiona = \"^1.10.1\"\npyarrow = \"^18.1.0\"\ngeojson = \"^3.2.0\"\ngdal = \"3.6.2\"\n\n[tool.poetry.group.dev.dependencies]\ncoverage = \"^7.6.1\"\nruff = \"^0.6.8\"\n\n[build-system]\nrequires = [\"poetry-core\"]\nbuild-backend = \"poetry.core.masonry.api\"\n---PYTHON---\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat Dockerfile && echo \"---\" && which python pip poetry python3.10 python3.11 python3.12 2>/dev/null; echo \"---\"; ls /usr/bin | grep -i python; echo \"---apt---\"; cat /etc/os-release",
+      "exit_code": 0,
+      "stdout": "FROM python:3.10\n\n# Install necessary system dependencies\nRUN apt-get update && \\\n    apt-get install -y \\\n    libgdal-dev \\\n    libmagic-dev \\\n    gcc \\\n    python3-dev \\\n    musl-dev \\\n    libgeos-dev \\\n    libproj-dev \\\n    python3-poetry\n\n# Set the working directory inside the container\nWORKDIR /app\n\n# Copy the entire project to the container's working directory\nCOPY . .\n\n# Install project dependencies with Poetry\nRUN poetry install --no-interaction --no-ansi\n\n# Make the main script executable\nRUN chmod +x dcat_catalog_check.py\n\n# Specify the entry point to run the script by default\nENTRYPOINT [\"poetry\", \"run\", \"./dcat_catalog_check.py\"]\n---\n---\n---apt---\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && apt-get update 2>&1 | tail -5; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "Get:18 http://archive.ubuntu.com/ubuntu jammy-updates/restricted amd64 Packages [8243 kB]\nGet:19 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]\nGet:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.9 kB]\nFetched 49.2 MB in 7s (6801 kB/s)\nReading package lists...\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get install -y python3 python3-pip python3-venv python3-dev libmagic-dev gcc libgdal-dev libgeos-dev libproj-dev 2>&1 | tail -15; echo \"EXIT:${PIPESTATUS[0]}\"; python3 --version; pip3 --version",
+      "exit_code": 0,
+      "stdout": "Setting up python3.10-dev (3.10.12-1~22.04.18) ...\nSetting up g++ (4:11.2.0-1ubuntu1) ...\nupdate-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode\nupdate-alternatives: warning: skip creation of /usr/share/man/man1/c++.1.gz because associated file /usr/share/man/man1/g++.1.gz (of link group c++) doesn't exist\nSetting up gnupg (2.2.27-3ubuntu2.5) ...\nSetting up build-essential (12.9ubuntu3) ...\nSetting up libboost-dev:amd64 (1.74.0.3ubuntu7) ...\nSetting up libkml-dev:amd64 (1.3.0-9) ...\nSetting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...\nSetting up libgeotiff-dev:amd64 (1.7.0-2build1) ...\nSetting up libarmadillo-dev (1:10.8.2+dfsg-1) ...\nSetting up python3-dev (3.10.6-1~22.04.1) ...\nSetting up libhdf4-alt-dev (4.2.15-4) ...\nSetting up libgdal-dev (3.4.1+dfsg-1build4) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nEXIT:0\nPython 3.10.12\npip 22.0.2 from /usr/lib/python3/dist-packages/pip (python 3.10)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && pip3 install poetry 2>&1 | tail -5; echo \"EXIT:${PIPESTATUS[0]}\"; poetry --version",
+      "exit_code": 0,
+      "stdout": "  Downloading pycparser-3.11-py3-none-any.whl (51 kB)\n     \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 51.2/51.2 KB 4.2 MB/s eta 0:00:00\nInstalling collected packages: trove-classifiers, distlib, zipp, urllib3, typing_extensions, tomlkit, tomli, shellingham, rapidfuzz, pyproject-hooks, pycparser, poetry-core, platformdirs, pkginfo, pbs-installer, packaging, msgpack, more-itertools, jeepney, installer, idna, h11, filelock, fastjsonschema, crashtest, charset_normalizer, certifi, backports.zstd, backports.tarfile, requests, python-discovery, jaraco.functools, jaraco.context, jaraco.classes, importlib_metadata, httpcore, findpython, exceptiongroup, dulwich, cleo, cffi, build, virtualenv, requests-toolbelt, cryptography, cachecontrol, anyio, SecretStorage, httpx, keyring, poetry\nSuccessfully installed SecretStorage-3.5.0 anyio-4.15.1 backports.tarfile-1.2.0 backports.zstd-1.7.0 build-1.6.1 cachecontrol-0.14.4 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 cleo-2.1.0 crashtest-0.4.1 cryptography-50.0.2 distlib-0.4.3 dulwich-1.2.17 exceptiongroup-1.3.1 fastjsonschema-2.22.2 filelock-4.1.0 findpython-0.8.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 importlib_metadata-9.0.1 installer-1.0.1 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.6.0 jeepney-0.9.0 keyring-25.7.0 more-itertools-11.1.0 msgpack-1.2.3 packaging-26.3 pbs-installer-2026.10.3 pkginfo-1.13 platformdirs-4.12.4 poetry-2.5.1 poetry-core-2.5.0 pycparser-3.11 pyproject-hooks-1.3.3 python-discovery-1.6.1 rapidfuzz-3.14.5 requests-2.34.2 requests-toolbelt-1.0.0 shellingham-1.5.4 tomli-2.5.0 tomlkit-0.15.1 trove-classifiers-2026.9.21.13 typing_extensions-4.16.0 urllib3-2.8.0 virtualenv-21.14.6 zipp-4.1.1\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv\nEXIT:0\nPoetry (version 2.5.1)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 590 poetry install --no-interaction --no-ansi 2>&1 | tail -40; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "    | extensions/gdal_wrap.cpp:37495:48: error: \u2018result\u2019 was not declared in this scope\n    | 37495 |   resultobj = SWIG_From_int(static_cast< int >(result));\n    |       |                                                ^~~~~~\n    | extensions/gdal_wrap.cpp: In function \u2018PyObject* _wrap_Relationship_SetType(PyObject*, PyObject*)\u2019:\n    | extensions/gdal_wrap.cpp:37506:3: error: \u2018GDALRelationshipType\u2019 was not declared in this scope; did you mean \u2018GDALRelationshipShadow\u2019?\n    | 37506 |   GDALRelationshipType arg2 ;\n    |       |   ^~~~~~~~~~~~~~~~~~~~\n    |       |   GDALRelationshipShadow\n    | extensions/gdal_wrap.cpp:37523:3: error: \u2018arg2\u2019 was not declared in this scope; did you mean \u2018arg1\u2019?\n    | 37523 |   arg2 = static_cast< GDALRelationshipType >(val2);\n    |       |   ^~~~\n    |       |   arg1\n    | extensions/gdal_wrap.cpp:37523:23: error: \u2018GDALRelationshipType\u2019 does not name a type; did you mean \u2018GDALRelationshipShadow\u2019?\n    | 37523 |   arg2 = static_cast< GDALRelationshipType >(val2);\n    |       |                       ^~~~~~~~~~~~~~~~~~~~\n    |       |                       GDALRelationshipShadow\n    | extensions/gdal_wrap.cpp: In function \u2018PyObject* PyInit__gdal()\u2019:\n    | extensions/gdal_wrap.cpp:982:64: warning: \u2018void PyEval_InitThreads()\u2019 is deprecated [-Wdeprecated-declarations]\n    |   982 | #     define SWIG_PYTHON_INITIALIZE_THREADS  PyEval_InitThreads()\n    |       |                                              ~~~~~~~~~~~~~~~~~~^~\n    | extensions/gdal_wrap.cpp:48265:3: note: in expansion of macro \u2018SWIG_PYTHON_INITIALIZE_THREADS\u2019\n    | 48265 |   SWIG_PYTHON_INITIALIZE_THREADS;\n    |       |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    | In file included from /usr/include/python3.10/Python.h:130,\n    |                  from extensions/gdal_wrap.cpp:180:\n    | /usr/include/python3.10/ceval.h:122:37: note: declared here\n    |   122 | Py_DEPRECATED(3.9) PyAPI_FUNC(void) PyEval_InitThreads(void);\n    |       |                                     ^~~~~~~~~~~~~~~~~~\n    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -shared -Wl,-O1 -Wl,-Bsymbolic-functions build/temp.linux-x86_64-cpython-310/extensions/gnm_wrap.o -L/usr/lib/x86_64-linux-gnu -L/usr/lib -lgdal -o build/lib.linux-x86_64-cpython-310/osgeo/_gnm.cpython-310-x86_64-linux-gnu.so\n    | error: Command '['x86_64-linux-gnu-g++', '-Wno-unused-result', '-Wsign-compare', '-DNDEBUG', '-g', '-fwrapv', '-O2', '-Wall', '-g', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-g', '-fwrapv', '-O2', '-fPIC', '-I/tmp/tmpablz6uje/.venv/include', '-I/usr/include/python3.10', '-I/usr/include', '-c', 'extensions/gdal_wrap.cpp', '-o', 'build/temp.linux-x86_64-cpython-310/extensions/gdal_wrap.o', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal']' returned non-zero exit status 1.\n\nNote: This error originates from the build backend, and is likely not a problem with poetry but one of the following issues with gdal (3.6.2)\n\n  - not supporting PEP 517 builds\n  - not specifying PEP 517 build requirements correctly\n  - the build requirements are incompatible with your operating system or Python version\n  - the build requirements are missing system dependencies (eg: compilers, libraries, headers).\n\nYou can verify this by running pip wheel --no-cache-dir --use-pep517 \"gdal (==3.6.2)\".\n\nEXIT:1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && apt-cache policy libgdal-dev; echo \"---\"; poetry env info 2>&1 | head; echo \"---gdal---\"; gdal-config --version 2>/dev/null; which gdal-config",
+      "exit_code": 0,
+      "stdout": "libgdal-dev:\n  Installed: 3.4.1+dfsg-1build4\n  Candidate: 3.4.1+dfsg-1build4\n  Version table:\n *** 3.4.1+dfsg-1build4 500\n        500 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n        100 /var/lib/dpkg/status\n---\n\nVirtualenv\nPython:         3.10.12\nImplementation: CPython\nPath:           /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10\nExecutable:     /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/python\nValid:          True\n\nBase\nPlatform:   linux\n---gdal---\n3.4.1\n/usr/bin/gdal-config\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get install -y software-properties-common gnupg 2>&1 | tail -3; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "Setting up software-properties-common (0.99.22.9) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nProcessing triggers for dbus (1.12.20-2ubuntu4.1) ...\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 580 add-apt-repository -y ppa:ubuntugis/ppa 2>&1 | tail -15; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "Hit:6 http://security.ubuntu.com/ubuntu jammy-security InRelease\nGet:7 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages [75.3 kB]\nFetched 99.9 kB in 1s (114 kB/s)\nReading package lists...\nPPA publishes dbgsym, you may need to include 'main/debug' component\nRepository: 'deb https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu/ jammy main'\nDescription:\nOfficial stable UbuntuGIS packages.\n\n\nMore info: https://launchpad.net/~ubuntugis/+archive/ubuntu/ppa\nAdding repository.\nAdding deb entry to /etc/apt/sources.list.d/ubuntugis-ubuntu-ppa-jammy.list\nAdding disabled deb-src entry to /etc/apt/sources.list.d/ubuntugis-ubuntu-ppa-jammy.list\nAdding key to /etc/apt/trusted.gpg.d/ubuntugis-ubuntu-ppa.gpg with fingerprint 2EC86B48E6A9F326623CD22FFF0E7BBEC491C6A1\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && apt-cache policy libgdal-dev | head -20",
+      "exit_code": 0,
+      "stdout": "libgdal-dev:\n  Installed: 3.4.1+dfsg-1build4\n  Candidate: 3.8.4+dfsg-1~jammy0\n  Version table:\n     3.8.4+dfsg-1~jammy0 500\n        500 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages\n *** 3.4.1+dfsg-1build4 500\n        500 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n        100 /var/lib/dpkg/status\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get install -y libgdal-dev 2>&1 | tail -8; echo \"EXIT:${PIPESTATUS[0]}\"; gdal-config --version; dpkg -l | grep libgdal-dev",
+      "exit_code": 0,
+      "stdout": "Setting up libfreexl1:amd64 (2.0.0-1~jammy0) ...\nSetting up gdal-plugins:amd64 (3.8.4+dfsg-1~jammy0) ...\nSetting up libfreexl-dev:amd64 (2.0.0-1~jammy0) ...\nSetting up libgeos-dev (3.12.1-1~jammy0) ...\nSetting up libspatialite8:amd64 (5.1.0-1~jammy0) ...\nSetting up libgdal34:amd64 (3.8.4+dfsg-1~jammy0) ...\nSetting up libgdal-dev (3.8.4+dfsg-1~jammy0) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nEXIT:0\n3.8.4\nii  libgdal-dev                      3.8.4+dfsg-1~jammy0                     amd64        Geospatial Data Abstraction Library - Development files\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 595 poetry install --no-interaction --no-ansi 2>&1 | tail -30; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "\n  - Installing gdal (3.6.2)\n/tmp/tmpj1bvby4s/.venv/lib/python3.10/site-packages/setuptools/dist.py:765: BuildBackendWarning: License classifiers are deprecated.\n!!\n\n        ********************************************************************************\n        Please consider removing the following classifiers in favor of a SPDX license expression:\n\n        License :: OSI Approved :: MIT License\n\n        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.\n        ********************************************************************************\n\n!!\n  self._finalize_license_expression()\n/tmp/tmpj1bvby4s/.venv/lib/python3.10/site-packages/setuptools/dist.py:765: BuildBackendWarning: License classifiers are deprecated.\n!!\n\n        ********************************************************************************\n        Please consider removing the following classifiers in favor of a SPDX license expression:\n\n        License :: OSI Approved :: MIT License\n\n        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.\n        ********************************************************************************\n\n!!\n  self._finalize_license_expression()\n\nInstalling the current project: dcat-catalog-check (1.1.0)\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && poetry run python --version && poetry run python dcat_catalog_check.py --help 2>&1 | head -30; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "Python 3.10.12\nusage: dcat_catalog_check.py [-h] [--url URL] [--log_file LOG_FILE]\n                             [--results RESULTS] [--verbose] [--debug]\n                             [--recheck] [--save-catalog] [--no-recheck]\n                             [--access-url-as-download]\n                             [--check-format CHECK_FORMAT]\n                             [--force-check-format FORCE_CHECK_FORMAT]\n                             [--check-http-5xx]\n\noptions:\n  -h, --help            show this help message and exit\n  --url URL             DCAT catalog URL\n  --log_file LOG_FILE   Log file path\n  --results RESULTS     File from which the results are loaded\n  --verbose             Enable verbose logging\n  --debug               Enable debug logging\n  --recheck             Only use the previous results (specified by --results)\n                        as input for the next check\n  --save-catalog        Save the DCAT catalog into a file catalog.xml\n  --no-recheck          Just check new entries from the catalog. Do not re-\n                        check existing results.\n  --access-url-as-download\n                        Treat the dcat:accessURL as the download URL.\n  --check-format CHECK_FORMAT\n                        Only check the specified format\n  --force-check-format FORCE_CHECK_FORMAT\n                        Check distributinons with the specified format\n                        regardless of previous results\n  --check-http-5xx      Only re-check HTTP 5xx errors\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls tests && cat .gitlab-ci.yml | head -40",
+      "exit_code": 0,
+      "stdout": "__init__.py\ndata\ntest_all_formats.py\ntest_atom_format.py\ntest_dcat_catalog_check.py\ntest_docx_format.py\ntest_geojson_format.py\ntest_geotiff_format.py\ntest_gml_format.py\ntest_integration.py\ntest_jpeg_format.py\ntest_json_format.py\ntest_ods_format.py\ntest_odt_format.py\ntest_parquet_format.py\ntest_pdf_format.py\ntest_png_format.py\ntest_rdf_format.py\ntest_shp_format.py\ntest_wmts_format.py\ntest_xlsx_format.py\ntest_xml_format.py\ntest_zip_format.py\nstages:\n  - lint\n  - test\n\nlint:\n  image: node\n  stage: lint\n  before_script:\n    - \"npm install -g markdownlint\"\n    - \"npm install -g markdownlint-cli\"\n  script:\n    - markdownlint '**/*.md' --ignore node_modules | tee lint.log  # Lint markdown files\n  artifacts:\n    when: always\n    paths:\n      - lint.log\n  allow_failure: true  # Continue pipeline even if markdownlint fails\n\nruff:\n  image: python:3.10\n  stage: lint\n  before_script:\n    # Install libgdal-dev\n    - apt-get update\n    - apt-get install -y libgdal-dev\n    # Install pipx\n    - python3 -m pip install --user pipx\n    - python3 -m pipx ensurepath\n    - source ~/.bashrc\n    # Install Poetry using pipx\n    - pipx install poetry\n    # Install dependencies using Poetry\n    - poetry install\n  script:\n    - poetry run ruff check .  # Run ruff linter\n  allow_failure: true  # Continue pipeline even if ruff fails\n\ntest:\n  image: python:3.10\n  stage: test\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 300 poetry run python -m pytest tests/ -q 2>&1 | tail -30; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/python: No module named pytest\nEXIT:1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '40,120p' .gitlab-ci.yml",
+      "exit_code": 0,
+      "stdout": "  stage: test\n  before_script:\n    # Install libgdal-dev\n    - apt-get update\n    - apt-get install -y libgdal-dev\n    # Install pipx\n    - python3 -m pip install --user pipx\n    - python3 -m pipx ensurepath\n    - source ~/.bashrc\n    # Install Poetry using pipx\n    - pipx install poetry\n    # Install dependencies using Poetry\n    - poetry install\n  script:\n    - poetry run coverage run -m unittest  # Run unit tests with coverage\n    - poetry run coverage report           # Output coverage report to console\n    - poetry run coverage xml           # Output coverage report to console\n  coverage: '/TOTAL.*\\s+([0-9]{1,3})%/'    # Extract coverage percentage\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 500 poetry run python -m unittest tests.test_json_format tests.test_all_formats tests.test_dcat_catalog_check 2>&1 | tail -30; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "...ERROR 4: `/tmp/tmphaaz8zkw' not recognized as a supported file format.\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/__init__.py:7: DeprecationWarning: The 'shapely.geos' module is deprecated, and will be removed in a future version. All attributes of 'shapely.geos' are available directly from the top-level 'shapely' namespace (since shapely 2.0.0).\n  import shapely.geos  # noqa: F401\n........................\n----------------------------------------------------------------------\nRan 27 tests in 2.220s\n\nOK\ntimeout: the monitored command dumped core\nEXIT:139\n",
+      "stderr": "/bin/bash: line 3:  5485 Segmentation fault      timeout 500 poetry run python -m unittest tests.test_json_format tests.test_all_formats tests.test_dcat_catalog_check 2>&1\n      5486 Done                    | tail -30\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls tests/data | head -30; echo \"---\"; ls resources formats",
+      "exit_code": 0,
+      "stdout": "Atom_SH_Feldblockfinder_OpenGBD.xml\nWMTSCapabilities.xml\nall-tests.ttl\nbermuda-with-subdir.zip\nbermuda.geojson\nbermuda.gml\nbermuda.zip\nbroken.parquet\ncatalog-1.ttl\ncatalog-dataservice.ttl\ncatalog.ttl\ncorrect.json\ncorrect.json.bz2\ncorrect.json.gz\ncorrect.json.xz\ncorrect.xml\ngeotiff.zip\nimage.jpeg\nimage.png\nincorrect.json\nincorrect.xml\njson-in-zip.zip\njsons-in-zip.zip\npng-in-zip.zip\nrdf.json\nrdf.xml\nresult-1.jsonl\ntext.txt\nufo-resource.json\nufo-schema.json\n---\nformats:\n__init__.py\n__pycache__\natom_format.py\ndocx_format.py\ngeojson_format.py\ngeotiff_format.py\ngml_format.py\njpeg_format.py\njson_format.py\nods_format.py\nodt_format.py\nparquet_format.py\npdf_format.py\npng_format.py\nrdf_format.py\nshp_format.py\nwfs_srvc_format.py\nwms_srvc_format.py\nwmts_srvc_format.py\nxlsx_format.py\nxml_format.py\nzip_format.py\n\nresources:\nfile_types.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 590 poetry run python -m unittest 2>&1 | tail -25; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /image.png HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /ufo.ttl HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /rdf.xml HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /rdf.json HTTP/1.1\" 200 -\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/rdflib/plugins/parsers/jsonld.py:168: DeprecationWarning: ConjunctiveGraph is deprecated, use Dataset instead.\n  conj_sink = ConjunctiveGraph(store=sink.store, identifier=sink.identifier)\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /bermuda.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /zos116.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /bermuda-with-subdir.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /correct.xml HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /bermuda.zip HTTP/1.1\" 200 -\n.127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /catalog-1.ttl HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:23:04] \"GET /image.jpeg HTTP/1.1\" 200 -\n................invalid pdf header: b'\\x89PNG\\r'\nEOF marker not found\nEOF marker not found\nEOF marker not found\n..../root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/rdflib/plugins/parsers/jsonld.py:168: DeprecationWarning: ConjunctiveGraph is deprecated, use Dataset instead.\n  conj_sink = ConjunctiveGraph(store=sink.store, identifier=sink.identifier)\n..................\n----------------------------------------------------------------------\nRan 77 tests in 1.328s\n\nOK\ntimeout: the monitored command dumped core\nEXIT:139\n",
+      "stderr": "/bin/bash: line 3:  5513 Segmentation fault      timeout 590 poetry run python -m unittest 2>&1\n      5514 Done                    | tail -25\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/tests/data && nohup poetry -C /workspace run python -m http.server 8765 >/tmp/httpd.log 2>&1 &\nsleep 2\ncd /workspace && timeout 120 poetry run python dcat_catalog_check.py --url http://127.0.0.1:8765/catalog.ttl 2>/tmp/run_err.log | head -5\necho \"EXIT:${PIPESTATUS[0]}\"\necho \"--- stderr tail ---\"; tail -3 /tmp/run_err.log\nkill %1 2>/dev/null; pkill -f \"http.server 8765\" 2>/dev/null; true",
+      "exit_code": 143,
+      "stdout": "EXIT:1\n--- stderr tail ---\n  File \"/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/requests/models.py\", line 1026, in raise_for_status\n    raise HTTPError(http_error_msg, response=self)\nrequests.exceptions.HTTPError: 404 Client Error: File not found for url: http://127.0.0.1:8765/catalog.ttl\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup poetry run python -m http.server 8765 --directory tests/data >/tmp/httpd.log 2>&1 &\nsleep 2\ntimeout 180 poetry run python dcat_catalog_check.py --url http://127.0.0.1:8765/catalog.ttl > /tmp/out.jsonl 2>/tmp/run_err.log\nRC=$?\necho \"EXIT:$RC\"\necho \"--- output lines: $(wc -l < /tmp/out.jsonl)\"; head -2 /tmp/out.jsonl\necho \"--- stderr tail ---\"; tail -3 /tmp/run_err.log\npkill -f \"http.server 8765\" 2>/dev/null; true",
+      "exit_code": 143,
+      "stdout": "EXIT:139\n--- output lines: 45\n{\"id\": \"http://example.com/dists/json/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"JSON\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.json\", \"last_check\": \"2026-10-09 22:23:13.964955\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /incorrect.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7355115cc4f0>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n{\"id\": \"http://example.com/dists/atom/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"ATOM\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/correct.xml\", \"last_check\": \"2026-10-09 22:23:14.103536\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /correct.xml (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7355115cd720>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n--- stderr tail ---\ntimeout: the monitored command dumped core\n",
+      "stderr": "/bin/bash: line 5:  5575 Segmentation fault      timeout 180 poetry run python dcat_catalog_check.py --url http://127.0.0.1:8765/catalog.ttl > /tmp/out.jsonl 2> /tmp/run_err.log\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && poetry run python -c \"\nfrom osgeo import gdal\nprint('gdal py:', gdal.__version__)\nprint('gdal lib:', gdal.VersionInfo())\nimport fiona, geopandas\nprint('fiona', fiona.__version__, 'gdal', fiona.__gdal_version__)\n\"; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "gdal py: 3.8.4\ngdal lib: 3080400\nfiona 1.10.1 gdal 3.9.2\nEXIT:139\n",
+      "stderr": "/bin/bash: line 9:  5602 Segmentation fault      (core dumped) poetry run python -c \"\nfrom osgeo import gdal\nprint('gdal py:', gdal.__version__)\nprint('gdal lib:', gdal.VersionInfo())\nimport fiona, geopandas\nprint('fiona', fiona.__version__, 'gdal', fiona.__gdal_version__)\n\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && poetry run python -c \"print('hello')\"; echo \"EXIT:$?\"; echo \"===\"; poetry run python -c \"import geopandas; print('ok')\"; echo \"EXIT2:$?\"; echo \"===\"; poetry show gdal fiona pyogrio 2>/dev/null; poetry run pip show gdal 2>/dev/null | head -3",
+      "exit_code": 120,
+      "stdout": "hello\nEXIT:0\n===\nok\nEXIT2:0\n===\nName: GDAL\nVersion: 3.6.2\nSummary: GDAL: Geospatial Data Abstraction Library\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && poetry run python -c \"from osgeo import gdal; print('imported gdal', gdal.__version__)\"; echo \"EXIT:$?\"; echo \"===\"; poetry run python -c \"import fiona; print('fiona imported')\"; echo \"EXIT2:$?\"",
+      "exit_code": 0,
+      "stdout": "imported gdal 3.8.4\nEXIT:139\n===\nfiona imported\nEXIT2:0\n",
+      "stderr": "/bin/bash: line 3:  5657 Segmentation fault      (core dumped) poetry run python -c \"from osgeo import gdal; print('imported gdal', gdal.__version__)\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && V=/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10; ls $V/lib/python3.10/site-packages/ | grep -i -E \"fiona|pyogrio|osgeo|rasterio\"; echo \"---fiona libs---\"; find $V/lib/python3.10/site-packages/fiona -name \"*.so*\" | head; echo \"---pyogrio---\"; find $V/lib/python3.10/site-packages/pyogrio -name \"*.so*\" | head; echo \"---system gdal---\"; ls /usr/lib/x86_64-linux-gnu/libgdal*",
+      "exit_code": 0,
+      "stdout": "fiona\nfiona-1.10.1.dist-info\nfiona.libs\nosgeo\nosgeo_utils\npyogrio\npyogrio-0.11.0.dist-info\npyogrio.libs\n---fiona libs---\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/crs.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_geometry.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_env.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/schema.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/ogrext.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_err.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_vsiopener.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_transform.cpython-310-x86_64-linux-gnu.so\n---pyogrio---\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/_geometry.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/_io.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/_ogr.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/_err.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/pyogrio/_vsi.cpython-310-x86_64-linux-gnu.so\n---system gdal---\n/usr/lib/x86_64-linux-gnu/libgdal.so\n/usr/lib/x86_64-linux-gnu/libgdal.so.34\n/usr/lib/x86_64-linux-gnu/libgdal.so.34.3.8.4\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-cache madison libgdal-dev 2>/dev/null; echo \"---libs---\"; apt-cache search libgdal32 libgdal30 libgdal34 2>/dev/null; echo \"---pyogrio gdal ver---\"; cd /workspace && poetry run python -c \"import pyogrio; print(pyogrio.__gdal_version__)\" 2>&1 | tail -2; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "libgdal-dev | 3.8.4+dfsg-1~jammy0 | https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages\nlibgdal-dev | 3.4.1+dfsg-1build4 | http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n---libs---\n---pyogrio gdal ver---\n(3, 10, 3)\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -rn \"osgeo\\|gdal\\|fiona\\|geopandas\\|pyogrio\" --include=*.py . | grep -v tests | head -20",
+      "exit_code": 0,
+      "stdout": "./formats/geotiff_format.py:1:from osgeo import gdal\n./formats/geotiff_format.py:8:    dataset = gdal.Open(file_name)\n./formats/shp_format.py:1:import geopandas\n./formats/shp_format.py:24:                geopandas.read_file(f)\n./formats/shp_format.py:34:                        geopandas.read_file(f\"zip://{file.name}!{shp}\")\n./formats/gml_format.py:1:import geopandas\n./formats/gml_format.py:11:            geopandas.read_file(f)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && V=/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10; find $V/lib/python3.10/site-packages/osgeo -maxdepth 1 | head; echo \"---ldd---\"; ldd $V/lib/python3.10/site-packages/osgeo/_gdal.cpython-310-x86_64-linux-gnu.so 2>/dev/null | grep -i gdal",
+      "exit_code": 0,
+      "stdout": "/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/__init__.py\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/gdalconst.py\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_gdalconst.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_osr.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_gnm.cpython-310-x86_64-linux-gnu.so\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/gnm.py\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/gdal.py\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/__pycache__\n/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/gdalnumeric.py\n---ldd---\n\tlibgdal.so.34 => /lib/x86_64-linux-gnu/libgdal.so.34 (0x00007e5e9d4ff000)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get install -y gdb 2>&1 | tail -2; echo \"===\"; V=/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10; gdb -q -batch -ex run -ex bt --args $V/bin/python -c \"from osgeo import gdal; print('ok')\" 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "Setting up gdb (12.1-0ubuntu1~22.04.2) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\n===\n[Thread debugging using libthread_db enabled]\nUsing host libthread_db library \"/lib/x86_64-linux-gnu/libthread_db.so.1\".\nok\n\nProgram received signal SIGSEGV, Segmentation fault.\n0x00007ffff7cfc3be in __GI___libc_free (mem=0x555000908dea) at ./malloc/malloc.c:3368\n3368\t./malloc/malloc.c: No such file or directory.\n#0  0x00007ffff7cfc3be in __GI___libc_free (mem=0x555000908dea) at ./malloc/malloc.c:3368\n#1  0x00007ffff1c3bcb3 in osgeo::proj::common::UnitOfMeasure::~UnitOfMeasure() () from /lib/x86_64-linux-gnu/libproj.so.22\n#2  0x00007ffff7c9c495 in __run_exit_handlers (status=0, listp=0x7ffff7e71838 <__exit_funcs>, run_list_atexit=run_list_atexit@entry=true, run_dtors=run_dtors@entry=true) at ./stdlib/exit.c:113\n#3  0x00007ffff7c9c610 in __GI_exit (status=<optimized out>) at ./stdlib/exit.c:143\n#4  0x00007ffff7c80d97 in __libc_start_call_main (main=main@entry=0x5555557a2f10, argc=argc@entry=3, argv=argv@entry=0x7fffffffec58) at ../sysdeps/nptl/libc_start_call_main.h:74\n#5  0x00007ffff7c80e40 in __libc_start_main_impl (main=0x5555557a2f10, argc=3, argv=0x7fffffffec58, init=<optimized out>, fini=<optimized out>, rtld_fini=<optimized out>, stack_end=0x7fffffffec48) at ../csu/libc-start.c:392\n#6  0x00005555557a2e45 in _start ()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ldd /usr/lib/x86_64-linux-gnu/libgdal.so.34 | grep -i proj; echo \"---\"; ls -la /usr/lib/x86_64-linux-gnu/libproj*; echo \"---dpkg proj---\"; dpkg -l | grep -i proj; echo \"---gdal python build check---\"; grep -rn \"3080400\\|3.6.2\" /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/*.py 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "\tlibproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x000074cab138c000)\n\tlibproj.so.22 => /lib/x86_64-linux-gnu/libproj.so.22 (0x000074caafd04000)\n---\n-rw-r--r-- 1 root root 9572992 Jan  1  2022 /usr/lib/x86_64-linux-gnu/libproj.a\n-rw-r--r-- 1 root root     953 Jan  1  2022 /usr/lib/x86_64-linux-gnu/libproj.la\nlrwxrwxrwx 1 root root      17 Jan  1  2022 /usr/lib/x86_64-linux-gnu/libproj.so -> libproj.so.22.2.1\nlrwxrwxrwx 1 root root      17 Jan  1  2022 /usr/lib/x86_64-linux-gnu/libproj.so.22 -> libproj.so.22.2.1\n-rw-r--r-- 1 root root 3560824 Jan  1  2022 /usr/lib/x86_64-linux-gnu/libproj.so.22.2.1\nlrwxrwxrwx 1 root root      19 Jan 26  2024 /usr/lib/x86_64-linux-gnu/libproj.so.25 -> libproj.so.25.9.3.1\n-rw-r--r-- 1 root root 3863864 Jan 26  2024 /usr/lib/x86_64-linux-gnu/libproj.so.25.9.3.1\n---dpkg proj---\nii  libproj-dev:amd64                8.2.1-1                                 amd64        Cartographic projection library (development files)\nii  libproj22:amd64                  8.2.1-1                                 amd64        Cartographic projection library\nii  libproj25:amd64                  9.3.1-1~jammy0                          amd64        Cartographic projection library\nii  nftables                         1.0.2-1ubuntu3.1                        amd64        Program to control packet filtering rules by Netfilter project\nii  proj-bin                         8.2.1-1                                 amd64        Cartographic projection library (tools)\nii  proj-data                        9.3.1-1~jammy0                          all          Cartographic projection filter and library (datum package)\n---gdal python build check---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-cache policy libproj-dev libproj25 libproj22 2>/dev/null; echo \"---ppa proj---\"; apt-cache madison libproj-dev 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "libproj-dev:\n  Installed: 8.2.1-1\n  Candidate: 9.3.1-1~jammy0\n  Version table:\n     9.3.1-1~jammy0 500\n        500 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages\n *** 8.2.1-1 500\n        500 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n        100 /var/lib/dpkg/status\nlibproj25:\n  Installed: 9.3.1-1~jammy0\n  Candidate: 9.3.1-1~jammy0\n  Version table:\n *** 9.3.1-1~jammy0 500\n        500 https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages\n        100 /var/lib/dpkg/status\nlibproj22:\n  Installed: 8.2.1-1\n  Candidate: 8.2.1-1\n  Version table:\n *** 8.2.1-1 500\n        500 http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n        100 /var/lib/dpkg/status\n---ppa proj---\nlibproj-dev | 9.3.1-1~jammy0 | https://ppa.launchpadcontent.net/ubuntugis/ppa/ubuntu jammy/main amd64 Packages\nlibproj-dev |    8.2.1-1 | http://archive.ubuntu.com/ubuntu jammy/universe amd64 Packages\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get install -y libproj-dev 2>&1 | tail -6; echo \"EXIT:${PIPESTATUS[0]}\"; dpkg -l | grep -i \"libproj\"; echo \"===\"; poetry run python -c \"from osgeo import gdal; print('ok', gdal.__version__)\"; echo \"EXIT2:$?\"",
+      "exit_code": 0,
+      "stdout": "debconf: delaying package configuration, since apt-utils is not installed\nFetched 121 kB in 0s (381 kB/s)\n(Reading database ... \n(Reading database ... 5%\n(Reading database ... 10%\n(Reading database ... 15%\n(Reading database ... 20%\n(Reading database ... 25%\n(Reading database ... 30%\n(Reading database ... 35%\n(Reading database ... 40%\n(Reading database ... 45%\n(Reading database ... 50%\n(Reading database ... 55%\n(Reading database ... 60%\n(Reading database ... 65%\n(Reading database ... 70%\n(Reading database ... 75%\n(Reading database ... 80%\n(Reading database ... 85%\n(Reading database ... 90%\n(Reading database ... 95%\n(Reading database ... 100%\n(Reading database ... 42764 files and directories currently installed.)\nPreparing to unpack .../libproj-dev_9.3.1-1~jammy0_amd64.deb ...\nUnpacking libproj-dev:amd64 (9.3.1-1~jammy0) over (8.2.1-1) ...\nSetting up libproj-dev:amd64 (9.3.1-1~jammy0) ...\nEXIT:0\nii  libproj-dev:amd64                9.3.1-1~jammy0                          amd64        Cartographic projection library (development files)\nii  libproj22:amd64                  8.2.1-1                                 amd64        Cartographic projection library\nii  libproj25:amd64                  9.3.1-1~jammy0                          amd64        Cartographic projection library\n===\nok 3.8.4\nEXIT2:139\n",
+      "stderr": "/bin/bash: line 3:  6083 Segmentation fault      (core dumped) poetry run python -c \"from osgeo import gdal; print('ok', gdal.__version__)\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && V=/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10; for f in $(find $V/lib/python3.10/site-packages/osgeo $V/lib/python3.10/site-packages/fiona $V/lib/python3.10/site-packages/pyogrio -name \"*.so*\"); do if ldd \"$f\" 2>/dev/null | grep -q proj; then echo \"== $f\"; ldd \"$f\" | grep -i proj; fi; done; echo \"=== system bin ===\"; for f in $(find /usr/lib/x86_64-linux-gnu -maxdepth 1 -name \"*.so*\"); do if ldd \"$f\" 2>/dev/null | grep -q \"libproj.so.22\"; then echo \"$f\"; fi; done 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_osr.cpython-310-x86_64-linux-gnu.so\n\tlibproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x00007647c35ff000)\n\tlibproj.so.22 => /lib/x86_64-linux-gnu/libproj.so.22 (0x00007647c23ea000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_gnm.cpython-310-x86_64-linux-gnu.so\n\tlibproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x00007f6ada9d2000)\n\tlibproj.so.22 => /lib/x86_64-linux-gnu/libproj.so.22 (0x00007f6ad97bd000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_ogr.cpython-310-x86_64-linux-gnu.so\n\tlibproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x000077ae7226c000)\n\tlibproj.so.22 => /lib/x86_64-linux-gnu/libproj.so.22 (0x000077ae71057000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/osgeo/_gdal.cpython-310-x86_64-linux-gnu.so\n\tlibproj.so.25 => /lib/x86_64-linux-gnu/libproj.so.25 (0x00007d70a3753000)\n\tlibproj.so.22 => /lib/x86_64-linux-gnu/libproj.so.22 (0x00007d70a253e000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/crs.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x00007c2b0ebd0000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_geometry.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x00007634c72b3000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_env.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x0000781e8eea1000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/schema.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x0000758220ade000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/ogrext.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x00007ecde93a8000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_err.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x0000749f9e252000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_vsiopener.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x000071cd7a2f4000)\n== /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/_transform.cpython-310-x86_64-linux-gnu.so\n\tlibproj-fiona-3ec30893.so.25.9.4.1 => /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/fiona/../fiona.libs/libproj-fiona-3ec30893.so.25.9.4.1 (0x00007f05b4db6000)\n=== system bin ===\n/usr/lib/x86_64-linux-gnu/libgdal.so.34.3.8.4\n/usr/lib/x86_64-linux-gnu/libspatialite.so.7\n/usr/lib/x86_64-linux-gnu/libgeotiff.so\n/usr/lib/x86_64-linux-gnu/libgdal.so.34\n/usr/lib/x86_64-linux-gnu/libgeotiff.so.5\n/usr/lib/x86_64-linux-gnu/libspatialite.so\n/usr/lib/x86_64-linux-gnu/libspatialite.so.7.1.2\n/usr/lib/x86_64-linux-gnu/libgeotiff.so.5.2.0\n/usr/lib/x86_64-linux-gnu/libgdal.so\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-cache rdepends libproj22 2>/dev/null | head -30; echo \"---who links 22---\"; for f in /usr/lib/x86_64-linux-gnu/*.so*; do if readelf -d \"$f\" 2>/dev/null | grep -q \"libproj.so.22\"; then echo \"$f\"; fi; done 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "libproj22\nReverse Depends:\n  libproj-dev\n  libgdal30\n  xygrib\n  therion\n  survex-aven\n  survex\n  sumo\n  spatialite-gui\n  saga\n  r-cran-terra\n  r-cran-sf\n  r-cran-rgdal\n  r-cran-lwgeom\n  qmapshack\n  qgis-providers\n  qgis\n  python3-pyproj\n  python3-cartopy\n  proj-bin\n  postgresql-14-postgis-3\n  postgis\n  pdl\n  osm2pgsql\n  openorienteering-mapper\n  octave-octproj\n  ncl-ncarg\n  merkaartor\n  libvtk9.1\n---who links 22---\n/usr/lib/x86_64-linux-gnu/libgeotiff.so\n/usr/lib/x86_64-linux-gnu/libgeotiff.so.5\n/usr/lib/x86_64-linux-gnu/libgeotiff.so.5.2.0\n/usr/lib/x86_64-linux-gnu/libproj.so.22\n/usr/lib/x86_64-linux-gnu/libproj.so.22.2.1\n/usr/lib/x86_64-linux-gnu/libspatialite.so\n/usr/lib/x86_64-linux-gnu/libspatialite.so.7\n/usr/lib/x86_64-linux-gnu/libspatialite.so.7.1.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-cache policy libgeotiff5 libspatialite7 libgeotiff-dev libspatialite-dev 2>/dev/null | grep -E \"libgeotiff5|libspatialite7|libgeotiff-dev|libspatialite-dev|Installed|Candidate\"",
+      "exit_code": 0,
+      "stdout": "libgeotiff5:\n  Installed: 1.7.0-2build1\n  Candidate: 1.7.1-5~jammy0\nlibspatialite7:\n  Installed: 5.0.1-2build2\n  Candidate: 5.0.1-3~jammy0\nlibgeotiff-dev:\n  Installed: 1.7.0-2build1\n  Candidate: 1.7.1-5~jammy0\nlibspatialite-dev:\n  Installed: 5.0.1-2build2\n  Candidate: 5.1.0-1~jammy0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DEBIAN_FRONTEND=noninteractive apt-get upgrade -y 2>&1 | tail -8; echo \"EXIT:${PIPESTATUS[0]}\"; echo \"===\"; poetry run python -c \"from osgeo import gdal; print('ok', gdal.__version__)\"; echo \"EXIT2:$?\"",
+      "exit_code": 0,
+      "stdout": "Setting up openssl (3.0.2-0ubuntu1.30) ...\nSetting up libperl5.34:amd64 (5.34.0-3ubuntu1.9) ...\nSetting up libgeotiff-dev:amd64 (1.7.1-5~jammy0) ...\nSetting up perl (5.34.0-3ubuntu1.9) ...\nSetting up docker-ce (5:29.9.0-1~ubuntu.22.04~jammy) ...\ninvoke-rc.d: could not determine current runlevel\ninvoke-rc.d: policy-rc.d denied execution of restart.\nProcessing triggers for libc-bin (2.35-0ubuntu3.15) ...\nEXIT:0\n===\nok 3.8.4\nEXIT2:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && for i in 1 2 3; do poetry run python -c \"from osgeo import gdal; print('gdal import ok', gdal.__version__)\"; echo \"rc=$?\"; done; echo \"===\"; poetry run python -c \"import geopandas, fiona, pyogrio; print('geopandas', geopandas.__version__, 'fiona', fiona.__version__, 'pyogrio', pyogrio.__version__)\"; echo \"rc=$?\"",
+      "exit_code": 0,
+      "stdout": "gdal import ok 3.8.4\nrc=0\ngdal import ok 3.8.4\nrc=0\ngdal import ok 3.8.4\nrc=0\n===\ngeopandas 1.1.1 fiona 1.10.1 pyogrio 0.11.0\nrc=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 590 poetry run coverage run -m unittest 2>&1 | tail -8; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "EOF marker not found\n..../root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/rdflib/plugins/parsers/jsonld.py:168: DeprecationWarning: ConjunctiveGraph is deprecated, use Dataset instead.\n  conj_sink = ConjunctiveGraph(store=sink.store, identifier=sink.identifier)\n..................\n----------------------------------------------------------------------\nRan 77 tests in 1.605s\n\nOK\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup poetry run python -m http.server 8765 --directory tests/data >/tmp/httpd.log 2>&1 &\nsleep 2\ntimeout 180 poetry run python dcat_catalog_check.py --url http://127.0.0.1:8765/catalog.ttl > /tmp/out.jsonl 2>/tmp/run_err.log\necho \"EXIT:$?\"\necho \"--- output lines: $(wc -l < /tmp/out.jsonl)\"; head -1 /tmp/out.jsonl; echo \"...\"; tail -1 /tmp/out.jsonl\necho \"--- stderr tail ---\"; tail -3 /tmp/run_err.log\npkill -f \"http.server 8765\" 2>/dev/null; true",
+      "exit_code": 143,
+      "stdout": "EXIT:0\n--- output lines: 45\n{\"id\": \"http://example.com/dists/json/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"JSON\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.json\", \"last_check\": \"2026-10-09 22:26:00.650291\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /incorrect.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75d8cd8384f0>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n...\n{\"id\": \"http://example.com/dists/zip/good\", \"dataset\": \"http://example.com/dataset/2\", \"dataset_title\": \"Dataset with valid distributions\", \"format\": \"ZIP\", \"publisher\": \"Publisher with valid distributions\", \"url\": \"http://localhost:8000/bermuda.zip\", \"last_check\": \"2026-10-09 22:26:01.369799\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /bermuda.zip (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x75d89f760970>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n--- stderr tail ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && poetry run python dcat_catalog_check.py --help >/dev/null 2>&1; echo \"help rc=$?\"; poetry run coverage report 2>&1 | tail -4; echo \"---env---\"; poetry env info | head -8; echo \"---geotiff test---\"; poetry run python -m unittest tests.test_geotiff_format tests.test_shp_format tests.test_gml_format 2>&1 | tail -5; echo \"rc=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "help rc=0\nformats/xml_format.py             9      0   100%\nformats/zip_format.py             6      0   100%\n-------------------------------------------------\nTOTAL                           727    143    80%\n---env---\n\nVirtualenv\nPython:         3.10.12\nImplementation: CPython\nPath:           /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10\nExecutable:     /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/python\nValid:          True\n\n---geotiff test---\n.....\n----------------------------------------------------------------------\nRan 9 tests in 0.085s\n\nOK\nrc=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pkill -f \"http.server 8765\" 2>/dev/null; sleep 1; ps aux | grep \"http.server 8765\" | grep -v grep | wc -l",
+      "exit_code": 143,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep \"http.server 8765\" | grep -v grep | wc -l; echo \"done\"",
+      "exit_code": 0,
+      "stdout": "0\ndone\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la && git log --oneline -3 2>/dev/null && which poetry python3 && python3 --version && poetry --version",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 380\ndrwxr-xr-x 8 root root   4096 Oct  9 22:25 .\ndr-xr-xr-x 1 root root   4096 Oct  9 22:18 ..\n-rw-r--r-- 1 root root  53248 Oct  9 22:25 .coverage\n-rw-r--r-- 1 root root     22 Oct  9 22:18 .coveragerc\ndrwxr-xr-x 8 root root   4096 Oct  9 22:18 .git\n-rw-r--r-- 1 root root     71 Oct  9 22:18 .gitignore\n-rw-r--r-- 1 root root   1571 Oct  9 22:18 .gitlab-ci.yml\n-rw-r--r-- 1 root root     64 Oct  9 22:18 .markdownlint.json\n-rw-r--r-- 1 root root   1119 Oct  9 22:18 CHANGELOG.md\n-rw-r--r-- 1 root root    650 Oct  9 22:18 Dockerfile\n-rw-r--r-- 1 root root  13792 Oct  9 22:18 LICENSE\n-rw-r--r-- 1 root root   9358 Oct  9 22:18 README.md\ndrwxr-xr-x 2 root root   4096 Oct  9 22:22 __pycache__\n-rwxr-xr-x 1 root root   7037 Oct  9 22:18 check_periodicity.py\n-rwxr-xr-x 1 root root  28099 Oct  9 22:18 dcat_catalog_check.py\n-rwxr-xr-x 1 root root   1176 Oct  9 22:18 download_catalog.py\ndrwxr-xr-x 3 root root   4096 Oct  9 22:22 formats\n-rw-r--r-- 1 root root   5154 Oct  9 22:18 logo.svg\n-rw-r--r-- 1 root root   9264 Oct  9 22:18 mqa.py\n-rw-r--r-- 1 root root      0 Oct  9 22:25 my_api_key\n-rw-r--r-- 1 root root 176934 Oct  9 22:18 poetry.lock\n-rw-r--r-- 1 root root   2556 Oct  9 22:18 publiccode.yml\n-rw-r--r-- 1 root root    711 Oct  9 22:18 pyproject.toml\ndrwxr-xr-x 2 root root   4096 Oct  9 22:18 resources\ndrwxr-xr-x 4 root root   4096 Oct  9 22:22 tests\ndrwxr-xr-x 2 root root   4096 Oct  9 22:18 tools\n44583b1 fix table style [ci skip]\n/usr/local/bin/poetry\n/usr/bin/python3\nPython 3.10.12\nPoetry (version 2.5.1)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat pyproject.toml && echo \"---VENVS---\" && poetry env list 2>&1 && echo \"---INFO---\" && poetry env info 2>&1 | head -30 && echo \"---RESOURCES---\" && ls -la resources formats tests",
+      "exit_code": 0,
+      "stdout": "[tool.poetry]\n\nname = \"dcat-catalog-check\"\nversion = \"1.1.0\"\ndescription = \"DCAT Catalog Check\"\nauthors = [\n  \"Jesper Zedlitz <jesper.zedlitz@stk.landsh.de>\",\n  \"Thorge Petersen <petersen@rz.uni-kiel.de>\",\n]\nlicense = \"AGPL-3.0-or-later\"\nreadme = \"README.md\"\n\n[tool.poetry.dependencies]\npython = \"^3.10\"\nrequests = \"^2.32.3\"\npython-magic = \"^0.4.27\"\nfrictionless = {extras = [\"wkt\"], version = \"^5.18.1\"}\ngeopandas = \"^1.0.1\"\nrdflib = \"^7.1.1\"\npypdf = \"^5.1.0\"\npillow = \"^11.0.0\"\nfiona = \"^1.10.1\"\npyarrow = \"^18.1.0\"\ngeojson = \"^3.2.0\"\ngdal = \"3.6.2\"\n\n[tool.poetry.group.dev.dependencies]\ncoverage = \"^7.6.1\"\nruff = \"^0.6.8\"\n\n[build-system]\nrequires = [\"poetry-core\"]\nbuild-backend = \"poetry.core.masonry.api\"\n---VENVS---\ndcat-catalog-check-xS3fZVNL-py3.10 (Activated)\n---INFO---\n\nVirtualenv\nPython:         3.10.12\nImplementation: CPython\nPath:           /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10\nExecutable:     /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/python\nValid:          True\n\nBase\nPlatform:   linux\nOS:         posix\nPython:     3.10.12\nPath:       /usr\nExecutable: /usr/bin/python3.10\n---RESOURCES---\nformats:\ntotal 92\ndrwxr-xr-x 3 root root 4096 Oct  9 22:22 .\ndrwxr-xr-x 8 root root 4096 Oct  9 22:25 ..\n-rw-r--r-- 1 root root    0 Oct  9 22:18 __init__.py\ndrwxr-xr-x 2 root root 4096 Oct  9 22:22 __pycache__\n-rw-r--r-- 1 root root  578 Oct  9 22:18 atom_format.py\n-rw-r--r-- 1 root root  555 Oct  9 22:18 docx_format.py\n-rw-r--r-- 1 root root  478 Oct  9 22:18 geojson_format.py\n-rw-r--r-- 1 root root 1788 Oct  9 22:18 geotiff_format.py\n-rw-r--r-- 1 root root  354 Oct  9 22:18 gml_format.py\n-rw-r--r-- 1 root root  279 Oct  9 22:18 jpeg_format.py\n-rw-r--r-- 1 root root  986 Oct  9 22:18 json_format.py\n-rw-r--r-- 1 root root  881 Oct  9 22:18 ods_format.py\n-rw-r--r-- 1 root root  874 Oct  9 22:18 odt_format.py\n-rw-r--r-- 1 root root  266 Oct  9 22:18 parquet_format.py\n-rw-r--r-- 1 root root  314 Oct  9 22:18 pdf_format.py\n-rw-r--r-- 1 root root  315 Oct  9 22:18 png_format.py\n-rw-r--r-- 1 root root  486 Oct  9 22:18 rdf_format.py\n-rw-r--r-- 1 root root 1260 Oct  9 22:18 shp_format.py\n-rw-r--r-- 1 root root 1669 Oct  9 22:18 wfs_srvc_format.py\n-rw-r--r-- 1 root root 1849 Oct  9 22:18 wms_srvc_format.py\n-rw-r--r-- 1 root root 1631 Oct  9 22:18 wmts_srvc_format.py\n-rw-r--r-- 1 root root  551 Oct  9 22:18 xlsx_format.py\n-rw-r--r-- 1 root root  333 Oct  9 22:18 xml_format.py\n-rw-r--r-- 1 root root  217 Oct  9 22:18 zip_format.py\n\nresources:\ntotal 12\ndrwxr-xr-x 2 root root 4096 Oct  9 22:18 .\ndrwxr-xr-x 8 root root 4096 Oct  9 22:25 ..\n-rw-r--r-- 1 root root 1854 Oct  9 22:18 file_types.json\n\ntests:\ntotal 116\ndrwxr-xr-x 4 root root  4096 Oct  9 22:22 .\ndrwxr-xr-x 8 root root  4096 Oct  9 22:25 ..\n-rw-r--r-- 1 root root     0 Oct  9 22:18 __init__.py\ndrwxr-xr-x 2 root root  4096 Oct  9 22:23 __pycache__\ndrwxr-xr-x 2 root root  4096 Oct  9 22:18 data\n-rw-r--r-- 1 root root   977 Oct  9 22:18 test_all_formats.py\n-rw-r--r-- 1 root root   864 Oct  9 22:18 test_atom_format.py\n-rw-r--r-- 1 root root 17473 Oct  9 22:18 test_dcat_catalog_check.py\n-rw-r--r-- 1 root root  1079 Oct  9 22:18 test_docx_format.py\n-rw-r--r-- 1 root root   613 Oct  9 22:18 test_geojson_format.py\n-rw-r--r-- 1 root root   875 Oct  9 22:18 test_geotiff_format.py\n-rw-r--r-- 1 root root   600 Oct  9 22:18 test_gml_format.py\n-rw-r--r-- 1 root root  2978 Oct  9 22:18 test_integration.py\n-rw-r--r-- 1 root root   490 Oct  9 22:18 test_jpeg_format.py\n-rw-r--r-- 1 root root   907 Oct  9 22:18 test_json_format.py\n-rw-r--r-- 1 root root  1233 Oct  9 22:18 test_ods_format.py\n-rw-r--r-- 1 root root  1240 Oct  9 22:18 test_odt_format.py\n-rw-r--r-- 1 root root   612 Oct  9 22:18 test_parquet_format.py\n-rw-r--r-- 1 root root   487 Oct  9 22:18 test_pdf_format.py\n-rw-r--r-- 1 root root   490 Oct  9 22:18 test_png_format.py\n-rw-r--r-- 1 root root  1056 Oct  9 22:18 test_rdf_format.py\n-rw-r--r-- 1 root root   933 Oct  9 22:18 test_shp_format.py\n-rw-r--r-- 1 root root   894 Oct  9 22:18 test_wmts_format.py\n-rw-r--r-- 1 root root  1079 Oct  9 22:18 test_xlsx_format.py\n-rw-r--r-- 1 root root   602 Oct  9 22:18 test_xml_format.py\n-rw-r--r-- 1 root root   667 Oct  9 22:18 test_zip_format.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && poetry run python dcat_catalog_check.py --help > /tmp/help.txt 2>/tmp/help.err; echo \"help exit=$?\"; head -30 /tmp/help.txt; echo \"---ERR---\"; cat /tmp/help.err; echo \"---GDAL---\"; poetry run python -c \"from osgeo import gdal; print('gdal version', gdal.__version__); print('gdal OK')\"; echo \"gdal exit=$?\"",
+      "exit_code": 0,
+      "stdout": "help exit=0\nusage: dcat_catalog_check.py [-h] [--url URL] [--log_file LOG_FILE]\n                             [--results RESULTS] [--verbose] [--debug]\n                             [--recheck] [--save-catalog] [--no-recheck]\n                             [--access-url-as-download]\n                             [--check-format CHECK_FORMAT]\n                             [--force-check-format FORCE_CHECK_FORMAT]\n                             [--check-http-5xx]\n\noptions:\n  -h, --help            show this help message and exit\n  --url URL             DCAT catalog URL\n  --log_file LOG_FILE   Log file path\n  --results RESULTS     File from which the results are loaded\n  --verbose             Enable verbose logging\n  --debug               Enable debug logging\n  --recheck             Only use the previous results (specified by --results)\n                        as input for the next check\n  --save-catalog        Save the DCAT catalog into a file catalog.xml\n  --no-recheck          Just check new entries from the catalog. Do not re-\n                        check existing results.\n  --access-url-as-download\n                        Treat the dcat:accessURL as the download URL.\n  --check-format CHECK_FORMAT\n                        Only check the specified format\n  --force-check-format FORCE_CHECK_FORMAT\n                        Check distributinons with the specified format\n                        regardless of previous results\n  --check-http-5xx      Only re-check HTTP 5xx errors\n---ERR---\n---GDAL---\ngdal version 3.8.4\ngdal OK\ngdal exit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && poetry run coverage run -m unittest 2>&1 | tail -20; echo \"unittest exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "/root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/rdflib/plugins/parsers/jsonld.py:168: DeprecationWarning: ConjunctiveGraph is deprecated, use Dataset instead.\n  conj_sink = ConjunctiveGraph(store=sink.store, identifier=sink.identifier)\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /bermuda.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /zos116.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /bermuda-with-subdir.zip HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /correct.xml HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /bermuda.zip HTTP/1.1\" 200 -\n.127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /catalog-1.ttl HTTP/1.1\" 200 -\n127.0.0.1 - - [09/Oct/2026 22:26:26] \"GET /image.jpeg HTTP/1.1\" 200 -\n................invalid pdf header: b'\\x89PNG\\r'\nEOF marker not found\nEOF marker not found\nEOF marker not found\n..../root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/lib/python3.10/site-packages/rdflib/plugins/parsers/jsonld.py:168: DeprecationWarning: ConjunctiveGraph is deprecated, use Dataset instead.\n  conj_sink = ConjunctiveGraph(store=sink.store, identifier=sink.identifier)\n..................\n----------------------------------------------------------------------\nRan 77 tests in 1.185s\n\nOK\nunittest exit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls tests/data && echo \"---\" && sed -n '1,80p' tests/test_integration.py && echo \"---HEAD of catalog---\" && head -20 tests/data/catalog.ttl 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "Atom_SH_Feldblockfinder_OpenGBD.xml\nWMTSCapabilities.xml\nall-tests.ttl\nbermuda-with-subdir.zip\nbermuda.geojson\nbermuda.gml\nbermuda.zip\nbroken.parquet\ncatalog-1.ttl\ncatalog-dataservice.ttl\ncatalog.ttl\ncorrect.json\ncorrect.json.bz2\ncorrect.json.gz\ncorrect.json.xz\ncorrect.xml\ngeotiff.zip\nimage.jpeg\nimage.png\nincorrect.json\nincorrect.xml\njson-in-zip.zip\njsons-in-zip.zip\npng-in-zip.zip\nrdf.json\nrdf.xml\nresult-1.jsonl\ntext.txt\nufo-resource.json\nufo-schema.json\nufo.csv\nufo.ttl\nvalid.docx\nvalid.ods\nvalid.odt\nvalid.parquet\nvalid.pdf\nvalid.tif\nvalid.xlsx\nvalid_geotiff.tif\nwfs-service-base.xml\nwfs-service-capabilities.xml\nzos116.zip\n---\nfrom http.server import SimpleHTTPRequestHandler, HTTPServer\nimport json\nimport threading\nimport time\nimport io\nimport requests\nimport sys\nimport unittest\nfrom dcat_catalog_check import DcatCatalogCheck\nfrom functools import partial\n\n\nclass TestIntegration(unittest.TestCase):\n    @classmethod\n    def setUpClass(cls):\n        cls.server_address = (\"\", 8000)\n        handler = partial(SimpleHTTPRequestHandler, directory=\"tests/data/\")\n        cls.httpd = HTTPServer(cls.server_address, handler)\n\n        cls.server_thread = threading.Thread(target=cls.httpd.serve_forever)\n        cls.server_thread.daemon = True\n        cls.server_thread.start()\n\n        cls._wait_for_server(\"http://localhost:8000\")\n\n    @classmethod\n    def tearDownClass(cls):\n        cls.httpd.shutdown()\n        cls.httpd.server_close()\n        cls.server_thread.join()\n\n    @staticmethod\n    def _wait_for_server(url, timeout=10, interval=0.2):\n        \"\"\"Wait until the server can be reached at the specified URL.\"\"\"\n        start_time = time.time()\n        while time.time() - start_time < timeout:\n            try:\n                response = requests.get(url)\n                if response.status_code == 200:\n                    return True\n            except requests.exceptions.RequestException:\n                pass\n            time.sleep(interval)\n        print(f\"Timeout reached: Server at {url} not reachable.\")\n        return False\n\n    def setUp(self):\n        self.dcc = DcatCatalogCheck(\"http://test.invalid:8000/\", \"my_api_key\")\n\n    def test_rerun_with_old_data(self):\n        \"\"\"When the test is run after a long time all distributions will be\n        checked. The number of successfull checks will be increased.\"\"\"\n\n        # Read previous results\n        self.dcc.read_previous_results(\"tests/data/result-1.jsonl\")\n\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog-1.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        self.assertEqual(len(json_objects), 1)\n\n        self.assertEqual(json_objects[0].get(\"num_good_checks\"), 2)\n\n    def test_check_dcat_catalog(self):\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        for result in json_objects:\n            # good distributions have one successful check\n            if \"/good\" in result.get(\"id\"):\n---HEAD of catalog---\n@prefix adms: <http://www.w3.org/ns/adms#> .\n@prefix dcat: <http://www.w3.org/ns/dcat#> .\n@prefix dcatap: <http://data.europa.eu/r5r/> .\n@prefix dcatde: <http://dcat-ap.de/def/dcatde/> .\n@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n@prefix locn: <http://www.w3.org/ns/locn#> .\n@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n\n<http://example.com/dataset/1> a dcat:Dataset ;\n    dcterms:title \"Dataset with invalid distributions\" ;\n    dcat:distribution\n    <http://example.com/dists/json/bad1> ,\n<http://example.com/dists/atom/bad1> ,\n<http://example.com/dists/atom/bad2> ,\n<http://example.com/dists/geojson/bad> ,\n<http://example.com/dists/jpeg/bad> ,\n<http://example.com/dists/docx/bad> ,\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && (cd tests/data && python3 -m http.server 8123 >/tmp/httpd.log 2>&1 &) && sleep 1.5 && curl -s -o /dev/null -w \"server HTTP %{http_code}\\n\" http://localhost:8123/catalog.ttl && poetry run python dcat_catalog_check.py --url http://localhost:8123/catalog.ttl > /tmp/e2e.jsonl 2>/tmp/e2e.err; echo \"e2e exit=$?\"; echo \"lines=$(wc -l < /tmp/e2e.jsonl)\"; echo \"--- first 3 records ---\"; head -3 /tmp/e2e.jsonl; echo \"--- stderr tail ---\"; tail -5 /tmp/e2e.err",
+      "exit_code": 0,
+      "stdout": "server HTTP 200\ne2e exit=0\nlines=45\n--- first 3 records ---\n{\"id\": \"http://example.com/dists/json/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"JSON\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.json\", \"last_check\": \"2026-10-09 22:26:32.479461\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /incorrect.json (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c2eb5dc0460>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n{\"id\": \"http://example.com/dists/atom/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"ATOM\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/correct.xml\", \"last_check\": \"2026-10-09 22:26:32.675194\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /correct.xml (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c2eb5dc1870>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n{\"id\": \"http://example.com/dists/atom/bad2\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"ATOM\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.xml\", \"last_check\": \"2026-10-09 22:26:32.679211\", \"accessible\": false, \"error\": \"HTTPConnectionPool(host='localhost', port=8000): Max retries exceeded with url: /incorrect.xml (Caused by NewConnectionError('<urllib3.connection.HTTPConnection object at 0x7c2eb5dc2680>: Failed to establish a new connection: [Errno 111] Connection refused'))\", \"date_first_error\": \"2026-10-09\"}\n--- stderr tail ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ps aux | grep \"[h]ttp.server 8123\" | awk '{print $2}' | xargs -r kill; (cd tests/data && python3 -m http.server 8000 >/tmp/httpd8000.log 2>&1 &) && sleep 1.5 && curl -s -o /dev/null -w \"server HTTP %{http_code}\\n\" http://localhost:8000/catalog.ttl && poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl > /tmp/e2e2.jsonl 2>/tmp/e2e2.err; echo \"e2e exit=$?\"; echo \"lines=$(wc -l < /tmp/e2e2.jsonl)\"; echo \"good_checks_true=$(grep -c '\"accessible\": true' /tmp/e2e2.jsonl)\"; python3 -c \"\nimport json\nrecs=[json.loads(l) for l in open('/tmp/e2e2.jsonl')]\ngood=[r for r in recs if r.get('accessible')]\nbad=[r for r in recs if not r.get('accessible')]\nprint('total',len(recs),'accessible',len(good),'inaccessible',len(bad))\nprint('sample good:',json.dumps(good[0]) if good else None)\n\";",
+      "exit_code": 0,
+      "stdout": "server HTTP 200\ne2e exit=0\nlines=45\ngood_checks_true=45\ntotal 45 accessible 45 inaccessible 0\nsample good: {\"id\": \"http://example.com/dists/json/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"JSON\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.json\", \"last_check\": \"2026-10-09 22:26:37.438320\", \"http_status\": 200, \"duration\": 0.001965831994311884, \"accessible\": true, \"size\": \"9\", \"mimetype\": \"text/plain\", \"error\": \"Expecting property name enclosed in double quotes: line 2 column 1 (char 2)\", \"valid\": false, \"date_first_error\": \"2026-10-09\", \"num_good_checks\": 0}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== format-specific check ===\" && poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl --check-format JSON 2>/dev/null | wc -l && echo \"=== helper scripts imports ===\" && for s in download_catalog.py check_periodicity.py mqa.py; do poetry run python -c \"import ast; ast.parse(open('$s').read()); print('$s syntax OK')\"; done && echo \"=== poetry check / deps ===\" && poetry run python -c \"import importlib; [importlib.import_module(m) for m in ['requests','magic','frictionless','geopandas','rdflib','pypdf','PIL','fiona','pyarrow','geojson','osgeo']]; print('all declared deps import OK')\"",
+      "exit_code": 0,
+      "stdout": "=== format-specific check ===\n45\n=== helper scripts imports ===\ndownload_catalog.py syntax OK\ncheck_periodicity.py syntax OK\nmqa.py syntax OK\n=== poetry check / deps ===\nall declared deps import OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ps aux | grep \"[h]ttp.server 8000\" | awk '{print $2}' | xargs -r kill; echo \"server stopped\"; git status --short; echo \"--- coverage ---\"; poetry run coverage report 2>/dev/null | tail -3",
+      "exit_code": 0,
+      "stdout": "server stopped\n?? my_api_key\n--- coverage ---\nformats/zip_format.py             6      0   100%\n-------------------------------------------------\nTOTAL                           727    143    80%\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

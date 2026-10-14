@@ -1,0 +1,28 @@
+The ozgxplanung (xPlanBox) software was successfully built/installed from source.
+
+## What was done
+This repository is the xPlanBox source tree (Maven multi-module project, version 9.4-SNAPSHOT). Per the README's "Anwendung erstellen" section, the documented installation method is a Maven build producing the application binaries.
+
+**Prerequisites installed in the container (not present initially):**
+- OpenJDK 17 (17.0.20.1) via `apt-get install openjdk-17-jdk` — README requires JDK 17.
+- Apache Maven 3.9.9 downloaded from archive.apache.org and installed at `/opt/apache-maven-3.9.9` (Ubuntu's packaged Maven is 3.6.3; the root POM enforces `<maven.version>3.9.0`).
+- `unzip` via apt.
+
+**Build (final, successful method):**
+- `mvn -B clean install -DskipTests` in `/workspace` → **BUILD SUCCESS**, 60/60 modules, total time 12:33 min. Tests skipped because no PostgreSQL/RabbitMQ/S3 services are available (README explicitly documents `-DskipTests` as the supported option when unit tests cannot run).
+- `mvn -B install -P distribution -DskipTests` → **BUILD SUCCESS**, total time 5:56 min, which adds the `xplan-distribution` assembly module.
+
+## Resulting state / artifacts
+- 14 deployable WARs under the module `target/` directories (xplan-manager-web/api, xplan-validator-web/api, xplan-services-wfs, xplan-services-wfs-syn, xplan-services-wms, xplan-webservices-validator-wms, xplan-webservices-inspireplu, xplan-dokumente-api, xplan-webpages).
+- Standalone `xplan-validator/xplan-validator-executor/target/xplan-validator-executor-9.4-SNAPSHOT.jar` (Spring Boot, `Main-Class: ...JarLauncher`).
+- `xplan-cli/target/xplan-cli-9.4-SNAPSHOT.zip` (CLI distribution).
+- Config/workspace ZIPs (manager-config-default, validator-config, dokumente-config, mapserver/mapproxy/ldproxy config, all deegree workspaces, database-scripts).
+- Full distribution package: `/workspace/xplan-distribution/target/xplan-distribution-9.4-SNAPSHOT.zip` (1.19 GB) containing all documented components (web/, conf/, bin/, doc/, test/).
+
+## Verification
+- `grep -c "BUILD SUCCESS"` = 1 in each build log.
+- Reactor summary shows SUCCESS for all 60 modules.
+- Functional smoke test: extracted the CLI zip and ran `bin/xpb version` → printed `xPlanBox 9.4-SNAPSHOT / JVM 17.0.20.1 / OS: Linux` (exit 0); `bin/xpb` usage lists all commands.
+- Distribution ZIP listing confirms every component named in the installation guide's overview table is present.
+
+Note: The installation guide describes a full multi-node runtime deployment (Tomcat instances, PostgreSQL/PostGIS, RabbitMQ, S3, MapServer/MapProxy). Those runtime services are external infrastructure not part of this source build; the task's observable deliverable — the built application binaries/distribution — was completed and verified. No startup/deployment of the runtime components was performed.

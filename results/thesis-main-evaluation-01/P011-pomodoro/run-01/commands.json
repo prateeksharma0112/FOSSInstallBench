@@ -1,0 +1,364 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/frederic/pomodoro /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/frederic/pomodoro.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/frederic/pomodoro.git/\nFrom https://gitlab.opencode.de/frederic/pomodoro\n * branch            54320075112b92c70ae0dbb00633ab01f8b600ce -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 5432007 gitlab ci change\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -3 && cat pyproject.toml",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 536\ndrwxr-xr-x 11 root root   4096 Oct  5 18:59 .\ndr-xr-xr-x  1 root root   4096 Oct  5 18:59 ..\n-rw-r--r--  1 root root    293 Oct  5 18:59 .dockerignore\ndrwxr-xr-x  8 root root   4096 Oct  5 18:59 .git\n-rw-r--r--  1 root root    699 Oct  5 18:59 .gitignore\ndrwxr-xr-x  4 root root   4096 Oct  5 18:59 .gitlab\n-rw-r--r--  1 root root   8239 Oct  5 18:59 .gitlab-ci.yml\n-rw-r--r--  1 root root   4935 Oct  5 18:59 CHANGELOG.md\n-rw-r--r--  1 root root   4818 Oct  5 18:59 CONTRIBUTING.md\n-rw-r--r--  1 root root   3193 Oct  5 18:59 Dockerfile\n-rw-r--r--  1 root root   1067 Oct  5 18:59 LICENSE\n-rw-r--r--  1 root root   9817 Oct  5 18:59 README.md\n-rw-r--r--  1 root root   2967 Oct  5 18:59 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 assets\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 docker\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 docs\n-rw-r--r--  1 root root 422831 Oct  5 18:59 logo.png\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 packaging\n-rw-r--r--  1 root root  11374 Oct  5 18:59 publiccode.yml\n-rw-r--r--  1 root root    668 Oct  5 18:59 pyproject.toml\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 sounds\ndrwxr-xr-x  3 root root   4096 Oct  5 18:59 src\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 tests\n5432007 gitlab ci change\n[build-system]\nrequires = [\"setuptools>=68\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"pomodoro-timer\"\nversion = \"0.3.0\"\ndescription = \"A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\"\nreadme = \"README.md\"\nlicense = { text = \"MIT\" }\nauthors = [{ name = \"L3monKenji\" }]\nrequires-python = \">=3.10\"\ndependencies = [\n    \"PySide6>=6.6\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=7.0\",\n]\npackage = [\n    \"pyinstaller>=6.11\",\n]\n\n[project.scripts]\npomodoro = \"pomodoro.cli:main\"\n\n[project.urls]\nHomepage = \"https://github.com/l3montree-dev/pomodoro\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "python3 --version; which python3; uname -a; cat /etc/os-release 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "Linux a68d08c40562 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update -qq && apt-get install -y -qq python3 python3-pip python3-venv 2>&1 | tail -20; python3 --version",
+      "exit_code": 0,
+      "stdout": "Setting up python3-pkg-resources (59.6.0-1.2ubuntu0.22.04.3) ...\nSetting up python3-distutils (3.10.8-1~22.04) ...\nSetting up python3.10-venv (3.10.12-1~22.04.18) ...\nSetting up python3-setuptools (59.6.0-1.2ubuntu0.22.04.3) ...\nSetting up gpg-wks-client (2.2.27-3ubuntu2.5) ...\nSetting up g++-11 (11.4.0-1ubuntu1~22.04.3) ...\nSetting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...\nSetting up gcc (4:11.2.0-1ubuntu1) ...\nSetting up python3-venv (3.10.6-1~22.04.1) ...\nSetting up libpython3.10-dev:amd64 (3.10.12-1~22.04.18) ...\nSetting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...\nSetting up python3.10-dev (3.10.12-1~22.04.18) ...\nSetting up g++ (4:11.2.0-1ubuntu1) ...\nupdate-alternatives: using /usr/bin/g++ to provide /usr/bin/c++ (c++) in auto mode\nupdate-alternatives: warning: skip creation of /usr/share/man/man1/c++.1.gz because associated file /usr/share/man/man1/g++.1.gz (of link group c++) doesn't exist\nSetting up gnupg (2.2.27-3ubuntu2.5) ...\nSetting up build-essential (12.9ubuntu3) ...\nSetting up libpython3-dev:amd64 (3.10.6-1~22.04.1) ...\nSetting up python3-dev (3.10.6-1~22.04.1) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nPython 3.10.12\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m venv .venv && source .venv/bin/activate && pip install --upgrade pip -q && pip install -e . 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "Collecting shiboken6==6.11.2 (from PySide6>=6.6->pomodoro-timer==0.3.0)\n  Downloading shiboken6-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl.metadata (2.4 kB)\nCollecting PySide6_Essentials==6.11.2 (from PySide6>=6.6->pomodoro-timer==0.3.0)\n  Downloading pyside6_essentials-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl.metadata (3.6 kB)\nCollecting PySide6_Addons==6.11.2 (from PySide6>=6.6->pomodoro-timer==0.3.0)\n  Downloading pyside6_addons-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl.metadata (4.0 kB)\nCollecting tomli>=2.0.1 (from PySide6>=6.6->pomodoro-timer==0.3.0)\n  Downloading tomli-2.4.1-py3-none-any.whl.metadata (10 kB)\nDownloading pyside6-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl (572 kB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 572.1/572.1 kB 4.3 MB/s  0:00:00\nDownloading pyside6_addons-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl (175.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 175.1/175.1 MB 6.2 MB/s  0:00:28\nDownloading pyside6_essentials-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl (80.1 MB)\n   \u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501\u2501 80.1/80.1 MB 6.4 MB/s  0:00:12\nDownloading shiboken6-6.11.2-cp310-abi3-manylinux_2_34_x86_64.whl (272 kB)\nDownloading tomli-2.4.1-py3-none-any.whl (14 kB)\nBuilding wheels for collected packages: pomodoro-timer\n  Building editable for pomodoro-timer (pyproject.toml): started\n  Building editable for pomodoro-timer (pyproject.toml): finished with status 'done'\n  Created wheel for pomodoro-timer: filename=pomodoro_timer-0.3.0-0.editable-py3-none-any.whl size=7016 sha256=1905b4f7e8ed78a7b221455e0b5b7a15324d68340190bf5f4f0f078585e46821\n  Stored in directory: /tmp/pip-ephem-wheel-cache-s7kiamgk/wheels/80/75/f6/d63789e3414f7f88206102fa596a8ddafc889f48984e8712b3\nSuccessfully built pomodoro-timer\nInstalling collected packages: tomli, shiboken6, PySide6_Essentials, PySide6_Addons, PySide6, pomodoro-timer\n\nSuccessfully installed PySide6-6.11.2 PySide6_Addons-6.11.2 PySide6_Essentials-6.11.2 pomodoro-timer-0.3.0 shiboken6-6.11.2 tomli-2.4.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && source .venv/bin/activate && which pomodoro && pomodoro --help 2>&1 | head -30; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "/workspace/.venv/bin/pomodoro\nTraceback (most recent call last):\n  File \"/workspace/.venv/bin/pomodoro\", line 6, in <module>\n    sys.exit(main())\n  File \"/workspace/src/pomodoro/cli.py\", line 7, in main\n    from .gui.app import run\n  File \"/workspace/src/pomodoro/gui/__init__.py\", line 1, in <module>\n    from .app import run\n  File \"/workspace/src/pomodoro/gui/app.py\", line 8, in <module>\n    from PySide6.QtWidgets import QApplication\nImportError: libGL.so.1: cannot open shared object file: No such file or directory\nEXIT=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat src/pomodoro/cli.py 2>/dev/null | head -60; echo ---; ls src/pomodoro",
+      "exit_code": 0,
+      "stdout": "\"\"\"Console entry point: ``pomodoro`` opens the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\n\ndef main() -> int:\n    from .gui.app import run\n\n    return run()\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n---\n__init__.py\n__main__.py\n__pycache__\naudio\ncli.py\ncore\ngui\npersistence\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y -qq libgl1 libegl1 libxkbcommon-x11-0 libxcb-cursor0 libxcb-xinerama0 libdbus-1-3 libfontconfig1 2>&1 | tail -5; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "Setting up libgl1-mesa-dri:amd64 (23.2.1-1ubuntu3.1~22.04.4) ...\nSetting up libglx-mesa0:amd64 (23.2.1-1ubuntu3.1~22.04.4) ...\nSetting up libglx0:amd64 (1.4.0-1) ...\nSetting up libgl1:amd64 (1.4.0-1) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '1,60p' src/pomodoro/gui/app.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"QApplication bootstrap.\"\"\"\n\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nfrom PySide6.QtWidgets import QApplication\n\nfrom ..audio import default_sounds_dir\nfrom .main_window import MainWindow\n\n\ndef run(sounds_dir: Path | None = None) -> int:\n    app = QApplication.instance() or QApplication(sys.argv)\n    app.setApplicationName(\"Pomodoro\")\n    app.setOrganizationName(\"L3monKenji\")\n\n    window = MainWindow(sounds_dir or default_sounds_dir())\n    window.show()\n    return app.exec()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen timeout 8 pomodoro; ec=$?; echo \"EXIT=$ec (124=timeout means it ran)\"",
+      "exit_code": 0,
+      "stdout": "EXIT=1 (124=timeout means it ran)\n",
+      "stderr": "Traceback (most recent call last):\n  File \"/workspace/.venv/bin/pomodoro\", line 6, in <module>\n    sys.exit(main())\n  File \"/workspace/src/pomodoro/cli.py\", line 7, in main\n    from .gui.app import run\n  File \"/workspace/src/pomodoro/gui/__init__.py\", line 1, in <module>\n    from .app import run\n  File \"/workspace/src/pomodoro/gui/app.py\", line 8, in <module>\n    from PySide6.QtWidgets import QApplication\nImportError: libglib-2.0.so.0: cannot open shared object file: No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y -qq libglib2.0-0 libsm6 libice6 libxrender1 libxi6 libxtst6 libxrandr2 libxcursor1 libxcomposite1 libxdamage1 libxfixes3 libxext6 libx11-xcb1 libnss3 libasound2 2>&1 | tail -3; echo EXIT=$?",
+      "exit_code": 0,
+      "stdout": "Setting up libnss3:amd64 (2:3.98-0ubuntu0.22.04.4) ...\nSetting up libsm6:amd64 (2:1.2.3-1build2) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen timeout 8 pomodoro; ec=$?; echo \"EXIT=$ec (124=timeout means it ran)\"",
+      "exit_code": 0,
+      "stdout": "EXIT=124 (124=timeout means it ran)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && source .venv/bin/activate && pip install -q pytest && QT_QPA_PLATFORM=offscreen python -m pytest -q 2>&1 | tail -20; echo EXIT=${PIPESTATUS[0]}",
+      "exit_code": 0,
+      "stdout": "....................                                                     [100%]\n20 passed in 0.12s\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && source .venv/bin/activate && pip show pomodoro-timer | head -4 && python -c \"import pomodoro; print('import ok')\"",
+      "exit_code": 120,
+      "stdout": "Name: pomodoro-timer\nVersion: 0.3.0\nSummary: A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\nHome-page: https://github.com/l3montree-dev/pomodoro\n",
+      "stderr": "ERROR: Pipe to stdout was broken\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && echo \"---VENV---\" && ls -la .venv/bin/ 2>/dev/null | head -40 && echo \"---GIT---\" && git log --oneline -3 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "total 544\ndrwxr-xr-x 13 root root   4096 Oct  5 19:02 .\ndr-xr-xr-x  1 root root   4096 Oct  5 18:59 ..\n-rw-r--r--  1 root root    293 Oct  5 18:59 .dockerignore\ndrwxr-xr-x  8 root root   4096 Oct  5 18:59 .git\n-rw-r--r--  1 root root    699 Oct  5 18:59 .gitignore\ndrwxr-xr-x  4 root root   4096 Oct  5 18:59 .gitlab\n-rw-r--r--  1 root root   8239 Oct  5 18:59 .gitlab-ci.yml\ndrwxr-xr-x  3 root root   4096 Oct  5 19:02 .pytest_cache\ndrwxr-xr-x  5 root root   4096 Oct  5 19:00 .venv\n-rw-r--r--  1 root root   4935 Oct  5 18:59 CHANGELOG.md\n-rw-r--r--  1 root root   4818 Oct  5 18:59 CONTRIBUTING.md\n-rw-r--r--  1 root root   3193 Oct  5 18:59 Dockerfile\n-rw-r--r--  1 root root   1067 Oct  5 18:59 LICENSE\n-rw-r--r--  1 root root   9817 Oct  5 18:59 README.md\n-rw-r--r--  1 root root   2967 Oct  5 18:59 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 assets\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 docker\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 docs\n-rw-r--r--  1 root root 422831 Oct  5 18:59 logo.png\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 packaging\n-rw-r--r--  1 root root  11374 Oct  5 18:59 publiccode.yml\n-rw-r--r--  1 root root    668 Oct  5 18:59 pyproject.toml\ndrwxr-xr-x  2 root root   4096 Oct  5 18:59 sounds\ndrwxr-xr-x  4 root root   4096 Oct  5 19:00 src\ndrwxr-xr-x  3 root root   4096 Oct  5 19:02 tests\n---VENV---\ntotal 156\ndrwxr-xr-x 2 root root 4096 Oct  5 19:02 .\ndrwxr-xr-x 5 root root 4096 Oct  5 19:00 ..\n-rw-r--r-- 1 root root 9033 Oct  5 19:00 Activate.ps1\n-rw-r--r-- 1 root root 1987 Oct  5 19:00 activate\n-rw-r--r-- 1 root root  913 Oct  5 19:00 activate.csh\n-rw-r--r-- 1 root root 2189 Oct  5 19:00 activate.fish\n-rwxr-xr-x 1 root root  233 Oct  5 19:00 pip\n-rwxr-xr-x 1 root root  233 Oct  5 19:00 pip3\n-rwxr-xr-x 1 root root  233 Oct  5 19:00 pip3.10\n-rwxr-xr-x 1 root root  171 Oct  5 19:01 pomodoro\n-rwxr-xr-x 1 root root  191 Oct  5 19:02 py.test\n-rwxr-xr-x 1 root root  175 Oct  5 19:02 pygmentize\n-rwxr-xr-x 1 root root  206 Oct  5 19:01 pyside6-android-deploy\n-rwxr-xr-x 1 root root  196 Oct  5 19:01 pyside6-assistant\n-rwxr-xr-x 1 root root  190 Oct  5 19:01 pyside6-balsam\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-balsamui\n-rwxr-xr-x 1 root root  190 Oct  5 19:01 pyside6-deploy\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-designer\n-rwxr-xr-x 1 root root  190 Oct  5 19:01 pyside6-genpyi\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-linguist\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-lrelease\n-rwxr-xr-x 1 root root  192 Oct  5 19:01 pyside6-lupdate\n-rwxr-xr-x 1 root root  206 Oct  5 19:01 pyside6-metaobjectdump\n-rwxr-xr-x 1 root root  192 Oct  5 19:01 pyside6-project\n-rwxr-xr-x 1 root root  184 Oct  5 19:01 pyside6-qml\n-rwxr-xr-x 1 root root  200 Oct  5 19:01 pyside6-qmlcachegen\n-rwxr-xr-x 1 root root  196 Oct  5 19:01 pyside6-qmlformat\n-rwxr-xr-x 1 root root  210 Oct  5 19:01 pyside6-qmlimportscanner\n-rwxr-xr-x 1 root root  192 Oct  5 19:01 pyside6-qmllint\n-rwxr-xr-x 1 root root  188 Oct  5 19:01 pyside6-qmlls\n-rwxr-xr-x 1 root root  210 Oct  5 19:01 pyside6-qmltyperegistrar\n-rwxr-xr-x 1 root root  184 Oct  5 19:01 pyside6-qsb\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-qtpy2cpp\n-rwxr-xr-x 1 root root  184 Oct  5 19:01 pyside6-rcc\n-rwxr-xr-x 1 root root  194 Oct  5 19:01 pyside6-svgtoqml\n-rwxr-xr-x 1 root root  184 Oct  5 19:01 pyside6-uic\n-rwxr-xr-x 1 root root  191 Oct  5 19:02 pytest\nlrwxrwxrwx 1 root root    7 Oct  5 19:00 python -> python3\nlrwxrwxrwx 1 root root   16 Oct  5 19:00 python3 -> /usr/bin/python3\n---GIT---\n5432007 gitlab ci change\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat pyproject.toml 2>/dev/null && echo \"---FILES---\" && find . -path ./.venv -prune -o -name \"*.py\" -print | head -50",
+      "exit_code": 0,
+      "stdout": "[build-system]\nrequires = [\"setuptools>=68\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"pomodoro-timer\"\nversion = \"0.3.0\"\ndescription = \"A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\"\nreadme = \"README.md\"\nlicense = { text = \"MIT\" }\nauthors = [{ name = \"L3monKenji\" }]\nrequires-python = \">=3.10\"\ndependencies = [\n    \"PySide6>=6.6\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=7.0\",\n]\npackage = [\n    \"pyinstaller>=6.11\",\n]\n\n[project.scripts]\npomodoro = \"pomodoro.cli:main\"\n\n[project.urls]\nHomepage = \"https://github.com/l3montree-dev/pomodoro\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n---FILES---\n./packaging/pomodoro_app.py\n./packaging/make_icon.py\n./src/pomodoro/__init__.py\n./src/pomodoro/__main__.py\n./src/pomodoro/cli.py\n./src/pomodoro/audio/__init__.py\n./src/pomodoro/audio/notifications.py\n./src/pomodoro/audio/player.py\n./src/pomodoro/persistence/__init__.py\n./src/pomodoro/persistence/settings.py\n./src/pomodoro/persistence/paths.py\n./src/pomodoro/persistence/history.py\n./src/pomodoro/gui/widgets.py\n./src/pomodoro/gui/stats_view.py\n./src/pomodoro/gui/__init__.py\n./src/pomodoro/gui/theme.py\n./src/pomodoro/gui/main_window.py\n./src/pomodoro/gui/confetti.py\n./src/pomodoro/gui/app.py\n./src/pomodoro/gui/timer_view.py\n./src/pomodoro/core/timer.py\n./src/pomodoro/core/__init__.py\n./tests/test_timer.py\n./tests/__init__.py\n./tests/test_paths.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && echo \"PREFIX=$VIRTUAL_ENV\" && pip --version && echo \"---SHOW---\" && pip show pomodoro-timer 2>&1 | head -20 && echo \"---LIST---\" && pip list 2>/dev/null | grep -i -E \"pomodoro|pyside|shiboken|pytest\" && echo \"---ENTRY---\" && cat .venv/bin/pomodoro",
+      "exit_code": 0,
+      "stdout": "PREFIX=/workspace/.venv\npip 26.2.1 from /workspace/.venv/lib/python3.10/site-packages/pip (python 3.10)\n---SHOW---\nName: pomodoro-timer\nVersion: 0.3.0\nSummary: A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\nHome-page: https://github.com/l3montree-dev/pomodoro\nAuthor: L3monKenji\nAuthor-email: \nLicense: MIT\nLocation: /workspace/.venv/lib/python3.10/site-packages\nEditable project location: /workspace\nRequires: PySide6\nRequired-by: \n---LIST---\npomodoro-timer     0.3.0   /workspace\nPySide6            6.11.2\nPySide6_Addons     6.11.2\nPySide6_Essentials 6.11.2\npytest             9.1.1\nshiboken6          6.11.2\n---ENTRY---\n#!/workspace/.venv/bin/python3\nimport sys\nfrom pomodoro.cli import main\nif __name__ == '__main__':\n    sys.argv[0] = sys.argv[0].removesuffix('.exe')\n    sys.exit(main())\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && python -c \"import pomodoro; print('pomodoro pkg:', pomodoro.__file__); from pomodoro import cli; print('cli:', cli.__file__); import inspect; print('main:', inspect.getsourcefile(cli.main))\" 2>&1",
+      "exit_code": 0,
+      "stdout": "pomodoro pkg: /workspace/src/pomodoro/__init__.py\ncli: /workspace/src/pomodoro/cli.py\nmain: /workspace/src/pomodoro/cli.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/cli.py && echo \"---MAIN---\" && cat src/pomodoro/__main__.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"Console entry point: ``pomodoro`` opens the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\n\ndef main() -> int:\n    from .gui.app import run\n\n    return run()\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n---MAIN---\n\"\"\"Allow ``python -m pomodoro`` to open the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\nfrom .cli import main\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && timeout 12 xvfb-run -a pomodoro 2>&1 | head -40; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "timeout: failed to run command 'xvfb-run': No such file or directory\nEXIT=127\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which Xvfb xvfb-run x11vnc 2>&1; echo \"---\"; ls /usr/bin/ | grep -i -E \"xvfb|x11\" 2>&1",
+      "exit_code": 0,
+      "stdout": "---\nX11\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen python - <<'PY' 2>&1\nimport os\nfrom PySide6.QtWidgets import QApplication\nfrom PySide6.QtCore import QTimer\nimport pomodoro.gui.app as appmod\nqapp = QApplication([])\nfrom pomodoro.gui.main_window import MainWindow\nw = MainWindow()\nw.show()\nprint(\"MainWindow created & shown:\", w.isVisible())\n# inspect settings/stats tabs exist\ntabs = [w.tabs.tabText(i) for i in range(w.tabs.count())] if hasattr(w,'tabs') else 'no tabs attr'\nprint(\"tabs:\", tabs)\nQTimer.singleShot(1500, qapp.quit)\nrc = qapp.exec()\nprint(\"event loop exited rc=\", rc)\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "Traceback (most recent call last):\n  File \"<stdin>\", line 7, in <module>\nTypeError: MainWindow.__init__() missing 1 required positional argument: 'sounds_dir'\nEXIT=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/gui/app.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"QApplication bootstrap.\"\"\"\n\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nfrom PySide6.QtWidgets import QApplication\n\nfrom ..audio import default_sounds_dir\nfrom .main_window import MainWindow\n\n\ndef run(sounds_dir: Path | None = None) -> int:\n    app = QApplication.instance() or QApplication(sys.argv)\n    app.setApplicationName(\"Pomodoro\")\n    app.setOrganizationName(\"L3monKenji\")\n\n    window = MainWindow(sounds_dir or default_sounds_dir())\n    window.show()\n    return app.exec()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen timeout 10 pomodoro 2>&1 | head -30; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "EXIT=124\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen python -m pytest -q 2>&1 | tail -20; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "....................                                                     [100%]\n20 passed in 0.13s\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && POMODORO_DATA_DIR=/tmp/pomo_val QT_QPA_PLATFORM=offscreen python - <<'PY' 2>&1\nfrom pathlib import Path\nfrom PySide6.QtWidgets import QApplication\nfrom PySide6.QtCore import QTimer\nimport pomodoro.gui.app as appmod\nqa = QApplication([])\nfrom pomodoro.gui.main_window import MainWindow\nw = MainWindow(Path('/workspace/sounds'))\nw.show()\nprint(\"visible:\", w.isVisible())\n# find tabs\nfor attr in ('tabs','tab_widget','tabs_widget'):\n    if hasattr(w, attr):\n        tw = getattr(w, attr)\n        print(\"tab widget attr:\", attr, [tw.tabText(i) for i in range(tw.count())])\nQTimer.singleShot(2000, qa.quit)\nprint(\"exec rc:\", qa.exec())\nPY\necho \"EXIT=$?\"; echo \"---DATADIR---\"; ls -la /tmp/pomo_val 2>&1",
+      "exit_code": 0,
+      "stdout": "visible: True\ntab widget attr: tabs ['Timer', 'Statistik']\nexec rc: 0\nEXIT=0\n---DATADIR---\ntotal 24\ndrwxr-xr-x 2 root root  4096 Oct  5 19:03 .\ndrwxrwxrwt 1 root root  4096 Oct  5 19:03 ..\n-rw-r--r-- 1 root root 12288 Oct  5 19:03 pomodoro.db\n-rw-r--r-- 1 root root   221 Oct  5 19:03 settings.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat /tmp/pomo_val/settings.json; echo \"---DB---\"; source .venv/bin/activate && python -c \"\nimport sqlite3\nc=sqlite3.connect('/tmp/pomo_val/pomodoro.db')\nprint([r for r in c.execute(\\\"select name,sql from sqlite_master where type='table'\\\")])\n\" 2>&1",
+      "exit_code": 0,
+      "stdout": "{\n  \"config\": {\n    \"focus_minutes\": 25.0,\n    \"break_minutes\": 5.0,\n    \"long_break_minutes\": 15.0,\n    \"rounds\": 4,\n    \"long_break_enabled\": true,\n    \"long_break_interval\": 4\n  },\n  \"theme\": \"dark\",\n  \"last_tag\": \"\"\n}---DB---\n[('focus_sessions', 'CREATE TABLE focus_sessions (\\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\\n    completed_at TEXT NOT NULL,\\n    duration_minutes REAL NOT NULL,\\n    tag TEXT,\\n    completed INTEGER NOT NULL DEFAULT 1\\n)'), ('sqlite_sequence', 'CREATE TABLE sqlite_sequence(name,seq)')]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/core/timer.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"Pure Python Pomodoro state machine.\n\nThis module has no dependency on Qt, threads, or wall-clock time: it is\ndriven entirely by calls to :meth:`TimerEngine.tick`, which makes it\ntrivial to unit test and reuse from any front end (GUI, CLI, ...).\n\"\"\"\n\nfrom __future__ import annotations\n\nfrom dataclasses import dataclass\nfrom enum import Enum\nfrom typing import Callable, Optional\n\n\nclass Phase(Enum):\n    FOCUS = \"focus\"\n    SHORT_BREAK = \"short_break\"\n    LONG_BREAK = \"long_break\"\n\n\nclass RunState(Enum):\n    IDLE = \"idle\"\n    RUNNING = \"running\"\n    PAUSED = \"paused\"\n    FINISHED = \"finished\"\n\n\n@dataclass(slots=True)\nclass TimerConfig:\n    \"\"\"User-configurable durations and round structure.\"\"\"\n\n    focus_minutes: float = 25.0\n    break_minutes: float = 5.0\n    long_break_minutes: float = 15.0\n    rounds: int = 4\n    long_break_enabled: bool = True\n    long_break_interval: int = 4\n\n    def phase_duration_seconds(self, phase: Phase) -> float:\n        if phase is Phase.FOCUS:\n            return max(self.focus_minutes, 0.0) * 60\n        if phase is Phase.LONG_BREAK:\n            return max(self.long_break_minutes, 0.0) * 60\n        return max(self.break_minutes, 0.0) * 60\n\n\n@dataclass(slots=True)\nclass PhaseEvent:\n    \"\"\"Emitted whenever a phase finishes naturally (its countdown hit zero).\"\"\"\n\n    phase: Phase\n    round_number: int\n\n\nclass TimerEngine:\n    \"\"\"A Focus -> Break -> Focus -> ... state machine that always ends on Focus.\n\n    Drive it from any event loop by calling :meth:`tick` with the elapsed\n    number of seconds since the previous tick (e.g. from a 1s ``QTimer``).\n    \"\"\"\n\n    def __init__(\n        self,\n        config: TimerConfig,\n        on_phase_complete: Optional[Callable[[PhaseEvent], None]] = None,\n        on_session_complete: Optional[Callable[[], None]] = None,\n        on_phase_aborted: Optional[Callable[[Phase, int, float], None]] = None,\n    ) -> None:\n        self.config = config\n        self.on_phase_complete = on_phase_complete\n        self.on_session_complete = on_session_complete\n        self.on_phase_aborted = on_phase_aborted\n        self.state: RunState = RunState.IDLE\n        self.phase: Phase = Phase.FOCUS\n        self.round_number: int = 1\n        self.remaining_seconds: float = config.phase_duration_seconds(Phase.FOCUS)\n\n    @property\n    def total_seconds(self) -> float:\n        return self.config.phase_duration_seconds(self.phase)\n\n    @property\n    def progress(self) -> float:\n        \"\"\"Fraction of the current phase elapsed, in ``[0, 1]``.\"\"\"\n        total = self.total_seconds\n        if total <= 0:\n            return 1.0\n        return min(max(1.0 - (self.remaining_seconds / total), 0.0), 1.0)\n\n    def start(self) -> None:\n        if self.state in (RunState.IDLE, RunState.PAUSED):\n            self.state = RunState.RUNNING\n\n    def pause(self) -> None:\n        if self.state is RunState.RUNNING:\n            self.state = RunState.PAUSED\n\n    def resume(self) -> None:\n        self.start()\n\n    def toggle_pause(self) -> None:\n        if self.state is RunState.RUNNING:\n            self.pause()\n        elif self.state is RunState.PAUSED:\n            self.resume()\n\n    def stop(self) -> None:\n        \"\"\"Abort the current session and reset back to a fresh, idle Focus 1/N.\n\n        If a Focus round was under way (running or paused), its elapsed time\n        is reported via ``on_phase_aborted`` before the reset, so a cut-short\n        round can still be counted as time actually worked instead of being\n        silently discarded. Breaks are never reported this way \u2014 like a\n        completed Break, an aborted one still isn't \"work\" \u2014 and nothing\n        fires for an idle or already-finished session, since there is no\n        partial progress to report in either case.\n        \"\"\"\n        if self.state in (RunState.RUNNING, RunState.PAUSED) and self.phase is Phase.FOCUS:\n            elapsed_seconds = self.total_seconds - self.remaining_seconds\n            if elapsed_seconds > 0 and self.on_phase_aborted is not None:\n                self.on_phase_aborted(self.phase, self.round_number, elapsed_seconds)\n\n        self.state = RunState.IDLE\n        self.phase = Phase.FOCUS\n        self.round_number = 1\n        self.remaining_seconds = self.config.phase_duration_seconds(Phase.FOCUS)\n\n    def apply_config(self, config: TimerConfig) -> None:\n        \"\"\"Replace the config. Only takes effect immediately while idle.\"\"\"\n        self.config = config\n        if self.state is RunState.IDLE:\n            self.remaining_seconds = config.phase_duration_seconds(self.phase)\n\n    def tick(self, delta_seconds: float) -> None:\n        if self.state is not RunState.RUNNING or delta_seconds <= 0:\n            return\n        self.remaining_seconds -= delta_seconds\n        # A while-loop (rather than a single if) guards against a very large\n        # delta_seconds skipping over more than one phase boundary at once.\n        while self.remaining_seconds <= 0 and self.state is RunState.RUNNING:\n            overshoot = -self.remaining_seconds\n            self._advance_phase()\n            self.remaining_seconds -= overshoot\n\n    def _next_phase_after_focus(self) -> Phase:\n        if self.config.long_break_enabled and self.config.long_break_interval > 0:\n            if self.round_number % self.config.long_break_interval == 0:\n                return Phase.LONG_BREAK\n        return Phase.SHORT_BREAK\n\n    def _advance_phase(self) -> None:\n        finished_phase = self.phase\n        finished_round = self.round_number\n\n        if self.on_phase_complete is not None:\n            self.on_phase_complete(PhaseEvent(finished_phase, finished_round))\n\n        if finished_phase is Phase.FOCUS:\n            if finished_round >= self.config.rounds:\n                self.state = RunState.FINISHED\n                self.remaining_seconds = 0.0\n                if self.on_session_complete is not None:\n                    self.on_session_complete()\n                return\n            self.phase = self._next_phase_after_focus()\n        else:\n            self.round_number += 1\n            self.phase = Phase.FOCUS\n\n        self.remaining_seconds = self.config.phase_duration_seconds(self.phase)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/persistence/history.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"SQLite-backed persistence for completed focus rounds and their stats.\"\"\"\n\nfrom __future__ import annotations\n\nimport sqlite3\nfrom dataclasses import dataclass\nfrom datetime import date, datetime, timedelta\nfrom pathlib import Path\n\nfrom .paths import app_data_dir\n\n_DB_FILENAME = \"pomodoro.db\"\n\n_SCHEMA = \"\"\"\nCREATE TABLE IF NOT EXISTS focus_sessions (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    completed_at TEXT NOT NULL,\n    duration_minutes REAL NOT NULL,\n    tag TEXT,\n    completed INTEGER NOT NULL DEFAULT 1\n);\n\"\"\"\n\n\n@dataclass(slots=True)\nclass SessionRecord:\n    completed_at: datetime\n    duration_minutes: float\n    tag: str\n    completed: bool = True\n\n\n@dataclass(slots=True)\nclass StatsSummary:\n    today_minutes: float = 0.0\n    today_count: int = 0\n    week_minutes: float = 0.0\n    week_count: int = 0\n    total_minutes: float = 0.0\n    total_count: int = 0\n\n\nclass HistoryStore:\n    \"\"\"Append-only log of completed focus rounds, plus derived statistics.\"\"\"\n\n    def __init__(self, path: Path | None = None) -> None:\n        self.path = path or (app_data_dir() / _DB_FILENAME)\n        self._conn = sqlite3.connect(self.path)\n        self._conn.execute(_SCHEMA)\n        self._migrate()\n        self._conn.commit()\n\n    def _migrate(self) -> None:\n        \"\"\"Add columns introduced after a user's database already existed.\n\n        ``CREATE TABLE IF NOT EXISTS`` only creates the table on a first run,\n        so an existing ``pomodoro.db`` (from before the ``completed`` column\n        was introduced in 0.2.0) needs it added explicitly. Rows written\n        before this migration predate partial-round tracking entirely, so\n        backfilling them as ``completed = 1`` reflects what was actually true\n        at the time: only full rounds were ever recorded.\n        \"\"\"\n        columns = {row[1] for row in self._conn.execute(\"PRAGMA table_info(focus_sessions)\")}\n        if \"completed\" not in columns:\n            self._conn.execute(\"ALTER TABLE focus_sessions ADD COLUMN completed INTEGER NOT NULL DEFAULT 1\")\n\n    def close(self) -> None:\n        self._conn.close()\n\n    def record_focus_round(self, duration_minutes: float, tag: str = \"\", completed: bool = True) -> None:\n        with self._conn:\n            self._conn.execute(\n                \"INSERT INTO focus_sessions (completed_at, duration_minutes, tag, completed) VALUES (?, ?, ?, ?)\",\n                (datetime.now().isoformat(timespec=\"seconds\"), duration_minutes, tag or \"\", int(completed)),\n            )\n\n    def _rows(self, tag: str | None = None) -> list[SessionRecord]:\n        if tag:\n            cursor = self._conn.execute(\n                \"SELECT completed_at, duration_minutes, tag, completed FROM focus_sessions \"\n                \"WHERE tag = ? ORDER BY completed_at\",\n                (tag,),\n            )\n        else:\n            cursor = self._conn.execute(\n                \"SELECT completed_at, duration_minutes, tag, completed FROM focus_sessions ORDER BY completed_at\"\n            )\n        return [\n            SessionRecord(datetime.fromisoformat(completed_at), duration_minutes, tag or \"\", bool(completed))\n            for completed_at, duration_minutes, tag, completed in cursor.fetchall()\n        ]\n\n    def distinct_tags(self) -> list[str]:\n        cursor = self._conn.execute(\n            \"SELECT DISTINCT tag FROM focus_sessions WHERE tag IS NOT NULL AND tag != '' ORDER BY tag\"\n        )\n        return [row[0] for row in cursor.fetchall()]\n\n    def summary(self, tag: str | None = None) -> StatsSummary:\n        rows = self._rows(tag)\n        today = date.today()\n        week_start = today - timedelta(days=today.weekday())  # Monday\n\n        summary = StatsSummary()\n        for row in rows:\n            summary.total_minutes += row.duration_minutes\n            summary.total_count += 1\n            row_date = row.completed_at.date()\n            if row_date == today:\n                summary.today_minutes += row.duration_minutes\n                summary.today_count += 1\n            if row_date >= week_start:\n                summary.week_minutes += row.duration_minutes\n                summary.week_count += 1\n        return summary\n\n    def daily_totals(self, days: int = 7, tag: str | None = None) -> list[tuple[date, float]]:\n        \"\"\"Total focus minutes per day for the last ``days`` days (oldest first).\"\"\"\n        rows = self._rows(tag)\n        today = date.today()\n        buckets: dict[date, float] = {today - timedelta(days=offset): 0.0 for offset in range(days - 1, -1, -1)}\n        cutoff = today - timedelta(days=days - 1)\n        for row in rows:\n            row_date = row.completed_at.date()\n            if row_date >= cutoff:\n                buckets[row_date] = buckets.get(row_date, 0.0) + row.duration_minutes\n        return sorted(buckets.items())\n\n    def reset(self) -> None:\n        with self._conn:\n            self._conn.execute(\"DELETE FROM focus_sessions\")\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && POMODORO_DATA_DIR=/tmp/pomo_e2e python - <<'PY' 2>&1\nfrom pomodoro.core.timer import TimerEngine, TimerConfig, Phase\nfrom pomodoro.persistence.history import HistoryStore\nfrom pomodoro.persistence import paths\n\nh = HistoryStore()  # uses POMODORO_DATA_DIR\ncfg = TimerConfig(focus_minutes=1/60, break_minutes=1/60, rounds=2, long_break_enabled=True, long_break_interval=2)\neng = TimerEngine(cfg)\n# simulate a completed focus round (60s focus => 1 sec here)\neng.start(); eng.tick(61)\n# now in break; simulate interrupted? stop only reports focus\neng.start()\n# abort mid-focus: start a new focus\nprint(\"after finish phase:\", eng.phase, eng.round_number, eng.state)\n# record a manual completed+aborted to test API\nh.add_session(duration_minutes=2.5, tag=\"admin\", completed=True)\nh.add_session(duration_minutes=1.25, tag=None, completed=False)\nprint(\"summary:\", h.summary())\nrows = list(h.iter_sessions())\nprint(\"rows:\", rows)\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "after finish phase: Phase.FOCUS 2 RunState.FINISHED\nTraceback (most recent call last):\n  File \"<stdin>\", line 15, in <module>\nAttributeError: 'HistoryStore' object has no attribute 'add_session'\nEXIT=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && POMODORO_DATA_DIR=/tmp/pomo_e2e2 python - <<'PY' 2>&1\nfrom pomodoro.persistence.history import HistoryStore\nh = HistoryStore()\nh.record_focus_round(2.5, tag=\"admin\", completed=True)\nh.record_focus_round(1.25, tag=\"admin\", completed=False)\ns = h.summary()\nprint(\"summary:\", s)\nprint(\"distinct_tags:\", h.distinct_tags())\nprint(\"daily:\", h.daily_totals(7))\nprint(\"rows:\", list(h._rows()))\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "summary: StatsSummary(today_minutes=3.75, today_count=2, week_minutes=3.75, week_count=2, total_minutes=3.75, total_count=2)\ndistinct_tags: ['admin']\ndaily: [(datetime.date(2026, 9, 29), 0.0), (datetime.date(2026, 9, 30), 0.0), (datetime.date(2026, 10, 1), 0.0), (datetime.date(2026, 10, 2), 0.0), (datetime.date(2026, 10, 3), 0.0), (datetime.date(2026, 10, 4), 0.0), (datetime.date(2026, 10, 5), 3.75)]\nrows: [SessionRecord(completed_at=datetime.datetime(2026, 10, 5, 19, 3, 33), duration_minutes=2.5, tag='admin', completed=True), SessionRecord(completed_at=datetime.datetime(2026, 10, 5, 19, 3, 33), duration_minutes=1.25, tag='admin', completed=False)]\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/persistence/paths.py && echo \"---AUDIO---\" && cat src/pomodoro/audio/player.py | head -60",
+      "exit_code": 0,
+      "stdout": "\"\"\"Shared location for the app's persistent files.\n\nEverything the app writes at runtime (settings, history database) lives\nunder a per-OS \"user data\" directory - never in the repo/install directory -\nso it survives reinstalls and stays out of version control.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport os\nimport sys\nfrom pathlib import Path\n\n_APP_FOLDER_NAME = \"Pomodoro\"\n\n\ndef app_data_dir() -> Path:\n    \"\"\"Resolve the per-user directory for ``settings.json`` and ``pomodoro.db``.\n\n    Order of precedence:\n\n    1. ``POMODORO_DATA_DIR`` env var, for an explicit override. This is the\n       simplest way to persist data across restarts of the container image\n       (mount a volume at this path) or to isolate it in tests.\n    2. The OS-standard per-user data location:\n\n       - macOS: ``~/Library/Application Support/Pomodoro``\n       - Windows: ``%APPDATA%\\\\Pomodoro``\n       - Linux and everything else (including the container image):\n         ``$XDG_DATA_HOME/Pomodoro``, defaulting to ``~/.local/share/Pomodoro``\n         per the XDG Base Directory spec.\n    \"\"\"\n    override = os.environ.get(\"POMODORO_DATA_DIR\")\n    if override:\n        directory = Path(override).expanduser()\n    elif sys.platform == \"darwin\":\n        directory = Path.home() / \"Library\" / \"Application Support\" / _APP_FOLDER_NAME\n    elif sys.platform == \"win32\":\n        base = os.environ.get(\"APPDATA\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / _APP_FOLDER_NAME\n    else:\n        base = os.environ.get(\"XDG_DATA_HOME\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / \".local\" / \"share\" / _APP_FOLDER_NAME\n\n    directory.mkdir(parents=True, exist_ok=True)\n    return directory\n---AUDIO---\n\"\"\"MP3 playback for phase-end signals, with a safe silent/beep fallback.\n\nUses macOS's built-in ``afplay`` so the app doesn't need an extra audio\ndependency. Missing sound files (or a missing ``afplay``) never crash the\napp - callers can check the return value to surface a hint in the UI.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport os\nimport shutil\nimport subprocess\nimport sys\nfrom pathlib import Path\n\n\ndef _existing(path: str) -> str | None:\n    return path if Path(path).is_file() else None\n\n\ndef default_sounds_dir() -> Path:\n    \"\"\"Resolve where to look for ``focus_end.mp3`` / ``break_end.mp3``.\n\n    Order of precedence:\n    1. ``POMODORO_SOUNDS_DIR`` env var, for an explicit override.\n    2. A ``sounds`` folder under the app's Application Support directory,\n       if the user has dropped their own MP3s there - this is the only way\n       to customise sounds in the packaged ``.app`` (see README).\n    3. When running from a frozen ``.app`` bundle: the ``sounds`` folder\n       shipped inside the bundle.\n    4. The repository's own ``sounds/`` folder, so a source checkout (e.g.\n       ``pip install -e .``) works out of the box with the README instructions.\n    5. A ``sounds`` folder under Application Support, created on demand, as a\n       last resort for non-editable (wheel) installs.\n    \"\"\"\n    override = os.environ.get(\"POMODORO_SOUNDS_DIR\")\n    if override:\n        return Path(override).expanduser()\n\n    from ..persistence.paths import app_data_dir\n\n    user_sounds = app_data_dir() / \"sounds\"\n    if any((user_sounds / name).is_file() for name in (\"focus_end.mp3\", \"break_end.mp3\")):\n        return user_sounds\n\n    bundle_dir = getattr(sys, \"_MEIPASS\", None)\n    if bundle_dir:\n        bundled = Path(bundle_dir) / \"sounds\"\n        if bundled.is_dir():\n            return bundled\n\n    repo_candidate = Path(__file__).resolve().parents[3] / \"sounds\"\n    if repo_candidate.is_dir():\n        return repo_candidate\n\n    user_sounds.mkdir(parents=True, exist_ok=True)\n    return user_sounds\n\n\nclass SoundPlayer:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la sounds/ && echo \"---FALLBACK---\" && source .venv/bin/activate && python - <<'PY' 2>&1\nfrom pomodoro.audio.player import SoundPlayer, default_sounds_dir\nd = default_sounds_dir()\nprint(\"sounds dir:\", d)\nsp = SoundPlayer(d)\n# try playing focus_end (no file) -> should return False, not crash\nr = sp.play(\"focus_end\")\nprint(\"play focus_end result:\", r)\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "total 12\ndrwxr-xr-x  2 root root 4096 Oct  5 18:59 .\ndrwxr-xr-x 13 root root 4096 Oct  5 19:02 ..\n-rw-r--r--  1 root root  789 Oct  5 18:59 README.md\n---FALLBACK---\nsounds dir: /workspace/sounds\n\u0007play focus_end result: False\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && python -c \"\nfrom pomodoro.persistence.paths import app_data_dir\nprint('default data dir:', app_data_dir())\n\" 2>&1; echo \"---PYVER---\"; .venv/bin/python --version; echo \"---PROC---\"; ps aux | grep -i pomodoro | grep -v grep",
+      "exit_code": 1,
+      "stdout": "default data dir: /root/.local/share/Pomodoro\n---PYVER---\nPython 3.10.12\n---PROC---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen POMODORO_DATA_DIR=/tmp/pomo_gui python - <<'PY' 2>&1\nfrom pathlib import Path\nfrom PySide6.QtWidgets import QApplication, QPushButton, QLabel\nfrom PySide6.QtCore import QTimer\nfrom PySide6.QtTest import QTest\nimport sys\nsys.path.insert(0,'src')\nfrom pomodoro.gui.main_window import MainWindow\nqa = QApplication([])\nw = MainWindow(Path('/workspace/sounds')); w.show()\nlabels = [c.text() for c in w.findChildren(QLabel) if c.text().strip()]\nprint(\"some labels:\", labels[:12])\nbtns = {b.text().strip(): b for b in w.findChildren(QPushButton)}\nprint(\"buttons:\", list(btns.keys()))\n# try pressing a start button\nfor name in ('Start','Start \\u25b6','\\u25b6 Start'):\n    if name in btns:\n        QTest.mouseClick(btns[name], __import__('PySide6.QtCore', fromlist=['Qt']).Qt.LeftButton)\n        print(\"clicked\", name); break\nQTest.qWait(1200)\nfor c in w.findChildren(QLabel):\n    t=c.text().strip()\n    if ':' in t and len(t)<=8:\n        print(\"timer-like label:\", t)\nprint(\"tabs:\", [w.tabs.tabText(i) for i in range(w.tabs.count())])\nQTimer.singleShot(300, qa.quit)\nqa.exec()\nprint(\"OK\")\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "some labels: ['POMODORO', 'Fokus. Pause. Fortschritt.', '0 min', 'HEUTE', '0 Runden', '0 min', 'DIESE WOCHE', '0 Runden', '0 min', 'GESAMT', '0 Runden', 'LETZTE 7 TAGE']\nbuttons: ['\u2600\ufe0f Hell', 'Historie zur\u00fccksetzen', 'Start', 'Abbrechen']\nclicked Start\ntimer-like label: Filter:\ntabs: ['Timer', 'Statistik']\nOK\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && python -m pytest -q 2>&1 | tail -5; echo \"---\"; git status --short | head",
+      "exit_code": 0,
+      "stdout": "....................                                                     [100%]\n20 passed in 0.13s\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -n \"record_focus_round\\|on_phase_aborted\\|on_session_complete\\|on_phase_complete\\|elapsed\" src/pomodoro/gui/main_window.py | head -30",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && sed -n '1,60p' src/pomodoro/gui/timer_view.py && echo \"...\" && grep -n \"def \\|Start\\|Abbrechen\" src/pomodoro/gui/timer_view.py | head -30",
+      "exit_code": 0,
+      "stdout": "\"\"\"The main Timer tab: countdown ring, phase/round status, controls, settings.\"\"\"\n\nfrom __future__ import annotations\n\nimport math\n\nfrom PySide6.QtCore import QEasingCurve, QPropertyAnimation, Qt, QTimer, Signal\nfrom PySide6.QtGui import QColor\nfrom PySide6.QtWidgets import (\n    QCheckBox,\n    QFormLayout,\n    QFrame,\n    QGraphicsOpacityEffect,\n    QHBoxLayout,\n    QLabel,\n    QLineEdit,\n    QPushButton,\n    QSpinBox,\n    QVBoxLayout,\n    QWidget,\n)\n\nfrom ..audio import SoundPlayer, send_notification\nfrom ..core.timer import Phase, PhaseEvent, RunState, TimerConfig, TimerEngine\nfrom ..persistence import HistoryStore, SettingsStore\nfrom .confetti import ConfettiOverlay\nfrom .theme import ThemeTokens\nfrom .widgets import ProgressRing\n\n_TICK_INTERVAL_MS = 250\n_TICK_DELTA_SECONDS = _TICK_INTERVAL_MS / 1000\n\n_PHASE_LABELS = {\n    Phase.FOCUS: \"FOKUS\",\n    Phase.SHORT_BREAK: \"PAUSE\",\n    Phase.LONG_BREAK: \"LANGE PAUSE\",\n}\n\n_START_LABELS = {\n    RunState.IDLE: \"Start\",\n    RunState.RUNNING: \"Pause\",\n    RunState.PAUSED: \"Fortsetzen\",\n    RunState.FINISHED: \"Neue Session\",\n}\n\n\ndef _card() -> QFrame:\n    frame = QFrame()\n    frame.setObjectName(\"card\")\n    return frame\n\n\nclass TimerView(QWidget):\n    stats_changed = Signal()\n\n    def __init__(\n        self,\n        settings: SettingsStore,\n        history: HistoryStore,\n        sound_player: SoundPlayer,\n...\n40:    RunState.IDLE: \"Start\",\n47:def _card() -> QFrame:\n56:    def __init__(\n84:    def _build_ui(self) -> None:\n98:    def resizeEvent(self, event) -> None:  # noqa: N802 - Qt override\n102:    def _build_timer_card(self) -> QFrame:\n116:        self._phase_fade_anim.setStartValue(0.0)\n149:        self.stop_button = QPushButton(\"Abbrechen\")\n167:    def _build_settings_card(self) -> QFrame:\n243:    def _wire_qtimer(self) -> None:\n249:    def _on_tick(self) -> None:\n254:    def _on_phase_complete(self, event: PhaseEvent) -> None:\n276:    def _on_session_complete(self) -> None:\n279:    def _on_phase_aborted(self, phase: Phase, round_number: int, elapsed_seconds: float) -> None:\n294:    def _on_start_pause_clicked(self) -> None:\n307:    def _on_stop_clicked(self) -> None:\n311:    def _on_settings_changed(self) -> None:\n325:    def _on_tag_changed(self) -> None:\n329:    def _update_long_break_enabled_state(self, enabled: bool) -> None:\n334:    def _phase_color(self, phase: Phase) -> tuple[QColor, QColor]:\n339:    def _confetti_colors(self) -> list[QColor]:\n350:    def _refresh_display(self, force: bool = False) -> None:\n385:    def apply_theme(self, tokens: ThemeTokens) -> None:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && sed -n '243,330p' src/pomodoro/gui/timer_view.py",
+      "exit_code": 0,
+      "stdout": "    def _wire_qtimer(self) -> None:\n        self._qtimer = QTimer(self)\n        self._qtimer.setInterval(_TICK_INTERVAL_MS)\n        self._qtimer.timeout.connect(self._on_tick)\n        self._qtimer.start()\n\n    def _on_tick(self) -> None:\n        self.engine.tick(_TICK_DELTA_SECONDS)\n        self._refresh_display()\n\n    # -- engine callbacks (invoked synchronously from the GUI thread) --\n    def _on_phase_complete(self, event: PhaseEvent) -> None:\n        if event.phase is Phase.FOCUS:\n            tag = self.tag_input.text().strip()\n            self.history.record_focus_round(self.engine.config.focus_minutes, tag)\n            played = self.sound_player.play(\"focus_end.mp3\")\n            send_notification(\n                \"Fokus-Runde beendet\",\n                f\"Runde {event.round_number}/{self.engine.config.rounds} abgeschlossen.\",\n            )\n            self.confetti.burst()\n            self.stats_changed.emit()\n        else:\n            played = self.sound_player.play(\"break_end.mp3\")\n            label = \"Lange Pause\" if event.phase is Phase.LONG_BREAK else \"Pause\"\n            send_notification(f\"{label} beendet\", \"Zeit f\u00fcr die n\u00e4chste Fokus-Runde.\")\n\n        if not played and not self._sound_hint_shown:\n            self._sound_hint_shown = True\n            self.hint_label.setText(\n                \"Keine Sound-Datei gefunden \u2013 lege MP3s unter sounds/ ab (siehe sounds/README.md).\"\n            )\n\n    def _on_session_complete(self) -> None:\n        send_notification(\"Session abgeschlossen\", \"Alle Runden geschafft \u2014 gro\u00dfartige Arbeit!\")\n\n    def _on_phase_aborted(self, phase: Phase, round_number: int, elapsed_seconds: float) -> None:\n        # Only Focus phases are ever reported here (see TimerEngine.stop), so\n        # a cancelled round still counts as real, honestly-partial work\n        # instead of vanishing \u2014 closer to how interruption-heavy days in\n        # public-sector offices actually go.\n        tag = self.tag_input.text().strip()\n        elapsed_minutes = elapsed_seconds / 60\n        self.history.record_focus_round(elapsed_minutes, tag, completed=False)\n        send_notification(\n            \"Fokus-Runde abgebrochen\",\n            f\"{elapsed_minutes:.1f} Min. wurden trotzdem in der Statistik gewertet.\",\n        )\n        self.stats_changed.emit()\n\n    # -- controls ---------------------------------------------------\n    def _on_start_pause_clicked(self) -> None:\n        state = self.engine.state\n        if state is RunState.IDLE:\n            self.engine.start()\n        elif state is RunState.RUNNING:\n            self.engine.pause()\n        elif state is RunState.PAUSED:\n            self.engine.resume()\n        elif state is RunState.FINISHED:\n            self.engine.stop()\n            self.engine.start()\n        self._refresh_display()\n\n    def _on_stop_clicked(self) -> None:\n        self.engine.stop()\n        self._refresh_display(force=True)\n\n    def _on_settings_changed(self) -> None:\n        config = TimerConfig(\n            focus_minutes=float(self.focus_spin.value()),\n            break_minutes=float(self.break_spin.value()),\n            long_break_minutes=float(self.long_break_minutes_spin.value()),\n            rounds=self.rounds_spin.value(),\n            long_break_enabled=self.long_break_checkbox.isChecked(),\n            long_break_interval=self.long_break_interval_spin.value(),\n        )\n        self.engine.apply_config(config)\n        self.settings.config = config\n        self.settings.save()\n        self._refresh_display(force=True)\n\n    def _on_tag_changed(self) -> None:\n        self.settings.last_tag = self.tag_input.text().strip()\n        self.settings.save()\n\n    def _update_long_break_enabled_state(self, enabled: bool) -> None:\n        self.long_break_interval_spin.setEnabled(enabled)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen POMODORO_DATA_DIR=/tmp/pomo_e2e3 python - <<'PY' 2>&1\nfrom pathlib import Path\nfrom PySide6.QtWidgets import QApplication\nfrom PySide6.QtCore import QTimer\nimport sys; sys.path.insert(0,'src')\nfrom pomodoro.gui.main_window import MainWindow\nfrom pomodoro.core.timer import Phase\nqa = QApplication([])\nw = MainWindow(Path('/workspace/sounds')); w.show()\ntv = w.timer_view\nstore = tv.history\n# tiny focus so round completes fast\ntv.focus_spin.setValue(tv.focus_spin.minimum() if tv.focus_spin.minimum()>0 else 1)\nprint(\"focus_spin value:\", tv.focus_spin.value())\n# directly manipulate engine config to 1 second focus for test\nfrom pomodoro.core.timer import TimerConfig\ncfg = TimerConfig(focus_minutes=1/60, break_minutes=1/60, rounds=2, long_break_enabled=False, long_break_interval=2)\ntv.engine.apply_config(cfg); tv.engine.start()\nprint(\"state:\", tv.engine.state, \"phase:\", tv.engine.phase)\n# tick until focus completes\ntv.engine.tick(61)\nprint(\"after tick state:\", tv.engine.state, \"phase:\", tv.engine.phase)\n# now abort next focus: ensure we are in focus? after focus -> break\ntv.engine.tick(61)  # break completes -> focus round 2\nprint(\"now phase:\", tv.engine.phase, \"round:\", tv.engine.round_number)\ntv.engine.start(); tv.engine.tick(30)   # half of 60s focus\nprint(\"remaining:\", tv.engine.remaining_seconds)\ntv._on_stop_clicked()\nimport sqlite3\nprint(\"DB rows:\", list(sqlite3.connect('/tmp/pomo_e2e3/pomodoro.db').execute(\"select duration_minutes, completed from focus_sessions\")))\nQTimer.singleShot(200, qa.quit); qa.exec()\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "focus_spin value: 1\nstate: RunState.RUNNING phase: Phase.FOCUS\n\u0007\u0007\u0007after tick state: RunState.FINISHED phase: Phase.FOCUS\nnow phase: Phase.FOCUS round: 2\nremaining: -58.0\nDB rows: [(0.016666666666666666, 1), (0.016666666666666666, 1)]\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen POMODORO_DATA_DIR=/tmp/pomo_abort python - <<'PY' 2>&1\nfrom pathlib import Path\nimport sys; sys.path.insert(0,'src')\nfrom PySide6.QtWidgets import QApplication\nfrom PySide6.QtCore import QTimer\nfrom pomodoro.gui.main_window import MainWindow\nfrom pomodoro.core.timer import TimerConfig\nqa=QApplication([])\nw=MainWindow(Path('/workspace/sounds')); w.show()\ntv=w.timer_view\ntv.tag_input.setText(\"admin\")\ncfg=TimerConfig(focus_minutes=1.0, break_minutes=1.0, rounds=3, long_break_enabled=False, long_break_interval=3)\ntv.engine.apply_config(cfg); tv.engine.start()\nprint(\"state\",tv.engine.state,\"phase\",tv.engine.phase,\"remaining\",tv.engine.remaining_seconds)\ntv.engine.tick(30)  # halfway into 60s focus\nprint(\"remaining after 30s tick:\", tv.engine.remaining_seconds)\ntv._on_stop_clicked()\nimport sqlite3\nrows=list(sqlite3.connect('/tmp/pomo_abort/pomodoro.db').execute(\"select duration_minutes, tag, completed from focus_sessions\"))\nprint(\"DB rows after abort:\", rows)\n# now complete a full focus round\ntv.engine.start(); tv.engine.tick(60)\nrows=list(sqlite3.connect('/tmp/pomo_abort/pomodoro.db').execute(\"select duration_minutes, tag, completed from focus_sessions\"))\nprint(\"DB rows after full round:\", rows)\nQTimer.singleShot(200, qa.quit); qa.exec()\nPY\necho \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "state RunState.RUNNING phase Phase.FOCUS remaining 60.0\nremaining after 30s tick: 30.0\nDB rows after abort: [(0.5, 'admin', 0)]\n\u0007DB rows after full round: [(0.5, 'admin', 0), (1.0, 'admin', 1)]\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && source .venv/bin/activate && QT_QPA_PLATFORM=offscreen timeout 8 python -m pomodoro; echo \"MODULE_EXIT=$?\"; QT_QPA_PLATFORM=offscreen timeout 8 .venv/bin/pomodoro; echo \"SCRIPT_EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "MODULE_EXIT=124\nSCRIPT_EXIT=124\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

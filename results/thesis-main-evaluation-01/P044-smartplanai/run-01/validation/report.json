@@ -1,0 +1,13 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "docker ps: container 'deployment-streamlit-pipeline-1' image blp-streamlit-pipeline:latest, STATUS 'Up (unhealthy)', PORTS 0.0.0.0:8501->8501/tcp",
+    "curl -s -o /dev/null -w '%{http_code}' http://localhost:8501/_stcore/health -> HTTP 200 (host, /workspace)",
+    "curl -s http://localhost:8501/ -> HTTP 200, Streamlit HTML shell, 1522 bytes",
+    "docker exec deployment-streamlit-pipeline-1 python3 -c \"import urllib.request; print(urllib.request.urlopen('http://localhost:8501/_stcore/health').read())\" -> b'ok'",
+    "docker exec ... python3 -c 'import streamlit, paddleocr, paddle, cv2, geopandas, onnxruntime, pdf2image; print(streamlit.__version__)' -> imports OK 1.55.0",
+    "docker logs deployment-streamlit-pipeline-1 -> 'You can now view your Streamlit app in your browser.' with no errors/tracebacks",
+    "docker inspect --format '{{json .State.Health}}' -> Status unhealthy, ExitCode 127, Output '/bin/sh: 1: curl: not found' (image healthcheck bug, not app failure)"
+  ],
+  "assessment_summary": "I validated the documented Linux installation method (make run -> docker compose up --build). Docker 29.7.2 and Compose v5.5.0 are present, the image blp-streamlit-pipeline:latest was built, and container deployment-streamlit-pipeline-1 is Up with host port 8501 mapped. The Streamlit endpoint responds: http://localhost:8501/_stcore/health returns HTTP 200 and in-container Python urllib returns b'ok'; the root page returns HTTP 200 Streamlit HTML. Container logs show only the standard Streamlit startup banner with no tracebacks. All key application dependencies import successfully inside the container (streamlit 1.55.0, paddleocr, paddlepaddle, cv2, geopandas, onnxruntime, pdf2image), the app code exists at /app/blp_streamlit_pipeline (run.py, pages, src), and preloaded PaddleOCR German models are present. The container's Docker health status is 'unhealthy', but inspection shows the cause is a defect in the image's HEALTHCHECK (curl is not installed in the slim runtime image; ExitCode 127 '/bin/sh: 1: curl: not found'). The health endpoint itself works and the app serves pages; the guide imposes no healthcheck requirement, so this does not indicate an install failure. Limitation: full interactive WebSocket UI rendering cannot be exercised from a shell, so validation relied on HTTP responses, imports, file presence, and logs \u2014 all consistent with a complete, operational installation. Conclusion: success."
+}

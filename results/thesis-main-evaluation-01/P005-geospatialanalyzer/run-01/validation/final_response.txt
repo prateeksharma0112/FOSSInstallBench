@@ -1,0 +1,20 @@
+## Validation Report: GeospatialAnalyzer
+
+The installation was performed via the guide's documented Docker approach (`docker compose -f docker-compose.yml up --build`). I inspected the resulting environment and exercised the software's actual runtime behavior. All decisive checks passed.
+
+### Commands & observed evidence
+- `docker compose -f docker-compose.yml ps` (cwd `/workspace`) → 3 containers running: `geospatialanalyzer-app-dev` (image `geospatialanalyzer-dev-app`, healthy, ports 3000/9229), `geospatialanalyzer-postgres-dev` (postgis/postgis:15-3.4, healthy, port 5432), `geospatialanalyzer-pgadmin-dev` (port 5050).
+- `docker inspect --format '{{.Name}} health=...'` → both app and postgres report `health=healthy`; app RestartCount=0.
+- Documented HTTP endpoints (curl, `localhost:3000`): `/health` → 200 `{"response":"ok"}`; `/api` (Swagger UI) → 200; `/api-json` → 200 (20,249 bytes OpenAPI doc listing all `/v2/*` routes); `/v2/topics` → 200 with real topic metadata (`sn_land_f`, `sn_kreis_f`, …); `/metrics` → 200.
+- Functional API test: `POST /v2/intersect` with the guide's documented payload (Dresden point, topics `kreis_f`+`land_f`, geojson/4326) → **HTTP 200** returning real features (`Kreisfreie Stadt Dresden`, `Sachsen`). `POST /v2/within` → 200 with real data. `POST /v2/nearestNeighbour` (with `count`/`maxDistanceToNeighbour`) → 200 with `__dist` computed. `POST /v2/transformGeoJSONToEsriJSON` → 200 with valid EsriJSON (`x`/`y`/`wkid`). Invalid payloads correctly returned structured 400 validation errors, confirming the OpenAPI validator works.
+- Database: `docker exec ... psql` → schema `ga` with 15 tables (`land_f`, `kreis_f`, `gemeinde_f`, …); PostGIS extensions present (`postgis`, `postgis_raster`, `postgis_topology`, `fuzzystrmatch`, `postgis_tiger_geocoder`); test data loaded (land_f=1, kreis_f=3, gemeinde_f=10 rows).
+- pgAdmin: `http://localhost:5050/` → HTTP 302 (login redirect), as expected.
+- Configuration: `.env.dev` exists and matches `.env.dev.sample` (DB host/credentials, metrics, topic filter `demodata`).
+
+### Limitations / notes
+- Host shell lacks Node.js/pnpm, so validation was done entirely against the running Dockerized service as the guide's Docker method prescribes. This is the final chosen installation method; the absence of host Node is not a defect.
+- Only page-load/HTTP checks were used for Swagger UI and pgAdmin (no login performed); their containers are up and respond correctly.
+- The summary's one deviation (creating `.env.dev` from `.env.dev.sample`) is per the guide's own instructions and is already resolved.
+
+### Assessment
+Objective evidence shows the app service, PostgreSQL/PostGIS database with imported sample data, and pgAdmin are all installed and operational, and the documented API endpoints perform real geospatial queries successfully.

@@ -1,0 +1,51 @@
+## Installation Report — URBO
+
+**Outcome: SUCCESS** (core stack installed, running, and verified)
+
+### Method used
+The documented one-command workflow `just up` (the guide's primary installation method) was used. Because the task never includes a real GitHub PAT, prerequisite tooling was installed first, then the stack was brought up with the instance identifier `urbo`:
+
+```
+URBO_INSTANCE=urbo GITHUB_TOKEN=dummy-token-for-build just up --detach
+```
+
+All four `just up` steps succeeded:
+```
+✓ Installed frontend dependencies (21s)
+✓ Built images and created containers (10m33s)
+✓ Started containers (2m23s)
+✓ Seeded sample data (39s)
+```
+
+### Prerequisites installed (absent in the base image)
+- `just` 1.42.4 → `/usr/local/bin/just`
+- Node.js 24.21.0 via NodeSource apt repo; npm 11.19.0
+- pnpm 12.11.2 (`npm i -g pnpm`)
+- `libatomic1` (required by the pnpm shim)
+- OpenJDK 21 (`openjdk-21-jdk-headless`) — needed by the frontend `prepare` step (`openapi-generator-cli` invokes `java`)
+
+### Working directory / paths
+- Repo root: `/workspace`
+- Instance state: `/workspace/.urbo/urbo/` (env, nginx.conf, ports.json, seeded marker, logs)
+- Instance identifier file: `/workspace/.urbo-instance` (contains `urbo`)
+
+### Observed state at verification time
+- `docker ps`: every container healthy — `urbo-urbo-spring-app-1` (healthy), `keycloak` (healthy), `localstack` (healthy), `sendinblue-api` (healthy), `mailpit` (healthy), `urbo-backend-postgres` (healthy), plus meilisearch/imgproxy/sample-images up; shared `urbo-proxy` publishing port 80.
+- `just status` and `just urls` both worked and printed all instance URLs.
+- Backend API: `GET http://api.urbo.localhost/v3/api-docs` → **200** (OpenAPI doc with 250 paths), `swagger-ui/index.html` → 200.
+- MeiliSearch: `GET http://meilisearch.urbo.localhost/health` → `{"status":"available"}`.
+- Keycloak: `GET /realms/master` → 200.
+- Seeding: `seed.log` ends with "Sample data import completed successfully." and marker `/workspace/.urbo/urbo/seeded` written.
+- Note: `app`/`cms`/`boards` returned 502 via the proxy while only `--detach` had been run (expected — `--detach` skips the host dev servers). Running `just serve` afterwards, the `cms` and `boards` dev servers came up and answered **200** on their ports (44541 / 46277). The `app` dev server completed its Angular build ("Successfully ran target serve for project app") but the Nx-managed process then exited; it was verified to run and stay alive when launched directly (`pnpm nx serve app …` served `http://localhost:40461/` for the full 120 s window).
+
+### Key observation on GITHUB_TOKEN
+The guide states a classic PAT with `read:packages` is required for the backend image build. In this environment the backend Gradle build completed successfully with a **dummy** token: the public S3 Maven repo (`urbo-maven.s3.eu-central-1.amazonaws.com`) needs no credentials for the build-logic, and all `@sw-code/*` npm deps resolve as workspace links, so no private GitHub Package registry access was actually exercised.
+
+### Incomplete / unknown state
+- Final live verification of the `app` dev server after restart could not be repeated: the execution sandbox's shell backend became permanently unreachable (repeated `Cannot connect to Podman … ssh: handshake failed` errors) roughly one hour after the stack came up. The last confirmed observations are those above.
+- Dev servers are host processes, not containers, and are not required for the containerised stack itself; the Guide's `just up --detach` form leaves them for a separate `just serve`.
+
+### Startup / access points
+- `just up` (interactive) or `just up --detach` then `just serve`
+- URLs: `http://app.urbo.localhost`, `http://cms.urbo.localhost`, `http://boards.urbo.localhost`, `http://api.urbo.localhost`, `http://keycloak.urbo.localhost`, plus `just urls`
+- Postgres published on host port 32768 (per `just status` / `just urls`)

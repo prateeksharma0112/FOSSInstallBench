@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P021-klimadashboard-muenster__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T21:02:59.387596+02:00",
+    "finished_at": "2026-10-06T21:18:05.399418+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P021",
+    "project": {
+      "opencode_id": "629",
+      "name": "Klimadashboard M\u00fcnster",
+      "description": "The M\u00fcnster Climate Dashboard visualizes real-time information about the city of M\u00fcnster's climate footprint. The dashboard displays data with various graphs in a tile-based layout, with separate pages for each of the four categories. The data comes from many different providers, including the City of M\u00fcnster's open data portal, the German Meteorological Service (DWD), and BrightSky.",
+      "catalogue_url": "https://opencode.de/de/software/klimadashboard-munster-629",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster",
+      "commit_sha": "ffb429f03b5b63ee97bca85bb9fce1ec0de91769",
+      "license": "AGPL-3.0-or-later"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster/-/blob/ffb429f03b5b63ee97bca85bb9fce1ec0de91769/README.md",
+      "language": "English",
+      "word_count": 44
+    },
+    "task_id": "P021-klimadashboard-muenster"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "failure",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 912.7810000000172,
+    "repository_setup_duration_seconds": 11.73399999999674,
+    "installation_duration_seconds": 501.48500000001513,
+    "validation_duration_seconds": 383.625,
+    "command_count": 72,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 20,
+    "validation_command_count": 48
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P021-klimadashboard-muenster/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

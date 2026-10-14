@@ -1,0 +1,19 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "dotnet --version -> 8.0.425; /usr/bin/dotnet present; build output at /workspace/src/Bovis.Web/bin/Debug/net8.0/ (Bovis.Web.dll/exe + deps)",
+    "Process PID 2291 alive: `/workspace/src/Bovis.Web/bin/Debug/net8.0/Bovis.Web server`, env ASPNETCORE_URLS=http://localhost:5195, ASPNETCORE_ENVIRONMENT=Development, DOTNET_LAUNCH_PROFILE=http",
+    "/tmp/bovis_lbeg2.log clean startup: config DB schema 001, 'Setting up Backend LBEG', '47 Symbole geladen', '1773 SEP3 Mappings geladen', 'connection to Bovis database established', 'Now listening on: http://localhost:5195', 'Application started.'",
+    "curl http://localhost:5195/ -> HTTP 200 text/html (3303 bytes, Blazor _Host page)",
+    "curl http://localhost:5195/bovis/hello -> HTTP 200 JSON {\"message\":\"Hello from Bovis\",\"time\":\"2026-10-09T21:12:25...\"}",
+    "curl -X POST http://localhost:5195/_blazor/negotiate?negotiateVersion=1 -> HTTP 200 JSON with WebSockets/ServerSentEvents/LongPolling transports",
+    "curl http://localhost:5195/_framework/blazor.server.js -> HTTP 200 (151912 bytes)",
+    "curl http://localhost:5195/css/site.css -> HTTP 200 text/css (3878 bytes); /favicon.png -> HTTP 200",
+    "curl http://localhost:5195/download?item=logs -> HTTP 200 'These are your logs...'; ?item=config -> HTTP 200 application/json (354292 bytes, 54 objects); ?item=bogus -> HTTP 404",
+    "curl http://localhost:5195/app/render?sid=x&id=1 -> HTTP 500 JSON error 'Object services/x not found in storage' (render endpoint reachable, config/service layer live)",
+    "cd /workspace/src/Bovis.Web && dotnet bin/Debug/net8.0/Bovis.Web.dll check --withdb -> exit 0, logs 'connection to Bovis database established'",
+    "cd /workspace/src/Bovis.Web && dotnet bin/Debug/net8.0/Bovis.Web.dll list-configs / list-props -> exit 0, config DB schema 001",
+    "Artifacts present: config.db 385024 bytes (schema 001), bohris.db 0 bytes; local.json DataBackend=LBEG"
+  ],
+  "assessment_summary": "I inspected the workspace (repo at cd2c942), the Bovis.Web build output, configuration (local.json with DataBackend=LBEG), and the running server, then exercised the installation over HTTP and via the built-in CLI. Objective evidence shows the software is installed and operational: the .NET 8 app process (PID 2291) is alive on http://localhost:5195 with a clean startup log (config DB schema 001, LBEG backend initialized, 47 symbols and 1773 SEP3 mappings loaded, DB connection established). Functional checks succeeded: the Blazor UI page returns 200 HTML, the Blazor Server hub negotiate endpoint returns valid transports, blazor.server.js and static assets serve with 200, the documented download endpoints work (logs 200, config 200 with a 354 KB archive, unknown item 404), and the API endpoint /bovis/hello returns the expected JSON. The render controller endpoint is reachable and returns a well-formed JSON error for an unknown service id, demonstrating the config/service layer is live. CLI commands check, check --withdb, list-configs and list-props all exit 0. The supplied quickstart method (clone, cp local.json.in local.json, configure, dotnet run -- server) was reproduced by the installation and is functional. Limitations: no real borehole data is available (bohris.db is 0 bytes; LBEG requires an external DB), so end-to-end rendering of an actual borehole could not be exercised; this is a data-availability constraint the guide delegates to the operator, not an installation defect. The repository README's stated API route /api/bovis is inaccurate (actual /bovis/hello), a docs issue rather than an installation failure. Deployment extras from Install.adoc (Apache/systemd) were out of scope for the quickstart and not expected. Overall the installation is complete and operational, so I assess success."
+}

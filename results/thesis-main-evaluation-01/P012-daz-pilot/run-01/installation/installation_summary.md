@@ -1,0 +1,20 @@
+## Method
+Docker Compose on-premises stack installed from the repository at `/workspace` (git commit `ba32aab`, detached HEAD, clean tree). Docker 29.7.2 / Compose v5.5.0. Base deployment is `docker-compose.yml`; because this environment has no public DNS names, TLS or reverse proxy, the documented `docker-compose.local.yml` overlay was layered on to publish host ports for verification (README documents this overlay for local use).
+
+## Actions performed
+1. **Secrets (§2):** `openssl rand` for SUPER_ADMIN_API_KEY (hex 48), SECRETS_ENCRYPTION_KEY (base64 32), MEDIA_URL_SIGNING_KEY (base64 32), DB_PASS (hex 32). Backup age keypair generated with `docker run --rm daz-pilot-backup:latest age-keygen` (the distro had no `age` package); public key written to `AGE_RECIPIENT` in `.env`, identity file moved out of the working tree to `/tmp/age-identity.txt`.
+2. **`.env` (§3):** `cp .env.example .env`; set ENVIRONMENT=production, CORE_BACKEND_DOMAIN/FRONTEND_DOMAIN/NEXT_PUBLIC_CORE_BACKEND_DOMAIN=localhost URLs, TRUST_PROXY=0, AUTH_RATE_LIMIT_MAX=1000, generated DB_PASS/SUPER_ADMIN_API_KEY/SECRETS_ENCRYPTION_KEY/MEDIA_URL_SIGNING_KEY, SMTP_* placeholder relay (smtp.example.org), AGE_RECIPIENT. File mode 600.
+3. **Stack start (§5):** `docker compose up -d --build`. Built images `daz-pilot-backend:latest`, `daz-pilot-dashboard:latest`, `workspace-ml-service:latest`, `daz-pilot-backup:latest` and started postgres, qdrant, ml-service, migrate (one-shot), backend, worker, dashboard, backup. The first `up` aborted with "container workspace-ml-service-1 is unhealthy" because the ml-service was still downloading the 4.6 GB SigLIP weights within the dependency health window; after the model finished the ml-service turned healthy and re-running `docker compose up -d` started backend/worker/dashboard.
+4. **Onboarding (§7):** via `http://localhost:4000` (published port) created school `eckener-schule` and admin teacher `admin@schule.de` using the `x-super-admin-api-key` header — both HTTP 201.
+5. **Backup (§10):** `docker compose run --rm backup backup.sh` produced a backup set (Postgres dump, Qdrant aliases/collections, media archive, MANIFEST.json) and exited 0; the `backup` scheduler container logs `read crontab: /tmp/backup.crontab`.
+
+## Final state
+All seven long-running services healthy: `docker compose ps` shows backend (healthy), worker (healthy), dashboard (healthy), ml-service (healthy), postgres (healthy), qdrant (healthy), backup (up); migrate container exited 0 after applying migrations 001–009. Verification endpoints: API health `http://localhost:4000/api/v1/health` → pass (database healthy), dashboard `http://localhost:3000/` → 200, `http://localhost:3000/eckener-schule/login` → 200, Swagger `http://localhost:4000/api/v1/swagger` → 200, ml-service `http://localhost:8000/health` → ok. Volumes created: postgres_data, qdrant_storage, qdrant_snapshots, ml_model_cache, media_data, backup_data.
+
+## Access points / commands
+- Stack dir: `/workspace`. Rerun: `docker compose up -d --build` (base, no host ports) or `docker compose -f docker-compose.yml -f docker-compose.local.yml up -d` (published ports used here).
+- Backend API: container `backend:4000` (host `localhost:4000` under local overlay). Dashboard: `dashboard:3000` (host `localhost:3000`). ML service internal `ml-service:8000`.
+- Migration runs automatically as the one-shot `migrate` service before backend/worker.
+
+## Incomplete / unknown
+The production reverse proxy, TLS, real SMTP relay, OIDC/SSO (§8) and Moodle bridge (§9) were not configured — they require external infrastructure (public DNS/TLS, mail server, identity provider, Moodle instance) not available here; these are optional/follow-on steps. Mobile app-link fingerprints left empty (as documented defaults). No application-level changes were made to the repository.

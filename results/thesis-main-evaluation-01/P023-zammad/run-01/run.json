@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P023-zammad__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T21:28:08.381103+02:00",
+    "finished_at": "2026-10-06T21:49:40.481432+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P023",
+    "project": {
+      "opencode_id": "3166",
+      "name": "Zammad",
+      "description": "Zammad is a web-based, open-source helpdesk/customer support system.",
+      "catalogue_url": "https://opencode.de/de/software/zammad-3166",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/zammad/zammad",
+      "commit_sha": "154eb34c45907f964eb6194aba61775caa070635",
+      "license": "AGPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/zammad/zammad/-/blob/154eb34c45907f964eb6194aba61775caa070635/doc/developer_manual/development_environment/getting-started.md",
+      "language": "English",
+      "word_count": 193
+    },
+    "task_id": "P023-zammad"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1292.125,
+    "repository_setup_duration_seconds": 42.76600000000326,
+    "installation_duration_seconds": 1175.8589999999967,
+    "validation_duration_seconds": 56.375,
+    "command_count": 83,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 62,
+    "validation_command_count": 17
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P023-zammad/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

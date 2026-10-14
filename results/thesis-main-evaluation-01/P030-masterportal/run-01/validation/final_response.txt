@@ -1,0 +1,22 @@
+Masterportal v3.26.1 installation validated as **success**.
+
+## What I inspected
+- **Runtime**: `node v22.20.0`, `npm 10.9.3` present (matches project `engines`); `/workspace` at commit `410dc25`.
+- **Dependencies**: `node_modules/` populated (605 top-level entries).
+- **Build output** `/workspace/dist/`: example portals `basic/`, `master/`, `auto/` (each with `index.html`, `config.js`, `config.json`, `resources/`) plus versioned `mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/` containing `js/masterportal.js` (4.4 MB), `css/masterportal.css` (700 KB), `img/` (Logo_Masterportal.svg, 9 draw SVGs), and `locales/` (11 languages, 20 JSON files) — exactly the structure the guide describes.
+
+## How I validated (behavioral evidence)
+- Served the built portal statically via a Node HTTP server; fetched the real entry points: `basic/index.html` (200), `masterportal.js` (200, 4,594,868 B), `masterportal.css` (200, 713,602 B), `config.js`, `config.json`, `resources/services.json`, `style_v3.json`, `rest-services.json` — all 200 with correct sizes. `index.html` correctly references the `mastercode` bundle/CSS.
+- `node --check masterportal.js` passed (bundle is syntactically valid).
+- All config JSON files (`config.json`, `services.json`, `rest-services.json`, `style_v3.json` for basic/master/auto) parse as valid JSON.
+- Started the documented dev server (`npm start`): Vite came up and served the app; `/portal/basic/index.html` (200) loads `/src/masterportal.js`, which Vite transformed successfully (200) and which resolves its dependency graph (`vue`, `pinia`, `App.vue`, `app-store`, `plugins/i18next.js`, `App.vue` all served 200). This demonstrates the source↔dependency pipeline is intact and operational.
+- Ran a slice of the project test suite (`npx vitest run ... src/core/urlParams`): 4/4 tests passed, exit 0.
+
+## Limitations
+- No browser binary or headless (puppeteer/playwright) is available, so I could not render the portal UI end-to-end. I attempted a jsdom boot of the production bundle; it could not complete because the bundle's browser/WebGL/i18n startup blocks in jsdom — an environment limitation, not evidence of a faulty install.
+- The supplied guide is end-user oriented (download prebuilt `examples.zip`); that artifact was intentionally not used. The source-build path used here produces output matching the guide's documented layout and is appropriate for this workspace.
+
+## Conclusion
+The installation is complete and the software operates: runtime, dependencies, build artifacts, static serving of the portal and its assets, the Vite dev pipeline, module resolution, and the project's own tests all succeed. Only full in-browser rendering remained unverified due to a missing browser, which does not indicate incomplete or broken installation.
+
+Note: I started temporary validation servers (Node static server, Vite dev server) and stopped them all afterward; I made no changes to the installation.

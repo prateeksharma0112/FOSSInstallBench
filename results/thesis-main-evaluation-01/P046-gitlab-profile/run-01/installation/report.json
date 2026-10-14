@@ -1,0 +1,22 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed the gitlab-profile (KommunalEnergie) application in /workspace using the prebuilt-image Docker Compose method from the installation guide. Docker Engine 29.7.2 and Compose v5.5.0 were preinstalled. Created /workspace/.env from .env.example and set API_CREDENTIAL_ENCRYPTION_KEY (openssl rand -base64 32), APP_DOMAIN=localhost, INITIAL_ADMIN_PASSWORD, SWAGGER_HTTP_AUTH_PASSWORD, and LETSENCRYPT_EMAIL. The OpenCode registry (registry.opencode.de) allowed anonymous pulls, so no docker login was required. Ran `docker compose pull` (success) and `docker compose up -d`. PostgreSQL initialized the base schema via sql/base_model.sql, and the web entrypoint applied 25 Yii migrations (\"Migrated up successfully\") before starting Apache. All four containers run: web (yii2_vue_dash_container), postgres (postgres_dashapp_container, healthy), traefik (traefik_proxy_container, 80/443) and iothubsh-adapter. Verified endpoints: https://localhost/ -> 200 (login page), /administration -> 200 (login), /administration/docs/ -> 401 then 200 with Basic auth admin:swaggerpass123, POST /api/v1/node/measurements -> 400 application validation error confirming the route is live. The local TLS cert is Traefik's self-signed default since Let's Encrypt cannot issue for localhost; curl -k was used. This is the final method used; the alternative documented method (local build via docker-compose.build.yml) was not attempted because the prebuilt-image method succeeded.",
+  "additional_actions": [
+    "Set APP_DOMAIN to localhost, INITIAL_ADMIN_PASSWORD and SWAGGER_HTTP_AUTH_PASSWORD to test values, and LETSENCRYPT_EMAIL to admin@example.com in .env to allow local non-interactive startup/verification (guide only said to adjust these).",
+    "Used curl -k (insecure) for HTTPS checks because Traefik serves a self-signed certificate for localhost."
+  ],
+  "verification": "docker compose ps shows all 4 containers Up (postgres healthy), exit 0. curl checks: `curl -k https://localhost/` -> 200 login page; `curl -k -L https://localhost/administration` -> 200; `curl -k https://localhost/administration/docs/` -> 401 without auth, 200 with `-u admin:swaggerpass123`; `curl -k -X POST -d '{}' https://localhost/api/v1/node/measurements` -> 400 with JSON validation error \"Body field measurements must be a non-empty array\" (route exists and app responds). Web logs show \"25 migrations were applied. Migrated up successfully.\" Container restart counts are 0. All commands exited 0.",
+  "reported_outcome_evidence": [
+    "docker compose pull -> EXIT: 0, images pulled from registry.opencode.de",
+    "docker compose up -d -> EXIT: 0; containers postgres, traefik, web, iothubsh-adapter started",
+    "docker compose ps -> yii2_vue_dash_container Up, postgres_dashapp_container Up (healthy), traefik_proxy_container Up, iothubsh_adapter Up",
+    "docker compose logs web -> '25 migrations were applied.' / 'Migrated up successfully.' / 'Apache/2.4.68 (Debian) configured -- resuming normal operations'",
+    "curl -k https://localhost/ -> HTTP 200 with KommunalEnergie login page HTML",
+    "curl -k -L https://localhost/administration -> HTTP 200 final=https://localhost/administration/site/login",
+    "curl -k https://localhost/administration/docs/ -> 401; with -u admin:swaggerpass123 -> 200",
+    "curl -k -X POST -H 'Content-Type: application/json' -d '{}' https://localhost/api/v1/node/measurements -> HTTP 400 {\"message\":\"Body field measurements must be a non-empty array.\"} confirming the endpoint is live",
+    "docker inspect -> all containers status=running, restarts=0"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

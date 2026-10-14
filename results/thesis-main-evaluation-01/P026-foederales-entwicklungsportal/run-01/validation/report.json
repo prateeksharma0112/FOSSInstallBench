@@ -1,0 +1,12 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "`node --version` \u2192 v22.20.0; `npm --version` \u2192 10.9.3; `yarn --version` \u2192 1.22.22 (cwd /workspace, exit 0)",
+    "`ls /workspace/build` shows 191 index.html pages, _next/ (7.6M), 404.html, robots.txt, search-data/{de,en}.json; `du -sh build` \u2192 21M",
+    "`.next/export-detail.json` \u2192 {\"outDirectory\":\"/workspace/build\",\"success\":true}; `.next/export-marker.json` \u2192 version 1, exportTrailingSlash true",
+    "Serving /workspace/build over HTTP: curl status 200 for /, /de/, /en/, /de/resources/, /en/resources/joinup/, /fit-standards/, /de/search/, /robots.txt, and /_next/static/chunks/main-*.js",
+    "Rendered HTML for / contains <title>F\u00f6derales Entwicklungsportal - Entwicklerressourcen f\u00fcr die digitale Verwaltung</title>; /fit-standards/ content=...FIT-Standards... (230674 bytes)",
+    "`timeout 120 yarn dev` log: '\u2713 Ready in 548ms', 'Local: http://localhost:3000'; `curl http://localhost:3000/` \u2192 HTTP 200 with correct portal <title>"
+  ],
+  "assessment_summary": "Inspected /workspace and confirmed the toolchain (Node 22.20.0, npm 10.9.3, Yarn 1.22.22), installed node_modules (557 entries incl. next binary), and the checked-out repo. Validated both documented workflows: (1) production export \u2014 build/ exists with 191 prerendered pages, static assets, search data and route trees, and .next/export-detail.json reports success with outDirectory /workspace/build; serving build/ over a local static HTTP server returned 200 with genuinely rendered, correctly-titled German content for /, /de/, /en/, /de/resources/, /en/resources/joinup/, /fit-standards/, /de/search/ plus JS/CSS assets; (2) dev server \u2014 yarn dev started Next.js 16.3.4 on port 3000 ('Ready in 548ms') and curl returned HTTP 200 with the correct title. This demonstrates the software is installed, complete, and operational per the guide. Limitations: no .env.local exists, but Plausible variables are documented optional with defaults; python3 absent so a Node static server was used to emulate the documented `npx serve@latest build`; 404.html title is JS/head-managed so grep for a static <title> was empty though the page exists and serves 200. All temporary processes/files were cleaned up and no files were modified."
+}

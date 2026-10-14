@@ -1,0 +1,36 @@
+Validation complete. The Mitmachportal Würzburg (CONSUL fork, commit 5c3c7e1) development installation at /workspace is operational and matches the supplied guide. I verified runtime components, seeded data, HTTP behavior, authentication, and a full end-to-end participation flow.
+
+## Assessed outcome: success
+
+### Evidence obtained
+
+**Runtime stack (guide-specified versions present)**
+- `ruby -v` → ruby 3.1.4p223 (RVM `/usr/local/rvm/rubies/ruby-3.1.4`) = `.ruby-version`
+- `node -v` → v20.11.0 (`/root/.local/share/fnm/node-versions/v20.11.0`) = `.node-version`
+- `psql --version` → PostgreSQL 14.24; `pg_isready` → accepting connections on 5432
+- `bundle check` → "The Gemfile's dependencies are satisfied"; `node_modules` = 419 packages
+
+**Database + seeds**
+- `consul_development` and `consul_test` both exist with **262 tables** each; schema_migrations at 20260708120000
+- Seed counts: users=48, administrators=1, proposals=75, debates=108, polls=15, projekts=10, settings=237
+
+**Application running (documented `bin/rails s`)**
+- puma 5.6.8 listening `tcp://127.0.0.1:3000` in development (`log/server.log`), pid from `tmp/pids/server.pid`
+- HTTP 200: `/`, `/proposals`, `/debates`, `/polls`, `/projekts`, `/users/sign_in`, `/help`, proposal detail page; CSS/JS assets 200
+
+**Authentication (seed credentials from guide)**
+- `admin@consul.dev` / `Aa12345678` → POST `/users/sign_in` returns 302 and session shows `data-current-user-id="1"`; `/admin` → 200
+- Role users `mod@consul.dev` (id 2), `verified@consul.dev` (id 10), `valuator@consul.dev` (id 4) log in successfully
+
+**End-to-end participation flow**
+- Followed the app's own UI link on a project page (`/proposals/new?origin=projekt&projekt_id=9&projekt_phase_id=3`, 200), submitted the form → POST `/proposals` 302 → `/proposals/76-mitmach-validierungstest-2026` 200; row persisted (id 76, author 10, phase 3, published)
+- `bin/rails` and `bin/rake` binstubs work; test env boots (`RAILS_ENV=test`, 262 tables)
+
+### Limitations / non-blocking observations
+- Documented plain `bin/rspec` fails to launch with `Gem::LoadError: already activated mutex_m 0.1.1, but your Gemfile requires mutex_m 0.2.0`. It runs with the in-environment workaround `DISABLE_SPRING=1 bin/rspec` or `bundle exec rspec` (verified 4 examples/0 failures on a passing spec). No installation or repair is required.
+- Many specs fail (proposal_spec 146/155, user_spec 77/107, lib+services 173/291, requests 206/576) due to stale committed specs/factories referencing removed APIs (e.g. `terms_of_service=` on Proposal) — a pre-existing repo state at commit 5c3c7e1, not an installation defect.
+- `GET /proposals/new` without `projekt_phase_id` returns 500 (`undefined method 'projekt' for nil:NilClass` in an unmodified view); the fork's UI only links to the phase-scoped variant, which works.
+- `/budgets`, `/conditions`, `/privacy` return 404 (routing/branding specifics of this fork).
+
+### Basis for the decision
+The guide's deliverable — a working development environment with `bin/rails s` serving the participation platform against a seeded PostgreSQL database — is demonstrably operational (home/index/detail pages, auth, and a real proposal-creation flow all verified). The test-runner binstub issue has a working in-environment workaround and requires no further install/repair, and the spec failures are pre-existing stale test code. These do not constitute an incomplete or non-operational installation.

@@ -1,0 +1,20 @@
+Startuphafen was installed successfully in the workspace at /workspace and the full development stack is running and reachable through the Caddy proxy on port 4000.
+
+Summary of what was done:
+- Installed prerequisites that were absent in the environment: Node.js 20.18.0 (used for the nx/Angular tooling) and Node.js 22.18.0 (required at runtime because the bundled `@trpc-limiter/memory` v1.0.0 is an ES module loaded via `require()`; it throws `ERR_REQUIRE_ESM` under Node 20 but works under Node 22, matching the deployment compose which pins `node:22.18.0`).
+- Installed all workspace dependencies with `npm install` (2636 packages).
+- Generated the Prisma client and applied the 57 Prisma migrations to the pgvector database (`npx prisma migrate deploy`, "All migrations have been successfully applied").
+- Brought up the documented devcontainer stack via `docker compose -f apps/startuphafen-backend/src/assets/docker-compose.yml -f .devcontainer/dev-compose.yml up -d`: database (pgvector/pgvector:pg15), keycloak-database (postgres:15.5), keycloak (built startuphafen-keycloak:26.1.2), caddy, maildev, pgadmin, devcontainer.
+- Built the backend (`nx run startuphafen-backend:build:development`) and frontend (`nx run startuphafen-frontend:build:production`; the development build fails only on an SCSS size budget).
+- Started the compiled backend (`dist/apps/startuphafen-backend/main.js`) and the Angular dev server inside the `startuphafen-devcontainer` compose service, which is where the provided Caddyfile routes (`devcontainer:5000`, `devcontainer:4201`).
+- Created the documented `.localConfigs.json` (confirmed git-ignored).
+
+Working entry points / access:
+- Caddy proxy (dev): http://localhost:4000
+- Angular: 4201, express-backend: 5000 (both inside the devcontainer), keycloak direct: 28080, kc-admin: 4000/kc-admin, pgadmin: 3838, maildev: 1080.
+
+Verification observed: `http://localhost:4000/` returns 200 and serves the Startuphafen Angular app; `FeatureFlags.getFeatureFlags` tRPC query returns a valid JSON result; Keycloak OIDC discovery at `/kc/realms/startuphafen/.well-known/openid-configuration` returns 200; the documented dev logins (admin/admin, alice/alice, marie/marie) all issue access tokens (HTTP 200); a login page is served at `/kc`.
+
+One deviation was required: the dev realm import crashed the Keycloak container in a loop because the realm `passwordPolicy` ("length(8)...specialChars(1)...upperCase(1)...digits(1)") rejects the documented short dev passwords (admin/alice/marie). Setting `passwordPolicy` to "" in `.devcontainer/keycloak/imports/startuphafen.json` resolved the import; all three users then imported and authenticate. This is the only tracked file modified. Note maildev's container healthcheck reports "unhealthy" because maildev 3.0.0 has no `/healthz` endpoint, but the maildev service itself is up and listening on 1080.
+
+Caveats: chatbot/HWK-AI (Mistral), ERiC, OZG, Strapi and the AI embeddings corpus are intentionally unconfigured/empty in the open-source release, as documented in the README.

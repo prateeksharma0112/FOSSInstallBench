@@ -1,0 +1,492 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/OC000097948268/formulardesigner /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/OC000097948268/formulardesigner.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 7acedda5483d76c071b62c287574e8332549638c",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/OC000097948268/formulardesigner.git/\nFrom https://gitlab.opencode.de/OC000097948268/formulardesigner\n * branch            7acedda5483d76c071b62c287574e8332549638c -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 7acedda5483d76c071b62c287574e8332549638c",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 7acedda Merge branch 'feature/automated-pipeline' into 'main'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 7acedda5483d76c071b62c287574e8332549638c",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -5 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 148\ndrwxr-xr-x 12 root root  4096 Oct  8 18:27 .\ndr-xr-xr-x  1 root root  4096 Oct  8 18:27 ..\ndrwxr-xr-x  8 root root  4096 Oct  8 18:27 .git\n-rw-r--r--  1 root root   110 Oct  8 18:27 .gitignore\n-rw-r--r--  1 root root  1534 Oct  8 18:27 .gitlab-ci.yml\n-rw-r--r--  1 root root 16725 Oct  8 18:27 LICENSE\n-rw-r--r--  1 root root 22930 Oct  8 18:27 README.md\ndrwxr-xr-x  2 root root  4096 Oct  8 18:27 docs\n-rw-r--r--  1 root root   989 Oct  8 18:27 eslint.config.js\ndrwxr-xr-x  4 root root  4096 Oct  8 18:27 example\ndrwxr-xr-x  2 root root  4096 Oct  8 18:27 images\ndrwxr-xr-x  2 root root  4096 Oct  8 18:27 issue_templates\ndrwxr-xr-x  7 root root  4096 Oct  8 18:27 kern-addons\n-rw-r--r--  1 root root 12732 Oct  8 18:27 logo.svg\n-rw-r--r--  1 root root  3268 Oct  8 18:27 package.json\n-rw-r--r--  1 root root  2482 Oct  8 18:27 playwright.config.ts\n-rw-r--r--  1 root root  6559 Oct  8 18:27 publiccode.yml\ndrwxr-xr-x  2 root root  4096 Oct  8 18:27 scripts\ndrwxr-xr-x 10 root root  4096 Oct  8 18:27 src\ndrwxr-xr-x  5 root root  4096 Oct  8 18:27 tests\n-rw-r--r--  1 root root  1507 Oct  8 18:27 tsconfig.json\n-rw-r--r--  1 root root  1515 Oct  8 18:27 tsconfig.package.json\ndrwxr-xr-x  2 root root  4096 Oct  8 18:27 utils\n-rw-r--r--  1 root root  1851 Oct  8 18:27 vite.config.ts\n7acedda Merge branch 'feature/automated-pipeline' into 'main'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat package.json && echo \"---NODE---\" && node -v && npm -v && echo \"---EXAMPLE---\" && cat example/package.json 2>/dev/null && ls example",
+      "exit_code": 127,
+      "stdout": "{\n  \"name\": \"@seitenbau-dev/formulardesigner\",\n  \"version\": \"1.0.2\",\n  \"description\": \"React-Komponente zur Erstellung und Bearbeitung von Formularen.\",\n  \"author\": \"SEITENBAU GmbH\",\n  \"keywords\": [\n    \"react\",\n    \"components\",\n    \"ui\",\n    \"ozghub\",\n    \"ozg-hub\",\n    \"designer\",\n    \"formular-designer\",\n    \"efa\"\n  ],\n  \"license\": \"MPL-2.0\",\n  \"type\": \"module\",\n  \"main\": \"dist/formulardesigner.es.js\",\n  \"module\": \"dist/formulardesigner.es.js\",\n  \"types\": \"dist/src/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"exports\": {\n    \".\": {\n      \"types\": \"./dist/src/index.d.ts\",\n      \"import\": \"./dist/formulardesigner.es.js\",\n      \"default\": \"./dist/formulardesigner.es.js\"\n    },\n    \"./types\": {\n      \"types\": \"./dist/src/types/index.d.ts\",\n      \"import\": \"./dist/src/types/index.js\",\n      \"require\": \"./dist/src/types/index.js\"\n    }\n  },\n  \"sideEffects\": [\n    \"**/*.css\"\n  ],\n  \"scripts\": {\n    \"dev\": \"tsc -p ./tsconfig.json && vite build --watch --emptyOutDir false\",\n    \"build\": \"tsc -p ./tsconfig.json && vite build && tsc -p ./tsconfig.json\",\n    \"build:package\": \"tsc -p ./tsconfig.package.json && cross-env IS_PACKAGE_BUILD=true vite build && tsc -p ./tsconfig.package.json && node scripts/post-build-package.js\",\n    \"lint\": \"eslint .\",\n    \"generate-bom\": \"node scripts/create-bom-directory.js && cross-env-shell \\\"npm sbom --omit dev --omit optional --omit peer --sbom-type application --sbom-format cyclonedx > dist/bom/formulardesigner_${npm_package_version}.json\\\"\",\n    \"test\": \"playwright test\",\n    \"test:ui\": \"playwright test --ui\",\n    \"start:example\": \"npm run build && cd example && npm install && npm run dev\"\n  },\n  \"dependencies\": {\n    \"@dnd-kit/helpers\": \"0.5.0\",\n    \"@dnd-kit/react\": \"0.5.0\",\n    \"@kern-ux/native\": \"2.5.0\",\n    \"@publicplan/kern-react-kit\": \"1.3.5\",\n    \"@tiptap/pm\": \"3.30.2\",\n    \"@tiptap/react\": \"3.30.2\",\n    \"@tiptap/starter-kit\": \"3.30.2\",\n    \"dompurify\": \"3.4.15\",\n    \"immer\": \"11.1.2\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"7.86.0\",\n    \"zustand\": \"5.0.15\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"9.39.1\",\n    \"@types/node\": \"24.13.3\",\n    \"@types/react\": \"19.2.7\",\n    \"@types/react-dom\": \"19.2.5\",\n    \"@vitejs/plugin-react\": \"6.0.4\",\n    \"babel-plugin-react-compiler\": \"1.0.0\",\n    \"cross-env\": \"10.1.0\",\n    \"eslint\": \"9.39.5\",\n    \"eslint-plugin-react-hooks\": \"7.1.1\",\n    \"eslint-plugin-react-refresh\": \"0.5.4\",\n    \"glob\": \"13.0.6\",\n    \"globals\": \"17.11.0\",\n    \"postcss-prefix-selector\": \"2.2.1\",\n    \"typescript\": \"5.9.3\",\n    \"typescript-eslint\": \"8.48.0\",\n    \"vite\": \"8.3.0\",\n    \"vite-plugin-lib-inject-css\": \"2.2.2\",\n    \"vite-plugin-svgr\": \"5.2.0\",\n    \"@playwright/test\": \"1.61.1\",\n    \"prettier\": \"3.9.8\"\n  },\n  \"peerDependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"7.86.0\",\n    \"use-sync-external-store\": \"1.7.0\",\n    \"zustand\": \"5.0.15\"\n  },\n  \"contributors\": [\n    \"Markus Klein <markus.klein@seitenbau.com>\",\n    \"Markus Hennig <markus.hennig@seitenbau.com>\",\n    \"Andreas Maurer <andreas.maurer@seitenbau.com>\",\n    \"Fabian Willke <fabian.willke@seitenbau.com>\",\n    \"Maksim Sandybekov <maksim.sandybekov@seitenbau.com>\",\n    \"Katharina Blanken <katharina.blanken@seitenbau.com>\"\n  ]\n}\n---NODE---\n",
+      "stderr": "/bin/bash: line 3: node: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat example/package.json; echo \"---\"; which npm yarn pnpm npx; echo \"---\"; ls /usr/local/bin 2>/dev/null; echo \"---apt---\"; apt-cache policy nodejs 2>/dev/null | head; echo \"---\"; cat /etc/os-release | head -3",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"@seitenbau-dev/formulardesigner-example\",\n  \"version\": \"1.0.2\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"tsc -b && vite build\",\n    \"preview\": \"vite preview\",\n    \"lint\": \"eslint .\"\n  },\n  \"dependencies\": {\n    \"@seitenbau-dev/formulardesigner\": \"file:..\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"9.39.1\",\n    \"@types/react\": \"19.2.7\",\n    \"@types/react-dom\": \"19.2.5\",\n    \"@vitejs/plugin-react\": \"6.0.4\",\n    \"eslint\": \"9.39.5\",\n    \"typescript\": \"5.9.3\",\n    \"typescript-eslint\": \"8.48.0\",\n    \"vite\": \"8.3.0\"\n  },\n  \"license\": \"MPL-2.0\"\n}\n---\n---\ninstallbench-dind-entrypoint\n---apt---\n---\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"node\" README.md | head -20; echo \"---engines---\"; grep -rn \"engines\" package.json; echo \"---gitlab-ci---\"; cat .gitlab-ci.yml",
+      "exit_code": 0,
+      "stdout": "---engines---\n---gitlab-ci---\ndefault:\n  image: node:24-alpine\n  cache:\n    key:\n      files:\n        - package-lock.json\n    paths:\n      - node_modules/\n      - .npm/\n\nstages:\n  - install\n  - build\n  - e2e\n  - deploy\n\ninstall:\n  stage: install\n  script:\n    - npm install --cache .npm --prefer-offline\n  artifacts:\n    paths:\n      - node_modules/\n    expire_in: 1 hour\n\nbuild:\n  stage: build\n  needs: ['install']\n  script:\n    - npm run build\n  artifacts:\n    paths:\n      - dist/\n    expire_in: 1 week\n\ne2e:\n  stage: e2e\n  image: mcr.microsoft.com/playwright:v1.61.1-noble\n  script:\n    - npm install\n    - cd example\n    - npm install\n    - cd ..\n    - npm run test\n\npublish:\n  stage: deploy\n  only:\n    - main\n  when: manual\n  dependencies:\n    - install\n  before_script:\n    - echo \"Setting up npm authentication...\"\n    - echo \"//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}\" > ~/.npmrc\n    - echo \"registry=https://registry.npmjs.org/\" >> ~/.npmrc\n    - echo \"always-auth=true\" >> ~/.npmrc\n    - cat ~/.npmrc\n    - echo \"Verifying npm authentication...\"\n    - npm whoami\n    - echo \"Authentication successful.\"\n  script:\n    - echo \"Prepare npm deployment...\"\n    - npm ci --cache .npm --prefer-offline\n    - npm run build:package\n    - cd dist/package\n    - echo \"Package contents:\"\n    - ls -la\n    - echo \"Package.json version:\"\n    - cat package.json | grep version\n    - echo \"Publishing package to npmjs.org...\"\n    - npm stage publish\n    - echo \"Package published to npmjs.org successfully.\"\n    - echo \"Please verify the package manually.\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update -qq 2>&1 | tail -2; apt-cache policy nodejs 2>/dev/null | head -5",
+      "exit_code": 141,
+      "stdout": "nodejs:\n  Installed: (none)\n  Candidate: 12.22.9~dfsg-1ubuntu3.6\n  Version table:\n     12.22.9~dfsg-1ubuntu3.6 500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -fsSL https://deb.nodesource.com/setup_24.x -o /tmp/nodesource_setup.sh && echo DOWNLOADED && bash /tmp/nodesource_setup.sh 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "DOWNLOADED\n\u001b[1;34m2026-10-08 18:27:48 - Repository configured successfully.\u001b[0m\n\u001b[38;5;79m2026-10-08 18:27:48 - To install Node.js, run: apt install nodejs -y\u001b[0m\n\u001b[38;5;79m2026-10-08 18:27:48 - You can use N|solid Runtime as a node.js alternative\u001b[0m\n\u001b[1;32m2026-10-08 18:27:48 - To install N|solid Runtime, run: apt install nsolid -y \n\u001b[0m\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y nodejs 2>&1 | tail -5; echo \"---\"; node -v; npm -v",
+      "exit_code": 0,
+      "stdout": "Setting up libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...\nSetting up python3.10 (3.10.12-1~22.04.18) ...\nSetting up python3 (3.10.6-1~22.04.1) ...\nSetting up nodejs (24.21.0-1nodesource1) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\n---\nv24.21.0\n11.19.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && npm install 2>&1 | tail -30",
+      "exit_code": 0,
+      "stdout": "npm warn Could not resolve dependency:\nnpm warn peer @tiptap/pm@\"3.31.4\" from @tiptap/extension-floating-menu@3.31.4\nnpm warn node_modules/@tiptap/extension-floating-menu\nnpm warn   optional @tiptap/extension-floating-menu@\"^3.30.2\" from @tiptap/react@3.30.2\nnpm warn   node_modules/@tiptap/react\nnpm warn\nnpm warn Conflicting peer dependency: @tiptap/pm@3.31.4\nnpm warn node_modules/@tiptap/pm\nnpm warn   peer @tiptap/pm@\"3.31.4\" from @tiptap/extension-floating-menu@3.31.4\nnpm warn   node_modules/@tiptap/extension-floating-menu\nnpm warn     optional @tiptap/extension-floating-menu@\"^3.30.2\" from @tiptap/react@3.30.2\nnpm warn     node_modules/@tiptap/react\nnpm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.\n\nadded 287 packages, and audited 288 packages in 48s\n\n101 packages are looking for funding\n  run `npm fund` for details\n\n26 vulnerabilities (1 low, 24 moderate, 1 high)\n\nTo address all issues, run:\n  npm audit fix --force\n\nRun `npm audit` for details.\nnpm notice\nnpm notice New major version of npm available! 11.19.0 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && npm run build 2>&1 | tail -30; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "\n> @seitenbau-dev/formulardesigner@1.0.2 build\n> tsc -p ./tsconfig.json && vite build && tsc -p ./tsconfig.json\n\n(!) Your Vite config uses features that are unsupported by `configLoader: 'native'`, which is planned to become the default in a future major version of Vite:\n  - `__dirname` (vite.config.ts:16:27). Use `import.meta.dirname` instead\nSet `VITE_CONFIG_NATIVE_IGNORE_WARNING=true` to suppress this warning.\nvite v8.3.0 building client environment for production...\ntransforming...\n\u2713 268 modules transformed.\nrendering chunks...\ncomputing gzip size...\ndist/assets/index.css        2,249.07 kB \u2502 gzip: 1,429.76 kB\ndist/formulardesigner.es.js    965.16 kB \u2502 gzip:   253.35 kB \u2502 map: 3,302.69 kB\n\n\u2713 built in 1.88s\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/example && npm install 2>&1 | tail -15; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "npm warn deprecated eslint@9.39.5: This version is no longer supported. Please see https://eslint.org/version-support for other options.\n\nadded 128 packages, and audited 130 packages in 9s\n\n44 packages are looking for funding\n  run `npm fund` for details\n\nfound 0 vulnerabilities\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/example && (npm run dev > /tmp/example_dev.log 2>&1 &) ; sleep 8; cat /tmp/example_dev.log; echo \"---CURL---\"; curl -s -o /tmp/index.html -w \"HTTP %{http_code}\\n\" http://localhost:5173/ ; head -20 /tmp/index.html",
+      "exit_code": 0,
+      "stdout": "\n> @seitenbau-dev/formulardesigner-example@1.0.2 dev\n> vite\n\n6:29:28 PM [vite] (client) Forced re-optimization of dependencies\n\n  VITE v8.3.0  ready in 321 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\n---CURL---\nHTTP 200\n<!doctype html>\n<html lang=\"de\">\n  <head>\n    <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n    <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <link rel=\"icon\" href=\"/icon.svg\" sizes=\"any\" type=\"image/svg+xml\" />\n    <link rel=\"apple-touch-icon\" href=\"/apple-icon.png\" sizes=\"180x180\" type=\"image/png\" />\n\n    <title>Formulardesigner Beispielapp</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls -la dist/ && echo \"---MAIN MODULE---\" && curl -s -o /tmp/main.js -w \"HTTP %{http_code}\\n\" http://localhost:5173/src/main.tsx && head -15 /tmp/main.js && echo \"---DESIGNER MODULE---\" && curl -s -o /tmp/designer.js -w \"HTTP %{http_code}\\n\" \"http://localhost:5173/node_modules/.vite/deps/@seitenbau-dev_formulardesigner.js\"",
+      "exit_code": 0,
+      "stdout": "total 4196\ndrwxr-xr-x  6 root root    4096 Oct  8 18:29 .\ndrwxr-xr-x 14 root root    4096 Oct  8 18:29 ..\ndrwxr-xr-x  2 root root    4096 Oct  8 18:29 assets\n-rw-r--r--  1 root root  965165 Oct  8 18:29 formulardesigner.es.js\n-rw-r--r--  1 root root 3302690 Oct  8 18:29 formulardesigner.es.js.map\ndrwxr-xr-x  6 root root    4096 Oct  8 18:29 kern-addons\ndrwxr-xr-x  7 root root    4096 Oct  8 18:29 src\ndrwxr-xr-x  2 root root    4096 Oct  8 18:29 utils\n---MAIN MODULE---\nHTTP 200\nconst StrictMode = __vite__cjsImport0_react[\"StrictMode\"];const createRoot = __vite__cjsImport1_reactDom_client[\"createRoot\"];const _jsxDEV = __vite__cjsImport4_react_jsxDevRuntime[\"jsxDEV\"];import __vite__cjsImport0_react from \"/node_modules/.vite/deps/react.js?v=f40c1e3e\";\nimport __vite__cjsImport1_reactDom_client from \"/node_modules/.vite/deps/react-dom_client.js?v=5aa535d2\";\nimport App from \"/src/App.tsx\";\nimport \"/src/index.css\";\nvar _jsxFileName = \"/workspace/example/src/main.tsx\";\nimport __vite__cjsImport4_react_jsxDevRuntime from \"/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=f40c1e3e\";\ncreateRoot(document.getElementById(\"root\")).render(/* @__PURE__ */ _jsxDEV(StrictMode, { children: /* @__PURE__ */ _jsxDEV(App, {}, void 0, false, {\n\tfileName: _jsxFileName,\n\tlineNumber: 8,\n\tcolumnNumber: 5\n}, this) }, void 0, false, {\n\tfileName: _jsxFileName,\n\tlineNumber: 7,\n\tcolumnNumber: 3\n}, this));\n---DESIGNER MODULE---\nHTTP 404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/example/node_modules/.vite/deps/ | grep -i formular; echo \"---\"; cat /workspace/example/src/App.tsx | head -20; echo \"---LOG---\"; tail -5 /tmp/example_dev.log",
+      "exit_code": 0,
+      "stdout": "---\nimport { FormularDesigner } from '@seitenbau-dev/formulardesigner';\nimport { FormularDesignerHandle } from '@seitenbau-dev/formulardesigner/types';\nimport { RefObject, useEffect, useRef, useState } from 'react';\nimport { ExampleForm, exampleForms } from './example-forms';\nimport { Accordion } from './modules/accordion';\nimport { Boolean } from './modules/boolean';\nimport { Checkbox } from './modules/checkbox';\nimport { Date } from './modules/date';\nimport { Download } from './modules/download';\nimport { DropdownSingleSelect } from './modules/dropdown-single-select';\nimport { DropdownSingleSelectAjax } from './modules/dropdown-single-select-ajax';\nimport { ElterngeldBezugszeitraum } from './modules/elterngeld-bezugszeitraum';\nimport { EuroBetrag } from './modules/euro-betrag';\nimport { FieldGroup } from './modules/field-group';\nimport { FieldGroupMultiple } from './modules/field-group-multiple';\nimport { GdikMap } from './modules/gdik-map';\nimport { GeoMap } from './modules/geo-map';\nimport { H1 } from './modules/h1';\nimport { H2 } from './modules/h2';\nimport { Hintbox } from './modules/hintbox';\n---LOG---\n  VITE v8.3.0  ready in 321 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\nThe file does not exist at \"/workspace/example/node_modules/.vite/deps/@seitenbau-dev_formulardesigner.js\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && curl -s -o /tmp/app.js -w \"App.tsx HTTP %{http_code}\\n\" http://localhost:5173/src/App.tsx; grep -o \"formulardesigner[^\\\"']*\" /tmp/app.js | head; echo \"---\"; ls -la example/node_modules/@seitenbau-dev/; echo \"---resolve---\"; curl -s -o /dev/null -w \"pkg HTTP %{http_code}\\n\" \"http://localhost:5173/@fs/workspace/dist/formulardesigner.es.js\"",
+      "exit_code": 0,
+      "stdout": "App.tsx HTTP 200\nformulardesigner.es.js\n---\ntotal 8\ndrwxr-xr-x   2 root root 4096 Oct  8 18:29 .\ndrwxr-xr-x 105 root root 4096 Oct  8 18:29 ..\nlrwxrwxrwx   1 root root    8 Oct  8 18:29 formulardesigner -> ../../..\n---resolve---\npkg HTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls dist/src/index.d.ts dist/src/types/index.js dist/src/types/index.d.ts dist/formulardesigner.es.js 2>&1; echo \"---simulate consume---\"; mkdir -p /tmp/consume && cd /tmp/consume && npm init -y >/dev/null 2>&1 && npm install /workspace 2>&1 | tail -3 && node -e \"import('@seitenbau-dev/formulardesigner').then(m=>console.log('IMPORT OK, exports:', Object.keys(m).slice(0,5))).catch(e=>{console.error('ERR',e.message);process.exit(1)})\"",
+      "exit_code": 1,
+      "stdout": "ls: cannot access 'dist/src/types/index.js': No such file or directory\ndist/formulardesigner.es.js\ndist/src/index.d.ts\ndist/src/types/index.d.ts\n---simulate consume---\nadded 1 package, and audited 3 packages in 443ms\n\nfound 0 vulnerabilities\n",
+      "stderr": "ERR Unknown file extension \".css\" for /workspace/dist/assets/index.css\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/example && npx tsc -b 2>&1 | tail -20; echo \"TSC_EXIT=$?\"; npx vite build 2>&1 | tail -12; echo \"BUILD_EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "TSC_EXIT=0\nrendering chunks...\ncomputing gzip size...\ndist/index.html                     0.58 kB \u2502 gzip:     0.34 kB\ndist/assets/index-dAkTudKg.css  2,243.29 kB \u2502 gzip: 1,429.73 kB\ndist/assets/index-Djt9tlkm.js   1,137.94 kB \u2502 gzip:   339.71 kB\n\n\u2713 built in 950ms\n[plugin builtin:vite-reporter] \n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\nBUILD_EXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pkill -f \"vite\" 2>/dev/null; sleep 1; ps aux | grep -c \"[v]ite\"; echo done",
+      "exit_code": 143,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep \"[v]ite\" | wc -l; curl -s -o /dev/null -w \"%{http_code}\\n\" --max-time 3 http://localhost:5173/ || echo \"server stopped\"",
+      "exit_code": 0,
+      "stdout": "0\n000\nserver stopped\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la && git log --oneline -1 2>/dev/null && node --version && npm --version",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 320\ndrwxr-xr-x  14 root root   4096 Oct  8 18:29 .\ndr-xr-xr-x   1 root root   4096 Oct  8 18:27 ..\ndrwxr-xr-x   8 root root   4096 Oct  8 18:27 .git\n-rw-r--r--   1 root root    110 Oct  8 18:27 .gitignore\n-rw-r--r--   1 root root   1534 Oct  8 18:27 .gitlab-ci.yml\n-rw-r--r--   1 root root  16725 Oct  8 18:27 LICENSE\n-rw-r--r--   1 root root  22930 Oct  8 18:27 README.md\ndrwxr-xr-x   6 root root   4096 Oct  8 18:29 dist\ndrwxr-xr-x   2 root root   4096 Oct  8 18:27 docs\n-rw-r--r--   1 root root    989 Oct  8 18:27 eslint.config.js\ndrwxr-xr-x   6 root root   4096 Oct  8 18:29 example\ndrwxr-xr-x   2 root root   4096 Oct  8 18:27 images\ndrwxr-xr-x   2 root root   4096 Oct  8 18:27 issue_templates\ndrwxr-xr-x   7 root root   4096 Oct  8 18:27 kern-addons\n-rw-r--r--   1 root root  12732 Oct  8 18:27 logo.svg\ndrwxr-xr-x 188 root root   4096 Oct  8 18:29 node_modules\n-rw-r--r--   1 root root 165727 Oct  8 18:28 package-lock.json\n-rw-r--r--   1 root root   3268 Oct  8 18:27 package.json\n-rw-r--r--   1 root root   2482 Oct  8 18:27 playwright.config.ts\n-rw-r--r--   1 root root   6559 Oct  8 18:27 publiccode.yml\ndrwxr-xr-x   2 root root   4096 Oct  8 18:27 scripts\ndrwxr-xr-x  10 root root   4096 Oct  8 18:27 src\ndrwxr-xr-x   5 root root   4096 Oct  8 18:27 tests\n-rw-r--r--   1 root root   1507 Oct  8 18:27 tsconfig.json\n-rw-r--r--   1 root root   1515 Oct  8 18:27 tsconfig.package.json\ndrwxr-xr-x   2 root root   4096 Oct  8 18:27 utils\n-rw-r--r--   1 root root   1851 Oct  8 18:27 vite.config.ts\n7acedda Merge branch 'feature/automated-pipeline' into 'main'\nv24.21.0\n11.19.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat package.json && echo \"---EXAMPLE---\" && cat example/package.json 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"@seitenbau-dev/formulardesigner\",\n  \"version\": \"1.0.2\",\n  \"description\": \"React-Komponente zur Erstellung und Bearbeitung von Formularen.\",\n  \"author\": \"SEITENBAU GmbH\",\n  \"keywords\": [\n    \"react\",\n    \"components\",\n    \"ui\",\n    \"ozghub\",\n    \"ozg-hub\",\n    \"designer\",\n    \"formular-designer\",\n    \"efa\"\n  ],\n  \"license\": \"MPL-2.0\",\n  \"type\": \"module\",\n  \"main\": \"dist/formulardesigner.es.js\",\n  \"module\": \"dist/formulardesigner.es.js\",\n  \"types\": \"dist/src/index.d.ts\",\n  \"files\": [\n    \"dist\"\n  ],\n  \"exports\": {\n    \".\": {\n      \"types\": \"./dist/src/index.d.ts\",\n      \"import\": \"./dist/formulardesigner.es.js\",\n      \"default\": \"./dist/formulardesigner.es.js\"\n    },\n    \"./types\": {\n      \"types\": \"./dist/src/types/index.d.ts\",\n      \"import\": \"./dist/src/types/index.js\",\n      \"require\": \"./dist/src/types/index.js\"\n    }\n  },\n  \"sideEffects\": [\n    \"**/*.css\"\n  ],\n  \"scripts\": {\n    \"dev\": \"tsc -p ./tsconfig.json && vite build --watch --emptyOutDir false\",\n    \"build\": \"tsc -p ./tsconfig.json && vite build && tsc -p ./tsconfig.json\",\n    \"build:package\": \"tsc -p ./tsconfig.package.json && cross-env IS_PACKAGE_BUILD=true vite build && tsc -p ./tsconfig.package.json && node scripts/post-build-package.js\",\n    \"lint\": \"eslint .\",\n    \"generate-bom\": \"node scripts/create-bom-directory.js && cross-env-shell \\\"npm sbom --omit dev --omit optional --omit peer --sbom-type application --sbom-format cyclonedx > dist/bom/formulardesigner_${npm_package_version}.json\\\"\",\n    \"test\": \"playwright test\",\n    \"test:ui\": \"playwright test --ui\",\n    \"start:example\": \"npm run build && cd example && npm install && npm run dev\"\n  },\n  \"dependencies\": {\n    \"@dnd-kit/helpers\": \"0.5.0\",\n    \"@dnd-kit/react\": \"0.5.0\",\n    \"@kern-ux/native\": \"2.5.0\",\n    \"@publicplan/kern-react-kit\": \"1.3.5\",\n    \"@tiptap/pm\": \"3.30.2\",\n    \"@tiptap/react\": \"3.30.2\",\n    \"@tiptap/starter-kit\": \"3.30.2\",\n    \"dompurify\": \"3.4.15\",\n    \"immer\": \"11.1.2\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"7.86.0\",\n    \"zustand\": \"5.0.15\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"9.39.1\",\n    \"@types/node\": \"24.13.3\",\n    \"@types/react\": \"19.2.7\",\n    \"@types/react-dom\": \"19.2.5\",\n    \"@vitejs/plugin-react\": \"6.0.4\",\n    \"babel-plugin-react-compiler\": \"1.0.0\",\n    \"cross-env\": \"10.1.0\",\n    \"eslint\": \"9.39.5\",\n    \"eslint-plugin-react-hooks\": \"7.1.1\",\n    \"eslint-plugin-react-refresh\": \"0.5.4\",\n    \"glob\": \"13.0.6\",\n    \"globals\": \"17.11.0\",\n    \"postcss-prefix-selector\": \"2.2.1\",\n    \"typescript\": \"5.9.3\",\n    \"typescript-eslint\": \"8.48.0\",\n    \"vite\": \"8.3.0\",\n    \"vite-plugin-lib-inject-css\": \"2.2.2\",\n    \"vite-plugin-svgr\": \"5.2.0\",\n    \"@playwright/test\": \"1.61.1\",\n    \"prettier\": \"3.9.8\"\n  },\n  \"peerDependencies\": {\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\",\n    \"react-hook-form\": \"7.86.0\",\n    \"use-sync-external-store\": \"1.7.0\",\n    \"zustand\": \"5.0.15\"\n  },\n  \"contributors\": [\n    \"Markus Klein <markus.klein@seitenbau.com>\",\n    \"Markus Hennig <markus.hennig@seitenbau.com>\",\n    \"Andreas Maurer <andreas.maurer@seitenbau.com>\",\n    \"Fabian Willke <fabian.willke@seitenbau.com>\",\n    \"Maksim Sandybekov <maksim.sandybekov@seitenbau.com>\",\n    \"Katharina Blanken <katharina.blanken@seitenbau.com>\"\n  ]\n}\n---EXAMPLE---\n{\n  \"name\": \"@seitenbau-dev/formulardesigner-example\",\n  \"version\": \"1.0.2\",\n  \"type\": \"module\",\n  \"scripts\": {\n    \"dev\": \"vite\",\n    \"build\": \"tsc -b && vite build\",\n    \"preview\": \"vite preview\",\n    \"lint\": \"eslint .\"\n  },\n  \"dependencies\": {\n    \"@seitenbau-dev/formulardesigner\": \"file:..\",\n    \"react\": \"^19.0.0\",\n    \"react-dom\": \"^19.0.0\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"9.39.1\",\n    \"@types/react\": \"19.2.7\",\n    \"@types/react-dom\": \"19.2.5\",\n    \"@vitejs/plugin-react\": \"6.0.4\",\n    \"eslint\": \"9.39.5\",\n    \"typescript\": \"5.9.3\",\n    \"typescript-eslint\": \"8.48.0\",\n    \"vite\": \"8.3.0\"\n  },\n  \"license\": \"MPL-2.0\"\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && find dist -maxdepth 4 | head -50 && echo \"---\" && ls -la dist/assets dist/src 2>/dev/null && echo \"---EXAMPLE DIR---\" && ls -la example && ls -la example/node_modules/@seitenbau-dev/ 2>/dev/null",
+      "exit_code": 141,
+      "stdout": "dist\ndist/assets\ndist/assets/index.css\ndist/utils\ndist/utils/use-outside-click.d.ts.map\ndist/utils/use-outside-click.d.ts\ndist/utils/style.d.ts\ndist/utils/style.d.ts.map\ndist/kern-addons\ndist/kern-addons/types\ndist/kern-addons/types/base.d.ts\ndist/kern-addons/types/base.d.ts.map\ndist/kern-addons/menu\ndist/kern-addons/menu/kern-menu-button.d.ts.map\ndist/kern-addons/menu/kern-menu-button.d.ts\ndist/kern-addons/menu/kern-menu.d.ts.map\ndist/kern-addons/menu/kern-menu.d.ts\ndist/kern-addons/tabs\ndist/kern-addons/tabs/index.d.ts\ndist/kern-addons/tabs/kern-tabs.d.ts\ndist/kern-addons/tabs/use-tabs.d.ts\ndist/kern-addons/tabs/kern-tabs-context-definition.d.ts\ndist/kern-addons/tabs/kern-tab.d.ts.map\ndist/kern-addons/tabs/kern-tab-list.d.ts\ndist/kern-addons/tabs/kern-tabs-context.d.ts\ndist/kern-addons/tabs/kern-tabs.d.ts.map\ndist/kern-addons/tabs/index.d.ts.map\ndist/kern-addons/tabs/kern-tabs-context.d.ts.map\ndist/kern-addons/tabs/kern-tab-panel.d.ts.map\ndist/kern-addons/tabs/kern-tabs-context-definition.d.ts.map\ndist/kern-addons/tabs/use-tabs.d.ts.map\ndist/kern-addons/tabs/kern-tab-panels.d.ts\ndist/kern-addons/tabs/kern-tab-panel.d.ts\ndist/kern-addons/tabs/kern-tab.d.ts\ndist/kern-addons/tabs/kern-tab-list.d.ts.map\ndist/kern-addons/tabs/kern-tab-panels.d.ts.map\ndist/kern-addons/multi-select\ndist/kern-addons/multi-select/use-multi-select.d.ts.map\ndist/kern-addons/multi-select/kern-multi-select-pills.d.ts\ndist/kern-addons/multi-select/kern-multi-select-pills.d.ts.map\ndist/kern-addons/multi-select/kern-multi-select-pill.d.ts\ndist/kern-addons/multi-select/use-multi-select.d.ts\ndist/kern-addons/multi-select/kern-multi-select-list-item.d.ts\ndist/kern-addons/multi-select/kern-multi-select-input-group.d.ts.map\ndist/kern-addons/multi-select/kern-multi-select.d.ts\ndist/kern-addons/multi-select/kern-multi-select-context-definition.d.ts.map\ndist/kern-addons/multi-select/kern-multi-select-clear-button.d.ts\ndist/kern-addons/multi-select/kern-multi-select-input.d.ts.map\ndist/kern-addons/multi-select/kern-multi-select-options.d.ts\ndist/kern-addons/multi-select/kern-multi-select.d.ts.map\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat .gitlab-ci.yml && echo \"---git status---\" && git status --short | head -30",
+      "exit_code": 0,
+      "stdout": "default:\n  image: node:24-alpine\n  cache:\n    key:\n      files:\n        - package-lock.json\n    paths:\n      - node_modules/\n      - .npm/\n\nstages:\n  - install\n  - build\n  - e2e\n  - deploy\n\ninstall:\n  stage: install\n  script:\n    - npm install --cache .npm --prefer-offline\n  artifacts:\n    paths:\n      - node_modules/\n    expire_in: 1 hour\n\nbuild:\n  stage: build\n  needs: ['install']\n  script:\n    - npm run build\n  artifacts:\n    paths:\n      - dist/\n    expire_in: 1 week\n\ne2e:\n  stage: e2e\n  image: mcr.microsoft.com/playwright:v1.61.1-noble\n  script:\n    - npm install\n    - cd example\n    - npm install\n    - cd ..\n    - npm run test\n\npublish:\n  stage: deploy\n  only:\n    - main\n  when: manual\n  dependencies:\n    - install\n  before_script:\n    - echo \"Setting up npm authentication...\"\n    - echo \"//registry.npmjs.org/:_authToken=${NPM_ACCESS_TOKEN}\" > ~/.npmrc\n    - echo \"registry=https://registry.npmjs.org/\" >> ~/.npmrc\n    - echo \"always-auth=true\" >> ~/.npmrc\n    - cat ~/.npmrc\n    - echo \"Verifying npm authentication...\"\n    - npm whoami\n    - echo \"Authentication successful.\"\n  script:\n    - echo \"Prepare npm deployment...\"\n    - npm ci --cache .npm --prefer-offline\n    - npm run build:package\n    - cd dist/package\n    - echo \"Package contents:\"\n    - ls -la\n    - echo \"Package.json version:\"\n    - cat package.json | grep version\n    - echo \"Publishing package to npmjs.org...\"\n    - npm stage publish\n    - echo \"Package published to npmjs.org successfully.\"\n    - echo \"Please verify the package manually.\"\n---git status---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la dist/ && echo \"---assets---\" && ls -la dist/assets/ && echo \"---src index---\" && ls dist/src/ && echo \"---example---\" && ls -la example/",
+      "exit_code": 0,
+      "stdout": "total 4196\ndrwxr-xr-x  6 root root    4096 Oct  8 18:29 .\ndrwxr-xr-x 14 root root    4096 Oct  8 18:29 ..\ndrwxr-xr-x  2 root root    4096 Oct  8 18:29 assets\n-rw-r--r--  1 root root  965165 Oct  8 18:29 formulardesigner.es.js\n-rw-r--r--  1 root root 3302690 Oct  8 18:29 formulardesigner.es.js.map\ndrwxr-xr-x  6 root root    4096 Oct  8 18:29 kern-addons\ndrwxr-xr-x  7 root root    4096 Oct  8 18:29 src\ndrwxr-xr-x  2 root root    4096 Oct  8 18:29 utils\n---assets---\ntotal 2208\ndrwxr-xr-x 2 root root    4096 Oct  8 18:29 .\ndrwxr-xr-x 6 root root    4096 Oct  8 18:29 ..\n-rw-r--r-- 1 root root 2249073 Oct  8 18:29 index.css\n---src index---\ncomponents\nconstants\nformulardesigner.d.ts\nformulardesigner.d.ts.map\nindex.d.ts\nindex.d.ts.map\nstores\ntypes\nutils\n---example---\ntotal 128\ndrwxr-xr-x   6 root root  4096 Oct  8 18:29 .\ndrwxr-xr-x  14 root root  4096 Oct  8 18:29 ..\n-rw-r--r--   1 root root     5 Oct  8 18:27 .gitignore\ndrwxr-xr-x   4 root root  4096 Oct  8 18:29 dist\n-rw-r--r--   1 root root   483 Oct  8 18:27 index.html\ndrwxr-xr-x 105 root root  4096 Oct  8 18:29 node_modules\n-rw-r--r--   1 root root 81486 Oct  8 18:29 package-lock.json\n-rw-r--r--   1 root root   641 Oct  8 18:27 package.json\ndrwxr-xr-x   3 root root  4096 Oct  8 18:27 public\ndrwxr-xr-x   3 root root  4096 Oct  8 18:27 src\n-rw-r--r--   1 root root   600 Oct  8 18:27 tsconfig.json\n-rw-r--r--   1 root root  1491 Oct  8 18:29 tsconfig.tsbuildinfo\n-rw-r--r--   1 root root   526 Oct  8 18:27 vite.config.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --porcelain | head -40; echo \"exit=$?\"; echo \"---gitignore---\"; cat .gitignore",
+      "exit_code": 0,
+      "stdout": "exit=0\n---gitignore---\nnode_modules/\npackage-lock.json\ndist/\ndist-package/\n*.tsbuildinfo\ncoverage/\n.idea/\n.vscode\n.vite\ntest-results\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && for f in dist/formulardesigner.es.js dist/src/index.d.ts dist/src/types/index.d.ts dist/src/types/index.js dist/assets/index.css; do if [ -f \"$f\" ]; then echo \"OK  $f\"; else echo \"MISS $f\"; fi; done; echo \"---index.d.ts head---\"; head -20 dist/src/index.d.ts; echo \"---example node_modules link---\"; ls -la example/node_modules/@seitenbau-dev/",
+      "exit_code": 0,
+      "stdout": "OK  dist/formulardesigner.es.js\nOK  dist/src/index.d.ts\nOK  dist/src/types/index.d.ts\nMISS dist/src/types/index.js\nOK  dist/assets/index.css\n---index.d.ts head---\nexport * from './formulardesigner';\n//# sourceMappingURL=index.d.ts.map---example node_modules link---\ntotal 8\ndrwxr-xr-x   2 root root 4096 Oct  8 18:29 .\ndrwxr-xr-x 105 root root 4096 Oct  8 18:29 ..\nlrwxrwxrwx   1 root root    8 Oct  8 18:29 formulardesigner -> ../../..\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat example/index.html && echo \"---src---\" && find example/src -type f && echo \"---vite config---\" && cat example/vite.config.ts",
+      "exit_code": 0,
+      "stdout": "<!doctype html>\n<html lang=\"de\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <link rel=\"icon\" href=\"/icon.svg\" sizes=\"any\" type=\"image/svg+xml\" />\n    <link rel=\"apple-touch-icon\" href=\"/apple-icon.png\" sizes=\"180x180\" type=\"image/png\" />\n\n    <title>Formulardesigner Beispielapp</title>\n  </head>\n  <body>\n    <div id=\"root\"></div>\n    <script type=\"module\" src=\"/src/main.tsx\"></script>\n  </body>\n</html>\n---src---\nexample/src/example-forms.ts\nexample/src/main.tsx\nexample/src/App.tsx\nexample/src/vite-env.d.ts\nexample/src/index.css\nexample/src/modules/dropdown-single-select-ajax.tsx\nexample/src/modules/boolean.tsx\nexample/src/modules/radio-buttons.tsx\nexample/src/modules/h2.tsx\nexample/src/modules/dropdown-single-select.tsx\nexample/src/modules/textarea.tsx\nexample/src/modules/h1.tsx\nexample/src/modules/multiple-file.tsx\nexample/src/modules/single-checkbox.tsx\nexample/src/modules/video.tsx\nexample/src/modules/time.tsx\nexample/src/modules/media-accordion-element.tsx\nexample/src/modules/placeholder.tsx\nexample/src/modules/field-group.tsx\nexample/src/modules/field-group-multiple.tsx\nexample/src/modules/date.tsx\nexample/src/modules/accordion.tsx\nexample/src/modules/geo-map.tsx\nexample/src/modules/hintbox.tsx\nexample/src/modules/download.tsx\nexample/src/modules/constants/field-properties.ts\nexample/src/modules/constants/container-properties.ts\nexample/src/modules/constants/hint-texts.ts\nexample/src/modules/constants/radio-checkbox-properties.ts\nexample/src/modules/constants/renderOnlyIn.ts\nexample/src/modules/constants/width-utils.ts\nexample/src/modules/constants/trust-level-options.ts\nexample/src/modules/constants/field-utils.ts\nexample/src/modules/elterngeld-bezugszeitraum.tsx\nexample/src/modules/media-accordion.tsx\nexample/src/modules/euro-betrag.tsx\nexample/src/modules/pdf.tsx\nexample/src/modules/text.tsx\nexample/src/modules/checkbox.tsx\nexample/src/modules/image.tsx\nexample/src/modules/string-ajax-autocomplete.tsx\nexample/src/modules/kfz-kennzeichen.tsx\nexample/src/modules/string.tsx\nexample/src/modules/gdik-map.tsx\nexample/src/modules/table.tsx\n---vite config---\nimport react from '@vitejs/plugin-react';\nimport { defineConfig } from 'vite';\nimport { resolve } from 'path';\n\nexport default defineConfig({\n  plugins: [react()],\n  resolve: {\n    alias: {\n      react: resolve('./node_modules/react'),\n      'react-dom': resolve('./node_modules/react-dom'),\n      'react/jsx-runtime': resolve('./node_modules/react/jsx-runtime'),\n    },\n    dedupe: ['react', 'react-dom'],\n  },\n  optimizeDeps: {\n    include: ['react', 'react-dom'],\n    force: true,\n  },\n  server: {\n    port: 5173,\n  },\n});\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -o \"FormularDesigner\" dist/formulardesigner.es.js | head -3; echo \"---exports in d.ts---\"; cat dist/src/formulardesigner.d.ts 2>/dev/null | head -40; echo \"---example main.tsx---\"; cat example/src/main.tsx",
+      "exit_code": 0,
+      "stdout": "FormularDesigner\n---exports in d.ts---\nimport './styles/global.css';\nimport { FormularDesignerProps } from './types';\nimport '@publicplan/kern-react-kit/index.css';\nexport declare function FormularDesigner({ className, modules, form, ref, onFormChange }: FormularDesignerProps): import(\"react/jsx-runtime\").JSX.Element;\n//# sourceMappingURL=formulardesigner.d.ts.map---example main.tsx---\nimport { StrictMode } from 'react';\nimport { createRoot } from 'react-dom/client';\nimport App from './App';\nimport './index.css';\n\ncreateRoot(document.getElementById('root')!).render(\n  <StrictMode>\n    <App />\n  </StrictMode>,\n);\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ss -ltnp 2>/dev/null | head -20; echo \"---procs---\"; ps aux | grep -E \"vite|node\" | grep -v grep | head",
+      "exit_code": 1,
+      "stdout": "---procs---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/example && nohup npm run dev > /tmp/vite.log 2>&1 & echo \"started pid $!\"; sleep 12; cat /tmp/vite.log",
+      "exit_code": 0,
+      "stdout": "started pid 1912\n\n> @seitenbau-dev/formulardesigner-example@1.0.2 dev\n> vite\n\n6:30:07 PM [vite] (client) Forced re-optimization of dependencies\n\n  VITE v8.3.0  ready in 775 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && curl -s -o /dev/null -w \"root: %{http_code}\\n\" http://localhost:5173/; curl -s -o /dev/null -w \"main.tsx: %{http_code}\\n\" http://localhost:5173/src/main.tsx; curl -s http://localhost:5173/ | grep -o \"<title>.*</title>\"; echo \"--- transform library entry ---\"; curl -s http://localhost:5173/node_modules/.vite/deps/@seitenbau-dev_formulardesigner.js -o /tmp/dep.js -w \"dep: %{http_code} size=%{size_download}\\n\"; head -c 200 /tmp/dep.js",
+      "exit_code": 0,
+      "stdout": "root: 200\nmain.tsx: 200\n<title>Formulardesigner Beispielapp</title>\n--- transform library entry ---\ndep: 404 size=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && curl -s http://localhost:5173/src/App.tsx -o /tmp/app.js -w \"App.tsx: %{http_code}\\n\"; head -30 /tmp/app.js; echo \"==== vite log ====\"; tail -30 /tmp/vite.log",
+      "exit_code": 0,
+      "stdout": "App.tsx: 200\nimport { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/App.tsx\");const useEffect = __vite__cjsImport1_react[\"useEffect\"]; const useRef = __vite__cjsImport1_react[\"useRef\"]; const useState = __vite__cjsImport1_react[\"useState\"];const _jsxDEV = __vite__cjsImport35_react_jsxDevRuntime[\"jsxDEV\"];import { FormularDesigner } from \"/@fs/workspace/dist/formulardesigner.es.js\";\nimport __vite__cjsImport1_react from \"/node_modules/.vite/deps/react.js?v=8d7a7749\";\nimport { exampleForms } from \"/src/example-forms.ts\";\nimport { Accordion } from \"/src/modules/accordion.tsx\";\nimport { Boolean } from \"/src/modules/boolean.tsx\";\nimport { Checkbox } from \"/src/modules/checkbox.tsx\";\nimport { Date } from \"/src/modules/date.tsx\";\nimport { Download } from \"/src/modules/download.tsx\";\nimport { DropdownSingleSelect } from \"/src/modules/dropdown-single-select.tsx\";\nimport { DropdownSingleSelectAjax } from \"/src/modules/dropdown-single-select-ajax.tsx\";\nimport { ElterngeldBezugszeitraum } from \"/src/modules/elterngeld-bezugszeitraum.tsx\";\nimport { EuroBetrag } from \"/src/modules/euro-betrag.tsx\";\nimport { FieldGroup } from \"/src/modules/field-group.tsx\";\nimport { FieldGroupMultiple } from \"/src/modules/field-group-multiple.tsx\";\nimport { GdikMap } from \"/src/modules/gdik-map.tsx\";\nimport { GeoMap } from \"/src/modules/geo-map.tsx\";\nimport { H1 } from \"/src/modules/h1.tsx\";\nimport { H2 } from \"/src/modules/h2.tsx\";\nimport { Hintbox } from \"/src/modules/hintbox.tsx\";\nimport { Image } from \"/src/modules/image.tsx\";\nimport { KfzKennzeichen } from \"/src/modules/kfz-kennzeichen.tsx\";\nimport { MediaAccordion } from \"/src/modules/media-accordion.tsx\";\nimport { MediaAccordionElement } from \"/src/modules/media-accordion-element.tsx\";\nimport { MultipleFile } from \"/src/modules/multiple-file.tsx\";\nimport { Pdf } from \"/src/modules/pdf.tsx\";\nimport { Placeholder } from \"/src/modules/placeholder.tsx\";\nimport { RadioButtons } from \"/src/modules/radio-buttons.tsx\";\nimport { SingleCheckbox } from \"/src/modules/single-checkbox.tsx\";\nimport { String } from \"/src/modules/string.tsx\";\nimport { StringAjaxAutocomplete } from \"/src/modules/string-ajax-autocomplete.tsx\";\n==== vite log ====\n\n> @seitenbau-dev/formulardesigner-example@1.0.2 dev\n> vite\n\n6:30:07 PM [vite] (client) Forced re-optimization of dependencies\n\n  VITE v8.3.0  ready in 775 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\nThe file does not exist at \"/workspace/example/node_modules/.vite/deps/@seitenbau-dev_formulardesigner.js\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && curl -s -o /tmp/lib.js -w \"lib es.js: %{http_code} size=%{size_download}\\n\" \"http://localhost:5173/@fs/workspace/dist/formulardesigner.es.js\"; head -c 250 /tmp/lib.js; echo; echo \"--- css import inside ---\"; grep -o 'index.css[^\"]*' /tmp/lib.js | head; echo \"--- fetch css ---\"; curl -s -o /dev/null -w \"css: %{http_code} size=%{size_download}\\n\" \"http://localhost:5173/@fs/workspace/dist/assets/index.css\"",
+      "exit_code": 0,
+      "stdout": "lib es.js: 200 size=5303527\nimport { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/@fs/workspace/dist/formulardesigner.es.js\");const e = __vite__cjsImport0_react; const t = __vite__cjsImport0_react[\"Children\"]; \n--- css import inside ---\nindex.css\n--- fetch css ---\ncss: 200 size=2249924\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls ~/.cache/ms-playwright 2>/dev/null; ls /root/.cache/ms-playwright 2>/dev/null; which chromium chromium-browser google-chrome 2>/dev/null; cd /workspace && ls node_modules/.bin | grep -i playwright; cat playwright.config.ts | head -40",
+      "exit_code": 0,
+      "stdout": "playwright\nplaywright-core\nimport { defineConfig, devices } from '@playwright/test';\n\n/**\n * Read environment variables from file.\n * https://github.com/motdotla/dotenv\n */\n// import dotenv from 'dotenv';\n// import path from 'path';\n// dotenv.config({ path: path.resolve(__dirname, '.env') });\n\n/**\n * See https://playwright.dev/docs/test-configuration.\n */\nexport default defineConfig({\n  testDir: './tests',\n  /* Run tests in files in parallel */\n  fullyParallel: true,\n  /* Fail the build on CI if you accidentally left test.only in the source code. */\n  forbidOnly: !!process.env.CI,\n  /* Retry on CI only */\n  retries: process.env.CI ? 2 : 0,\n  /* Opt out of parallel tests on CI. */\n  workers: process.env.CI ? 1 : undefined,\n  /* Reporter to use. See https://playwright.dev/docs/test-reporters */\n  reporter: [\n    ['html', { open: 'never', outputFolder: 'dist/playwright-report' }],\n    ['junit', { outputFile: 'dist/playwright-results.xml' }],\n  ],\n  /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */\n  use: {\n    /* Base URL to use in actions like `await page.goto('')`. */\n    baseURL: 'http://localhost:5173',\n\n    /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */\n    trace: 'on-first-retry',\n  },\n\n  /* Configure projects for major browsers */\n  projects: [\n    {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -R example/dist | head -30; echo \"--- npm ls root ---\"; npm ls --depth=0 2>&1 | head -30",
+      "exit_code": 0,
+      "stdout": "example/dist:\napple-icon.png\nassets\nicon.svg\nindex.html\nlogo.svg\nmodule-icons\n\nexample/dist/assets:\nindex-Djt9tlkm.js\nindex-dAkTudKg.css\n\nexample/dist/module-icons:\naccordion.svg\nboolean.svg\ncheckbox.svg\ndate.svg\ndownload.svg\ndropdown-single-select-ajax.svg\ndropdown-single-select.svg\nelterngeld-bezugszeitraum.svg\neuro-betrag.svg\nfield-group-multiple.svg\nfield-group.svg\nh1.svg\nh2.svg\nhintbox.svg\nimage.svg\nkfz-kennzeichen.svg\nmap.svg\n--- npm ls root ---\n@seitenbau-dev/formulardesigner@1.0.2 /workspace\n+-- @dnd-kit/helpers@0.5.0\n+-- @dnd-kit/react@0.5.0\n+-- @eslint/js@9.39.1\n+-- @kern-ux/native@2.5.0\n+-- @playwright/test@1.61.1\n+-- @publicplan/kern-react-kit@1.3.5\n+-- @tiptap/pm@3.30.2\n+-- @tiptap/react@3.30.2\n+-- @tiptap/starter-kit@3.30.2\n+-- @types/node@24.13.3\n+-- @types/react-dom@19.2.5\n+-- @types/react@19.2.7\n+-- @vitejs/plugin-react@6.0.4\n+-- babel-plugin-react-compiler@1.0.0\n+-- cross-env@10.1.0\n+-- dompurify@3.4.15\n+-- eslint-plugin-react-hooks@7.1.1\n+-- eslint-plugin-react-refresh@0.5.4\n+-- eslint@9.39.5\n+-- glob@13.0.6\n+-- globals@17.11.0\n+-- immer@11.1.2\n+-- postcss-prefix-selector@2.2.1\n+-- prettier@3.9.8\n+-- react-dom@19.3.0\n+-- react-hook-form@7.86.0\n+-- react@19.3.0\n+-- typescript-eslint@8.48.0\n+-- typescript@5.9.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rn \"FormularDesignerHandle\" dist/src/ | head; echo \"--- types index ---\"; ls dist/src/types/ | head; echo \"--- handle def ---\"; grep -rn \"getModel\\|setDirtyForm\" dist/src/ | head",
+      "exit_code": 0,
+      "stdout": "dist/src/types/index.d.ts:2:export * from './FormularDesignerHandle';\ndist/src/types/FormularDesignerHandle.d.ts.map:1:{\"version\":3,\"file\":\"FormularDesignerHandle.d.ts\",\"sourceRoot\":\"\",\"sources\":[\"../../../src/types/FormularDesignerHandle.ts\"],\"names\":[],\"mappings\":\"AAAA,MAAM,WAAW,sBAAsB;IACrC,QAAQ,EAAE,MAAM,MAAM,CAAC;IACvB,YAAY,EAAE,CAAC,KAAK,EAAE,OAAO,KAAK,IAAI,CAAC;CACxC\"}\ndist/src/types/FormularDesignerProps.d.ts:2:import { FormularDesignerHandle } from './FormularDesignerHandle';\ndist/src/types/FormularDesignerProps.d.ts:4:interface FormularDesignerRef extends FormularDesignerHandle, HTMLDivElement {\ndist/src/types/FormularDesignerHandle.d.ts:1:export interface FormularDesignerHandle {\ndist/src/types/FormularDesignerHandle.d.ts:5://# sourceMappingURL=FormularDesignerHandle.d.ts.map\n--- types index ---\nDataResourcePointer.d.ts\nDataResourcePointer.d.ts.map\nDisplayConditions.d.ts\nDisplayConditions.d.ts.map\nDragTarget.d.ts\nDragTarget.d.ts.map\nDropLocation.d.ts\nDropLocation.d.ts.map\nFormularDesignerHandle.d.ts\nFormularDesignerHandle.d.ts.map\n--- handle def ---\ndist/src/types/FormularDesignerHandle.d.ts:2:    getModel: () => object;\ndist/src/types/FormularDesignerHandle.d.ts:3:    setDirtyForm: (value: boolean) => void;\ndist/src/stores/form.store.d.ts:26:    setDirtyForm: (value: boolean) => void;\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"--- exports lines in bundle ---\"; grep -o \"export{[^}]*}\" dist/formulardesigner.es.js | head -c 600; echo; echo \"--- getModel/setDirtyForm in bundle ---\"; grep -c \"getModel\" dist/formulardesigner.es.js; grep -c \"setDirtyForm\" dist/formulardesigner.es.js; echo \"--- node syntax check (strip css import) ---\"; node --input-type=module -e \"import fs from 'fs'; const s=fs.readFileSync('dist/formulardesigner.es.js','utf8'); console.log('bundle bytes',s.length); console.log('has FormularDesigner export:', /FormularDesigner/.test(s));\"",
+      "exit_code": 0,
+      "stdout": "--- exports lines in bundle ---\n\n--- getModel/setDirtyForm in bundle ---\n1\n4\n--- node syntax check (strip css import) ---\nbundle bytes 964169\nhas FormularDesigner export: true\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && curl -s -o /dev/null -w \"preview check skip\\n\"; ls -la /root/.cache 2>/dev/null; find / -maxdepth 6 -name \"chrome\" -type f 2>/dev/null | head; find / -maxdepth 6 -iname \"*headless_shell*\" 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "curl: no URL specified!\ncurl: try 'curl --help' or 'curl --manual' for more information\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /root/.cache/ 2>/dev/null; ls -la /root/.cache/ms-playwright 2>/dev/null; echo \"PW browsers env: $PLAYWRIGHT_BROWSERS_PATH\"; find / -maxdepth 7 -type d -iname \"chromium-*\" 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "PW browsers env: \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -o \"export{[^}]*}\" dist/formulardesigner.es.js | tail -c 800; echo; echo \"---tail---\"; tail -c 500 dist/formulardesigner.es.js",
+      "exit_code": 0,
+      "stdout": "\n---tail---\n\t}), /* @__PURE__ */ C(LU, {})]\n\t\t})\n\t});\n}\nfunction BU({ className: e, modules: t, form: n, ref: r, onFormChange: i }) {\n\tlet a = P((e) => e.setModulesToConfigMap), o = P((e) => e.setFormState), s = P((e) => e.setDirtyForm);\n\treturn f(() => {\n\t\ta(t);\n\t}, [t, a]), f(() => {\n\t\to(n), s(!1);\n\t}, [\n\t\tn,\n\t\to,\n\t\ts\n\t]), /* @__PURE__ */ C(zU, {\n\t\tclassName: e,\n\t\tmodules: t,\n\t\tref: r,\n\t\tonFormChange: i\n\t});\n}\n//#endregion\nexport { BU as FormularDesigner };\n\n//# sourceMappingURL=formulardesigner.es.js.map",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls node_modules | grep -iE \"jsdom|happy-dom|linkedom\" ; echo \"exit=$?\"; echo \"--- example dist html ---\"; cat example/dist/index.html; echo \"--- built js size ---\"; ls -la example/dist/assets/",
+      "exit_code": 0,
+      "stdout": "exit=1\n--- example dist html ---\n<!doctype html>\n<html lang=\"de\">\n  <head>\n    <meta charset=\"UTF-8\" />\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />\n\n    <link rel=\"icon\" href=\"/icon.svg\" sizes=\"any\" type=\"image/svg+xml\" />\n    <link rel=\"apple-touch-icon\" href=\"/apple-icon.png\" sizes=\"180x180\" type=\"image/png\" />\n\n    <title>Formulardesigner Beispielapp</title>\n    <script type=\"module\" crossorigin src=\"/assets/index-Djt9tlkm.js\"></script>\n    <link rel=\"stylesheet\" crossorigin href=\"/assets/index-dAkTudKg.css\">\n  </head>\n  <body>\n    <div id=\"root\"></div>\n  </body>\n</html>\n--- built js size ---\ntotal 3312\ndrwxr-xr-x 2 root root    4096 Oct  8 18:29 .\ndrwxr-xr-x 4 root root    4096 Oct  8 18:29 ..\n-rw-r--r-- 1 root root 1137942 Oct  8 18:29 index-Djt9tlkm.js\n-rw-r--r-- 1 root root 2243290 Oct  8 18:29 index-dAkTudKg.css\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls tests/ && echo \"---\" && head -40 tests/*.ts 2>/dev/null | head -60",
+      "exit_code": 0,
+      "stdout": "basic.spec.ts\ndisplay-conditions.spec.ts\nfixtures\nutils\nvalidation\n---\n==> tests/basic.spec.ts <==\nimport { expect, test } from '@playwright/test';\n\ntest('has title', async ({ page }) => {\n  await page.goto('/');\n\n  // Expect a title \"to contain\" a substring.\n  await expect(page).toHaveTitle(/Formulardesigner/);\n});\n\ntest('Einfaches Textfeld can be dragged', async ({ page }) => {\n  await page.goto('/');\n  await page.locator('#form-sections-tabpanel-0').getByRole('button', { name: 'Einfache Feldgruppe' }).click();\n  await page.getByLabel('ID', { exact: true }).fill('gruppe1');\n  await expect(page.locator('#s0-c0')).toContainText('Einfache Feldgruppe');\n  await page.getByRole('button', { name: 'Einzeiliges Textfeld' }).dragTo(page.locator('#s0-c0'));\n  await expect(page.locator('#s0-c0-r0-f0')).toBeVisible();\n});\n\n==> tests/display-conditions.spec.ts <==\nimport { expect, Page, test } from '@playwright/test';\nimport { loadFixture } from './utils/common';\nimport { DisplayConditionsFixture } from './fixtures/display-conditions';\n\nasync function loadFixtureAndOpenDisplayConditionsTab({\n  page,\n  fixture,\n}: {\n  page: Page;\n  fixture: Record<string, unknown>;\n}) {\n  await loadFixture({ page, fixture });\n  await page.locator('#s0-c0-r0-f0').click();\n  await page.waitForTimeout(300);\n  await page.getByRole('tab', { name: 'Sichtbarkeit' }).click();\n  await page.waitForTimeout(300);\n}\n\nasync function loadFixtureAndOpenDisplayConditionsDialog({\n  page,\n  fixture,\n}: {\n  page: Page;\n  fixture: Record<string, unknown>;\n}) {\n  await loadFixtureAndOpenDisplayConditionsTab({ page, fixture });\n  await page.getByRole('button', { name: 'Bearbeiten' }).click();\n}\n\ntest.describe('Sichtbarkeitsbedingungen', () => {\n  test(`STRING hat Tab \"Sichtbarkeit\"`, async ({ page }) => {\n    await loadFixture({ page, fixture: DisplayConditionsFixture });\n    await page.locator('#s0-c0-r0-f1').click();\n    await expect(page.getByRole('tab', { name: 'Sichtbarkeit' })).toBeVisible();\n  });\n\n  test(`DOWNLOAD hat keinen Tab \"Sichtbarkeit\"`, async ({ page }) => {\n    await loadFixture({ page, fixture: DisplayConditionsFixture });\n    await page.locator('#s0-c0-r0-f2').click();\n    await expect(page.getByRole('tab', { name: 'Sichtbarkeit' })).not.toBeVisible();\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "find / -maxdepth 8 \\( -iname \"chrome\" -o -iname \"headless_shell\" -o -iname \"chrome-headless-shell\" \\) -type f 2>/dev/null | head; echo \"--- dirs ---\"; find /root -maxdepth 4 -type d 2>/dev/null | head -30; echo \"--- ms-playwright ---\"; ls -la /root/.cache/ms-playwright 2>&1",
+      "exit_code": 2,
+      "stdout": "--- dirs ---\n/root\n/root/.npm\n/root/.npm/_cacache\n/root/.npm/_cacache/content-v2\n/root/.npm/_cacache/content-v2/sha512\n/root/.npm/_cacache/index-v5\n/root/.npm/_cacache/index-v5/a2\n/root/.npm/_cacache/index-v5/30\n/root/.npm/_cacache/index-v5/f7\n/root/.npm/_cacache/index-v5/74\n/root/.npm/_cacache/index-v5/97\n/root/.npm/_cacache/index-v5/aa\n/root/.npm/_cacache/index-v5/96\n/root/.npm/_cacache/index-v5/1e\n/root/.npm/_cacache/index-v5/2f\n/root/.npm/_cacache/index-v5/0b\n/root/.npm/_cacache/index-v5/c0\n/root/.npm/_cacache/index-v5/8a\n/root/.npm/_cacache/index-v5/4c\n/root/.npm/_cacache/index-v5/16\n/root/.npm/_cacache/index-v5/67\n/root/.npm/_cacache/index-v5/de\n/root/.npm/_cacache/index-v5/e3\n/root/.npm/_cacache/index-v5/3a\n/root/.npm/_cacache/index-v5/e4\n/root/.npm/_cacache/index-v5/7e\n/root/.npm/_cacache/index-v5/1d\n/root/.npm/_cacache/index-v5/fc\n/root/.npm/_cacache/index-v5/59\n/root/.npm/_cacache/index-v5/cf\n--- ms-playwright ---\nls: cannot access '/root/.cache/ms-playwright': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && for u in /src/main.tsx /src/App.tsx /src/example-forms.ts /src/modules/text.tsx /src/modules/date.tsx /src/index.css \"/@fs/workspace/dist/assets/index.css\"; do code=$(curl -s -o /tmp/o -w \"%{http_code}\" \"http://localhost:5173$u\"); err=$(grep -o -m1 \"Internal server error\\|Pre-transform error\\|Failed to resolve\" /tmp/o); echo \"$code  $u  ${err:+ERR:$err}\"; done",
+      "exit_code": 0,
+      "stdout": "200  /src/main.tsx  \n200  /src/App.tsx  \n200  /src/example-forms.ts  \n200  /src/modules/text.tsx  \n200  /src/modules/date.tsx  \n200  /src/index.css  \n200  /@fs/workspace/dist/assets/index.css  \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && head -c 600 dist/formulardesigner.es.js; echo; echo \"=== all top-level import lines ===\"; grep -nE \"^import \" dist/formulardesigner.es.js | head",
+      "exit_code": 0,
+      "stdout": "import e, { Children as t, cloneElement as n, createContext as r, createElement as i, forwardRef as a, isValidElement as o, memo as s, startTransition as c, useCallback as l, useContext as u, useDebugValue as d, useEffect as f, useId as p, useImperativeHandle as m, useInsertionEffect as h, useLayoutEffect as g, useMemo as _, useReducer as v, useRef as y, useState as b } from \"react\";\nimport x, { flushSync as ee } from \"react-dom\";\nimport { Fragment as S, jsx as C, jsxs as w } from \"react/jsx-runtime\";\nimport { create as T } from \"zustand\";\nimport { Controller as E, FormProvider as te, useField\n=== all top-level import lines ===\n1:import e, { Children as t, cloneElement as n, createContext as r, createElement as i, forwardRef as a, isValidElement as o, memo as s, startTransition as c, useCallback as l, useContext as u, useDebugValue as d, useEffect as f, useId as p, useImperativeHandle as m, useInsertionEffect as h, useLayoutEffect as g, useMemo as _, useReducer as v, useRef as y, useState as b } from \"react\";\n2:import x, { flushSync as ee } from \"react-dom\";\n3:import { Fragment as S, jsx as C, jsxs as w } from \"react/jsx-runtime\";\n4:import { create as T } from \"zustand\";\n5:import { Controller as E, FormProvider as te, useFieldArray as ne, useForm as re, useFormContext as ie, useWatch as ae } from \"react-hook-form\";\n6:import { useSyncExternalStore as oe } from \"use-sync-external-store/shim/index.js\";\n7:import { useSyncExternalStoreWithSelector as se } from \"use-sync-external-store/shim/with-selector.js\";\n8:import './assets/index.css';//#region utils/style.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -o \"FormularDesigner\" example/dist/assets/index-Djt9tlkm.js | head -2; echo \"grep count:\"; grep -c \"FormularDesigner\" example/dist/assets/index-Djt9tlkm.js; echo \"--- example App.tsx head ---\"; head -70 example/src/App.tsx",
+      "exit_code": 0,
+      "stdout": "grep count:\n0\n--- example App.tsx head ---\nimport { FormularDesigner } from '@seitenbau-dev/formulardesigner';\nimport { FormularDesignerHandle } from '@seitenbau-dev/formulardesigner/types';\nimport { RefObject, useEffect, useRef, useState } from 'react';\nimport { ExampleForm, exampleForms } from './example-forms';\nimport { Accordion } from './modules/accordion';\nimport { Boolean } from './modules/boolean';\nimport { Checkbox } from './modules/checkbox';\nimport { Date } from './modules/date';\nimport { Download } from './modules/download';\nimport { DropdownSingleSelect } from './modules/dropdown-single-select';\nimport { DropdownSingleSelectAjax } from './modules/dropdown-single-select-ajax';\nimport { ElterngeldBezugszeitraum } from './modules/elterngeld-bezugszeitraum';\nimport { EuroBetrag } from './modules/euro-betrag';\nimport { FieldGroup } from './modules/field-group';\nimport { FieldGroupMultiple } from './modules/field-group-multiple';\nimport { GdikMap } from './modules/gdik-map';\nimport { GeoMap } from './modules/geo-map';\nimport { H1 } from './modules/h1';\nimport { H2 } from './modules/h2';\nimport { Hintbox } from './modules/hintbox';\nimport { Image } from './modules/image';\nimport { KfzKennzeichen } from './modules/kfz-kennzeichen';\nimport { MediaAccordion } from './modules/media-accordion';\nimport { MediaAccordionElement } from './modules/media-accordion-element';\nimport { MultipleFile } from './modules/multiple-file';\nimport { Pdf } from './modules/pdf';\nimport { Placeholder } from './modules/placeholder';\nimport { RadioButtons } from './modules/radio-buttons';\nimport { SingleCheckbox } from './modules/single-checkbox';\nimport { String } from './modules/string';\nimport { StringAjaxAutocomplete } from './modules/string-ajax-autocomplete';\nimport { Table } from './modules/table';\nimport { Text } from './modules/text';\nimport { Textarea } from './modules/textarea';\nimport { Time } from './modules/time';\nimport { Video } from './modules/video';\n\nconst modules = [\n  {\n    label: 'Eingabefelder',\n    modules: [\n      String,\n      Textarea,\n      StringAjaxAutocomplete,\n      SingleCheckbox,\n      Checkbox,\n      RadioButtons,\n      Boolean,\n      DropdownSingleSelect,\n      DropdownSingleSelectAjax,\n      Date,\n      Time,\n      EuroBetrag,\n      MultipleFile,\n    ],\n  },\n  {\n    label: 'Text',\n    modules: [H1, H2, Text, Hintbox, Pdf],\n  },\n  {\n    label: 'Medien',\n    modules: [Image, Video],\n  },\n  {\n    label: 'Special',\n    modules: [Download, KfzKennzeichen, GeoMap, GdikMap, ElterngeldBezugszeitraum],\n  },\n  {\n    label: 'Layout',\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && for s in \"Einfache Feldgruppe\" \"Eingabefelder\" \"getModel\" \"form-sections-tabpanel\" \"Seitenbau\"; do echo \"$s : $(grep -c \"$s\" example/dist/assets/index-Djt9tlkm.js)\"; done; echo \"--- dev server module graph: does library bundle resolve its imports? check use-sync-external-store ---\"; ls node_modules/use-sync-external-store 2>&1 | head -3; ls example/node_modules/use-sync-external-store 2>&1 | head -3",
+      "exit_code": 2,
+      "stdout": "Einfache Feldgruppe : 1\nEingabefelder : 1\ngetModel : 2\nform-sections-tabpanel : 0\nSeitenbau : 0\n--- dev server module graph: does library bundle resolve its imports? check use-sync-external-store ---\nLICENSE\nREADME.md\ncjs\nls: cannot access 'example/node_modules/use-sync-external-store': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -oE 'import [^;]*from \"[^\"]*\"' /tmp/lib.js | grep -oE '\"[^\"]*\"' | sort -u | head -40",
+      "exit_code": 0,
+      "stdout": "\"/@fs/workspace/dist/formulardesigner.es.js\"\n\"/@react-refresh\"\n\"/@vite/client\"\n\"/node_modules/.vite/deps/react-dom.js?v=8d7a7749\"\n\"/node_modules/.vite/deps/react-hook-form.js?v=928b346f\"\n\"/node_modules/.vite/deps/react.js?v=8d7a7749\"\n\"/node_modules/.vite/deps/react_jsx-runtime.js?v=8d7a7749\"\n\"/node_modules/.vite/deps/use-sync-external-store_shim_index__js.js?v=55b6925d\"\n\"/node_modules/.vite/deps/use-sync-external-store_shim_with-selector__js.js?v=e0e91133\"\n\"/node_modules/.vite/deps/zustand.js?v=1e35ea84\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && for u in \"/@fs/workspace/dist/formulardesigner.es.js\" \"/node_modules/.vite/deps/react.js?v=8d7a7749\" \"/node_modules/.vite/deps/react-dom.js?v=8d7a7749\" \"/node_modules/.vite/deps/react_jsx-runtime.js?v=8d7a7749\" \"/node_modules/.vite/deps/react-hook-form.js?v=928b346f\" \"/node_modules/.vite/deps/zustand.js?v=1e35ea84\" \"/node_modules/.vite/deps/use-sync-external-store_shim_index__js.js?v=55b6925d\" \"/node_modules/.vite/deps/use-sync-external-store_shim_with-selector__js.js?v=e0e91133\"; do code=$(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost:5173$u\"); echo \"$code  $u\"; done",
+      "exit_code": 0,
+      "stdout": "200  /@fs/workspace/dist/formulardesigner.es.js\n200  /node_modules/.vite/deps/react.js?v=8d7a7749\n200  /node_modules/.vite/deps/react-dom.js?v=8d7a7749\n200  /node_modules/.vite/deps/react_jsx-runtime.js?v=8d7a7749\n200  /node_modules/.vite/deps/react-hook-form.js?v=928b346f\n200  /node_modules/.vite/deps/zustand.js?v=1e35ea84\n200  /node_modules/.vite/deps/use-sync-external-store_shim_index__js.js?v=55b6925d\n200  /node_modules/.vite/deps/use-sync-external-store_shim_with-selector__js.js?v=e0e91133\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -c \"formulardesigner/types\" /tmp/app.js; echo \"--- transformed App imports ---\"; grep -oE 'from \"[^\"]*\"' /tmp/app.js | sort -u | head; echo \"--- check all example src transforms ---\"; cd /workspace/example && fail=0; for f in $(find src -type f \\( -name \"*.ts\" -o -name \"*.tsx\" \\)); do code=$(curl -s -o /tmp/o -w \"%{http_code}\" \"http://localhost:5173/$f\"); if [ \"$code\" != \"200\" ]; then echo \"$code $f\"; fail=1; fi; done; echo \"all-transforms-ok if no lines above; fail=$fail\"",
+      "exit_code": 0,
+      "stdout": "0\n--- transformed App imports ---\nfrom \"/@fs/workspace/dist/formulardesigner.es.js\"\nfrom \"/@react-refresh\"\nfrom \"/@vite/client\"\nfrom \"/node_modules/.vite/deps/react.js?v=8d7a7749\"\nfrom \"/node_modules/.vite/deps/react_jsx-dev-runtime.js?v=8d7a7749\"\nfrom \"/src/App.tsx\"\nfrom \"/src/example-forms.ts\"\nfrom \"/src/modules/accordion.tsx\"\nfrom \"/src/modules/boolean.tsx\"\nfrom \"/src/modules/checkbox.tsx\"\n--- check all example src transforms ---\nall-transforms-ok if no lines above; fail=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && npx playwright install --dry-run 2>&1 | head -20; echo \"---\"; timeout 60 npx playwright test tests/basic.spec.ts --project=chromium 2>&1 | tail -25",
+      "exit_code": 1,
+      "stdout": "Chrome for Testing 149.0.7827.55 (playwright chromium v1228)\n  Install location:    /root/.cache/ms-playwright/chromium-1228\n  Download url:        https://cdn.playwright.dev/builds/cft/149.0.7827.55/linux64/chrome-linux64.zip\n\nChrome Headless Shell 149.0.7827.55 (playwright chromium-headless-shell v1228)\n  Install location:    /root/.cache/ms-playwright/chromium_headless_shell-1228\n  Download url:        https://cdn.playwright.dev/builds/cft/149.0.7827.55/linux64/chrome-headless-shell-linux64.zip\n\nFirefox 151.0 (playwright firefox v1532)\n  Install location:    /root/.cache/ms-playwright/firefox-1532\n  Download url:        https://cdn.playwright.dev/dbazure/download/playwright/builds/firefox/1532/firefox-ubuntu-22.04.zip\n  Download fallback 1: https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/firefox/1532/firefox-ubuntu-22.04.zip\n  Download fallback 2: https://cdn.playwright.dev/builds/firefox/1532/firefox-ubuntu-22.04.zip\n\nWebKit 26.5 (playwright webkit v2311)\n  Install location:    /root/.cache/ms-playwright/webkit-2311\n  Download url:        https://cdn.playwright.dev/dbazure/download/playwright/builds/webkit/2311/webkit-ubuntu-22.04.zip\n  Download fallback 1: https://playwright.download.prss.microsoft.com/dbazure/download/playwright/builds/webkit/2311/webkit-ubuntu-22.04.zip\n  Download fallback 2: https://cdn.playwright.dev/builds/webkit/2311/webkit-ubuntu-22.04.zip\n\n---\n    \u2551                                                            \u2551\n    \u2551 <3 Playwright Team                                         \u2551\n    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n\n    Error Context: test-results/basic-has-title-chromium/error-context.md\n\n\n  2) [chromium] \u203a tests/basic.spec.ts:10:1 \u203a Einfaches Textfeld can be dragged \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n\n    Error: browserType.launch: Executable doesn't exist at /root/.cache/ms-playwright/chromium_headless_shell-1228/chrome-headless-shell-linux64/chrome-headless-shell\n    \u2554\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2557\n    \u2551 Looks like Playwright was just installed or updated.       \u2551\n    \u2551 Please run the following command to download new browsers: \u2551\n    \u2551                                                            \u2551\n    \u2551     npx playwright install                                 \u2551\n    \u2551                                                            \u2551\n    \u2551 <3 Playwright Team                                         \u2551\n    \u255a\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u255d\n\n    Error Context: test-results/basic-Einfaches-Textfeld-can-be-dragged-chromium/error-context.md\n\n\n  2 failed\n    [chromium] \u203a tests/basic.spec.ts:3:1 \u203a has title \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n    [chromium] \u203a tests/basic.spec.ts:10:1 \u203a Einfaches Textfeld can be dragged \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat > /tmp/css-stub-loader.mjs <<'EOF'\nexport async function resolve(specifier, context, next) {\n  if (specifier.endsWith('.css')) return { url: 'data:text/javascript,', shortCircuit: true };\n  return next(specifier, context);\n}\nEOF\ncd /workspace && node --experimental-loader /tmp/css-stub-loader.mjs --input-type=module -e \"\nconst m = await import('/workspace/dist/formulardesigner.es.js');\nconsole.log('keys:', Object.keys(m));\nconsole.log('FormularDesigner type:', typeof m.FormularDesigner);\n\" 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "(node:2280) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:\n--import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"/tmp/css-stub-loader.mjs\", pathToFileURL(\"./\"));'\n(Use `node --trace-warnings ...` to show where the warning was created)\nkeys: [ 'FormularDesigner' ]\nFormularDesigner type: function\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && node --experimental-loader /tmp/css-stub-loader.mjs --input-type=module -e \"\nimport React from 'react';\nimport { renderToString } from 'react-dom/server';\nconst { FormularDesigner } = await import('/workspace/dist/formulardesigner.es.js');\nconst form = { id:'form-1', sections:[{ fieldGroups: [], title:'' }], engineVersion:'2' };\ntry {\n  const html = renderToString(React.createElement(FormularDesigner, { modules: [], form }));\n  console.log('RENDER_OK length=', html.length);\n  console.log(html.slice(0,300));\n} catch (e) {\n  console.log('RENDER_ERR', e.message);\n}\n\" 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "(node:2293) ExperimentalWarning: `--experimental-loader` may be removed in the future; instead use `register()`:\n--import 'data:text/javascript,import { register } from \"node:module\"; import { pathToFileURL } from \"node:url\"; register(\"/tmp/css-stub-loader.mjs\", pathToFileURL(\"./\"));'\n(Use `node --trace-warnings ...` to show where the warning was created)\nRENDER_OK length= 5648\n<div class=\"fdesigner _editor_5sf3u_1\"><div data-kern-theme=\"light\"><div class=\"_modulePanel_1x2f1_1\" id=\"module-panel\" tabindex=\"-1\"><div class=\"_skipLink_1mh7d_2\"><button class=\"kern-btn kern-btn--primary\" type=\"button\" as=\"button\"><span class=\"kern-label\">Zur Arbeitsfl\u00e4che springen</span></button\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -n \"useImperativeHandle\" dist/formulardesigner.es.js | head; echo \"--- getModel impl context ---\"; grep -o \"getModel[^,;]*\" dist/formulardesigner.es.js | head; echo \"--- example build tsc used types subpath? ---\"; grep -rn \"formulardesigner/types\" example/src | head; echo \"=== cleanup test-results created by my run ===\"; ls test-results 2>/dev/null && rm -rf test-results && echo removed",
+      "exit_code": 0,
+      "stdout": "1:import e, { Children as t, cloneElement as n, createContext as r, createElement as i, forwardRef as a, isValidElement as o, memo as s, startTransition as c, useCallback as l, useContext as u, useDebugValue as d, useEffect as f, useId as p, useImperativeHandle as m, useInsertionEffect as h, useLayoutEffect as g, useMemo as _, useReducer as v, useRef as y, useState as b } from \"react\";\n--- getModel impl context ---\ngetModel() {\n--- example build tsc used types subpath? ---\nexample/src/App.tsx:2:import { FormularDesignerHandle } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/dropdown-single-select-ajax.tsx:15:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/boolean.tsx:16:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/radio-buttons.tsx:17:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/h2.tsx:2:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/dropdown-single-select.tsx:16:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/textarea.tsx:4:import { FieldModule, Property } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/h1.tsx:2:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/multiple-file.tsx:15:import { FieldModule, Property } from '@seitenbau-dev/formulardesigner/types';\nexample/src/modules/single-checkbox.tsx:15:import { FieldModule } from '@seitenbau-dev/formulardesigner/types';\n=== cleanup test-results created by my run ===\nbasic-Einfaches-Textfeld-can-be-dragged-chromium\nbasic-has-title-chromium\nremoved\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /tmp/pkg.json -w \"registry http=%{http_code}\\n\" https://registry.npmjs.org/@seitenbau-dev%2Fformulardesigner; node -e \"try{const p=require('/tmp/pkg.json');console.log('name',p.name);console.log('latest',p['dist-tags']);console.log('versions',Object.keys(p.versions||{}));}catch(e){console.log('parse err',e.message)}\"",
+      "exit_code": 0,
+      "stdout": "registry http=200\nname @seitenbau-dev/formulardesigner\nlatest { latest: '1.0.2' }\nversions [ '1.0.2' ]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat dist/src/types/FormularDesignerHandle.d.ts; echo \"--- main bundle mtime vs node_modules ---\"; stat -c '%y %n' dist/formulardesigner.es.js dist/assets/index.css example/dist/assets/*.js 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "export interface FormularDesignerHandle {\n    getModel: () => object;\n    setDirtyForm: (value: boolean) => void;\n}\n//# sourceMappingURL=FormularDesignerHandle.d.ts.map--- main bundle mtime vs node_modules ---\n2026-10-08 18:29:09.431954721 +0000 dist/formulardesigner.es.js\n2026-10-08 18:29:09.431954721 +0000 dist/assets/index.css\n2026-10-08 18:29:48.319826522 +0000 example/dist/assets/index-Djt9tlkm.js\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/example && (nohup npx vite preview --port 4173 > /tmp/preview.log 2>&1 &) ; sleep 6; curl -s -o /tmp/pv.html -w \"preview root: %{http_code}\\n\" http://localhost:4173/; grep -o \"<title>.*</title>\" /tmp/pv.html; js=$(grep -oE '/assets/index-[^\"]+\\.js' /tmp/pv.html | head -1); css=$(grep -oE '/assets/index-[^\"]+\\.css' /tmp/pv.html | head -1); curl -s -o /dev/null -w \"built js: %{http_code} size=%{size_download}\\n\" \"http://localhost:4173$js\"; curl -s -o /dev/null -w \"built css: %{http_code} size=%{size_download}\\n\" \"http://localhost:4173$css\"; echo \"--- preview log ---\"; cat /tmp/preview.log",
+      "exit_code": 0,
+      "stdout": "preview root: 200\n<title>Formulardesigner Beispielapp</title>\nbuilt js: 200 size=1137942\nbuilt css: 200 size=2243290\n--- preview log ---\n  \u279c  Local:   http://localhost:4173/\n  \u279c  Network: use --host to expose\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -E \"vite\" | grep -v grep | awk '{print $2}' | while read pid; do kill $pid 2>/dev/null && echo \"killed $pid\"; done; sleep 2; ps aux | grep -E \"vite|node\" | grep -v grep | head; echo \"--- ports ---\"; (ss -ltnp 2>/dev/null || netstat -ltnp 2>/dev/null) | grep -E \"5173|4173\" || echo \"no listeners on 5173/4173\"",
+      "exit_code": 0,
+      "stdout": "killed 1912\nkilled 1925\nkilled 1926\nkilled 2337\nkilled 2350\nkilled 2351\n--- ports ---\nno listeners on 5173/4173\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P007-sva-studio__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-04T23:08:01.393067+02:00",
+    "finished_at": "2026-10-04T23:19:35.582655+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P007",
+    "project": {
+      "opencode_id": "10719",
+      "name": "SVA Studio",
+      "description": "SVA Studio is a modular open-source platform for municipal content management, user management, app design, modules and interfaces.",
+      "catalogue_url": "https://opencode.de/de/software/sva-studio-10719",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/bad-belzig/sva-studio/sva-studio",
+      "commit_sha": "6394d99a129a3429ae15ede67ae843647cf9b831",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository Installation Guide",
+      "url": "https://gitlab.opencode.de/bad-belzig/sva-studio/sva-studio/-/blob/6394d99a129a3429ae15ede67ae843647cf9b831/docs/development/runtime-profile-betrieb.md",
+      "language": "German",
+      "word_count": 3358
+    },
+    "task_id": "P007-sva-studio"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 694.219,
+    "repository_setup_duration_seconds": 32.8119999999999,
+    "installation_duration_seconds": 459.3910000000001,
+    "validation_duration_seconds": 193.5,
+    "command_count": 108,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 76,
+    "validation_command_count": 28
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P007-sva-studio/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

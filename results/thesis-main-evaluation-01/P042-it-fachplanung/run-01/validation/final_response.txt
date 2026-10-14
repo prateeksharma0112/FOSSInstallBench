@@ -1,0 +1,45 @@
+## Validation Report — IT-Fachplanung (DDEV install at commit 786839b, /workspace)
+
+### Assessed outcome: **success**
+
+The installation is complete and the application is operational per the supplied guide. All of the guide's install steps (ddev start, composer install, npm i, importDump, web.config.local.php, LDAP) are present and functional. The only failing checks are the optional Cypress documentation-generation specs, and I traced those to a test-data/clock sensitivity in the docs helper rather than to the installation.
+
+### What I inspected and how
+
+**Infrastructure / method** — Confirmed ddev v1.25.4 and Docker 29.7.2, project `tfm-fachplanung` (docroot `public`, PHP 8.3, MariaDB 10.3, apache-fpm). Container state (compound command; exit 0):
+- `docker ps -a`: `ddev-tfm-fachplanung-{web,db,openldap,phpmyadmin,phpldapadmin}` all Up; web/db `(healthy)`; router and ssh-agent healthy.
+- `su - ddevuser -c 'ddev describe'` (exit 0): web/db/openldap/phpmyadmin/phpldapadmin all **OK**; URL `http://tfm-fachplanung.ddev.site`.
+
+**Dependencies** — `vendor/autoload.php` present; `ddev composer --version` → Composer 2.10.3; `ddev exec node --version` → v24.20.0; 451 entries in `node_modules`; `node_modules/.bin/gulp` present; `vendor/bin/{php-cs-fixer,phpstan,rector}` present (guide's dev tools).
+
+**Database** — `ddev mysql -e "SHOW TABLES;"` → 9 tables (antragsbuch, dienststelle, dynform_field, fachplanung, gesamtplan, massnahme, teilmassnahme, user, zweck). Data present: 53 fachplanung rows for 2023 and 2024; 1000+ massnahme rows.
+
+**Config** — `config/web.config.local.php` created; LDAP block targets the compose `openldap` service (host `openldap:389`, baseDn `dc=example,dc=org`). The example file references a stale `planetexpress` endpoint, so the installer's alignment was necessary and correct.
+
+**LDAP** — Direct `ldapsearch` in container: 10 `inetOrgPerson` entries (`user1..user10`). App-level check running the real `Dsl\App\Tools\LdapUtility` inside the web container: `connect=true, bind=true, search=true, entries=11`.
+
+**Web / runtime behavior** — `GET /` → 302 → `/login`; `GET /login` → 200 rendered login page (`<title>Anmeldung - IT-Fachplanung - Thüringen</title>`, fields user/pass/login-submit). Authenticated POST as documented r1 credentials → 302 → `/` 200 (`<title>Startseite …`). Authenticated pages 200: `/`, `/dokumentation`, `/administration/it-gesamtplan`, `/administration/benutzerverwaltung/alle-dienststellen`, `/administration/dienststellen`. Built assets served: `/theme/css/thueringen.min.css` 200 (54 KB), `/theme/thueringen.min.js` 200.
+
+**PHP extensions** — `ddev exec php -m` includes `ldap`, `pdo_mysql`, `mysqli`.
+
+**Custom ddev commands** — guide commands all registered: `build`, `buildAll`, `fixPhp`, `cypress`, `importDump`, `setup-docu-data`.
+
+**End-to-end tests** — Ran the real Cypress suite (`cypress/included:13.17.0`, attached to `ddev-tfm-fachplanung_default`, baseUrl http://web):
+- `01-infrastruktur_setup.cy.js` → **4/4 passing** (from a clean doc-data reset)
+- `02-benutzerverwaltung.cy.js` → **5/5 passing**, incl. the LDAP search screenshot test (exercises LdapUtility through the UI)
+
+### Reported failing specs and root cause (not an install defect)
+
+Specs `030-fachplanung_erstellen` (1/3), `031` (0/6), `032` (0/2), `033` (0/1) fail. I traced the cause:
+- Container clock is **2026** (`Tools::getCurrentYear()` → 2026), so the only permitted new plan year is 2027.
+- The docs helper `scripts/setup_docu_data.php` inserts a 2026 plan *directly via SQL* (`INSERT INTO gesamtplan …`), bypassing `GesamtPlan::createGesamtplan`, so it has **zero `dynform_field` rows**. The test hardcodes 2027.
+- Consequence: `FachPlanung::copyMassnahmen` builds `INSERT INTO massnahme (…,full_text,) SELECT …` — with an empty dynamic-field list this leaves a **trailing comma → DB error 1064**, surfaced as "Datenbank-Fehler (2)". Downstream specs then fail because no Fachplanung/measure exists.
+- I proved this is data/clock-dependent, not an app defect: with a predecessor plan that has field definitions, `addFachPlanung('9901', 2024)` returns **OK** and copies rows. Following the guide's dump state (2023/2024, which do have 33+50 field rows), the create-plan→create-Fachplanung workflow inherits fields correctly.
+
+### Limitations / uncertainty
+- Cypress `cypress` **host** command could not be used as-is; I ran the equivalent container command directly (the compose service definition is present and correct), so this is a harness invocation nuance, not a missing component.
+- I did not re-import the DB dump (that would alter the installation); the field-copy behavior was validated directly against the app code paths instead.
+- The 030–033 failures are the only unresolved functional checks; they are attributable to the documentation data-setup script's year/clock handling.
+
+### Conclusion
+Core installation and runtime are complete and operational: all ddev services healthy, dependencies installed, DB imported, LDAP populated and reachable by the application, login and authenticated pages functioning, assets built and served, and the primary functional specs (infrastructure setup and user management incl. LDAP) pass. The failing checks are documentation-generation tests affected by test-data/clock assumptions, not evidence of an incomplete or inoperable installation.

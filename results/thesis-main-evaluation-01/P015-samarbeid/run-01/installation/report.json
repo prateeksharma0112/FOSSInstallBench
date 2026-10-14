@@ -1,0 +1,25 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## Samarbeid Installation Summary\n\n**Working directory:** `/workspace` (repository checked out at the predefined commit). Execution context: Ubuntu 22.04.5 container, root user, Docker available (daemon reachable).\n\n### Method\nThe documented method was used: install prerequisites, then run `bin/setup`. The guide's stated requirements (Ruby per `.ruby-version` = 3.4.10, Node/yarn per `.tool-versions` = nodejs 24.9.0 / yarn 4.13.0, PostgreSQL, Docker & Docker Compose) were all absent initially and were installed fresh.\n\n### Prerequisites installed\n- **PostgreSQL 14** via apt (`postgresql`, `postgresql-contrib`, `libpq-dev`, plus build toolchain). Cluster started with `pg_ctlcluster 14 main start`. Created superuser role `samarbeid` (password `samarbeid`) and set postgres password.\n- **Ruby 3.4.10** compiled from source using `rbenv/ruby-build` into prefix `/usr/local/ruby-3.4.10`; symlinked `ruby`, `gem`, `bundle`, `bundler`, `rake`, and later `foreman` into `/usr/local/bin`; installed bundler gem.\n- **Node.js 24.9.0** from the official nodejs.org tarball into `/usr/local/node-v24.9.0-linux-x64`, symlinks in `/usr/local/bin`; `corepack enable` + `corepack prepare yarn@4.13.0 --activate`.\n\n### Configuration\n- Created `/workspace/config/database.yml` from `config/database.yml.sample`, defaulting `host: 127.0.0.1`, `username/password: samarbeid`.\n\n### Install actions\n1. `bundle install` \u2014 exit 0.\n2. `yarn install` \u2014 exit 0, 598 packages, node-modules linker.\n3. `bin/rails db:prepare` \u2014 exit 0; created `samarbeid_development` and `samarbeid_test`; seeded super-admin `admin@example.org` (password `UxbuS7Zp8BNM`). This step also auto-started the `docker-compose` dependency services.\n4. `bin/setup --skip-server` \u2014 exit 0 (idempotent re-run confirming dependency/DB setup).\n5. `bin/dev` (foreman + `Procfile.dev`) started in background \u2014 Puma on `127.0.0.1:3000`, Vite dev server on `3036`. Log: `/tmp/samarbeid-dev.log`.\n\n### Resulting state\n- App reachable at **http://localhost:3000**, redirecting unauthenticated users to `/users/sign-in`, page title `samarbeid`.\n- Docker containers running: `workspace-apache-tika-1` (9998), `workspace-mailpit-1` (1025/8025).\n- Database seeded with 1 user (admin@example.org, role `super_admin`).\n\n### Notes / incomplete\n- No application-level configuration secrets/env beyond the database were changed.\n- The `bin/dev` process runs in the background; it was not daemonized as a system service.",
+  "additional_actions": [
+    "Installed system prerequisites not preinstalled: PostgreSQL 14, Ruby 3.4.10 (compiled via ruby-build), Node.js 24.9.0, corepack/yarn 4.13.0.",
+    "Created config/database.yml from config/database.yml.sample with local 127.0.0.1 host and samarbeid credentials.",
+    "Created PostgreSQL superuser role 'samarbeid' and started the PostgreSQL cluster manually.",
+    "Symlinked ruby/foreman binaries into /usr/local/bin so bin/dev could find foreman.",
+    "Started the application via bin/dev in the background and verified it with curl."
+  ],
+  "verification": "`curl -s -L -o /tmp/index.html -w 'HTTP %{http_code} url=%{url_effective}' http://localhost:3000/` \u2192 `HTTP 200 url=http://localhost:3000/users/sign-in`; page contains `<title>samarbeid</title>` and references Vite dev assets. `curl http://localhost:3036/vite-dev/@vite/client` \u2192 HTTP 200. `bin/rails runner` reported 1 user; `psql` on `samarbeid_development` returned 1 user row (admin@example.org, role super_admin). `docker ps` shows apache-tika and mailpit containers up. `bundle check` \u2192 \"The Gemfile's dependencies are satisfied\". Verification performed, all checks passed.",
+  "reported_outcome_evidence": [
+    "bundle install exit 0",
+    "yarn install exit 0 (598 packages)",
+    "bin/rails db:prepare exit 0 \u2014 Created database 'samarbeid_development'/'samarbeid_test'; seeded super_admin admin@example.org password UxbuS7Zp8BNM",
+    "bin/setup --skip-server exit 0",
+    "bin/dev: Puma 7.2.1 listening on http://127.0.0.1:3000; VITE v5.4.21 ready on http://localhost:3036/vite-dev/",
+    "curl -L http://localhost:3000/ -> HTTP 200 at /users/sign-in with <title>samarbeid</title>",
+    "curl http://localhost:3036/vite-dev/@vite/client -> HTTP 200",
+    "psql select count(*) from users -> 1",
+    "docker ps -> workspace-apache-tika-1 Up, workspace-mailpit-1 Up (healthy)"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

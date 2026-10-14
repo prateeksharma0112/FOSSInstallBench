@@ -1,0 +1,21 @@
+Qisutu 2.0.2 was installed successfully on Ubuntu 22.04.
+
+## Method & key paths
+- Project copied from `/workspace` to `/opt/qisutu` (documented "normal installation" path).
+- `install.sh` run non-interactively (`QISUTU_INSTALL_LANGUAGE=de bash ./install.sh`) → exit 0. It installed Apache, MariaDB, Perl modules, created the `qisutu` runtime user, generated `var/secure/security.key`, wrote `var/install/instance.conf`, installed the Apache site (`/etc/apache2/sites-available/qisutu.conf` → `sites-enabled`) and the systemd unit `qisutu-daemon.service`.
+- Web installer driven via HTTP on `http://localhost/qisutu/install.pl`: welcome/system check → license → database (schema + seed import) → system settings → skip mail → completion. It created DB `qisutu` (138 tables), user `qisutu`, admin `admin`, wrote `core/config/QisutuConfig.pm`, and created `var/install/installed.lock`.
+
+## Result
+- `http://localhost/qisutu/index.pl` → HTTP 200 (login page); authenticated agent login as `admin` returns HTTP 302 + session cookie and a dashboard.
+- `http://localhost/qisutu/api.pl` → HTTP 401 (expected without API credentials).
+- Apache and MariaDB running; `qisutu-daemon.pl` running as user `qisutu`.
+- Re-running `install.sh` correctly reports the instance as already installed.
+
+## Environment deviations (documented for context)
+The container runs `tini` as PID 1 with no systemd, so a minimal `/usr/local/bin/systemctl` shim (start/stop/enable/is-active mapping to the real Apache/MariaDB services) was created to let the documented installer run. Consequently the daemon was launched directly rather than by real systemd; the temporary completion units were applied manually (the daemon started and the two install-complete units were removed), reproducing the documented final state.
+
+## Access
+- Login: `http://localhost/qisutu/index.pl`, user `admin`, password `PLEUTQQVHW7G3ED+C7PN%%LK` (also in the Webinstaller completion page); DB password is in `core/config/QisutuConfig.pm`.
+- System config: `/opt/qisutu/var/install/instance.conf`; install log: `/opt/qisutu/var/log/install.log`.
+
+Reported outcome: SUCCESS.

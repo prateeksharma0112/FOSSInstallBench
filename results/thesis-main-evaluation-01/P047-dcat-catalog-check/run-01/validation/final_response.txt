@@ -1,0 +1,16 @@
+Validation of the **DCAT Catalog Check** installation is complete. The Poetry-based installation is correct, complete, and operational.
+
+## Checks performed and results
+1. **Environment/toolchain** — `/workspace` at commit `44583b1`; Poetry 2.5.1 present (`/usr/local/bin/poetry`); project v1.1.0 matches `pyproject.toml`. `poetry env list` shows virtualenv `dcat-catalog-check-xS3fZVNL-py3.10` is **Activated** and **Valid** (Python 3.10.12).
+2. **Entry point** — `poetry run python dcat_catalog_check.py --help` → exit 0 with the full documented argument list (`--url`, `--results`, `--recheck`, `--no-recheck`, `--check-format`, `--force-check-format`, `--check-http-5xx`, `--verbose`, `--debug`, etc.).
+3. **Test suite** — `poetry run coverage run -m unittest` → **Ran 77 tests … OK**, exit 0, 80% coverage.
+4. **GDAL integration** — `from osgeo import gdal` imports cleanly (runtime 3.8.4), exit 0, no segfault.
+5. **All declared dependencies** — `requests, magic, frictionless, geopandas, rdflib, pypdf, PIL, fiona, pyarrow, geojson, osgeo` all import successfully in the venv.
+6. **End-to-end behavior** — with `tests/data` served over a local HTTP server, `poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl` produced **45 valid JSON Lines records**, exit 0, including format validation (`accessible: true`, `valid: false` for malformed JSON), HTTP status, duration, mimetype, size. A `--check-format JSON` run also emitted 45 records. Helper scripts `download_catalog.py`, `check_periodicity.py`, `mqa.py` parse/compile fine.
+
+## Notes / limitations
+- A first run pointed at port 8000 while serving on 8123 correctly reported connection-refused errors and still emitted well-formed JSONL — confirming graceful error handling, not a defect.
+- One untracked zero-byte file `my_api_key` exists in `/workspace`; it is not required by the guide and does not affect operability.
+- I did not run against a genuine remote DCAT catalog (no external network use); local served data fully exercises the parse/check/format pipeline.
+
+All guide-described functionality was verified through actual execution. No missing components or repair work were found.

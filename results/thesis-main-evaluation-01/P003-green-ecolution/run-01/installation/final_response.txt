@@ -1,0 +1,34 @@
+## Green Ecolution installation — SUCCESS
+
+The project was installed and verified end-to-end at `/workspace` (commit `94229d0`).
+
+### What was done
+**Prerequisites** (all were missing in the base image):
+- `build-essential`, `pkg-config`, `libssl-dev`, `clang`, `lld` via apt (the backend `.cargo/config.toml` forces `linker=clang` + `lld`).
+- Rust stable toolchain via rustup (+ `wasm32-unknown-unknown` target).
+- Node.js v24 (NodeSource, matching `frontend/.node-version` and `flake.nix` nodeVersion 24) and pnpm 10.20.0 via corepack.
+- `just`, `wasm-pack`, `bacon`, `sqlx-cli` via cargo.
+- Maven + OpenJDK 21 (required by the Keycloak theme build) and typst 0.15.1 (pinned version from `frontend/Dockerfile`) for the handbook PDF.
+
+**Installation steps from the guide:**
+- `just setup` — cargo fetch, pnpm install, frontend workspace packages, domain WASM, Keycloak theme. ✅
+- `just build` — frontend production bundle + backend release binary (`bin/green-ecolution`), handbook PDF, Keycloak theme jar. ✅
+- `just infra-up` — started Postgres/PostGIS, Keycloak, Traefik, Valhalla, Streamlet, pgAdmin.
+- `just migrate-up` — applied 67 migrations (verified 27 tables + `_sqlx_migrations` in the DB).
+- Started the backend (release binary on :3030, `APP_ENVIRONMENT=local`) and frontend Vite dev server (:5173), both routed through Traefik on port 3000.
+
+### Environment-specific adjustments (not in the guide)
+The container runs Docker-in-Docker on a cgroup v2 hierarchy in *threaded* mode under `/sys/fs/cgroup/docker`, which makes `runc` fail for any container requesting CPU/memory resource limits ("cannot enter cgroupv2 ... in threaded mode"). The `valhalla` and `streamlet` compose services declare `deploy.resources` limits and thus failed to start. To work around this I used a compose override (`/tmp/override.yaml`) that resets `deploy.resources` for those two services; all other services started directly. This is an infrastructure limitation of the sandbox, not a defect of the guide or project.
+
+### Verified state (all HTTP 200)
+| Endpoint | Result |
+|---|---|
+| `http://localhost:3000/` (frontend) | 200 |
+| `http://localhost:3000/api/health` | 200 |
+| `http://localhost:3000/api-docs/openapi.json` | 200 |
+| `http://localhost:3000/realms/green-ecolution` (Keycloak) | 200 |
+| `http://localhost:3000/status` (Valhalla) | 200 |
+
+Artifacts present: `bin/green-ecolution`, `frontend/app/dist/index.html`, `frontend/app/public/handbook/green-ecolution-handbuch.pdf`, `frontend/packages/domain-wasm/pkg/domain_wasm_bg.wasm`, `frontend/keycloak-theme/dist_keycloak/keycloak-theme.jar`.
+
+Access point: **http://localhost:3000** (HTTP mode, no Porkbun keys configured).

@@ -1,0 +1,15 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "`docker compose ps` (/workspace): all 4 services Up \u2014 web, postgres (healthy), traefik (0.0.0.0:80->80, 0.0.0.0:443->443), iothubsh-adapter",
+    "`docker compose logs web` (/workspace): '25 migrations were applied.' then 'Migrated up successfully.' then 'Apache/2.4.68 (Debian) configured -- resuming normal operations'",
+    "`docker compose exec -T postgres psql -U yii2_user -d yii2_db -c '\\dt'` (/workspace): 34 application tables listed; `select count(*) from migration` -> 26",
+    "`curl -sk https://localhost/` -> HTTP 200, HTML title 'KommunalEnergie - Anmelden'",
+    "`curl -sk https://localhost/administration` -> HTTP 301; `/administration/` -> 302 to https://localhost/administration/site/login (200)",
+    "`curl -sk https://localhost/administration/docs/` -> 401; with `-u admin:swaggerpass123` -> 200 Swagger UI",
+    "`curl -sk -X POST https://localhost/api/v1/node/measurements -d '{}'` -> HTTP 400 {\"message\":\"Body field measurements must be a non-empty array.\"} confirming the route is live",
+    "`select * from backendusers` -> admin account row present (login=admin, admin=1)",
+    "`docker compose logs iothubsh-adapter`: 'Uvicorn running on http://0.0.0.0:8000' and served POST /webhook/measurement (409)"
+  ],
+  "assessment_summary": "I inspected the /workspace checkout (git HEAD 6f9c4ea) and confirmed the prebuilt-image Docker Compose method from the guide is the one in effect: .env is customized (APP_DOMAIN=localhost, generated API_CREDENTIAL_ENCRYPTION_KEY, INITIAL_ADMIN_PASSWORD, SWAGGER_HTTP_AUTH_PASSWORD set), and the four documented containers are running. I verified behavior rather than mere file existence: web logs prove the entrypoint ran the Yii migrations to completion before Apache started; PostgreSQL logs show the DB ready; the database itself contains the full application schema and a populated migration table, and the initial admin user exists. Through Traefik I independently reproduced the frontend login page (200), the /administration redirect chain to the login route, the Swagger docs requiring HTTP Basic auth (401 -> 200 with the configured password), and the measurement-ingest API route responding with an application-level validation error (400) rather than 404. The iothubsh adapter is up and serving its webhook. The only anomaly is Traefik failing Let's Encrypt issuance for localhost (invalid example.com contact email / localhost not resolvable publicly), which is an expected environmental consequence of a local install and does not impair operation; the self-signed Traefik cert was accepted via curl -k. No prohibited repair actions were performed. The alternative local-build path was not attempted and is irrelevant to this successful prebuilt-image installation."
+}

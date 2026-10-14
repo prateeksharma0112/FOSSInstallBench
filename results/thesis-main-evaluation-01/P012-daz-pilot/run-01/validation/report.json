@@ -1,0 +1,17 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "cd /workspace && docker compose ps -> backend/worker/dashboard/ml-service/postgres/qdrant healthy, backup Up, migrate Exited (0)",
+    "curl http://localhost:4000/api/v1/health -> HTTP 200 {\"status\":\"pass\",\"healthCheckResults\":[{\"status\":\"pass\",\"message\":\"Database is healthy\"}]}",
+    "curl http://localhost:8000/health -> HTTP 200 {\"status\":\"ok\",\"model\":\"SigLIP 2 SO400M ...\",\"dim\":1152,\"qdrant\":\"ok\"}",
+    "curl http://localhost:3000/ and http://localhost:3000/eckener-schule/login -> HTTP 200, <title>DaZ Pilot Dashboard</title>",
+    "curl http://localhost:4000/api/v1/swagger/ -> HTTP 200",
+    "docker compose exec postgres psql -c '\\dt' -> 25 tables incl. schools, teachers, students, technical_terms, oidc_auth_requests, kysely_migration",
+    "psql SELECT slug FROM schools -> eckener-schule; SELECT email_address,role FROM teachers -> admin@schule.de | admin",
+    "curl POST /api/v1/school/create-one-school without super-admin key -> 401 (auth enforced)",
+    "docker compose run --rm --entrypoint sh backup -c ls /backups -> 2026-10-05T19-25-43Z/{postgres.dump.age,qdrant.tar.gz.age,media.tar.gz.age,MANIFEST.json}",
+    "docker volume ls -> postgres_data, qdrant_storage, qdrant_snapshots, ml_model_cache, media_data, backup_data",
+    "stat -c %a .env -> 600; secrets differ from .env.example defaults"
+  ],
+  "assessment_summary": "Validated the Docker Compose on-premises DaZ-Pilot installation in /workspace (commit ba32aab) against INSTALLATION.md. Inspected process/service state, container health, logs, database schema/data, volumes, and ran the guide's functional checks and API calls. Evidence: all seven long-running services healthy and the one-shot migrate exited 0 (guide \u00a76); API /api/v1/health reports pass with a healthy database; dashboard / and /<slug>/login return HTTP 200 and render the DaZ Pilot Dashboard; Swagger UI returns 200; ml-service /health returns ok with the SigLIP model loaded and Qdrant reachable. The database contains the full migrated schema (25 tables) and the onboarding records created per \u00a77 (school eckener-schule and admin teacher admin@schule.de). The backup sidecar produced a complete encrypted backup set and logs its crontab. Secrets in .env are non-default and file mode is 600. Auth on the super-admin endpoint is enforced (401 without key). The only unreachable checks are the production-only steps (reverse proxy/TLS, real SMTP, OIDC/SSO, Moodle), which require external infrastructure absent in this environment and are documented as optional/follow-on; they do not affect the core stack's operability. One validation side-effect: running the backup check recreated the postgres container under the base compose file, removing its host port mapping; data persisted and services stayed healthy, so this is not an installation defect. Based on these objective observations the installation is complete and operational, so the outcome is success."
+}

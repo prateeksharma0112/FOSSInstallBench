@@ -1,0 +1,31 @@
+# SPARK API — Installation Report
+
+## Outcome: SUCCESS
+
+The SPARK API monorepo was successfully built and installed as Docker images, using the supplied Deployment Guide as the primary reference.
+
+## What was done
+
+**Environment:** `/workspace` (monorepo root, commit `520d93f`), Docker 29.7.2 with BuildKit, 8 CPUs / 7.6 GB RAM / ~950 GB disk.
+
+**Base-image placeholder replacement (per guide):** Applied the documented `sed` across all Dockerfiles to replace `<CONTAINER_REGISTRY>` bases with `ghcr.io/astral-sh/uv:python3.12-bookworm` and `python:3.12-bookworm`.
+
+**Backend services — 29 images built and verified** (including both demospipes base images and both addon images).
+
+**Frontend — built via the documented non-Docker method (`npm ci && npm run build:all`):** 9 artifacts with `dist/`; the shell was served by nginx and returned HTTP 200.
+
+## Key findings / workarounds required
+
+The exported repository was **not directly buildable as documented**:
+1. **No `uv.lock` files** were exported (Dockerfiles use `--mount=source=uv.lock` and `uv sync --locked`). Generated them with `uv 0.12.23`.
+2. **Path dependencies** (`../../03-shared-services/...`) unreachable in the service build context. Used the guide's context-assembly workaround.
+3. **Frontend `npm ci` failed** — lockfile out of sync. Regenerated with `npm install --package-lock-only --ignore-scripts`.
+4. Frontend Docker parallel MFE step was **OOM-killed (exit 137)**; the documented non-Docker host build succeeded instead.
+
+## Verification
+
+- `docker images` shows 29 project images.
+- `/app/.venv/bin/python -c "import <module>"` succeeds across tested images.
+- Frontend shell served over HTTP returned `HTTP 200`.
+
+**Not built:** `02-backend/demosplan` (no Dockerfiles in export); `tatbestandsmerkmalsextraction` (no Dockerfile; consumed as path dependency).

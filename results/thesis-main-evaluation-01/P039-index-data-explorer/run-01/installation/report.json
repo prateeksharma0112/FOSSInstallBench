@@ -1,0 +1,20 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed the Index Data Explorer static web application at /workspace (git commit a8c4210).\n\nMethod: The app is static HTML/JS with all libraries vendored in externalPackages/, so no build/package install is required. Following the guide's \"copy folders to the webserver document root\" instructions, I served the repository toplevel directly as the nginx document root, making the required folders (config, externalPackages, i18n, src, php) and all HTML pages available.\n\nActions:\n1. `apt-get update` then `DEBIAN_FRONTEND=noninteractive apt-get install -y python3 nginx` (nginx 1.18.0, python3 from Ubuntu 22.04 repos).\n2. Wrote /etc/nginx/sites-available/daexp with `listen 8080`, `root /workspace`, `index index.html`, `try_files $uri $uri/ =404`; symlinked into sites-enabled; removed the default site.\n3. Validated with `nginx -t` (success) and started nginx (master PID 1328).\n\nPaths: repo/document root = /workspace; nginx site config = /etc/nginx/sites-available/daexp; executable = /usr/sbin/nginx.\n\nAccess point: http://localhost:8080/index.html plus example pages under /examples/.\n\nState: nginx is running and serves all app assets. No Elasticsearch service was installed; config/baseConfig.json points at http://localhost:9200, so live data querying requires an Elasticsearch instance (and optionally php/dataExplorerProxy.php) at runtime. The optional top-level `data` folder used by some example instances already exists inside examples/*/data.",
+  "additional_actions": [
+    "Installed nginx and python3 via apt (prerequisites not preinstalled in the container)",
+    "Created and enabled a custom nginx server block on port 8080 serving /workspace as document root",
+    "Removed the default nginx site and started nginx manually since policy-rc.d prevented auto-start"
+  ],
+  "verification": "Started nginx and issued HTTP requests against http://localhost:8080. `nginx -t` exit code 0. curl returned HTTP 200 for index.html, examples/kosis/kosisDemo.html, examples/komono/index.html, all referenced JS/CSS (materialize, d3, d3-scale-radial, leaflet, markercluster, flatpickr), the src/js ES modules (DataExplorerConfigurator, ProfilingController, I18nTranslator, BaseUtils), config/baseConfig.json and i18n/en.json. `curl -s http://localhost:8080/index.html | grep -c \"Data Explorer\"` returned 2. ps confirmed nginx master + worker processes running.",
+  "reported_outcome_evidence": [
+    "nginx -t: syntax is ok / test is successful (exit 0)",
+    "curl index.html HTTP 200; src/css/dataExplorer.css HTTP 200; config/baseConfig.json HTTP 200; externalPackages/materialize/materialize.css HTTP 200",
+    "curl all index.html-referenced scripts 200: materialize.min.js, d3.js, d3-scale-radial.js, leaflet.js, leaflet.markercluster-src.js, flatpickr.min.js, and src/js modules DataExplorerConfigurator.js/ProfilingController.js/I18nTranslator.js/BaseUtils.js",
+    "curl i18n/en.json HTTP 200; example pages examples/kosis/kosisDemo.html and examples/komono/index.html HTTP 200",
+    "ps aux shows nginx: master process 1328 and worker processes running",
+    "curl config/baseConfig.json returned the expected JSON content with elasticsearchBaseUrl http://localhost:9200"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

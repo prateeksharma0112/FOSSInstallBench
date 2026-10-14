@@ -1,0 +1,11 @@
+Masterportal was successfully installed and verified.
+
+## What was done
+1. **Prerequisite (Node.js):** The environment had no `node`/`npm`. Installed Node.js v22.20.0 (satisfies `engines: node >=22.19.0 <23`) from the official nodejs.org tarball into `/opt/node`, symlinked `node`/`npm`/`npx` into `/usr/local/bin`.
+2. **Dependencies:** Ran `npm install` in `/workspace` (registry from project `.npmrc`: `https://registry.npmjs.org`) — added 842 packages, exit 0.
+3. **Build:** Ran the production build non-interactively via `npx cross-env PORTAL_FOLDER=portal npx vite build --config devtools/vite.config.js` (the `npm run build` wrapper prompts interactively via readline, so the underlying command was invoked directly). Build succeeded (`✓ built in 24.22s`, exit 0), producing `dist/` with `basic/`, `auto/`, `master/` example portals and `dist/mastercode/3_26_1_.../` (js/css/img/locales).
+4. **Runtime verification:**
+   - Served `dist/` with an HTTP server: `/basic/index.html`, `masterportal.js`, `masterportal.css`, `config.json` all returned HTTP 200.
+   - Started the dev server (`npm start`) on port 5175; it generated local dev certificates and `https://127.0.0.1:5175/portal/basic/index.html` returned HTTP 200.
+
+Server processes were stopped after verification. Working directory: `/workspace`.

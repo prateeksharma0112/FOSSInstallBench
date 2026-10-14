@@ -1,0 +1,91 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P002-liquio__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-04T14:39:02.800845+02:00",
+    "finished_at": "2026-10-04T15:26:58.752359+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P002",
+    "project": {
+      "opencode_id": "7613",
+      "name": "Liquio",
+      "description": "Liquio is an innovative GovTech platform that leverages artificial intelligence and a low-code approach to drive the digital transformation of public services. It enables rapid creation, configuration, and deployment of a wide range of IT solutions, and web and mobile applications for government agencies and local governments.",
+      "catalogue_url": "https://opencode.de/de/software/liquio-7613",
+      "type": "Application",
+      "platforms": [
+        "web",
+        "windows",
+        "mac",
+        "linux",
+        "ios",
+        "android"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/govstack/kitsoft/liquio",
+      "commit_sha": "399b8b10f9776e5253a5daf02019551db4ee5d0e",
+      "license": "AGPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository contributing guide",
+      "url": "https://gitlab.opencode.de/govstack/kitsoft/liquio/-/blob/399b8b10f9776e5253a5daf02019551db4ee5d0e/CONTRIBUTING.md",
+      "language": "English",
+      "word_count": 700
+    },
+    "task_id": "P002-liquio"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2875.812,
+    "repository_setup_duration_seconds": 14.764999999999986,
+    "installation_duration_seconds": 2755.125,
+    "validation_duration_seconds": 42.3119999999999,
+    "command_count": 87,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 61,
+    "validation_command_count": 22
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P002-liquio/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

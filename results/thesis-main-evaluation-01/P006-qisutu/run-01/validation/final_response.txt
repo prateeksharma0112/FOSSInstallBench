@@ -1,0 +1,11 @@
+Validation complete. The Qisutu 2.0.2 installation at /opt/qisutu is complete and operational.
+
+Key evidence:
+- Instance config (var/install/instance.conf), installed.lock, security.key, and QisutuConfig.pm all present and consistent with the guide (web_path /qisutu, db qisutu, cookie QISUTU_SESSION, version 2.0.2).
+- Apache configtest OK; vhost symlinked; index.pl HTTP 200; install.pl correctly reports "bereits installiert".
+- Real admin login via web UI succeeds (HTTP 302 to dashboard; dashboard renders).
+- MariaDB DB has 138 tables, database_version=2.0.2, admin account seeded.
+- REST API: /api.pl 401 unauth; /api.pl/v1/ping returns {"status":"ok","version":"2.0.2"}; openapi.json returns 200.
+- qisutu-daemon.pl running as user qisutu with successful mail-fetch iteration; all installer-required Perl modules present; qisutu:www-data ownership and /run/lock/qisutu runtime locks correct; temporary completion units removed.
+
+Limitations: container lacks systemd (tini PID 1) so service management was exercised via a systemctl shim/manual start; cosmetic Login.pm "Odd number of elements in hash assignment" warnings do not affect operation; external IMAP/SMTP/LDAP integrations not tested (require credentials). None affect the success determination.

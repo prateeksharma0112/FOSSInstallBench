@@ -1,0 +1,27 @@
+Successfully installed the **vereinfacht** club management software stack from /workspace.
+
+## What was done
+1. **Stack build & launch** via `docker compose` (name `vereinfacht`): database (MariaDB 11.8), api (Laravel PHP-FPM/nginx), api-docs (Swagger UI), web_application (Next.js), and tooling.
+2. **Fixed a blocking upstream image-drift bug** in `docker/tooling/tooling.Dockerfile`: the line `COPY --from=node /usr/lib /usr/lib` copied `node:20-alpine3.23`'s older `libapk.so.3.0.0` (apk-tools 3.0.6) over `php:8.3-cli-alpine3.23`'s newer one (apk-tools 3.0.8), causing `Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found` and exit 127 during `docker-php-ext-configure/int-install`. I commented out that copy; `docker compose build tooling` then succeeded and node/composer/php all work.
+3. **API setup (in `tooling` container, per guide):** `composer install`, `cp .env.example .env`, `php artisan key:generate`, `php artisan migrate:fresh --seeder=FakeDatabaseSeeder`, `php artisan filament:assets`, `npm ci`, `npm run build`; created the super-admin API token via tinker.
+4. **Web frontend setup:** `cp .env.local.example .env.local`, injected the API bearer token, `npm ci`, started `npm run dev` on port 3000.
+5. **Fixed permissions:** chowned `api/storage` + `api/bootstrap/cache` to uid/gid 1000 (matching the `verein` php-fpm user) — without this every API request returned HTTP 500 due to `Permission denied` on `storage/logs/laravel.log` and session files.
+6. **Made the dockerized frontend (port 3003) functional** by adding `env_file: ./web_application/.env.local` plus `API_DOMAIN`/`NEXTAUTH_URL` to the `web_application` service in `docker-compose.yml` (it previously 500'd with next-auth `NO_SECRET`).
+
+## Verified state (all HTTP 200)
+- API/admin panel `http://localhost:3001/admin/login` → 200; `http://localhost:3001/v1_openapi.json` → 200
+- Swagger docs `http://localhost:3002/` → 200
+- Web dev server `http://localhost:3000/` → 200; dockerized web `http://localhost:3003/` → 200
+- JSON:API with bearer token `GET /api/v1/clubs` → 200
+- Backend tests: `php artisan test` → **83 passed (323 assertions)**
+- Seeded credentials available: admin `hello@vereinfacht.digital` / `password`, club admin `club-admin-1@example.org` / `password`
+
+## Modified repo files
+- `docker/tooling/tooling.Dockerfile` (removed conflicting node `/usr/lib` copy)
+- `docker-compose.yml` (added env for `web_application`)
+Other artifacts (`api/.env`, `web_application/.env.local`, built `vendor/`, `node_modules/`) are gitignored/local.
+
+## Notes
+- The `USER_ID`/`GROUP_ID` build args were unset in the environment, producing benign compose warnings; I supplied `USER_ID=1000 GROUP_ID=1000`.
+- The guide's Cypress `e2e` project is not present in this repo (guide itself notes end-to-end testing is not yet included).
+- The `tooling` container hosts the dev server (`npm run dev`) on port 3000; the Next.js dev process runs inside it.

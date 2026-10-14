@@ -1,0 +1,16 @@
+VALIDATION REPORT — OpenProject 17.9.1 (Docker all-in-one container)
+
+Assessed outcome: **success**
+
+The OpenProject all-in-one Docker container is installed correctly, running, and operational according to the supplied guide. The application is reachable over HTTP and serves the full stack (Rails/Puma, Apache, PostgreSQL, memcached, worker, hocuspocus, postfix) with seeded data and persistent host volumes. The only caveat is that the guide's documented first-login credentials admin/admin no longer work because the installation step (per its own summary) changed the password — this is an expected post-install state change, not an installation defect.
+
+Evidence summary:
+- Container `openproject` (image openproject/openproject:17, digest sha256:1931b0bcdceb…05c695, matching the summary) is `running`, RestartCount=0, ports 0.0.0.0:8080->80/tcp.
+- Bind mounts match the guide's production recommendation: /var/lib/openproject/pgdata -> /var/openproject/pgdata and /var/lib/openproject/assets -> /var/openproject/assets. Host pgdata = 80M with PG_VERSION=17; assets = 916K.
+- Guide env vars all present: OPENPROJECT_HOST__NAME=localhost:8080, OPENPROJECT_HTTPS=false, OPENPROJECT_DEFAULT__LANGUAGE=en, SECRET_KEY_BASE set, RAILS_ENV=production.
+- HTTP behavior: GET /health_check => 200; GET / => 302 to /login; GET /login => 200 with title "Sign in | OpenProject"; static asset /assets/frontend/main-YSKFBRMR.js => 200 (application/javascript); GET /api/v3/configuration => 200 returning valid JSON with hostName localhost:8080.
+- Upstream services running inside container: postgres 17, apache2, puma 8.0.2 (tcp://0.0.0.0:8080), worker, hocuspocus, memcached, postfix (verified via ps).
+- Database seeded: users=4 (admin=user id 4, admin=t, status=1, force_password_change=f), projects=2, work_packages=37. Rails runner reports OpenProject::VERSION 17.9.1.
+- Container logs show normal request handling (200/302) and background GoodJob processing.
+
+Limitations/uncertainty: A fresh admin/admin login attempt returned HTTP 422 "invalid credentials" and /api/v3/users/me returned 401, but the installation summary explicitly states the admin password was changed via rails runner and the forced-change flag cleared (force_password_change=f in DB confirms this). The install therefore cannot be re-validated against the default credential, but that is a documented post-install credential change, not a functional failure. All other operational checks pass.

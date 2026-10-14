@@ -1,0 +1,1 @@
+DCAT Catalog Check installed successfully via Poetry and verified with the full test suite and an end-to-end run.

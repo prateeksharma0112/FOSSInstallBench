@@ -1,0 +1,32 @@
+## Installation Report: elterngeldrechner
+
+**Outcome: SUCCESS** — the toolchain, dependencies, build, and dev server are all installed and functional.
+
+### What I did
+Working directory: `/workspace` (repo checked out at `cbde2eb`).
+
+1. **Installed mise** (the guide's required toolchain manager) via the official installer to `/root/.local/bin/mise`. Started at v2025.10.0, then `mise self-update` to v2026.10.6.
+2. **`mise trust`** confirmed the repo's `mise.toml`.
+3. **`mise install`** — all 10 pinned tools installed: node 24.18.0, npm 11.16.0, awscli 2.36.13, fnox 1.31.1, git-cliff 2.13.1, hk 1.53.0, jq 1.8.2, lychee 0.24.2, 1password-cli (`op`) 2.38.1, glab 1.111.0, trivy 0.72.0.
+4. **`mise exec -- npm ci`** under the pinned node, installing 566 packages into `/workspace/node_modules`.
+5. **Git hooks**: `hk install --global` failed (git 2.34.1 < required 2.54 for config-based global hooks), so I ran the per-repo `hk install`, which installed `.git/hooks/pre-commit` and `.git/hooks/commit-msg`.
+6. **Verification**: staging build (`MISE_ENV=staging mise run build`) succeeded; `mise run start` served the widget at `http://localhost:5173/` (HTTP 200); `type-check`, `lint`, `format`, `stylelint` all passed. The vitest suite ran 5,152 tests: 5,144 passed, 1 skipped, 7 failed — all 7 failures are test **timeouts** under full-suite resource contention, and the affected files pass when run in isolation (verified for `Geschwisterbonus.ts` and `refactoring-properties.spec.ts`).
+
+### How to use
+```sh
+export PATH="$HOME/.local/bin:$PATH"
+cd /workspace
+mise run start                       # dev server at http://localhost:5173/
+MISE_ENV=staging mise run build      # production-style build into dist/
+mise run check                       # format/type-check/lint/stylelint/test
+```
+
+### Required environment adaptations (not in guide)
+- Installed system prerequisites `unzip`, `gnupg`, `wget` (needed by the 1password-cli mise plugin, gpg signature verification, and the app-wrapper snapshot script respectively).
+- `mise self-update` was needed because the older mise (2025.10.0) could not resolve the `fnox` backend from `mise.lock`.
+- Used per-repo `hk install` because the container's git 2.34.1 lacks support for global config-based hooks.
+
+### Notes
+- Seeded via `mise run generate-app-wrapper` (requires `wget`), enabling `mise run start`.
+- Deployment/secret tasks (`deploy`, `audit`, `posthog:*`) require 1Password vault access and network/VPN and were not exercised.
+- One non-fatal leftover warning ("can't load C modules in safe mode") appears for the 1password-cli vfox plugin metadata; the `op` binary itself works (`op --version` → 2.38.1).

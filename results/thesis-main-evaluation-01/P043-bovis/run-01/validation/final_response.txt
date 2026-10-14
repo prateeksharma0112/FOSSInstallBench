@@ -1,0 +1,39 @@
+Validation of the BoVis installation is complete. The software is installed correctly and is operational.
+
+## What I inspected and how
+
+I reviewed the supplied quickstart guide and the installation summary, then inspected the environment in `/workspace` (repo at commit cd2c942) and exercised the running installation.
+
+**Environment / build state**
+- .NET 8 SDK present: `/usr/bin/dotnet` → `8.0.425`.
+- Project source present at `/workspace/src/Bovis.Web`; build output present at `bin/Debug/net8.0/` (Bovis.Web.dll, Bovis.Web executable, all dependencies).
+- `local.json` configured with `DataBackend=LBEG` plus sqlite ConnectionStrings, matching the final working method described in the summary.
+- `config.db` (385 KB, schema 001) and `bohris.db` (0 bytes) exist as documented.
+
+**Runtime behavior (decisive evidence)**
+- The server process is alive: PID 2291, `/workspace/src/Bovis.Web/bin/Debug/net8.0/Bovis.Web server`, listening on `http://localhost:5195` (env `ASPNETCORE_URLS=http://localhost:5195`, `ASPNETCORE_ENVIRONMENT=Development`, launch profile `http`).
+- Startup log (`/tmp/bovis_lbeg2.log`) shows a clean startup: config DB opened at schema 001, "Setting up Backend LBEG", 47 symbols / 1773 SEP3 mappings loaded, "connection to Bovis database established", "Now listening on: http://localhost:5195", "Application started."
+- HTTP checks against the running app:
+  - `GET /` → 200 text/html (Blazor `_Host` page)
+  - `GET /bovis/hello` → 200 JSON `{"message":"Hello from Bovis","time":...}`
+  - `POST /_blazor/negotiate` → 200 JSON with WebSocket/SSE/LongPolling transports (Blazor Server hub working)
+  - `GET /_framework/blazor.server.js` → 200 (151912 bytes)
+  - `GET /css/site.css` → 200 (3878 bytes), `GET /favicon.png` → 200
+  - `GET /download?item=logs` → 200 "These are your logs..."
+  - `GET /download?item=config` → 200 JSON config archive (354292 bytes, 54 configured objects)
+  - `GET /download?item=bogus` → 404 (expected per README)
+  - `GET /app/render?sid=x&id=1` → 500 with a well-formed JSON error ("Object 'services/x' not found in storage"), i.e. the render endpoint is reachable and the service/config layer is live; the 500 is the expected response for an unknown service id.
+
+**CLI checks**
+- `dotnet bin/Debug/net8.0/Bovis.Web.dll check` → exit 0, opens config DB, reports schema 001.
+- `... check --withdb` → exit 0, loads patterns/mappings and logs "connection to Bovis database established".
+- `... list-configs` → exit 0, lists stored properties; `... list-props` → exit 0.
+
+## Limitations / unresolved uncertainty
+- The data DB `bohris.db` is empty (0 bytes) and no real Bohris/LBEG borehole data is present; the LBEG backend depends on an external DB. I could not verify actual borehole rendering output (PNG/PDF/HTML of a real borehole) for this reason. This is a data-availability limitation, not an installation defect — the quickstart explicitly requires the operator to supply a real DB connection.
+- The README's API route `/api/bovis` is inaccurate; the actual route is `/bovis/hello` (code inspection of `Controller/BovisController.cs`). This is a documentation inaccuracy in the repository, not an installation problem.
+- Deployment artefacts from `docs/Install.adoc` (Apache reverse proxy, systemd) were intentionally not part of the quickstart install and were not expected.
+- No reverse proxy/systemd integration exists; the app is bound to localhost only, consistent with the documented final method.
+
+## Conclusion
+The guide's quickstart method (clone → `cp local.json.in local.json` → configure → `dotnet run -- server`) was successfully carried through: the app builds, starts cleanly, binds the expected port, serves the Blazor UI and static assets, responds on its API/download endpoints, initializes and reads the config database, and the CLI diagnostics pass. The only gap is the absence of real borehole data, which the guide leaves to the operator. This is a complete, operational installation.

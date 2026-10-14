@@ -1,0 +1,16 @@
+SVA Studio was installed and verified successfully in /workspace (commit 6394d99).
+
+What was done:
+- Installed Node.js v24.15.0 (matches .nvmrc/.node-version/packageManager) from the official nodejs.org distribution, since no Node toolchain was present.
+- Enabled Corepack and activated pnpm@11.3.0 (matches packageManager).
+- Ran `pnpm install --frozen-lockfile`: all 37 workspace projects resolved, exit 0.
+- Ran `pnpm check:toolchain-consistency` (the guide's mandatory toolchain gate): passed, Node/pnpm/lockfile all consistent.
+- Ran `pnpm nx run sva-studio-react:verify:runtime-artifact --skip-nx-cache` (the guide's mandatory build/runtime proof): exit 0. This self-contained check spun up throwaway Postgres, Redis and a mock Keycloak, applied IAM migrations, built the app, started the production Node output, and probed endpoints.
+
+Verification evidence: report artifacts/runtime/runtime-artifact-verify/runtime-artifact-verify-1791148450.json shows status "ok" with all phases ok (postgres-ready, postgres-app-role, schema-migrations, redis-ready, keycloak-ready, artifact-contract, injected-workspace-sync, app-start, health-live, health-ready, root-page); /health/live returned {"status":"alive"}, /health/ready returned {"status":"ready"} with db/redis/keycloak all true, and / returned HTTP 200.
+
+Known gap (not blocking): the guide's `pnpm env:up:local-keycloak` runtime path cannot run because it reads git-ignored files `config/runtime/base.vars` and `config/runtime/local-keycloak.vars`, which are not committed and have no generator/template in the repo. Those are site-specific secret-bearing local configuration. Per the task rules, a single failing documented method does not fail the installation when another documented method (the build/runtime verification) is completed and verified.
+
+Startup/access: to run the built app, `cd apps/sva-studio-react && node .output/server/index.mjs`; the standard dev entrypoint is `pnpm nx run sva-studio-react:serve` (port 3000). The canonical remote/local profile commands remain available once `config/runtime/*.vars` are provisioned locally.
+
+(Note: the reporting schema requires a non-null failure attribution, so INDETERMINATE is supplied; this attempt is a success and there is no observed failure.)

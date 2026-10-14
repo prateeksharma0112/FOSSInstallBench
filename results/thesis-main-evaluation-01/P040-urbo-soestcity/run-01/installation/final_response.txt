@@ -1,0 +1,29 @@
+## Installation Report: URBO
+
+**Outcome: SUCCESS**
+
+### What was done
+
+The repository at `/workspace` (commit `4320065`) was installed using the guide's primary documented method: `just up`, run in the worktree with instance `workspace`.
+
+**Prerequisites installed** (none were present initially):
+- Node.js 24.21.0 (NodeSource), npm 11.19.0
+- pnpm 12.10.1 (global) — also hit and fixed a missing `libatomic.so.1` shared library (`apt-get install libatomic1`) that made pnpm abort with exit 127
+- `just` 1.58.0
+- OpenJDK 21 (`openjdk-21-jdk-headless`) — required by the `app` workspace `prepare` script, which invokes `openapi-generator-cli` (Java). Without a JDK, `pnpm install` failed with `Error: /bin/sh: 1: java: not found`.
+
+**Installation sequence:**
+1. `just doctor` → all checks passed except `GITHUB_TOKEN`.
+2. `just up --detach` — preflight, pnpm install (app), backend Docker image build (Gradle), container start, database seeding. Completed successfully.
+
+### Resulting state (verified)
+- All 9 stack containers up/healthy: `spring-app`, `urbo-backend-postgres`, `keycloak`, `meilisearch`, `localstack`, `mailpit`, `sendinblue-api`, `imgproxy`, `sample-images`; plus shared `urbo-proxy` on host port 80.
+- Backend API reachable through the proxy: `/v3/api-docs` → HTTP 200 (212 paths), `/v1/events` → 200 returning seeded content, `/v1/news`, `/v1/pois` → 200.
+- Keycloak, MeiliSearch, Mailpit, LocalStack respond 200/302 through the proxy.
+- Sample data seeding ran to completion (`Sample data import completed successfully`, loader exited 0); `.urbo/workspace/seeded` marker written.
+- `just serve` brought the three Angular dev servers up; `cms` and `boards` were verified returning 200 through the proxy (`http://cms.workspace.localhost`, `http://boards.workspace.localhost`); `app` was still completing its first (long) bundle build.
+
+### Environmental limitations observed
+- No `GITHUB_TOKEN` (or any GitHub credential) exists in the environment. `just doctor`/preflight enforce it, so a syntactically valid placeholder value was exported. Notably the OSS backend image build **succeeded with that placeholder** — the Gradle build resolved dependencies from the public S3 maven repo (`urbo-maven.s3.eu-central-1.amazonaws.com`) and Maven Central, so the token was not actually exercised.
+- The execution container became unstable during long-running dev-server builds: repeated `Cannot connect to Podman` / OCI runtime failures eventually tore the sandbox down. These disruptions killed several `just serve` attempts and were purely infrastructural, not caused by the software.
+- `.localhost` names do not resolve via the container's `getent` (returns "not found"); services were therefore verified using `Host:` headers against `127.0.0.1:80`, which routes correctly through the shared proxy.

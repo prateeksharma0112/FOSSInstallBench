@@ -1,0 +1,21 @@
+The `samarbeid` Rails 8 + Vue app was installed and verified running locally.
+
+**Method used:** Followed the documented `bin/setup` workflow from the installation guide, after installing the required prerequisites in the Ubuntu 22.04 container.
+
+**Prerequisites installed (not present initially):**
+- PostgreSQL 14 (apt: `postgresql`, `postgresql-contrib`, `libpq-dev`) plus build deps; started via `pg_ctlcluster 14 main start`; created superuser role `samarbeid`.
+- Ruby 3.4.10 (matches `.ruby-version`) built from source with `ruby-build` into `/usr/local/ruby-3.4.10`; symlinked `ruby`, `gem`, `bundle`, `foreman` into `/usr/local/bin`; installed bundler.
+- Node.js 24.9.0 (matches `.tool-versions`) from official tarball into `/usr/local/node-v24.9.0-linux-x64`; enabled corepack and activated yarn 4.13.0.
+
+**Install steps:**
+- Created `config/database.yml` from `config/database.yml.sample`, defaulting host `127.0.0.1`, user/password `samarbeid`.
+- `bundle install` → success (exit 0); `yarn install` → success (exit 0, 598 packages).
+- `bin/rails db:prepare` → created `samarbeid_development`/`samarbeid_test`, seeded super-admin `admin@example.org` (password `UxbuS7Zp8BNM`). Also auto-started the Docker dependency containers (`apache-tika` on 9998, `mailpit` on 1025/8025).
+- `bin/setup --skip-server` → completed cleanly (exit 0).
+- Started `bin/dev` (foreman, Procfile.dev) in the background; Puma listening on 127.0.0.1:3000 and Vite dev server on 3036.
+
+**Access point:** http://localhost:3000 (redirects unauthenticated users to `/users/sign-in`).
+
+**Verification:** `curl -L http://localhost:3000/` returns HTTP 200 at `/users/sign-in` with `<title>samarbeid</title>`; Vite client asset returns HTTP 200; DB query returns 1 user (admin@example.org, role super_admin); both dependency containers are up.
+
+Working directory: `/workspace`. The dev server is running in the background (log at `/tmp/samarbeid-dev.log`).

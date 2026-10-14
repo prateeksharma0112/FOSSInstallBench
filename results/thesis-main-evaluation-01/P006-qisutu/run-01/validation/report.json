@@ -1,0 +1,18 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "test -d /opt/qisutu && cat /opt/qisutu/var/install/instance.conf -> instance_id=qisutu, web_path=/qisutu, db_name=qisutu, db_user=qisutu, install_language=de (exit 0)",
+    "ls /opt/qisutu/var/install/installed.lock -> present, installed_at=2026-10-04 21:04:01, base_url=http://localhost/qisutu",
+    "ls -la /opt/qisutu/var/secure/security.key AND /opt/qisutu/core/config/QisutuConfig.pm (Version 2.0.2, DB User qisutu)",
+    "apache2ctl configtest -> Syntax OK; ls -la /etc/apache2/sites-enabled/ shows qisutu.conf -> ../sites-available/qisutu.conf",
+    "curl -o /dev/null -w '%{http_code}' http://localhost/qisutu/index.pl -> 200; /qisutu/install.pl -> 200 with 'Qisutu ist bereits installiert'",
+    "Authenticated login: retrieved CSRF token, POSTed Step=Login admin -> HTTP 302 redirect to index.pl; followed session returned dashboard HTML (qisutu-live-dashboard)",
+    "mysql -N 'SELECT COUNT(*) FROM information_schema.tables WHERE table_schema=\"qisutu\"' -> 138; SELECT * FROM qisutu.database_version -> 1, 2.0.2, 2026-10-04 21:04:00",
+    "mysql -N 'SELECT * FROM qisutu.user_account' -> admin agent local active, password hash $6$..., admin@example.org; SELECT title FROM ticket -> 'Willkommen bei Qisutu'",
+    "curl http://localhost/qisutu/api.pl -> 401; curl http://localhost/qisutu/api.pl/v1/ping -> 200 {\"data\":{\"status\":\"ok\",\"version\":\"2.0.2\"}}; openapi.json -> 200",
+    "ps aux -> mariadbd listening 3306, apache2 listening 80, qisutu-daemon.pl running as user qisutu (PID 3727) with successful 'Mail fetch started/finished' iteration",
+    "for module in DBI DBD::mysql IO::Socket::SSL Authen::SASL MIME::Base64 MIME::QuotedPrint Net::SMTP Net::LDAP Digest::SHA JSON::PP IO::Uncompress::Unzip -> all OK",
+    "id qisutu -> uid=999(qisutu) gid=33(www-data); ls -la /run/lock/qisutu -> runtime locks owned qisutu:www-data; ls /etc/systemd/system | grep qisutu -> only qisutu-daemon.service (completion units removed)"
+  ],
+  "assessment_summary": "Inspected the installation at /opt/qisutu using the supplied guide and summary, then exercised the live system. Verified instance config and lock files, security key and config module, Apache vhost validity and HTTP endpoints, MariaDB schema/version/admin seed data, the REST API, the background daemon process, Perl module dependencies, and system-user/permission setup. A real authenticated administrator login through the web UI succeeded (302 to dashboard), demonstrating operational end-to-end behavior; API ping returns status ok/version 2.0.2; DB has 138 tables and database_version 2.0.2; daemon runs as user qisutu with successful mail-fetch iteration. Limitations: no real systemd in the container (tini PID 1), so service management was exercised via the systemctl shim/manual start rather than systemd; cosmetic Login.pm 'Odd number of elements in hash assignment' warnings appear but do not affect operation; external IMAP/SMTP/LDAP integrations were not tested as they require operator credentials. These limitations are environmental or out of scope and do not indicate an incomplete or non-operational installation, so the outcome is success."
+}

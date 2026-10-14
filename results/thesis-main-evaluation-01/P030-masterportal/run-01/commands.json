@@ -1,0 +1,500 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal.git/\nFrom https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal\n * branch            410dc25f07b22213fa85d37622a76f614e859eb8 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 410dc25 Security: XML injection in `highlightFeaturesByAttribute` is prevented by escaping.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -1 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 704\ndrwxr-xr-x 12 root root   4096 Oct  8 18:12 .\ndr-xr-xr-x  1 root root   4096 Oct  8 18:12 ..\n-rw-r--r--  1 root root    356 Oct  8 18:12 .editorconfig\ndrwxr-xr-x  8 root root   4096 Oct  8 18:13 .git\n-rw-r--r--  1 root root     11 Oct  8 18:12 .gitattributes\ndrwxr-xr-x  3 root root   4096 Oct  8 18:12 .github\n-rw-r--r--  1 root root    847 Oct  8 18:12 .gitignore\ndrwxr-xr-x  3 root root   4096 Oct  8 18:12 .gitlab\ndrwxr-xr-x  2 root root   4096 Oct  8 18:12 .husky\n-rw-r--r--  1 root root     55 Oct  8 18:12 .npmrc\n-rw-r--r--  1 root root 135653 Oct  8 18:12 CHANGELOG.md\n-rw-r--r--  1 root root   3958 Oct  8 18:12 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root   2863 Oct  8 18:12 CONTRIBUTING.md\n-rw-r--r--  1 root root   1140 Oct  8 18:12 License.txt\n-rw-r--r--  1 root root   5063 Oct  8 18:12 README.md\n-rw-r--r--  1 root root   1290 Oct  8 18:12 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct  8 18:12 addons\n-rw-r--r--  1 root root  18485 Oct  8 18:12 bitbucket-pipelines.yml\ndrwxr-xr-x  8 root root   4096 Oct  8 18:12 devtools\ndrwxr-xr-x  8 root root   4096 Oct  8 18:12 docs\n-rw-r--r--  1 root root  21535 Oct  8 18:12 eslint.config.js\n-rw-r--r--  1 root root    787 Oct  8 18:12 jsconfig.json\ndrwxr-xr-x 13 root root   4096 Oct  8 18:12 locales\n-rw-r--r--  1 root root   4986 Oct  8 18:12 mkdocs.yml\n-rw-r--r--  1 root root 421157 Oct  8 18:12 package-lock.json\n-rw-r--r--  1 root root   5601 Oct  8 18:12 package.json\ndrwxr-xr-x  5 root root   4096 Oct  8 18:12 portal\n-rw-r--r--  1 root root   4039 Oct  8 18:12 publiccode.yml\ndrwxr-xr-x 10 root root   4096 Oct  8 18:13 src\n410dc25 Security: XML injection in `highlightFeaturesByAttribute` is prevented by escaping.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat package.json && echo \"---NPMRC---\" && cat .npmrc && echo \"---README---\" && head -60 README.md",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"masterportal\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"author\": {\n    \"name\": \"Implementierungspartnerschaft Masterportal\",\n    \"email\": \"info@masterportal.org\",\n    \"url\": \"https://www.masterportal.org\"\n  },\n  \"bugs\": \"https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/work_items\",\n  \"version\": \"3.26.1\",\n  \"license\": \"MIT\",\n  \"description\": \"The MasterPortal as OpenSource Geoportal\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://bitbucket.org/geowerkstatt-hamburg/masterportal.git\"\n  },\n  \"main\": \"src/masterportal.js\",\n  \"scripts\": {\n    \"prestart\": \"node devtools/certificate/ensureDevCert.mjs\",\n    \"start\": \"vite --config devtools/vite.config.js\",\n    \"start:localApi\": \"cross-env VITE_LOCAL_MASTERPORTALAPI=true vite --config devtools/vite.config.js\",\n    \"startDebug\": \"vite --debug hmr --debug plugin-transform --config devtools/vite.config.js\",\n    \"test\": \"rimraf node_modules/.vite && vitest run --config devtools/vitest.config.js\",\n    \"test:watch\": \"rimraf node_modules/.vite && vitest --config devtools/vitest.config.js --watch\",\n    \"test:silent\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest  run --config devtools/vitest.config.js\",\n    \"test:silent:watch\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest --config devtools/vitest.config.js --watch\",\n    \"lint\": \"eslint \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"lint:fix\": \"eslint --fix \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"migrateConfig\": \"node devtools/tasks/migrator/migrate.js\",\n    \"build\": \"node devtools/tasks/viteBuild.js\",\n    \"buildPortal\": \"vite build --config devtools/vite.config.js && rimraf dist/portal\",\n    \"buildExamples\": \"cross-env EXAMPLES_ONLY=true vite build --config devtools/vite.config.js --mode production && rimraf dist/portal && rimraf --glob \\\"dist/examples_*\\\"\",\n    \"buildJsDoc\": \"node devtools/tasks/buildJsDoc.js\",\n    \"validateOsvSuppressions\": \"node devtools/security/validateOsvSuppressions.mjs\",\n    \"versionHotfix\": \"npm version patch && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMinor\": \"npm version minor && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMajor\": \"npm version major && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionLatest\": \"git tag latest -f\",\n    \"versionHotfix:all\": \"npm run versionHotfix && cd addons && npm run versionHotfix && cd .. && cd portalconfigs && npm run versionHotfix && cd ..\",\n    \"versionMinor:all\": \"npm run versionMinor && cd addons && npm run versionMinor && cd .. && cd portalconfigs && npm run versionMinor && cd ..\",\n    \"versionMajor:all\": \"npm run versionMajor && cd addons && npm run versionMajor && cd .. && cd portalconfigs && npm run versionMajor && cd ..\",\n    \"prePushHook\": \"node ./node_modules/@masterportal/mpconfigparser/cli.js docs/User/Portal-Config/config.json.md docs/User/Portal-Config/config.json.de.md && npm run validateOsvSuppressions && eslint --max-warnings 0 \\\"./**/*.{vue,js,mjs}\\\" && npm run buildJsDoc && npm run test\",\n    \"validateDocs\": \"node devtools/docsValidation/validateDocs.js\",\n    \"prepare\": \"husky\"\n  },\n  \"dependencies\": {\n    \"@masterportal/masterportalapi\": \"^2.63.0\",\n    \"@popperjs/core\": \"^2.11.8\",\n    \"axios\": \"^1.19.0\",\n    \"bootstrap\": \"^5.3.8\",\n    \"bootstrap-icons\": \"^1.13.1\",\n    \"chart.js\": \"^4.5.1\",\n    \"i18next\": \"^26.1.0\",\n    \"i18next-browser-languagedetector\": \"^8.2.1\",\n    \"i18next-http-backend\": \"^4.0.0\",\n    \"i18next-vue\": \"^5.4.0\",\n    \"jsts\": \"^2.12.1\",\n    \"mqtt\": \"^5.15.1\",\n    \"object-hash\": \"^3.0.0\",\n    \"qrcode\": \"1.5.4\",\n    \"rimraf\": \"^6.1.3\",\n    \"three\": \"^0.184.0\",\n    \"url-parse\": \"^1.5.10\",\n    \"vue\": \"^3.5.33\",\n    \"vue-datepicker-next\": \"^1.0.3\",\n    \"vue-multiselect\": \"3.5.0\",\n    \"vuedraggable\": \"^4.1.0\",\n    \"vuex\": \"^4.1.0\",\n    \"pinia\": \"^4.0.2\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"10.0.1\",\n    \"@geoblocks/print\": \"^0.7.9\",\n    \"@masterportal/mpconfigparser\": \"^2.0.0\",\n    \"@sinonjs/fake-timers\": \"^14.0.0\",\n    \"@stylistic/eslint-plugin\": \"^5.10.0\",\n    \"@vitejs/plugin-vue\": \"^6.0.6\",\n    \"@vitest/eslint-plugin\": \"^1.6.16\",\n    \"@vitest/ui\": \"^4.0.16\",\n    \"@vitest/web-worker\": \"^4.0.16\",\n    \"@vue/compiler-sfc\": \"3.5.33\",\n    \"@vue/devtools-api\": \"^8.1.2\",\n    \"@vue/server-renderer\": \"3.5.33\",\n    \"@vue/test-utils\": \"^2.4.9\",\n    \"canvas\": \"^3.2.3\",\n    \"chai\": \"^6.2.2\",\n    \"child-process-promise\": \"^2.2.1\",\n    \"cross-env\": \"^10.1.0\",\n    \"docdash\": \"^2.0.2\",\n    \"esbuild-loader\": \"^4.4.3\",\n    \"eslint-plugin-jsdoc\": \"63.0.1\",\n    \"eslint-plugin-n\": \"18.0.1\",\n    \"eslint-plugin-vue\": \"10.9.1\",\n    \"eslint-plugin-vuejs-accessibility\": \"2.5.0\",\n    \"fs-extra\": \"^11.3.4\",\n    \"globals\": \"^17.6.0\",\n    \"https-proxy-agent\": \"^9.0.0\",\n    \"husky\": \"^9.1.7\",\n    \"jsdoc\": \"4.0.5\",\n    \"jsdoc-vuejs\": \"^4.0.0\",\n    \"jsdom\": \"^29.1.1\",\n    \"jsdom-worker\": \"^0.3.0\",\n    \"mock-local-storage\": \"^1.1.24\",\n    \"regenerator-runtime\": \"^0.14.1\",\n    \"replace-in-file\": \"8.4.0\",\n    \"resize-observer-polyfill\": \"^1.5.1\",\n    \"sass\": \"1.77.2\",\n    \"shelljs\": \"^0.10.0\",\n    \"sinon\": \"22.0.0\",\n    \"sinon-chai\": \"^4.0.1\",\n    \"vite\": \"^8.1.4\",\n    \"vite-plugin-cp\": \"^6.0.3\",\n    \"vite-plugin-dynamic-import\": \"^1.6.0\",\n    \"vite-plugin-node-polyfills\": \"^0.28.0\",\n    \"vite-plugin-zip-pack\": \"^1.2.4\",\n    \"vitest\": \"^4.0.16\",\n    \"xmlserializer\": \"^0.6.1\"\n  },\n  \"overrides\": {\n    \"@cesium/engine\": \"npm:dry-uninstall\",\n    \"@cesium/widgets\": \"npm:dry-uninstall\"\n  },\n  \"engines\": {\n    \"node\": \">=22.19.0 <23 || >=24 <25\",\n    \"npm\": \">=10.9.3 <12\"\n  }\n}\n---NPMRC---\nengine-strict=true\nregistry=https://registry.npmjs.org\n---README---\n# Masterportal\n\nThe Masterportal is a tool-kit to create geo web applications based on [OpenLayers](https://openlayers.org), [Vue.js](https://vuejs.org/) and [Cesium](https://cesium.com/platform/cesiumjs/) for 3D functionality. The Masterportal is Open Source Software published under the [MIT License](https://bitbucket.org/geowerkstatt-hamburg/masterportal/src/dev/License.txt).\n\nThe Masterportal is a project by [Geowerkstatt Hamburg](https://www.hamburg.de/geowerkstatt/).\n\n\n## MasterPortal Version 3\n\nAfter more than two years of refactorings we can proudly present the new major Release Masterportal 3.0.0! We completely removed backbonejs and jquery, moved to vue3 and vuex4 and rewrote the application-core. We redesigned the UI to match all the different usecases and usergroups. We have nearly all modules and tools working but still some work to do. Features still to be added/moved to the new version are the following:\n\n* New Draw Module\n* Different AddOns\n* Theming\n* Touchtable-UI\n* ...\n\nTo try out the new version just checkout this tag and run \"npm install\" and \"npm start\". You'll find working configs under \"portal\" as usual.\n\nPlease be aware of the following:\n\n**We appreciate hints, feedback and communication of bugs! Please use the Issuetracker and tag your issue with \"v3.x.x\"**\n\n## Roadmap\nOur further Roadmap is to work further on Masterportal Version 3. Support and bug fixing ended for V2.x in the end of 2024.\n### Masterportal 3.x\n* 01.10.2026: New LTS Release MP (Including functionality based on v3.27.0)\n### Masterportal Releases\n#### Monthly Releases\nWe release a minor version on the first Wednesday of every month.\n##### LTS\nLTS release status is \"long-term support\", which typically guarantees that only critical bugs in functionality or security will be fixed for a total of 12 months and will be released in patch versions.\nNew LTS minor versions (based on the current version 3 development branch) are released annually on the first Wednesday in October.\n### Masterportal Release Schedule\n<p align=\"center\">\n  <img src=\"./docs/_media/Masterportal-TimeSchedule.svg\" alt=\"Release plan\"/>\n</p>\n\n### Support for MP 2.x and MP 3.x\n* MP 2.x Version is since 31.12.2024 not longer officially supported.\n* Pull requests for function enhancements and new developments have to be on v3.x.x basis.\n\n\n## User section\n\n* [Download](https://bitbucket.org/geowerkstatt-hamburg/masterportal/downloads/)\n* [Quick start for users](./docs/Setup/setup.md)\n* [User documentation](./docs/User/About.md)\n* [User documentation online](https://www.masterportal.org/dokumentation)\n* [Community board (User forum)](https://discourse.opencode.de/t/ueber-die-kategorie-masterportal-projekt-413/1691)\n* [Former Community board (User forum is closed - read only!)](https://trello.com/c/qajdXkMa/110-willkommen)\n\n## Developer section\n### Community\n\nThe Bitbucket issue tracker is being removed on August 20, 2026. All issues have been migrated to openCode. You can access them via the link listed below, where you can also create new issues.\n\n**Please do not report security vulnerabilities via the public issue tracker.** Instead, report them privately by email as described in our [Security Policy](./SECURITY.md).\n\n* [Issue tracker](https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/work_items)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version; npm --version; which node npm; echo \"---\"; cat docs/Setup/setup.md 2>/dev/null | head -100; echo \"---DEVTOOLS---\"; ls devtools",
+      "exit_code": 0,
+      "stdout": "---\n# Quick-Start Guide\n\nThis guide describes how to set up the Masterportal on your server and how to configure it to become your custom portal.\n\n## Host an example application on your server\n\n1. To set up your portal, please download the **[last stable version from Bitbucket](https://bitbucket.org/geowerkstatt-hamburg/masterportal/downloads/examples.zip)** by clicking the link provided.\n\n2. To publish your portal (e.g. to the Internet) it's required to host the portal with a web server. For this purpose, move the ZIP file to your web server (e.g. to the `htdocs` folder of an Apache server) and unpack the archive.\n\n3. The folder `examples` holds the following file and folder structure:\n\n    - Basic/\n        - resources/\n            - img/\n                - ...\n            - rest-services.json\n            - services.json\n            - style_v3.json\n        - config.js\n        - config.json\n        - index.html\n    - mastercode/\n        - [version]/\n            - css/\n                - masterportal.css\n            - img/\n                - tools\n                    - draw\n                        - ... (svg files used by the draw tool)\n                - Logo_Masterportal.svg\n                - ajax-loader.gif\n                - mapMarker.svg\n            - js/\n                - masterportal.js\n            - locales/\n\n    The folder *Basic* comes with an example application providing the portal-specific configuration files **[config.js](../User/Portal-Config/config.js.md)**, **[config.json](../User/Portal-Config/config.json.md)**, and the index.html.\n\n    Also contained is the folder *resources* providing the global configuration files **[services.json](../User/Global-Config/services.json.md)**, **[rest-services.json](../User/Global-Config/rest-services.json.md)**, and **[style.json](../User/Global-Config/style.json.md)**, as well as the required images (folder *img*) of this portal instance.\n\n     The folder *mastercode* contains the compressed JavaScript and CSS files of the Masterportal. Here, the folder *img* holds the logo and svg files used in the draw tool.\n\n4. You may decide to change the name of the folder *examples*. Should you decide to do so, also change \"examples\" to your new folder name in the URLs that follow. The portal should now be available by following this link.\n    - https://[web-server-name]/examples/Basic/index.html\n\n## Configure example application\n\nBy following these steps you can modify the example application to become your custom portal:\n\n1. If need be, change the global configuration files in the folder *resources* to add aerial view images of other regions, to add icons, to modify existing icons, and so on.\n\n2. Please subsequently duplicate the folder *Basic* and rename it to your portal name, e.g. *my_portal*.\n\n3. You may now modify the configuration files **[config.js](../User/Portal-Config/config.js.md)** and **[config.json](../User/Portal-Config/config.json.md)** within this new folder *my_portal*. For example, you may define which layers are to appear in the layer tree, configure the tools required, customize the baselayers, change the display name of the portal, and so on. For all options, please refer to the full documentation of the **[config.js](../User/Portal-Config/config.js.md)** and **[config.json](../User/Portal-Config/config.json.md)** files.\n\n4. Your new portal may now be opened by navigating to the URL:\n    - https://[web-server-name]/examples/my_portal/index.html\n---DEVTOOLS---\ncertificate\ndocsValidation\njsdoc\nproxyconf_example.json\nsecurity\ntasks\ntests\nvite.config.js\nvitest.config.js\n",
+      "stderr": "/bin/bash: line 3: node: command not found\n/bin/bash: line 3: npm: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release 2>/dev/null | head; echo \"---\"; ls /usr/local/bin | head; echo \"--- apt ---\"; which apt apt-get curl wget git python3; echo \"--- node dirs ---\"; ls /usr/local/n /opt 2>/dev/null; ls ~/.nvm 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\n---\ninstallbench-dind-entrypoint\n--- apt ---\n/usr/bin/apt\n/usr/bin/apt-get\n/usr/bin/curl\n/usr/bin/git\n--- node dirs ---\n/opt:\ncontainerd\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which python3 python wget unzip; echo \"---\"; curl -sSI https://nodejs.org/dist/v22.20.0/node-v22.20.0-linux-x64.tar.xz | head -5",
+      "exit_code": 0,
+      "stdout": "---\nHTTP/2 200 \ndate: Thu, 08 Oct 2026 18:13:07 GMT\ncontent-type: application/x-xz\ncontent-length: 30737976\ncf-cache-status: HIT\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which xz tar gzip; echo \"---\"; cd /tmp && curl -sSL -o node.tar.xz https://nodejs.org/dist/v22.20.0/node-v22.20.0-linux-x64.tar.xz && ls -la node.tar.xz && tar -xf node.tar.xz && ls",
+      "exit_code": 0,
+      "stdout": "/usr/bin/xz\n/usr/bin/tar\n/usr/bin/gzip\n---\n-rw-r--r-- 1 root root 30737976 Oct  8 18:13 node.tar.xz\nnode-v22.20.0-linux-x64\nnode.tar.xz\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mv /tmp/node-v22.20.0-linux-x64 /opt/node && ln -sf /opt/node/bin/node /usr/local/bin/node && ln -sf /opt/node/bin/npm /usr/local/bin/npm && ln -sf /opt/node/bin/npx /usr/local/bin/npx && node --version && npm --version",
+      "exit_code": 0,
+      "stdout": "v22.20.0\n10.9.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && export PATH=/opt/node/bin:$PATH && timeout 590 npm install --no-audit --no-fund 2>&1 | tail -40; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "npm warn deprecated prebuild-install@7.1.3: No longer maintained. Please contact the author of the relevant native addon; alternatives are available.\nnpm warn deprecated node-domexception@1.0.0: Use your platform's native DOMException instead\nnpm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\n\n> masterportal@3.26.1 prepare\n> husky\n\n\nadded 842 packages in 31s\nnpm notice\nnpm notice New major version of npm available! 10.9.3 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && export PATH=/opt/node/bin:$PATH && timeout 590 npm run build 2>&1 | tail -50; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "\n> masterportal@3.26.1 build\n> node devtools/tasks/viteBuild.js\n\nPath to the folder containing portals starting from \"[...]/masterportal/\", default is \"portal\":EXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat devtools/tasks/viteBuild.js",
+      "exit_code": 0,
+      "stdout": "/* eslint-disable */\nimport {exec} from \"child_process\";\nimport readline from \"readline\";\nimport fs from \"fs\";\n\nconst rl = readline.createInterface({\n        input: process.stdin,\n        output: process.stdout\n    }),\n    question = \"Path to the folder containing portals starting from \\\"[...]/masterportal/\\\", default is \\\"portal\\\":\";\n\nrl.question(question, (folder) => {\n    if (folder.trim() === \"\") {\n        folder = \"portal\";\n        console.log(\"\\nUsing default:\", folder);\n    }\n    else {\n        if (!fs.existsSync(`./${folder}`)) {\n            console.log(`folder \"${folder}\" does not exist, please enter an existing folder!`);\n            rl.close();\n            process.exit(1);\n        }\n        console.log(\"\\nUsing folder:\", folder);\n    }\n    const command = `cross-env PORTAL_FOLDER=${folder} vite build --config devtools/vite.config.js && rimraf dist/${folder}`;\n\n    console.log(\"\\n\ud83d\ude80 Starting build...\\n\", command);\n\n    exec(command, (error, stdout, stderr) => {\n        if (error) {\n            console.error(`\u274c Build failed: ${error.message}`);\n            rl.close();\n            process.exit(1);\n        }\n\n        if (stderr) {\n            console.error(`stderr: ${stderr}`);\n        }\n\n        console.log(stdout);\n        console.log(\"\\n\u2705 Build completed successfully!\");\n        rl.close();\n    });\n\n});\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && export PATH=/opt/node/bin:$PATH && timeout 590 npx cross-env PORTAL_FOLDER=portal npx vite build --config devtools/vite.config.js 2>&1 | tail -60; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/OpenConfig.js                          1.98 kB \u2502 gzip:     0.80 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ModalItem.js                           2.11 kB \u2502 gzip:     0.98 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LayerSwiper.js                         2.22 kB \u2502 gzip:     0.86 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LoginComponent.js                      2.23 kB \u2502 gzip:     1.01 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/AccordionItem.js                       2.33 kB \u2502 gzip:     1.00 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/StyleVT.js                             2.45 kB \u2502 gzip:     0.94 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LegendSingleLayer.js                   2.91 kB \u2502 gzip:     1.13 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/CompareFeatures.js                     2.95 kB \u2502 gzip:     1.20 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/PortalFooter.js                        3.44 kB \u2502 gzip:     1.58 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/CopyrightConstraints.js                3.90 kB \u2502 gzip:     1.39 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LayerPills.js                          4.52 kB \u2502 gzip:     1.83 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/AboutModule.js                         4.78 kB \u2502 gzip:     1.62 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/CompareMaps.js                         5.17 kB \u2502 gzip:     1.58 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/BufferAnalysis.js                      5.27 kB \u2502 gzip:     1.56 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/AddWMS.js                              6.70 kB \u2502 gzip:     2.65 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LayerSlider.js                         6.88 kB \u2502 gzip:     2.25 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ShadowTool.js                          7.35 kB \u2502 gzip:     2.61 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/SelectFeatures.js                      7.36 kB \u2502 gzip:     2.63 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/GraphicalSelect.js                     7.93 kB \u2502 gzip:     2.55 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/OBJLoader.js                           8.59 kB \u2502 gzip:     2.83 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/FeatureLister.js                       8.82 kB \u2502 gzip:     2.99 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ButtonGroup.js                         9.16 kB \u2502 gzip:     3.51 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ContactFormular.js                     9.44 kB \u2502 gzip:     3.28 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LayerInformation.js                    9.65 kB \u2502 gzip:     3.27 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/WmsTime.js                            10.18 kB \u2502 gzip:     3.02 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/FileImport.js                         10.57 kB \u2502 gzip:     3.63 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/jpeg.js                               10.82 kB \u2502 gzip:     4.04 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/DrawTypes.js                          11.19 kB \u2502 gzip:     3.35 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/DrawModule.js                         11.46 kB \u2502 gzip:     3.15 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/WfsTransaction.js                     13.88 kB \u2502 gzip:     3.90 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/CoordToolkit.js                       13.99 kB \u2502 gzip:     3.95 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/MeasureInMap.js                       14.08 kB \u2502 gzip:     4.24 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/LayerSelection.js                     15.63 kB \u2502 gzip:     4.66 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/PrintMap.js                           15.68 kB \u2502 gzip:     4.61 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ExportButtonGeoJSON.js                21.52 kB \u2502 gzip:     6.43 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/WfsSearch.js                          21.65 kB \u2502 gzip:     6.78 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/TableComponent.js                     26.63 kB \u2502 gzip:     7.81 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ShareView.js                          27.31 kB \u2502 gzip:    10.31 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/vue-datepicker-next.js                39.90 kB \u2502 gzip:    13.44 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/DrawItem.js                           40.58 kB \u2502 gzip:     8.52 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/pako.esm.js                           46.53 kB \u2502 gzip:    14.66 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/ColladaLoader.js                      54.59 kB \u2502 gzip:    14.39 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/zstd.js                               81.03 kB \u2502 gzip:    32.69 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/lerc.js                               97.01 kB \u2502 gzip:    37.93 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/StatisticDashboard.js                108.66 kB \u2502 gzip:    26.89 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/Modeler3D.js                         127.59 kB \u2502 gzip:    31.82 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/three.core.js                        178.33 kB \u2502 gzip:    49.26 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/FilterGeneral.js                     212.30 kB \u2502 gzip:    46.32 kB\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js                    4,594.86 kB \u2502 gzip: 1,366.45 kB\n\n\u001b[33m[INEFFECTIVE_DYNAMIC_IMPORT] \u001b[0msrc/app-store/index.js is dynamically imported by src/modules/about/store/actionsAbout.js but also statically imported by src/app-store/js/getAndMergeRawLayer.js, src/core/layers/js/layer2d.js, src/core/layers/js/layer2dRaster.js, src/core/layers/js/layer2dRasterGeoTiff.js, src/core/layers/js/layer2dRasterWms.js, ..., dynamic import will not move module into another chunk.\n\n\u001b[33m[INEFFECTIVE_DYNAMIC_IMPORT] \u001b[0msrc/modules/searchBar/components/SearchBar.vue is dynamically imported by src/modules/modules-store/gettersModules.js but also statically imported by src/modules/layerSelection/components/LayerSelection.vue, src/modules/menu/components/MenuContainer.vue, dynamic import will not move module into another chunk.\n\n\u001b[33m[PLUGIN_TIMINGS] \u001b[0mYour build spent significant time in plugins. Here is a breakdown:\n  - vite:css (80%)\n  - vm-shim (15%)\nSee https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.\n\n\u2713 built in 24.22s\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls dist && echo \"---\" && ls dist/*/ && echo \"---examples---\" && ls dist 2>/dev/null | head; echo \"--- portal ---\"; ls portal",
+      "exit_code": 0,
+      "stdout": "auto\nbasic\nmaster\nmastercode\nportal\n---\ndist/auto/:\nconfig.js\nconfig.json\nindex.html\nresources\n\ndist/basic/:\nconfig.js\nconfig.json\nindex.html\nresources\n\ndist/master/:\nconfig.js\nconfig.json\nindex.html\nresources\nwebgl_assets\n\ndist/mastercode/:\n3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39\n\ndist/portal/:\nauto\nbasic\nmaster\n---examples---\nauto\nbasic\nmaster\nmastercode\nportal\n--- portal ---\nauto\nbasic\nmaster\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls -R dist/mastercode | head -30 && echo \"---index---\" && cat dist/basic/index.html && echo \"---portal/basic exists?---\" && ls dist/portal",
+      "exit_code": 0,
+      "stdout": "dist/mastercode:\n3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39\n\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39:\ncss\nimg\njs\nlocales\n\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css:\nmasterportal.css\n\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/img:\nLogo_Masterportal.svg\ntools\n\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/img/tools:\ndraw\n\ndist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/img/tools/draw:\ncircle_black.svg\ncircle_blue.svg\ncircle_green.svg\ncircle_grey.svg\ncircle_orange.svg\ncircle_orange_big_opacity05.svg\ncircle_red.svg\ncircle_white.svg\ncircle_yellow.svg\n\n---index---\n<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n  <script type=\"module\" src=\"../mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\"></script>\n  <link rel=\"stylesheet\" href=\"../mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\">\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n</body>\n</html>\n---portal/basic exists?---\nauto\nbasic\nmaster\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/dist && export PATH=/opt/node/bin:$PATH && (npx --yes http-server -p 8099 . >/tmp/http.log 2>&1 &) ; sleep 8; curl -s -o /dev/null -w \"index:%{http_code}\\n\" http://127.0.0.1:8099/basic/index.html; curl -s -o /dev/null -w \"js:%{http_code}\\n\" http://127.0.0.1:8099/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js; curl -s -o /dev/null -w \"css:%{http_code}\\n\" http://127.0.0.1:8099/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css; curl -s -o /dev/null -w \"config:%{http_code}\\n\" http://127.0.0.1:8099/basic/config.json; echo \"---\"; tail -5 /tmp/http.log",
+      "exit_code": 0,
+      "stdout": "index:200\njs:200\ncss:200\nconfig:200\n---\n(node:638) [DEP0066] DeprecationWarning: OutgoingMessage.prototype._headers is deprecated\n(Use `node --trace-deprecation ...` to show where the warning was created)\n[2026-10-08T18:14:27.950Z]  \"GET /mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\" \"curl/7.81.0\"\n[2026-10-08T18:14:27.960Z]  \"GET /mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\" \"curl/7.81.0\"\n[2026-10-08T18:14:27.969Z]  \"GET /basic/config.json\" \"curl/7.81.0\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && export PATH=/opt/node/bin:$PATH && timeout 60 npm start -- --port 5175 >/tmp/vite.log 2>&1 & sleep 30; curl -s -o /dev/null -w \"devroot:%{http_code}\\n\" -k https://127.0.0.1:5175/ ; curl -s -o /dev/null -w \"devportal:%{http_code}\\n\" -k https://127.0.0.1:5175/portal/basic/index.html; echo \"---log---\"; tail -20 /tmp/vite.log",
+      "exit_code": 0,
+      "stdout": "devroot:200\ndevportal:200\n---log---\n[dev-cert] generating localhost.csr \u2026\n[dev-cert] generating localhost.pem \u2026\nCertificate request self-signature ok\nsubject=C = DE, ST = State, L = Location, O = Masterportal, OU = Organizational Unit, CN = www.localhost.de\n[dev-cert] \u2705 certificates ready: /workspace/devtools/certificate/localhost.key /workspace/devtools/certificate/localhost.pem\n\n> masterportal@3.26.1 start\n> vite --config devtools/vite.config.js --port 5175\n\nNOTICE: /workspace/addons/addonsConf.json not found. Skipping all addons.\nmode development\nruntimeBase: /\nbuildBase: \n\n  VITE v8.1.5  ready in 497 ms\n\n  \u279c  Local:   https://localhost:5175/\n  \u279c  Local:   https://www.localhost.de:5175/\n  \u279c  Local:   https://localhost.de:5175/\n  \u279c  Network: use --host to expose\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -E \"vite|http-server\" | grep -v grep | awk '{print $2, $11, $12, $13}'; pkill -f \"devtools/vite.config.js\" 2>/dev/null; pkill -f \"http-server\" 2>/dev/null; sleep 2; echo \"cleaned\"; ps aux | grep -E \"vite|http-server\" | grep -v grep | wc -l",
+      "exit_code": 143,
+      "stdout": "625 npm exec http-server\n637 sh -c http-server\n638 http-server  \n657 /bin/bash -lc set\n683 sh -c vite\n684 node /workspace/node_modules/.bin/vite --config\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 2; ps aux | grep -E \"vite|http-server\" | grep -v grep | wc -l; echo \"done\"",
+      "exit_code": 0,
+      "stdout": "4\ndone\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -E \"vite|http-server\" | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>/dev/null; sleep 2; ps aux | grep -E \"vite|http-server\" | grep -v grep | wc -l",
+      "exit_code": 1,
+      "stdout": "0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la && echo \"---NODE---\" && node -v && npm -v && echo \"---GIT---\" && git log --oneline -3 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 728\ndrwxr-xr-x  14 root root   4096 Oct  8 18:14 .\ndr-xr-xr-x   1 root root   4096 Oct  8 18:12 ..\n-rw-r--r--   1 root root    356 Oct  8 18:12 .editorconfig\ndrwxr-xr-x   8 root root   4096 Oct  8 18:13 .git\n-rw-r--r--   1 root root     11 Oct  8 18:12 .gitattributes\ndrwxr-xr-x   3 root root   4096 Oct  8 18:12 .github\n-rw-r--r--   1 root root    847 Oct  8 18:12 .gitignore\ndrwxr-xr-x   3 root root   4096 Oct  8 18:12 .gitlab\ndrwxr-xr-x   3 root root   4096 Oct  8 18:13 .husky\n-rw-r--r--   1 root root     55 Oct  8 18:12 .npmrc\n-rw-r--r--   1 root root 135653 Oct  8 18:12 CHANGELOG.md\n-rw-r--r--   1 root root   3958 Oct  8 18:12 CODE_OF_CONDUCT.md\n-rw-r--r--   1 root root   2863 Oct  8 18:12 CONTRIBUTING.md\n-rw-r--r--   1 root root   1140 Oct  8 18:12 License.txt\n-rw-r--r--   1 root root   5063 Oct  8 18:12 README.md\n-rw-r--r--   1 root root   1290 Oct  8 18:12 SECURITY.md\ndrwxr-xr-x   2 root root   4096 Oct  8 18:12 addons\n-rw-r--r--   1 root root  18485 Oct  8 18:12 bitbucket-pipelines.yml\ndrwxr-xr-x   8 root root   4096 Oct  8 18:12 devtools\ndrwxr-xr-x   7 root root   4096 Oct  8 18:14 dist\ndrwxr-xr-x   8 root root   4096 Oct  8 18:12 docs\n-rw-r--r--   1 root root  21535 Oct  8 18:12 eslint.config.js\n-rw-r--r--   1 root root    787 Oct  8 18:12 jsconfig.json\ndrwxr-xr-x  13 root root   4096 Oct  8 18:12 locales\n-rw-r--r--   1 root root   4986 Oct  8 18:12 mkdocs.yml\ndrwxr-xr-x 610 root root  20480 Oct  8 18:14 node_modules\n-rw-r--r--   1 root root 421157 Oct  8 18:13 package-lock.json\n-rw-r--r--   1 root root   5601 Oct  8 18:12 package.json\ndrwxr-xr-x   5 root root   4096 Oct  8 18:12 portal\n-rw-r--r--   1 root root   4039 Oct  8 18:12 publiccode.yml\ndrwxr-xr-x  10 root root   4096 Oct  8 18:13 src\n---NODE---\nv22.20.0\n10.9.3\n---GIT---\n410dc25 Security: XML injection in `highlightFeaturesByAttribute` is prevented by escaping.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"---DIST---\" && ls -la dist/ 2>/dev/null && echo \"---MASTERCODE---\" && ls -la dist/mastercode/ 2>/dev/null && echo \"---PACKAGE---\" && cat package.json 2>/dev/null | head -60",
+      "exit_code": 0,
+      "stdout": "---DIST---\ntotal 28\ndrwxr-xr-x  7 root root 4096 Oct  8 18:14 .\ndrwxr-xr-x 14 root root 4096 Oct  8 18:14 ..\ndrwxr-xr-x  3 root root 4096 Oct  8 18:14 auto\ndrwxr-xr-x  3 root root 4096 Oct  8 18:14 basic\ndrwxr-xr-x  4 root root 4096 Oct  8 18:14 master\ndrwxr-xr-x  3 root root 4096 Oct  8 18:14 mastercode\ndrwxr-xr-x  5 root root 4096 Oct  8 18:14 portal\n---MASTERCODE---\ntotal 12\ndrwxr-xr-x 3 root root 4096 Oct  8 18:14 .\ndrwxr-xr-x 7 root root 4096 Oct  8 18:14 ..\ndrwxr-xr-x 6 root root 4096 Oct  8 18:14 3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39\n---PACKAGE---\n{\n  \"name\": \"masterportal\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"author\": {\n    \"name\": \"Implementierungspartnerschaft Masterportal\",\n    \"email\": \"info@masterportal.org\",\n    \"url\": \"https://www.masterportal.org\"\n  },\n  \"bugs\": \"https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/work_items\",\n  \"version\": \"3.26.1\",\n  \"license\": \"MIT\",\n  \"description\": \"The MasterPortal as OpenSource Geoportal\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://bitbucket.org/geowerkstatt-hamburg/masterportal.git\"\n  },\n  \"main\": \"src/masterportal.js\",\n  \"scripts\": {\n    \"prestart\": \"node devtools/certificate/ensureDevCert.mjs\",\n    \"start\": \"vite --config devtools/vite.config.js\",\n    \"start:localApi\": \"cross-env VITE_LOCAL_MASTERPORTALAPI=true vite --config devtools/vite.config.js\",\n    \"startDebug\": \"vite --debug hmr --debug plugin-transform --config devtools/vite.config.js\",\n    \"test\": \"rimraf node_modules/.vite && vitest run --config devtools/vitest.config.js\",\n    \"test:watch\": \"rimraf node_modules/.vite && vitest --config devtools/vitest.config.js --watch\",\n    \"test:silent\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest  run --config devtools/vitest.config.js\",\n    \"test:silent:watch\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest --config devtools/vitest.config.js --watch\",\n    \"lint\": \"eslint \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"lint:fix\": \"eslint --fix \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"migrateConfig\": \"node devtools/tasks/migrator/migrate.js\",\n    \"build\": \"node devtools/tasks/viteBuild.js\",\n    \"buildPortal\": \"vite build --config devtools/vite.config.js && rimraf dist/portal\",\n    \"buildExamples\": \"cross-env EXAMPLES_ONLY=true vite build --config devtools/vite.config.js --mode production && rimraf dist/portal && rimraf --glob \\\"dist/examples_*\\\"\",\n    \"buildJsDoc\": \"node devtools/tasks/buildJsDoc.js\",\n    \"validateOsvSuppressions\": \"node devtools/security/validateOsvSuppressions.mjs\",\n    \"versionHotfix\": \"npm version patch && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMinor\": \"npm version minor && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMajor\": \"npm version major && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionLatest\": \"git tag latest -f\",\n    \"versionHotfix:all\": \"npm run versionHotfix && cd addons && npm run versionHotfix && cd .. && cd portalconfigs && npm run versionHotfix && cd ..\",\n    \"versionMinor:all\": \"npm run versionMinor && cd addons && npm run versionMinor && cd .. && cd portalconfigs && npm run versionMinor && cd ..\",\n    \"versionMajor:all\": \"npm run versionMajor && cd addons && npm run versionMajor && cd .. && cd portalconfigs && npm run versionMajor && cd ..\",\n    \"prePushHook\": \"node ./node_modules/@masterportal/mpconfigparser/cli.js docs/User/Portal-Config/config.json.md docs/User/Portal-Config/config.json.de.md && npm run validateOsvSuppressions && eslint --max-warnings 0 \\\"./**/*.{vue,js,mjs}\\\" && npm run buildJsDoc && npm run test\",\n    \"validateDocs\": \"node devtools/docsValidation/validateDocs.js\",\n    \"prepare\": \"husky\"\n  },\n  \"dependencies\": {\n    \"@masterportal/masterportalapi\": \"^2.63.0\",\n    \"@popperjs/core\": \"^2.11.8\",\n    \"axios\": \"^1.19.0\",\n    \"bootstrap\": \"^5.3.8\",\n    \"bootstrap-icons\": \"^1.13.1\",\n    \"chart.js\": \"^4.5.1\",\n    \"i18next\": \"^26.1.0\",\n    \"i18next-browser-languagedetector\": \"^8.2.1\",\n    \"i18next-http-backend\": \"^4.0.0\",\n    \"i18next-vue\": \"^5.4.0\",\n    \"jsts\": \"^2.12.1\",\n    \"mqtt\": \"^5.15.1\",\n    \"object-hash\": \"^3.0.0\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && echo \"===BASIC===\" && find basic -maxdepth 2 | head -40 && echo \"===MASTER===\" && find master -maxdepth 2 | head -40 && echo \"===AUTO===\" && find auto -maxdepth 2 | head -30",
+      "exit_code": 0,
+      "stdout": "===BASIC===\nbasic\nbasic/index.html\nbasic/resources\nbasic/resources/services.json\nbasic/resources/metadata\nbasic/resources/style_v3.json\nbasic/resources/rest-services.json\nbasic/resources/newsFeedPortalAlerts.json\nbasic/resources/img\nbasic/resources/xml\nbasic/config.js\nbasic/config.json\n===MASTER===\nmaster\nmaster/index.html\nmaster/resources\nmaster/resources/customMenuElementContent.html\nmaster/resources/vectorTile.png\nmaster/resources/newsFeedPortalAlerts.json\nmaster/resources/webVector.png\nmaster/resources/example_geojson.json\nmaster/config.js\nmaster/config.json\nmaster/webgl_assets\nmaster/webgl_assets/dipas.test.geojson\n===AUTO===\nauto\nauto/index.html\nauto/resources\nauto/resources/example_newsFeedPortalAlerts.json\nauto/resources/example_geojson.json\nauto/config.js\nauto/config.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39 && ls -la && echo \"===JS===\" && ls -la js/ && echo \"===CSS===\" && ls -la css/ && echo \"===LOCALES===\" && ls locales/ && echo \"===IMG===\" && find img -maxdepth 2 | head",
+      "exit_code": 0,
+      "stdout": "total 24\ndrwxr-xr-x  6 root root 4096 Oct  8 18:14 .\ndrwxr-xr-x  3 root root 4096 Oct  8 18:14 ..\ndrwxr-xr-x  2 root root 4096 Oct  8 18:14 css\ndrwxr-xr-x  3 root root 4096 Oct  8 18:14 img\ndrwxr-xr-x  2 root root 4096 Oct  8 18:14 js\ndrwxr-xr-x 13 root root 4096 Oct  8 18:14 locales\n===JS===\ntotal 7736\ndrwxr-xr-x 2 root root    4096 Oct  8 18:14 .\ndrwxr-xr-x 6 root root    4096 Oct  8 18:14 ..\n-rw-r--r-- 1 root root    4788 Oct  8 18:14 AboutModule.js\n-rw-r--r-- 1 root root    2332 Oct  8 18:14 AccordionItem.js\n-rw-r--r-- 1 root root    6707 Oct  8 18:14 AddWMS.js\n-rw-r--r-- 1 root root    5271 Oct  8 18:14 BufferAnalysis.js\n-rw-r--r-- 1 root root    9160 Oct  8 18:14 ButtonGroup.js\n-rw-r--r-- 1 root root   54597 Oct  8 18:14 ColladaLoader.js\n-rw-r--r-- 1 root root    2957 Oct  8 18:14 CompareFeatures.js\n-rw-r--r-- 1 root root    5175 Oct  8 18:14 CompareMaps.js\n-rw-r--r-- 1 root root    9443 Oct  8 18:14 ContactFormular.js\n-rw-r--r-- 1 root root   13996 Oct  8 18:14 CoordToolkit.js\n-rw-r--r-- 1 root root    3906 Oct  8 18:14 CopyrightConstraints.js\n-rw-r--r-- 1 root root    1898 Oct  8 18:14 CustomMenuElement.js\n-rw-r--r-- 1 root root   40580 Oct  8 18:14 DrawItem.js\n-rw-r--r-- 1 root root   11460 Oct  8 18:14 DrawModule.js\n-rw-r--r-- 1 root root   11196 Oct  8 18:14 DrawTypes.js\n-rw-r--r-- 1 root root   21527 Oct  8 18:14 ExportButtonGeoJSON.js\n-rw-r--r-- 1 root root    8823 Oct  8 18:14 FeatureLister.js\n-rw-r--r-- 1 root root   10572 Oct  8 18:14 FileImport.js\n-rw-r--r-- 1 root root  212308 Oct  8 18:14 FilterGeneral.js\n-rw-r--r-- 1 root root    7936 Oct  8 18:14 GraphicalSelect.js\n-rw-r--r-- 1 root root    1028 Oct  8 18:14 LanguageItem.js\n-rw-r--r-- 1 root root    1165 Oct  8 18:14 LayerClusterToggler.js\n-rw-r--r-- 1 root root    9655 Oct  8 18:14 LayerInformation.js\n-rw-r--r-- 1 root root    4527 Oct  8 18:14 LayerPills.js\n-rw-r--r-- 1 root root   15635 Oct  8 18:14 LayerSelection.js\n-rw-r--r-- 1 root root    6883 Oct  8 18:14 LayerSlider.js\n-rw-r--r-- 1 root root    2227 Oct  8 18:14 LayerSwiper.js\n-rw-r--r-- 1 root root    1349 Oct  8 18:14 LegendContainer.js\n-rw-r--r-- 1 root root    2914 Oct  8 18:14 LegendSingleLayer.js\n-rw-r--r-- 1 root root    2232 Oct  8 18:14 LoginComponent.js\n-rw-r--r-- 1 root root   14088 Oct  8 18:14 MeasureInMap.js\n-rw-r--r-- 1 root root     656 Oct  8 18:14 MenuFolder.js\n-rw-r--r-- 1 root root    2117 Oct  8 18:14 ModalItem.js\n-rw-r--r-- 1 root root  127592 Oct  8 18:14 Modeler3D.js\n-rw-r--r-- 1 root root    1840 Oct  8 18:14 MouseHover.js\n-rw-r--r-- 1 root root    1132 Oct  8 18:14 NewsView.js\n-rw-r--r-- 1 root root  244660 Oct  8 18:14 NotoSans-Bold.woff\n-rw-r--r-- 1 root root  182080 Oct  8 18:14 NotoSans-Italic.woff\n-rw-r--r-- 1 root root   27216 Oct  8 18:14 NotoSans-extracondensedlight.woff\n-rw-r--r-- 1 root root  245884 Oct  8 18:14 NotoSans.woff\n-rw-r--r-- 1 root root    8591 Oct  8 18:14 OBJLoader.js\n-rw-r--r-- 1 root root    1982 Oct  8 18:14 OpenConfig.js\n-rw-r--r-- 1 root root    3446 Oct  8 18:14 PortalFooter.js\n-rw-r--r-- 1 root root   15684 Oct  8 18:14 PrintMap.js\n-rw-r--r-- 1 root root   93700 Oct  8 18:14 Roboto-Bold.woff\n-rw-r--r-- 1 root root   94032 Oct  8 18:14 Roboto-Medium.woff\n-rw-r--r-- 1 root root  100656 Oct  8 18:14 Roboto-MediumItalic.woff\n-rw-r--r-- 1 root root    1963 Oct  8 18:14 RoutingTemplate.js\n-rw-r--r-- 1 root root    1226 Oct  8 18:14 ScaleSwitcher.js\n-rw-r--r-- 1 root root    7362 Oct  8 18:14 SelectFeatures.js\n-rw-r--r-- 1 root root    7354 Oct  8 18:14 ShadowTool.js\n-rw-r--r-- 1 root root   27315 Oct  8 18:14 ShareView.js\n-rw-r--r-- 1 root root  108661 Oct  8 18:14 StatisticDashboard.js\n-rw-r--r-- 1 root root    2452 Oct  8 18:14 StyleVT.js\n-rw-r--r-- 1 root root   26635 Oct  8 18:14 TableComponent.js\n-rw-r--r-- 1 root root   21657 Oct  8 18:14 WfsSearch.js\n-rw-r--r-- 1 root root   13881 Oct  8 18:14 WfsTransaction.js\n-rw-r--r-- 1 root root   10189 Oct  8 18:14 WmsTime.js\n-rw-r--r-- 1 root root  180288 Oct  8 18:14 bootstrap-icons.woff\n-rw-r--r-- 1 root root  134044 Oct  8 18:14 bootstrap-icons.woff2\n-rw-r--r-- 1 root root     163 Oct  8 18:14 deflate.js\n-rw-r--r-- 1 root root    1161 Oct  8 18:14 initProjections.js\n-rw-r--r-- 1 root root   10820 Oct  8 18:14 jpeg.js\n-rw-r--r-- 1 root root   97017 Oct  8 18:14 lerc.js\n-rw-r--r-- 1 root root    1442 Oct  8 18:14 lzw.js\n-rw-r--r-- 1 root root    8268 Oct  8 18:14 master_touchtable_big.eot\n-rw-r--r-- 1 root root   25358 Oct  8 18:14 master_touchtable_big.svg\n-rw-r--r-- 1 root root    8048 Oct  8 18:14 master_touchtable_big.ttf\n-rw-r--r-- 1 root root    8124 Oct  8 18:14 master_touchtable_big.woff\n-rw-r--r-- 1 root root 4594868 Oct  8 18:14 masterportal.js\n-rw-r--r-- 1 root root     340 Oct  8 18:14 packbits.js\n-rw-r--r-- 1 root root   46535 Oct  8 18:14 pako.esm.js\n-rw-r--r-- 1 root root     108 Oct  8 18:14 raw.js\n-rw-r--r-- 1 root root   17851 Oct  8 18:14 roboto-700.eot\n-rw-r--r-- 1 root root   48982 Oct  8 18:14 roboto-700.svg\n-rw-r--r-- 1 root root   36012 Oct  8 18:14 roboto-700.ttf\n-rw-r--r-- 1 root root   20356 Oct  8 18:14 roboto-700.woff\n-rw-r--r-- 1 root root   15816 Oct  8 18:14 roboto-700.woff2\n-rw-r--r-- 1 root root   19572 Oct  8 18:14 roboto-italic.eot\n-rw-r--r-- 1 root root   54053 Oct  8 18:14 roboto-italic.svg\n-rw-r--r-- 1 root root   37500 Oct  8 18:14 roboto-italic.ttf\n-rw-r--r-- 1 root root   21952 Oct  8 18:14 roboto-italic.woff\n-rw-r--r-- 1 root root   17324 Oct  8 18:14 roboto-italic.woff2\n-rw-r--r-- 1 root root   17854 Oct  8 18:14 roboto-regular.eot\n-rw-r--r-- 1 root root   48974 Oct  8 18:14 roboto-regular.svg\n-rw-r--r-- 1 root root   36176 Oct  8 18:14 roboto-regular.ttf\n-rw-r--r-- 1 root root   20268 Oct  8 18:14 roboto-regular.woff\n-rw-r--r-- 1 root root   15736 Oct  8 18:14 roboto-regular.woff2\n-rw-r--r-- 1 root root  178335 Oct  8 18:14 three.core.js\n-rw-r--r-- 1 root root   39903 Oct  8 18:14 vue-datepicker-next.js\n-rw-r--r-- 1 root root     934 Oct  8 18:14 webimage.js\n-rw-r--r-- 1 root root   81034 Oct  8 18:14 zstd.js\n===CSS===\ntotal 708\ndrwxr-xr-x 2 root root   4096 Oct  8 18:14 .\ndrwxr-xr-x 6 root root   4096 Oct  8 18:14 ..\n-rw-r--r-- 1 root root 713602 Oct  8 18:14 masterportal.css\n===LOCALES===\nde\nen\nes\nfr\nit\nnl\nplatt\npt\nru\ntr\nua\n===IMG===\nimg\nimg/tools\nimg/tools/draw\nimg/Logo_Masterportal.svg\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && echo \"===basic/index.html===\" && cat basic/index.html && echo \"===grep mastercode refs===\" && grep -o 'mastercode/[^\"]*' basic/index.html",
+      "exit_code": 0,
+      "stdout": "===basic/index.html===\n<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n  <script type=\"module\" src=\"../mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\"></script>\n  <link rel=\"stylesheet\" href=\"../mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\">\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n</body>\n</html>\n===grep mastercode refs===\nmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\nmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && echo \"===config.js head===\" && head -30 basic/config.js && echo \"===portal dir===\" && ls -la portal/ && echo \"===portal/basic===\" && ls portal/basic 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "===config.js head===\nconst Config = {\n    alerting: {\n        fetchBroadcastUrl: \"./resources/newsFeedPortalAlerts.json\"\n    },\n    namedProjections: [\n        [\"EPSG:25832\", \"+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs\"]\n    ],\n    layerConf: \"./resources/services.json\",\n    restConf: \"./resources/rest-services.json\",\n    styleConf: \"./resources/style_v3.json\",\n    wfsImgPath: \"./resources/img/\",\n    portalLanguage: {\n        enabled: true,\n        debug: false,\n        languages: {\n            de: \"Deutsch\",\n            en: \"English\",\n            es: \"Espa\u00f1ol\",\n            it: \"Italiano\",\n            platt: \"Platt\",\n            pt: \"Portugu\u00eas\",\n            ru: \"\u0420\u0443\u0441\u0441\u043a\u0438\u0439\",\n            tr: \"T\u00fcrk\u00e7e\",\n            ua: \"\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430\",\n            nl: \"Nederlands\"\n        },\n        fallbackLanguage: \"de\",\n        changeLanguageOnStartWhen: [\"querystring\", \"localStorage\", \"htmlTag\"]\n    },\n    portalLocales: {\n===portal dir===\ntotal 20\ndrwxr-xr-x 5 root root 4096 Oct  8 18:14 .\ndrwxr-xr-x 7 root root 4096 Oct  8 18:14 ..\ndrwxr-xr-x 2 root root 4096 Oct  8 18:14 auto\ndrwxr-xr-x 2 root root 4096 Oct  8 18:14 basic\ndrwxr-xr-x 2 root root 4096 Oct  8 18:14 master\n===portal/basic===\nindex.html\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && (python3 -m http.server 8099 >/tmp/httpd.log 2>&1 &) && sleep 2 && echo \"===index===\" && curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" http://localhost:8099/basic/index.html && echo \"===js===\" && curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" http://localhost:8099/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js && echo \"===css===\" && curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" http://localhost:8099/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css && echo \"===config===\" && curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" http://localhost:8099/basic/config.js && echo \"===services===\" && curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" http://localhost:8099/basic/resources/services.json",
+      "exit_code": 7,
+      "stdout": "===index===\n000 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat /tmp/httpd.log; which python3; python3 -V; echo \"---try---\"; cd /workspace/dist && nohup python3 -m http.server 8099 >/tmp/httpd.log 2>&1 & sleep 2; cat /tmp/httpd.log; curl -s -o /dev/null -w \"%{http_code}\\n\" http://127.0.0.1:8099/basic/index.html",
+      "exit_code": 7,
+      "stdout": "/bin/bash: line 3: python3: command not found\n---try---\nnohup: failed to run command 'python3': No such file or directory\n000\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which python python2 php busybox nc curl wget 2>/dev/null; echo \"---\"; ls /workspace/node_modules/.bin/ | grep -iE \"serve|http|vite\"",
+      "exit_code": 0,
+      "stdout": "/usr/bin/curl\n---\ntsserver\nvite\nvitest\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > /tmp/srv.mjs <<'EOF'\nimport http from 'http';\nimport fs from 'fs';\nimport path from 'path';\nconst root = '/workspace/dist';\nconst types = {'.html':'text/html','.js':'text/javascript','.mjs':'text/javascript','.css':'text/css','.json':'application/json','.svg':'image/svg+xml','.png':'image/png','.gif':'image/gif','.woff':'font/woff','.woff2':'font/woff2'};\nhttp.createServer((req,res)=>{\n  let p = decodeURIComponent(req.url.split('?')[0]);\n  if(p.endsWith('/')) p+='index.html';\n  const f = path.join(root,p);\n  if(!f.startsWith(root) || !fs.existsSync(f) || fs.statSync(f).isDirectory()){res.writeHead(404);res.end('nf');return;}\n  res.writeHead(200,{'Content-Type':types[path.extname(f)]||'application/octet-stream'});\n  fs.createReadStream(f).pipe(res);\n}).listen(8099,()=>console.log('up'));\nEOF\nnohup node /tmp/srv.mjs >/tmp/srv.log 2>&1 & sleep 2; cat /tmp/srv.log; for u in basic/index.html \"mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\" \"mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\" basic/config.js basic/config.json basic/resources/services.json basic/resources/style_v3.json basic/resources/rest-services.json; do printf \"%s -> \" \"$u\"; curl -s -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"http://127.0.0.1:8099/$u\"; done",
+      "exit_code": 0,
+      "stdout": "up\nbasic/index.html -> 200 691\nmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js -> 200 4594868\nmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css -> 200 713602\nbasic/config.js -> 200 1327\nbasic/config.json -> 200 11638\nbasic/resources/services.json -> 200 38355\nbasic/resources/style_v3.json -> 200 9792\nbasic/resources/rest-services.json -> 200 125\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls /workspace/node_modules | grep -iE \"puppeteer|playwright|jsdom|happy-dom\" ; echo \"---bins---\"; which chromium chromium-browser google-chrome firefox 2>/dev/null; echo \"---vitest jsdom/happy-dom---\"; ls /workspace/node_modules/.bin | grep -iE \"playwright|puppet\"",
+      "exit_code": 1,
+      "stdout": "jsdom\njsdom-worker\n---bins---\n---vitest jsdom/happy-dom---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat .npmrc && echo \"---gitignore dist?---\" && grep -n dist .gitignore; echo \"---vite config build outDir---\"; grep -nE \"outDir|PORTAL_FOLDER|EXAMPLES\" devtools/vite.config.js | head -30",
+      "exit_code": 0,
+      "stdout": "engine-strict=true\nregistry=https://registry.npmjs.org\n---gitignore dist?---\n27:dist\n---vite config build outDir---\n25:    examplesOnly = process.env.EXAMPLES_ONLY === \"true\",\n26:    portalFolderName = process.env.PORTAL_FOLDER || \"portal\",\n219:                    outDir: \"dist\",\n229:                    outDir: \"dist\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && node --check dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js && echo \"SYNTAX_OK exit=$?\"",
+      "exit_code": 0,
+      "stdout": "SYNTAX_OK exit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls portal/ && echo \"---portal configs---\" && ls portal/*/ 2>/dev/null | head; echo \"---src---\"; ls src/ | head -30; echo \"---node_modules count---\"; ls node_modules | wc -l",
+      "exit_code": 0,
+      "stdout": "auto\nbasic\nmaster\n---portal configs---\nportal/auto/:\nconfig.js\nconfig.json\nindex.html\nresources\n\nportal/basic/:\nconfig.js\nconfig.json\nindex.html\n---src---\nApp.vue\napp-store\nassets\ncore\ndirectives\nmasterportal.js\nmodules\nplugins\nshared\ntests\n---node_modules count---\n605\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -oE \"masterportal-root|createApp|Config\\b\" dist/mastercode/*/js/masterportal.js | sort | uniq -c | head; echo \"---tail of index---\"; tail -c 300 dist/basic/config.json",
+      "exit_code": 0,
+      "stdout": "    363 Config\n      6 createApp\n      1 masterportal-root\n---tail of index---\n       \"wfsFilter\": \"resources/xml/schulstandort.staatlich.5.sonderschulen.xml\",\n          \"typ\": \"WFS\",\n          \"visibility\": false,\n          \"clusterDistance\": 60,\n          \"mouseHoverField\": [\n            \"schulname\",\n            \"kapitelbezeichnung\"\n          ]\n        }\n      ]\n    }\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && timeout 90 npm start >/tmp/vite.log 2>&1 & sleep 55; echo \"---log---\"; tail -25 /tmp/vite.log; echo \"---curl 5173---\"; curl -sk -o /dev/null -w \"%{http_code} %{size_download}\\n\" https://localhost:5173/ ; curl -sk -o /dev/null -w \"%{http_code}\\n\" https://localhost:5173/index.html",
+      "exit_code": 7,
+      "stdout": "---log---\n\n> masterportal@3.26.1 prestart\n> node devtools/certificate/ensureDevCert.mjs\n\n[dev-cert] dev certificate already present \u2714\n\n> masterportal@3.26.1 start\n> vite --config devtools/vite.config.js\n\nNOTICE: /workspace/addons/addonsConf.json not found. Skipping all addons.\nmode development\nruntimeBase: /\nbuildBase: \n\n  VITE v8.1.5  ready in 424 ms\n\n  \u279c  Local:   https://localhost:9001/\n  \u279c  Local:   https://www.localhost.de:9001/\n  \u279c  Local:   https://localhost.de:9001/\n  \u279c  Network: use --host to expose\n---curl 5173---\n000 0\n000\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && nohup npm start >/tmp/vite.log 2>&1 & sleep 40; tail -8 /tmp/vite.log; echo \"---probe---\"; for p in / /index.html /portal/basic/index.html; do printf \"%s -> \" \"$p\"; curl -sk -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9001$p\"; done",
+      "exit_code": 7,
+      "stdout": "Port 9001 is in use, trying another one...\n\n  VITE v8.1.5  ready in 410 ms\n\n  \u279c  Local:   https://localhost:9002/\n  \u279c  Local:   https://www.localhost.de:9002/\n  \u279c  Local:   https://localhost.de:9002/\n  \u279c  Network: use --host to expose\n---probe---\n/ -> 000 0\n/index.html -> 000 0\n/portal/basic/index.html -> 000 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -E \"vite|npm start\" | grep -v grep; echo \"---ports---\"; (ss -ltnp 2>/dev/null || netstat -ltnp 2>/dev/null) | grep -E \"900[0-9]\"; echo \"---probe 9001/9002---\"; for port in 9001 9002; do for p in / /index.html; do printf \"%s%s -> \" \"$port\" \"$p\"; curl -sk -m 5 -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:$port$p\"; done; done",
+      "exit_code": 0,
+      "stdout": "root         984  0.0  0.0   4364  1552 ?        S    18:16   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 cd /workspace && nohup npm start >/tmp/vite.log 2>&1 & sleep 40; tail -8 /tmp/vite.log; echo \"---probe---\"; for p in / /index.html /portal/basic/index.html; do printf \"%s -> \" \"$p\"; curl -sk -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9001$p\"; done\nroot         986  0.3  0.7 1112592 62248 ?       Sl   18:16   0:00 npm start\nroot        1005  0.0  0.0   2892  1664 ?        S    18:16   0:00 sh -c vite --config devtools/vite.config.js\nroot        1006  3.6  2.2 24603556 175920 ?     Sl   18:16   0:01 node /workspace/node_modules/.bin/vite --config devtools/vite.config.js\n---ports---\n---probe 9001/9002---\n9001/ -> 000 0\n9001/index.html -> 000 0\n9002/ -> 200 5314\n9002/index.html -> 404 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -sk -m 5 https://localhost:9002/ | head -40; echo \"===count vite===\"; ps aux | grep -c \"[v]ite --config\"",
+      "exit_code": 0,
+      "stdout": "\n        <html>\n            <head>\n              <script type=\"module\" src=\"/@vite/client\"></script>\n\n                <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\" />\n                <style>\n                    body {\n                        margin: 20px;\n                        font-family: Arial, sans-serif;\n                    }\n\n                    .header {\n                        display: flex;\n                        justify-content: space-between;\n                        align-items: center;\n                        margin-bottom: 20px;\n                        flex-wrap: wrap;\n                    }\n\n                    .header h1 {\n                        margin: 0;\n                        flex: 1;\n                        text-align: left;\n                        font-size: 24px;\n                    }\n\n                    #searchInput {\n                        padding: 10px;\n                        font-size: 16px;\n                        border: 1px solid #ccc;\n                        border-radius: 5px;\n                        max-width: 300px;\n                    }\n\n                    @media (max-width: 480px) {\n                        .header {\n                            flex-direction: column;\n                            align-items: stretch;\n                        }\n===count vite===\n2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -sk -m 5 https://localhost:9002/ | grep -oE 'href=\"[^\"]*\"|/[a-zA-Z0-9_]+/index.html' | sort -u | head -30",
+      "exit_code": 0,
+      "stdout": "href=\"/CHANGELOG.md/\"\nhref=\"/CODE_OF_CONDUCT.md/\"\nhref=\"/CONTRIBUTING.md/\"\nhref=\"/License.txt/\"\nhref=\"/README.md/\"\nhref=\"/SECURITY.md/\"\nhref=\"/addons/\"\nhref=\"/bitbucket-pipelines.yml/\"\nhref=\"/devtools/\"\nhref=\"/dist/\"\nhref=\"/docs/\"\nhref=\"/eslint.config.js/\"\nhref=\"/jsconfig.json/\"\nhref=\"/locales/\"\nhref=\"/mkdocs.yml/\"\nhref=\"/node_modules/\"\nhref=\"/package-lock.json/\"\nhref=\"/package.json/\"\nhref=\"/portal/\"\nhref=\"/publiccode.yml/\"\nhref=\"/src/\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in \"/portal/basic/index.html\" \"/portal/basic/\" \"/portal/master/index.html\" \"/dist/basic/index.html\"; do printf \"%s -> \" \"$p\"; curl -sk -m 5 -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9002$p\"; done; echo \"---basic dev html---\"; curl -sk -m 5 https://localhost:9002/portal/basic/index.html | head -30",
+      "exit_code": 0,
+      "stdout": "/portal/basic/index.html -> 200 558\n/portal/basic/ -> 200 558\n/portal/master/index.html -> 200 552\n/dist/basic/index.html -> 200 746\n---basic dev html---\n<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n  <script type=\"module\" src=\"/@vite/client\"></script>\n\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n    <script type=\"module\" src=\"/src/masterportal.js\"></script>\n</body>\n</html>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"===src/masterportal.js via vite===\"; curl -sk -m 10 -o /tmp/mp.js -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9002/src/masterportal.js\"; head -20 /tmp/mp.js; echo \"===check imports resolve===\"; grep -oE 'from \"[^\"]+\"' /tmp/mp.js | head; echo \"===try a core module===\"; curl -sk -m 15 -o /dev/null -w \"App.vue %{http_code} %{size_download}\\n\" \"https://localhost:9002/src/App.vue\"",
+      "exit_code": 0,
+      "stdout": "===src/masterportal.js via vite===\n200 26737\nimport { createHotContext as __vite__createHotContext } from \"/@vite/client\";import.meta.hot = __vite__createHotContext(\"/src/masterportal.js\");import.meta.env = {\"BASE_URL\": \"/\", \"DEV\": true, \"MODE\": \"development\", \"PROD\": false, \"SSR\": false};import \"/src/assets/css/bootstrap-custom.scss\";\nimport \"/src/assets/css/masterportal.css\";\n\nimport \"/node_modules/.vite/deps/regenerator-runtime_runtime.js?v=dbaa6be0\";\nimport {initiateVueI18Next, initLanguage} from \"/src/plugins/i18next.js\";\nimport globalUrlParams from \"/src/core/urlParams/js/globalUrlParams.js\";\nimport {createApp} from \"/node_modules/.vite/deps/vue.js?v=dbaa6be0\";\nimport {createPinia} from \"/node_modules/.vite/deps/pinia.js?v=dbaa6be0\";\nimport App from \"/src/App.vue\";\nimport bsTooltipDirective from \"/src/directives/bs-tooltip.js\";\nimport store from \"/src/app-store/index.js\";\nimport remoteInterface from \"/src/plugins/remoteInterface.js\";\nimport utilsLogin from \"/src/modules/login/js/utilsLogin.js\";\nimport {instantiateVuetify} from \"/src/plugins/vuetify.js\";\n\nlet app;\n\nwindow.__appMounted = window.__appMounted || false;\nconst isDev = import.meta.env.MODE === \"development\",\n    // URL parameters (window.location.search) appended to the masterportal request are also appended to the path to the Config.js, used by addons\n===check imports resolve===\nfrom \"/@vite/client\"\nfrom \"/src/plugins/i18next.js\"\nfrom \"/src/core/urlParams/js/globalUrlParams.js\"\nfrom \"/node_modules/.vite/deps/vue.js?v=dbaa6be0\"\nfrom \"/node_modules/.vite/deps/pinia.js?v=dbaa6be0\"\nfrom \"/src/App.vue\"\nfrom \"/src/directives/bs-tooltip.js\"\nfrom \"/src/app-store/index.js\"\nfrom \"/src/plugins/remoteInterface.js\"\nfrom \"/src/modules/login/js/utilsLogin.js\"\n===try a core module===\nApp.vue 200 51912\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "apt list --installed 2>/dev/null | grep -iE \"chromium|firefox\" ; ls /root/.cache/puppeteer 2>/dev/null; find / -maxdepth 4 -iname \"*chrome*\" -type f 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in \"/src/app-store/index.js\" \"/src/plugins/i18next.js\" \"/src/App.vue\" \"/node_modules/.vite/deps/vue.js?v=dbaa6be0\" \"/portal/basic/config.js\" \"/portal/basic/resources/services.json\"; do printf \"%s -> \" \"$p\"; curl -sk -m 15 -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9002$p\"; done; echo \"---locales---\"; curl -sk -m 10 -o /dev/null -w \"locale de %{http_code}\\n\" \"https://localhost:9002/locales/de/common.json\"",
+      "exit_code": 0,
+      "stdout": "/src/app-store/index.js -> 200 4236\n/src/plugins/i18next.js -> 200 66435\n/src/App.vue -> 200 51912\n/node_modules/.vite/deps/vue.js?v=dbaa6be0 -> 504 0\n/portal/basic/config.js -> 200 8606\n/portal/basic/resources/services.json -> 200 38355\n---locales---\nlocale de 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "sleep 3; for i in 1 2 3; do printf \"try%s vue -> \" \"$i\"; curl -sk -m 20 -o /dev/null -w \"%{http_code} %{size_download}\\n\" \"https://localhost:9002/node_modules/.vite/deps/vue.js?v=dbaa6be0\"; sleep 2; done; tail -5 /tmp/vite.log",
+      "exit_code": 0,
+      "stdout": "try1 vue -> 504 0\ntry2 vue -> 504 0\ntry3 vue -> 504 0\n6:17:34 PM [vite] (client) Pre-transform error: The file does not exist at \"/workspace/node_modules/.vite/deps/DataTile-BA7SjyyB.js\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.\n6:17:34 PM [vite] (client) Pre-transform error: The file does not exist at \"/workspace/node_modules/.vite/deps/common-Tza-9F2I.js\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.\n6:17:34 PM [vite] (client) Pre-transform error: The file does not exist at \"/workspace/node_modules/.vite/deps/TileEventType-udH8DRHi.js\" which is in the optimize deps directory. The dependency might be incompatible with the dep optimizer. Try adding it to `optimizeDeps.exclude`.\n(node:1006) UnsupportedWarning: Status message is not supported by HTTP/2 (RFC7540 8.1.2.4)\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls /workspace/node_modules/.vite/deps/ 2>/dev/null | head; echo \"count: $(ls /workspace/node_modules/.vite/deps/ 2>/dev/null | wc -l)\"; ls -la /workspace/node_modules/.vite/ 2>/dev/null; grep -oE 'vue.js\\?v=[a-z0-9]+' /tmp/mp.js | head -1; ls /workspace/node_modules/.vite/deps/vue.js 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "@geoblocks_print.js\n@geoblocks_print.js.map\n@masterportal_masterportalapi_src_crs__js.js\n@masterportal_masterportalapi_src_crs__js.js.map\n@masterportal_masterportalapi_src_index__js.js\n@masterportal_masterportalapi_src_index__js.js.map\n@masterportal_masterportalapi_src_layer_wfs__js.js\n@masterportal_masterportalapi_src_lib_attributeMapper__js.js\n@masterportal_masterportalapi_src_lib_attributeMapper__js.js.map\n@masterportal_masterportalapi_src_lib_getValueFromObjectByPath__js.js\ncount: 462\ntotal 56\ndrwxr-xr-x   3 root root  4096 Oct  8 18:17 .\ndrwxr-xr-x 610 root root 20480 Oct  8 18:14 ..\ndrwxr-xr-x   2 root root 32768 Oct  8 18:17 deps\nvue.js?v=dbaa6be0\n/workspace/node_modules/.vite/deps/vue.js\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && for f in basic/config.json basic/resources/services.json basic/resources/rest-services.json basic/resources/style_v3.json master/config.json auto/config.json; do printf \"%s: \" \"$f\"; node -e \"JSON.parse(require('fs').readFileSync('$f','utf8'));console.log('valid JSON')\" 2>&1; done; echo \"---mastercode locales---\"; ls mastercode/*/locales/de/ | head; echo \"---draw svgs---\"; ls mastercode/*/img/tools/draw/ | head",
+      "exit_code": 0,
+      "stdout": "basic/config.json: valid JSON\nbasic/resources/services.json: valid JSON\nbasic/resources/rest-services.json: valid JSON\nbasic/resources/style_v3.json: valid JSON\nmaster/config.json: valid JSON\nauto/config.json: valid JSON\n---mastercode locales---\ncommon.json\n---draw svgs---\ncircle_black.svg\ncircle_blue.svg\ncircle_green.svg\ncircle_grey.svg\ncircle_orange.svg\ncircle_orange_big_opacity05.svg\ncircle_red.svg\ncircle_white.svg\ncircle_yellow.svg\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > /tmp/boot.mjs <<'EOF'\nimport { JSDOM } from 'jsdom';\nimport fs from 'fs';\nconst html = fs.readFileSync('/workspace/dist/basic/index.html','utf8');\nconst dom = new JSDOM(html, {url:'http://localhost:8099/basic/index.html', runScripts:'outside-only', pretendToBeVisual:true});\nglobal.window = dom.window; global.document = dom.window.document;\nglobal.navigator = dom.window.navigator;\nconst bundle = fs.readFileSync('/workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js','utf8');\ntry {\n  const mod = await import('data:text/javascript;base64,'+Buffer.from(bundle).toString('base64'));\n  console.log('MODULE_IMPORTED_OK');\n} catch(e){ console.log('IMPORT_ERR:', e.constructor.name, String(e.message).slice(0,300)); }\nconsole.log('root has children:', dom.window.document.getElementById('masterportal-root')?.children.length);\nEOF\ntimeout 120 node /tmp/boot.mjs 2>&1 | tail -20",
+      "exit_code": 1,
+      "stdout": "node:internal/modules/package_json_reader:266\n  throw new ERR_MODULE_NOT_FOUND(packageName, fileURLToPath(base), null);\n        ^\n\nError [ERR_MODULE_NOT_FOUND]: Cannot find package 'jsdom' imported from /tmp/boot.mjs\n    at Object.getPackageJSONURL (node:internal/modules/package_json_reader:266:9)\n    at packageResolve (node:internal/modules/esm/resolve:767:81)\n    at moduleResolve (node:internal/modules/esm/resolve:853:18)\n    at defaultResolve (node:internal/modules/esm/resolve:983:11)\n    at #cachedDefaultResolve (node:internal/modules/esm/loader:731:20)\n    at ModuleLoader.resolve (node:internal/modules/esm/loader:708:38)\n    at ModuleLoader.getModuleJobForImport (node:internal/modules/esm/loader:310:38)\n    at ModuleJob._link (node:internal/modules/esm/module_job:183:49) {\n  code: 'ERR_MODULE_NOT_FOUND'\n}\n\nNode.js v22.20.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && find node_modules -maxdepth 4 -type d -name jsdom 2>/dev/null | head; ls node_modules/jsdom 2>/dev/null | head -3 || echo \"no top-level jsdom\"",
+      "exit_code": 0,
+      "stdout": "node_modules/jsdom\nnode_modules/jsdom/lib/jsdom\nLICENSE.txt\nREADME.md\nlib\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cp /tmp/boot.mjs /workspace/boot.mjs && timeout 150 node /workspace/boot.mjs 2>&1 | tail -25; rm -f /workspace/boot.mjs",
+      "exit_code": 0,
+      "stdout": "file:///workspace/boot.mjs:6\nglobal.navigator = dom.window.navigator;\n                 ^\n\nTypeError: Cannot set property navigator of #<Object> which has only a getter\n    at file:///workspace/boot.mjs:6:18\n    at ModuleJob.run (node:internal/modules/esm/module_job:345:25)\n    at async onImport.tracePromise.__proto__ (node:internal/modules/esm/loader:665:26)\n    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:117:5)\n\nNode.js v22.20.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > boot.mjs <<'EOF'\nimport { JSDOM } from 'jsdom';\nimport fs from 'fs';\nconst html = fs.readFileSync('/workspace/dist/basic/index.html','utf8');\nconst dom = new JSDOM(html, {url:'http://localhost:8099/basic/index.html', runScripts:'outside-only', pretendToBeVisual:true});\nglobalThis.window = dom.window; globalThis.document = dom.window.document;\nglobalThis.HTMLElement = dom.window.HTMLElement; globalThis.Node = dom.window.Node;\nglobalThis.customElements = dom.window.customElements;\nglobalThis.requestAnimationFrame = (cb)=>setTimeout(cb,0);\nglobalThis.CustomEvent = dom.window.CustomEvent;\nconst bundle = fs.readFileSync('/workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js','utf8');\ntry {\n  await import('data:text/javascript;base64,'+Buffer.from(bundle).toString('base64'));\n  console.log('MODULE_IMPORTED_OK');\n} catch(e){ console.log('IMPORT_ERR:', e.constructor.name, String(e.message).slice(0,400)); }\nEOF\ntimeout 150 node boot.mjs 2>&1 | tail -25; rm -f boot.mjs",
+      "exit_code": 0,
+      "stdout": "IMPORT_ERR: ReferenceError MutationObserver is not defined\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > boot.mjs <<'EOF'\nimport { JSDOM } from 'jsdom';\nimport fs from 'fs';\nconst html = fs.readFileSync('/workspace/dist/basic/index.html','utf8');\nconst dom = new JSDOM(html, {url:'http://localhost:8099/basic/index.html', pretendToBeVisual:true});\nconst w = dom.window;\nfor (const k of ['window','document','navigator','HTMLElement','Node','customElements','MutationObserver','CustomEvent','Event','getComputedStyle','requestAnimationFrame','cancelAnimationFrame','DOMParser','XMLHttpRequest','CSS','history','location','screen','localStorage','sessionStorage','matchMedia','ResizeObserver','IntersectionObserver','fetch','Blob','URL','Image','HTMLCanvasElement']) {\n  try { globalThis[k] = (k in w) ? w[k] : globalThis[k]; } catch {}\n}\nglobalThis.requestAnimationFrame = (cb)=>setTimeout(()=>cb(Date.now()),0);\nglobalThis.cancelAnimationFrame = (id)=>clearTimeout(id);\nconst bundle = fs.readFileSync('/workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js','utf8');\ntry {\n  await import('data:text/javascript;base64,'+Buffer.from(bundle).toString('base64'));\n  console.log('MODULE_IMPORTED_OK');\n} catch(e){ console.log('IMPORT_ERR:', e.constructor.name, String(e.message).slice(0,300)); }\nawait new Promise(r=>setTimeout(r,3000));\nconsole.log('__appMounted =', w.__appMounted);\nconsole.log('root children:', w.document.getElementById('masterportal-root')?.children.length);\nEOF\ntimeout 160 node boot.mjs 2>&1 | tail -25; rm -f boot.mjs",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > boot.mjs <<'EOF'\nimport { JSDOM } from 'jsdom';\nimport fs from 'fs';\nconst html = fs.readFileSync('/workspace/dist/basic/index.html','utf8');\nconst dom = new JSDOM(html, {url:'http://localhost:8099/basic/index.html', pretendToBeVisual:true});\nconst w = dom.window;\nfor (const k of ['window','document','navigator','HTMLElement','Node','customElements','MutationObserver','CustomEvent','Event','getComputedStyle','requestAnimationFrame','cancelAnimationFrame','DOMParser','XMLHttpRequest','CSS','history','location','screen','localStorage','sessionStorage','matchMedia','ResizeObserver','IntersectionObserver','Blob','URL','Image','HTMLCanvasElement','performance']) {\n  try { if (k in w) globalThis[k] = w[k]; } catch {}\n}\nglobalThis.requestAnimationFrame = (cb)=>setTimeout(()=>cb(Date.now()),0);\nglobalThis.cancelAnimationFrame = (id)=>clearTimeout(id);\nconst bundle = fs.readFileSync('/workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js','utf8');\nprocess.on('unhandledRejection',e=>console.log('UNHANDLED_REJ:', String(e).slice(0,200)));\ntry {\n  await import('data:text/javascript;base64,'+Buffer.from(bundle).toString('base64'));\n  console.log('MODULE_IMPORTED_OK');\n} catch(e){ console.log('IMPORT_ERR:', e.constructor.name, String(e.message).slice(0,300)); }\nawait new Promise(r=>setTimeout(r,4000));\nconsole.log('__appMounted =', w.__appMounted);\nconst root=w.document.getElementById('masterportal-root');\nconsole.log('root children:', root? root.children.length : 'no-root');\nconsole.log('root innerHTML len:', root? root.innerHTML.length : 0);\nprocess.exit(0);\nEOF\ntimeout 160 node boot.mjs; echo \"EXIT=$?\"; rm -f boot.mjs",
+      "exit_code": 0,
+      "stdout": "EXIT=124\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && timeout 300 npx vitest run --config devtools/vitest.config.js --reporter=dot src/core/urlParams 2>&1 | tail -35; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "NOTICE: /workspace/addons/addonsConf.json not found. Skipping all addons.\nmode test\nruntimeBase: /\nbuildBase: \n\n\u001b[1m\u001b[30m\u001b[46m RUN \u001b[49m\u001b[39m\u001b[22m \u001b[36mv4.1.8 \u001b[39m\u001b[90m/workspace\u001b[39m\n\n\u001b[33m\u001b[39m\u001b[32m\u00b7\u001b[39m\u001b[33m\u001b[39m\u001b[32m\u00b7\u001b[39m\u001b[33m\u001b[39m\u001b[32m\u00b7\u001b[39m\u001b[33m\u001b[39m\u001b[32m\u00b7\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m4 passed\u001b[39m\u001b[22m\u001b[90m (4)\u001b[39m\n\u001b[2m   Start at \u001b[22m 18:23:47\n\u001b[2m   Duration \u001b[22m 10.76s\u001b[2m (transform 7.94s, setup 469ms, import 9.55s, tests 9ms, environment 592ms)\u001b[22m\n\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat > boot.mjs <<'EOF'\nimport { JSDOM } from 'jsdom';\nimport fs from 'fs';\nconst html = fs.readFileSync('/workspace/dist/basic/index.html','utf8');\nconst dom = new JSDOM(html, {url:'http://localhost:8099/basic/index.html', pretendToBeVisual:true, resources:'usable'});\nconst w = dom.window;\nfor (const k of ['window','document','navigator','HTMLElement','Node','customElements','MutationObserver','CustomEvent','Event','getComputedStyle','DOMParser','XMLHttpRequest','CSS','history','location','screen','localStorage','sessionStorage','matchMedia','ResizeObserver','IntersectionObserver','Blob','URL','Image','HTMLCanvasElement','performance']) {\n  try { if (k in w) globalThis[k] = w[k]; } catch {}\n}\nglobalThis.requestAnimationFrame = (cb)=>setTimeout(()=>cb(Date.now()),0);\nglobalThis.cancelAnimationFrame = (id)=>clearTimeout(id);\nglobalThis.fetch = async (u)=>({ok:true,status:200,json:async()=>({}),text:async()=>'{}',headers:{get:()=>null}});\n// languages loaded via i18n http backend mock\nconst bundle = fs.readFileSync('/workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js','utf8');\nprocess.on('unhandledRejection',e=>console.log('UNHANDLED_REJ:', String(e).slice(0,200)));\nconst t=setTimeout(()=>{console.log('TIMEOUT_STILL_RUNNING'); process.exit(2);},60000);\ntry {\n  await import('data:text/javascript;base64,'+Buffer.from(bundle).toString('base64'));\n  console.log('MODULE_IMPORTED_OK');\n} catch(e){ console.log('IMPORT_ERR:', e.constructor.name, String(e.message).slice(0,300)); }\nclearTimeout(t);\nawait new Promise(r=>setTimeout(r,3000));\nconsole.log('__appMounted =', w.__appMounted);\nconst root=w.document.getElementById('masterportal-root');\nconsole.log('root children:', root? root.children.length : 'no-root');\nconsole.log('root innerHTML len:', root? root.innerHTML.length : 0);\nprocess.exit(0);\nEOF\ntimeout 120 node boot.mjs; echo \"EXIT=$?\"; rm -f boot.mjs",
+      "exit_code": 0,
+      "stdout": "EXIT=124\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && echo \"===basic resources img===\"; ls basic/resources/img | head; echo \"===mastercode version dir contents===\"; ls mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/; echo \"===count locale json===\"; find mastercode/*/locales -name '*.json' | wc -l; echo \"===draw svgs count===\"; ls mastercode/*/img/tools/draw/*.svg | wc -l; echo \"===bundle size===\"; du -h mastercode/*/js/masterportal.js mastercode/*/css/masterportal.css; echo \"===index portal variants===\"; for d in basic master auto; do grep -l \"mastercode\" $d/index.html >/dev/null && echo \"$d/index.html references mastercode OK\"; done",
+      "exit_code": 0,
+      "stdout": "===basic resources img===\nallgemein.png\nallgemein_2.png\nallgemein_3.png\nallgemein_4.png\nbackgroundCanvas.jpeg\nberufliche_schulen.svg\nblank.png\nbr.png\nfssa.png\ngrundschulen.svg\n===mastercode version dir contents===\ncss\nimg\njs\nlocales\n===count locale json===\n20\n===draw svgs count===\n9\n===bundle size===\n4.4M\tmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/js/masterportal.js\n700K\tmastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/css/masterportal.css\n===index portal variants===\nbasic/index.html references mastercode OK\nmaster/index.html references mastercode OK\nauto/index.html references mastercode OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"===dist entry via node server still up?===\"; curl -s -o /dev/null -w \"dist root %{http_code}\\n\" http://127.0.0.1:8099/dist/basic/index.html 2>/dev/null; echo \"===version consistency===\"; grep '\"version\"' package.json; ls dist/mastercode/; echo \"===cleanup===\"; pkill -f \"srv.mjs\"; pkill -f \"vite --config devtools/vite.config.js\"; sleep 1; ps aux | grep -E \"srv.mjs|vite --config\" | grep -v grep | wc -l",
+      "exit_code": 143,
+      "stdout": "===dist entry via node server still up?===\ndist root 404\n===version consistency===\n  \"version\": \"3.26.1\",\n3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39\n===cleanup===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -E \"srv.mjs|vite --config|npm start\" | grep -v grep | wc -l; echo \"---\"; ls /workspace/*.mjs 2>/dev/null || echo \"no stray files in workspace\"",
+      "exit_code": 0,
+      "stdout": "4\n---\nno stray files in workspace\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -E \"srv.mjs|vite --config|npm start\" | grep -v grep | awk '{print $2}' | xargs -r kill -9 2>/dev/null; sleep 1; ps aux | grep -E \"srv.mjs|vite --config|npm start\" | grep -v grep | wc -l",
+      "exit_code": 1,
+      "stdout": "0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist/mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39 && echo \"Logo:\"; ls img/Logo_Masterportal.svg; echo \"draw svgs:\"; ls img/tools/draw/ | wc -l; echo \"locales:\"; ls locales/; echo \"---basic guide structure---\"; cd /workspace/dist/basic && ls config.js config.json index.html resources/services.json resources/rest-services.json resources/style_v3.json 2>&1",
+      "exit_code": 0,
+      "stdout": "Logo:\nimg/Logo_Masterportal.svg\ndraw svgs:\n9\nlocales:\nde\nen\nes\nfr\nit\nnl\nplatt\npt\nru\ntr\nua\n---basic guide structure---\nconfig.js\nconfig.json\nindex.html\nresources/rest-services.json\nresources/services.json\nresources/style_v3.json\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

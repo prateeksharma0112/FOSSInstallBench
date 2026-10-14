@@ -1,0 +1,17 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "docker ps -a: all 9 containers Up and (healthy) \u2014 harbor-local portal/core/jobservice/registry/registryctl/trivy-adapter/exporter/postgresql/redis",
+    "curl http://localhost/api/v2.0/ping -> Pong, HTTP 200",
+    "curl http://localhost/api/v2.0/health -> HTTP 200, all 8 components status=healthy",
+    "curl http://localhost/ -> HTTP 200, <title>Harbor</title>",
+    "curl -u admin:Harbor12345 http://localhost/api/v2.0/projects -> HTTP 200 listing 'library' project",
+    "docker login localhost:80 -u admin -> Login Succeeded (exit 0)",
+    "docker push localhost:80/library/alpine:val<ts> -> exit 0 with digest sha256:7cefa58...",
+    "docker pull localhost:80/library/alpine:val<ts> -> exit 0, 'Status: Downloaded newer image'",
+    "deploy/compose/config/token_service_key.pem present, BEGIN RSA PRIVATE KEY, mode 644",
+    "docker compose -f ../../docker-compose.yaml --env-file .env ps -> 9 services healthy",
+    "log scan of core/jobservice/registry/portal: no error/fatal/panic entries"
+  ],
+  "assessment_summary": "Reviewed the guide (Manual Start via Docker Compose) and the installation summary, then inspected the resulting environment. Verified Docker Engine 29.7.2 / Compose v5.5.0 and the running compose project 'harbor-local'. Confirmed all nine expected services (portal, core, jobservice, registry, registryctl, trivy-adapter, exporter, postgresql, redis) are up and reported healthy via both docker ps and the harbor-local compose ps output. Queried Harbor's own API: /api/v2.0/ping returned Pong (200) and /api/v2.0/health returned 200 with every component healthy. Confirmed the web UI serves (HTTP 200, <title>Harbor</title>). Validated authentication and functional behavior described in the guide: authenticated API call with admin/Harbor12345 listed the 'library' project, docker login to localhost:80 succeeded, and a full push/pull cycle of a freshly tagged alpine image succeeded (push returned a registry digest, local image removed, pull re-downloaded it), demonstrating real OCI artifact storage and retrieval. Verified config artifacts match the guide: .env created from .env.example with IMAGE_REPO=8gears.container-registry.com/8gcr/, HARBOR_TAG=v2.15.0, TLS disabled via /dev/null; token_service_key.pem is a valid traditional RSA key with mode 644. Scanned core/jobservice/registry/portal logs for error/fatal/panic \u2014 none found. The guide's optional HTTPS/mkcert configuration was not applied but is explicitly optional and the TLS-disabled default is fully functional, so it does not indicate failure. The unauthenticated /v2/_catalog 401 is expected behavior. All decisive checks passed, so the installation is assessed as complete and operational."
+}

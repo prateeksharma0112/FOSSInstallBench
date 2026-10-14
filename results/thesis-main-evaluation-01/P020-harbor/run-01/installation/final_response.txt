@@ -1,0 +1,23 @@
+Harbor v2.15.0 was successfully installed and verified as a local Docker Compose deployment.
+
+**Method used:** The "Manual Start" method from the supplied guide, with the remote-registry image source (the guide's `task dev:release:up IMAGE_REPO=...` path). `task` was not preinstalled, so the equivalent documented manual commands were run directly.
+
+**Steps performed (working dir `/workspace`):**
+1. Confirmed prerequisites: Docker Engine 29.7.2, Compose v5.5.0, openssl present, ports 80/443 free, ≥950 GB disk, ~7 GB RAM.
+2. Verified the documented remote registry `8gears.container-registry.com/8gcr/` contains all required images at tag `v2.15.0` (harbor-core, harbor-portal, harbor-jobservice, harbor-registry, harbor-registryctl, trivy-adapter, harbor-exporter).
+3. Generated the token service key: `openssl genpkey ... | openssl rsa -traditional -out deploy/compose/config/token_service_key.pem` + `chmod 644` (per guide).
+4. Created `deploy/compose/example/local/.env` from `.env.example`, setting `IMAGE_REPO=8gears.container-registry.com/8gcr/` (TLS disabled via `/dev/null` mounts, as shipped).
+5. Validated the compose config (`docker compose ... config`, exit 0).
+6. Pulled all 7 Harbor images at `v2.15.0`.
+7. Started the stack: `docker compose -f ../../docker-compose.yaml --env-file .env up -d` from `deploy/compose/example/local`.
+
+**Resulting state:** All 9 containers running and healthy (core, portal, jobservice, registry, registryctl, trivy-adapter, exporter, postgresql, redis). Harbor UI/API at http://localhost (admin / Harbor12345).
+
+**Known access points / commands:**
+- UI: http://localhost ; API: http://localhost/api/v2.0/ping
+- Push/pull: `echo 'Harbor12345' | docker login localhost:80 -u admin --password-stdin`
+- Stop: `docker compose -f ../../docker-compose.yaml --env-file .env down` (add `-v` to remove volumes)
+
+**Verification:** `/api/v2.0/ping` returned `Pong` (HTTP 200); portal root returned HTTP 200; `/api/v2.0/systeminfo` returned valid JSON. The documented push/pull workflow succeeded end-to-end: pushed `localhost:80/library/alpine:test`, re-pulled it, and the repository `library/alpine` (artifact_count 1) appears in the Harbor API.
+
+No incomplete work; the stack was left running.

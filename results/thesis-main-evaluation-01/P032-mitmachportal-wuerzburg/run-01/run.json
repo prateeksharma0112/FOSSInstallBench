@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P032-mitmachportal-wuerzburg__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-08T20:34:45.950277+02:00",
+    "finished_at": "2026-10-08T22:57:07.063414+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P032",
+    "project": {
+      "opencode_id": "10273",
+      "name": "Mitmachportal W\u00fcrzburg",
+      "description": "Digital participation platform of the city and district of W\u00fcrzburg for participatory budgeting, proposals and other participation formats.",
+      "catalogue_url": "https://opencode.de/de/software/mitmachportal-wurzburg-10273",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/wuerzburg/mitmachportal/mitmachportal",
+      "commit_sha": "5c3c7e15b27b371387054f5000dbeec64a16632a",
+      "license": "AGPL-3.0"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/wuerzburg/mitmachportal/mitmachportal/-/blob/5c3c7e15b27b371387054f5000dbeec64a16632a/README.md",
+      "language": "English",
+      "word_count": 939
+    },
+    "task_id": "P032-mitmachportal-wuerzburg"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 8541.266000000003,
+    "repository_setup_duration_seconds": 42.64100000000326,
+    "installation_duration_seconds": 6904.781000000017,
+    "validation_duration_seconds": 1579.7339999999967,
+    "command_count": 443,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 271,
+    "validation_command_count": 168
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P032-mitmachportal-wuerzburg/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P024-openproject__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-06T22:16:11.782011+02:00",
+    "finished_at": "2026-10-06T22:33:44.028343+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P024",
+    "project": {
+      "opencode_id": "8047",
+      "name": "OpenProject",
+      "description": "Web-based project management and project portfolio management software",
+      "catalogue_url": "https://opencode.de/de/software/open-project-8047",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject",
+      "commit_sha": "27a58131fa8dc521cd02c92c0b8e6a4854599d80",
+      "license": "GPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject/-/blob/27a58131fa8dc521cd02c92c0b8e6a4854599d80/docs/installation-and-operations/installation/docker/README.md",
+      "language": "English",
+      "word_count": 4511
+    },
+    "task_id": "P024-openproject"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1052.2660000000033,
+    "repository_setup_duration_seconds": 408.10999999998603,
+    "installation_duration_seconds": 571.5,
+    "validation_duration_seconds": 55.578000000008615,
+    "command_count": 39,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 23,
+    "validation_command_count": 12
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P024-openproject/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

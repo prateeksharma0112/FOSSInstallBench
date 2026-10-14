@@ -1,0 +1,18 @@
+## Installation Successful
+
+The **gitlab-profile** (KommunalEnergie) web application was installed and verified via the Docker Compose method from the supplied installation guide.
+
+### Method used (prebuilt images)
+1. **Prerequisites** — Docker Engine 29.7.2 and Docker Compose v5.5.0 already available.
+2. **Config** — Repo at `/workspace`; created `.env` from `.env.example` and set `API_CREDENTIAL_ENCRYPTION_KEY` (via `openssl rand -base64 32`), `APP_DOMAIN=localhost`, `INITIAL_ADMIN_PASSWORD`, `SWAGGER_HTTP_AUTH_PASSWORD`, `LETSENCRYPT_EMAIL`.
+3. **Registry** — `registry.opencode.de` reachable (401 on `/v2/`); `docker compose pull` succeeded anonymously, no `docker login` needed.
+4. **Start** — `docker compose pull` then `docker compose up -d`. PostgreSQL initialized the base schema; the web container applied 25 Yii migrations ("Migrated up successfully") before starting Apache.
+
+### Resulting state
+Four containers at `/workspace`: web, postgres (healthy), traefik (80/443), iothubsh-adapter — all running, restart count 0.
+
+### Verification
+- `https://localhost/` → 200 (login page)
+- `https://localhost/administration` → 200
+- `https://localhost/administration/docs/` → 401 unauth, 200 with `admin:swaggerpass123`
+- `POST https://localhost/api/v1/node/measurements` → 400 app validation error, confirming the route is live

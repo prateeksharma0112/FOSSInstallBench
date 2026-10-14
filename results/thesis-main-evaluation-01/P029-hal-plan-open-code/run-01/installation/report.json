@@ -1,0 +1,26 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## HAL-Plan / Buildplace \u2014 Installation Summary\n\n**Context:** Ubuntu 22.04 container, working directory `/workspace` (repository already checked out at target SHA). Docker Engine 29.7.2 present; no Node/pnpm preinstalled. Method used: **Manual Setup (Option 2)** from the guide, supplemented by repo `.env.defaults`, `scripts/setupDb.ts`, and `.devcontainer/` files. The Dev Containers method (Option 1) was not used because it requires the VS Code Dev Containers extension/UI.\n\n**Prerequisites installed:**\n- Node.js 24.15.0 \u2192 `https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.xz`, extracted to `/usr/local` (`node`, `npm` now in PATH).\n- pnpm 11.2.2 \u2192 `npm install -g pnpm@11.2.2`.\n\n**Backing services (Docker containers, running):**\n- `postgis` \u2014 `postgis/postgis:17-3.5`, `0.0.0.0:5432->5432`, `POSTGRES_USER=postgres`, `POSTGRES_PASSWORD=postgrespw`, `POSTGRES_DB=ffy_dev`.\n- `valkey-cache` \u2014 `valkey/valkey:8.1.4`, `0.0.0.0:6379->6379`, `maxmemory-policy allkeys-lru`.\n- `valkey-queue` \u2014 `valkey/valkey:8.1.4`, `0.0.0.0:6380->6379`, `maxmemory-policy noeviction`, appendonly.\n\n**Repository setup (in `/workspace`):**\n- `cp .env.defaults .env`, then edited `.env`: generated random `SESSION_KEY` and `CRYPTO_SECRET` (32-byte hex via Node crypto), set `WEBAPP_DEV_USER_PW=devpassword123`, appended `VALKEY_PERSISTENT_SERVER=localhost` and `VALKEY_PERSISTENT_PORT=6380`.\n- `pnpm install` (success, ~2m52s).\n- `pnpm prisma generate` (Prisma client + Pothos types).\n- `pnpm setupDb` \u2192 created databases `ffy_shadow`, `ffy_test` (ffy_dev created by container).\n- `pnpm prisma migrate reset --force` \u2192 applied 7 migrations and ran the seed.\n- `pnpm codegen` \u2192 generated GraphQL types and gql-tada output.\n- Copied `web-ifc` wasm files into `web/public/web-ifc/` (per `.devcontainer/setup.sh`).\n\n**Startup / access:**\n- Start command: `pnpm dev` (currently running in background; log at `/tmp/dev.log`).\n- App URL: http://localhost:3000 (HTTP 200). GraphQL endpoint at `http://localhost:3000/api/graphql`. Dev inspector on 127.0.0.1:9229.\n\n**State:** Fully installed and running. No incomplete work in the documented dev path. Production build (`pnpm build`/`pnpm start`) was not exercised.",
+  "additional_actions": [
+    "Installed Node.js 24.15.0 from nodejs.org tarball and pnpm 11.2.2 globally (not present in base image).",
+    "Pinned Docker image versions from the repo devcontainer config (postgis/postgis:17-3.5, valkey/valkey:8.1.4) instead of untagged images.",
+    "Assigned an independent host port 6380 to valkey-queue while keeping container port 6379 (guide's docker run maps 6380:6379).",
+    "Generated random SESSION_KEY and CRYPTO_SECRET values and set WEBAPP_DEV_USER_PW in .env.",
+    "Added VALKEY_PERSISTENT_SERVER/VALKEY_PERSISTENT_PORT to .env (guide's minimum config, not in .env.defaults).",
+    "Copied web-ifc .wasm files into web/public/web-ifc/ as the devcontainer setup script does.",
+    "Ran pnpm prisma migrate reset with --force for non-interactive execution."
+  ],
+  "verification": "Ran multiple executable checks, all exit code 0:\n1. `curl -s -o /dev/null -w \"%{http_code}\" http://localhost:3000/` \u2192 `200` (app HTML shell returned).\n2. `curl -s -X POST http://localhost:3000/api/graphql -H 'Content-Type: application/json' -d '{\"query\":\"{ __typename }\"}'` \u2192 `{\"data\":{\"__typename\":\"Query\"}}`.\n3. `docker exec postgis psql -U postgres -d ffy_dev -tc \"select count(*) from information_schema.tables where table_schema='public';\"` \u2192 `70`.\n4. `docker exec valkey-cache valkey-cli ping` and `docker exec valkey-queue valkey-cli ping` \u2192 `PONG` both.\n5. `pnpm prisma migrate status` \u2192 `7 migrations found ... Database schema is up to date!`.\n6. `docker ps` shows postgis, valkey-cache, valkey-queue all Up with expected port mappings.",
+  "reported_outcome_evidence": [
+    "curl http://localhost:3000/ -> HTTP 200 (HTML app shell served)",
+    "curl POST http://localhost:3000/api/graphql {\"query\":\"{ __typename }\"} -> {\"data\":{\"__typename\":\"Query\"}}",
+    "psql count information_schema.tables in ffy_dev -> 70 tables",
+    "valkey-cache PING -> PONG; valkey-queue PING -> PONG",
+    "pnpm prisma migrate status -> '7 migrations found' and 'Database schema is up to date!'",
+    "pnpm install -> 'Done in 2m 52.1s'; pnpm setupDb -> 'Database ffy_shadow created', 'Database ffy_test created', 'DB successfully set up!'",
+    "pnpm codegen -> 'Introspection output was generated successfully'",
+    "pnpm dev log -> 'Server listening at http://127.0.0.1:3000'"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

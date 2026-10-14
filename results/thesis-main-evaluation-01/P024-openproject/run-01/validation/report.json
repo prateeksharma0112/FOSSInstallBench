@@ -1,0 +1,19 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "docker ps --filter name=openproject => 'openproject Up 7 minutes 0.0.0.0:8080->80/tcp, [::]:8080->80/tcp'",
+    "docker inspect openproject => running restarts=0 started=2026-10-06T20:26:04Z",
+    "docker inspect image digest => openproject/openproject@sha256:1931b0bcdceb07c38293c3afafa7fe3da09e9fa76144604b92813d6c6d05c695 (matches summary)",
+    "docker inspect mounts => /var/lib/openproject/pgdata->/var/openproject/pgdata (bind), /var/lib/openproject/assets->/var/openproject/assets (bind)",
+    "env check => OPENPROJECT_HOST__NAME=localhost:8080, OPENPROJECT_HTTPS=false, OPENPROJECT_DEFAULT__LANGUAGE=en, RAILS_ENV=production, SECRET_KEY_BASE set",
+    "curl /health_check => 200; curl / => 302 to http://localhost:8080/login; curl /login => 200 (title 'Sign in | OpenProject')",
+    "curl /assets/frontend/main-YSKFBRMR.js => 200 application/javascript",
+    "curl /api/v3/configuration => 200 JSON with hostName 'localhost:8080'",
+    "ps aux in container => postgres 17, apache2, puma 8.0.2 tcp://0.0.0.0:8080, worker, hocuspocus, memcached, postfix",
+    "psql via 127.0.0.1 => users=4, projects=2, work_packages=37; admin user id=4 admin=t status=1 force_password_change=f",
+    "rails runner OpenProject::VERSION => 17.9.1",
+    "host pgdata PG_VERSION=17, 80M; assets 916K",
+    "POST /login admin/admin => 422 invalid credentials (expected: custom password set post-install, force_password_change=f confirmed in DB)"
+  ],
+  "assessment_summary": "I validated the running OpenProject installation end-to-end rather than relying on file existence. I confirmed the containerized deployment matches the guide's all-in-one method: container `openproject` running with zero restarts, image openproject/openproject:17 pinned to digest sha256:1931b0bc\u202605c695 (identical to the install summary), correct port mapping 0.0.0.0:8080->80/tcp, and the guide's persistent bind mounts for pgdata and assets. I verified all key environment variables from the guide/advanced config are present (host name, HTTPS=false, default language, SECRET_KEY_BASE, production Rails env). I then exercised runtime behavior: /health_check returns 200, / returns 302 to /login, /login returns a valid 200 HTML sign-in page, static frontend assets are served, and the REST API (/api/v3/configuration) returns valid JSON with the correct host name \u2014 demonstrating the application, Apache front-end, and Rails/Puma stack all function. I inspected upstream processes (PostgreSQL 17, Apache, Puma, worker, hocuspocus, memcached, postfix) and queried the database directly over TCP: 4 users, 2 projects, 37 work packages, and admin user present (status active). Rails reports version 17.9.1. The only check that did not succeed was logging in with the guide's default admin/admin, which returned 422 invalid credentials; however the database shows force_password_change=f and the install summary documents that the admin password was intentionally changed post-install via rails runner. I therefore attribute this to a legitimate post-install credential change rather than a failure to install or operate. No check required the prohibited actions (no installs, migrations, or repairs). Overall the evidence establishes the software is installed completely and operational."
+}

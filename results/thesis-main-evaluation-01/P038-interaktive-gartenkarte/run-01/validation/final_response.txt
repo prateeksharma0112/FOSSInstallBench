@@ -1,0 +1,1 @@
+Validation complete. The "Interaktive Gartenkarte" (Laravel 12 + Inertia/Vue 3) install via the guide's local dev path (`php artisan serve` + `npm run dev`) is operational.

@@ -1,0 +1,26 @@
+open_taki was installed successfully and verified end-to-end.
+
+**Method:** The guide's primary method — deploying the prebuilt image `codeberg.org/kosmos-eu/open_taki:latest` as a drop-in Apache Tika replacement — was used. The image pulled successfully from codeberg.org and was launched via Docker Compose with the service named `tika` listening on port 9998, matching the guide.
+
+**Artifacts created (in /workspace):**
+- `/workspace/taki-config.yaml` — config file exactly as specified in the guide (llm, collabora, whisper, embedding, pdf, fallback, routing sections). It is mounted into the container at `/etc/open_taki/config.yaml:ro`.
+- `/workspace/tika.yml` — compose file with the `tika` service using the open_taki image, the config volume mount, `restart: always`, and port 9998.
+
+**Working directory / execution context:** Docker Engine 29.7.2 (Compose v5.5.0) running natively in the container; container `workspace-tika-1` is up, healthy, and publishing `0.0.0.0:9998->9998/tcp`.
+
+**Verification (all passed):**
+- `GET http://localhost:9998/` → `{"name":"open_taki","version":"0.9.0","status":"ok","features":{"archive":true,"audio":false,"docmeta":true,"email":true,"image":true,"office":true,"pdf":true,"taki_v2":true},...}` (HTTP 200)
+- `GET /version` → `open_taki 0.9.0`
+- `PUT /rmeta/text` (Content-Type: text/plain) → correct Tika-style JSON with `X-TAKI:method: passthrough`
+- `PUT /tika/text` (text/html) → extracted via `pandoc`
+- `PUT /rmeta/text` (application/pdf) → extracted via `pdftotext` (2 pages, text intact)
+- `PUT /rmeta/text` (DOCX) → extracted via `pandoc`
+- v2 protocol request (`X-Taki-Protocol: v2`, `X-Taki-Features: meta`) → returns extended response with `X-TAKI:routing`
+- Startup logs confirm all config loaded: `open_taki 0.9.0 starting on :9998`, LLM/Collabora/Whisper/DocMeta subsystems initialized.
+
+**Environment observations (not failures):**
+- The guide references version 0.7.0, but the current published image is 0.9.0 — a minor documentation/version drift only; functionality matches.
+- The prebuilt image does NOT contain `ffmpeg` (the repo's own Dockerfile installs it). Consequently video transcription (which the guide lists as requiring ffmpeg) would not work out of the box with the prebuilt image; audio/Whisper is disabled by default anyway. This is a gap between the guide/image and the source Dockerfile, but does not affect the core installation.
+- LLM, Collabora, Whisper, and embedding backends are external services not present in this environment; they are optional enrichment stages. All core Tika-compatible extraction paths (text, HTML, PDF, DOCX) were verified working without them.
+
+**Access point:** open_taki API at http://localhost:9998/ (container port 9998).

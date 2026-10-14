@@ -1,0 +1,676 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/digitalservicebund/elterngeldrechner /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/digitalservicebund/elterngeldrechner.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin cbde2ebfd8e78e21c60e9064bfe8f665113a1b98",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/digitalservicebund/elterngeldrechner.git/\nFrom https://gitlab.opencode.de/digitalservicebund/elterngeldrechner\n * branch            cbde2ebfd8e78e21c60e9064bfe8f665113a1b98 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach cbde2ebfd8e78e21c60e9064bfe8f665113a1b98",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at cbde2eb Merge branch 'renovate/posthog-react-1.x-lockfile' into 'main'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = cbde2ebfd8e78e21c60e9064bfe8f665113a1b98",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd / 2>/dev/null; pwd; ls -la; echo \"---\"; find . -maxdepth 2 -name \"mise.toml\" -o -maxdepth 2 -name \"package.json\" 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "/\ntotal 60\ndr-xr-xr-x   1 root   root    4096 Oct  9 22:27 .\ndr-xr-xr-x   1 root   root    4096 Oct  9 22:27 ..\nlrwxrwxrwx   1 root   root       7 Aug 10 14:50 bin -> usr/bin\ndrwxr-xr-x   2 root   root    4096 Apr 18  2022 boot\ndrwxr-xr-x  10 root   root    2460 Oct  9 22:27 dev\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:27 etc\ndrwxr-xr-x   2 root   root    4096 Apr 18  2022 home\nlrwxrwxrwx   1 root   root       7 Aug 10 14:50 lib -> usr/lib\nlrwxrwxrwx   1 root   root       9 Aug 10 14:50 lib32 -> usr/lib32\nlrwxrwxrwx   1 root   root       9 Aug 10 14:50 lib64 -> usr/lib64\nlrwxrwxrwx   1 root   root      10 Aug 10 14:50 libx32 -> usr/libx32\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 media\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 mnt\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:27 opt\ndr-xr-xr-x 457 nobody nogroup    0 Oct  9 22:27 proc\ndrwx------   2 root   root    4096 Aug 10 14:58 root\ndrwxr-xr-x   1 root   root    4096 Oct  9 22:27 run\nlrwxrwxrwx   1 root   root       8 Aug 10 14:50 sbin -> usr/sbin\ndrwxr-xr-x   2 root   root    4096 Aug 10 14:50 srv\ndr-xr-xr-x  13 nobody nogroup    0 Oct  7 20:47 sys\ndrwxrwxrwt   1 root   root    4096 Sep  2 16:03 tmp\ndrwxr-xr-x   1 root   root    4096 Aug 10 14:50 usr\ndrwxr-xr-x   1 root   root    4096 Aug 10 14:58 var\ndrwxr-xr-x   8 root   root    4096 Oct  9 22:28 workspace\n---\n./workspace/package.json\n./workspace/mise.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls -la && echo \"=== git ===\" && git log --oneline -3 && echo \"=== mise.toml ===\" && cat mise.toml && echo \"=== package.json ===\" && cat package.json",
+      "exit_code": 0,
+      "stdout": "total 504\ndrwxr-xr-x 8 root root   4096 Oct  9 22:28 .\ndr-xr-xr-x 1 root root   4096 Oct  9 22:27 ..\n-rw-r--r-- 1 root root    215 Oct  9 22:28 .editorconfig\ndrwxr-xr-x 8 root root   4096 Oct  9 22:28 .git\n-rw-r--r-- 1 root root     19 Oct  9 22:28 .gitattributes\n-rw-r--r-- 1 root root   1046 Oct  9 22:28 .gitignore\n-rw-r--r-- 1 root root   7190 Oct  9 22:28 .gitlab-ci.yml\n-rw-r--r-- 1 root root     43 Oct  9 22:28 .npmrc\n-rw-r--r-- 1 root root  13827 Oct  9 22:28 LICENSE\n-rw-r--r-- 1 root root   7406 Oct  9 22:28 README.md\n-rw-r--r-- 1 root root    145 Oct  9 22:28 allowed-licenses\ndrwxr-xr-x 2 root root   4096 Oct  9 22:28 architecture-decision-records\ndrwxr-xr-x 2 root root   4096 Oct  9 22:28 ci-image\n-rw-r--r-- 1 root root    567 Oct  9 22:28 cliff.toml\n-rw-r--r-- 1 root root   1034 Oct  9 22:28 fnox.toml\n-rw-r--r-- 1 root root   1397 Oct  9 22:28 hk.pkl\n-rw-r--r-- 1 root root    143 Oct  9 22:28 license-clarifications.json\n-rw-r--r-- 1 root root    434 Oct  9 22:28 lychee.toml\n-rw-r--r-- 1 root root  19809 Oct  9 22:28 mise.lock\n-rw-r--r-- 1 root root    618 Oct  9 22:28 mise.preview.toml\n-rw-r--r-- 1 root root    737 Oct  9 22:28 mise.production.toml\n-rw-r--r-- 1 root root    559 Oct  9 22:28 mise.staging.toml\n-rw-r--r-- 1 root root   4103 Oct  9 22:28 mise.toml\n-rw-r--r-- 1 root root   2970 Oct  9 22:28 oxlint.config.ts\n-rw-r--r-- 1 root root 304616 Oct  9 22:28 package-lock.json\n-rw-r--r-- 1 root root   3015 Oct  9 22:28 package.json\n-rw-r--r-- 1 root root   1212 Oct  9 22:28 playwright.smoke.config.ts\n-rw-r--r-- 1 root root    150 Oct  9 22:28 postcss.config.ts\n-rw-r--r-- 1 root root    267 Oct  9 22:28 posthog.json\n-rw-r--r-- 1 root root   1237 Oct  9 22:28 publiccode.yml\n-rw-r--r-- 1 root root   6371 Oct  9 22:28 renovate.json5\ndrwxr-xr-x 2 root root   4096 Oct  9 22:28 scripts\ndrwxr-xr-x 9 root root   4096 Oct  9 22:28 src\n-rw-r--r-- 1 root root    374 Oct  9 22:28 stylelint.config.ts\n-rw-r--r-- 1 root root   3876 Oct  9 22:28 tailwind.config.ts\ndrwxr-xr-x 3 root root   4096 Oct  9 22:28 tests\n-rw-r--r-- 1 root root    744 Oct  9 22:28 tsconfig.json\n-rw-r--r-- 1 root root    439 Oct  9 22:28 tsconfig.vite.json\n-rw-r--r-- 1 root root    273 Oct  9 22:28 vex.openvex\n-rw-r--r-- 1 root root   7721 Oct  9 22:28 vite.config.ts\n=== git ===\ncbde2eb Merge branch 'renovate/posthog-react-1.x-lockfile' into 'main'\n=== mise.toml ===\n[settings]\nlockfile = true\nminimum_release_age = \"7d\"\n\n[tools]\nnode = \"24.18.0\"\n\nawscli = \"2.36.13\"\nfnox = \"1.31.1\"\ngit-cliff = \"2.13.1\"\nhk = \"1.53.0\"\njq = \"1.8.2\"\nlychee = \"0.24.2\"\n1password-cli = \"2.38.1\"\nglab = \"1.111.0\"\n\n[tools.trivy]\nversion = \"0.72.0\"\nminimum_release_age = \"1d\"\n\n[env]\nAWS_ENDPOINT_URL = \"https://object.storage.eu01.onstackit.cloud\"\n\nPOSTHOG_CLI_HOST = \"https://eu.posthog.com\"\nPOSTHOG_CLI_PROJECT_ID = \"118340\"\n\n[task_config]\nincludes = [\"scripts\"]\n\n[tasks.check]\ndescription = \"Every check that has to pass before a commit\"\ndepends = [\"static-checks\", \"test-suite\"]\n\n[tasks.static-checks]\ndescription = \"Every check that needs no test run\"\ndepends = [\"format\", \"type-check\", \"lint\", \"stylelint\"]\n\n[tasks.format]\ndescription = \"Check formatting with prettier\"\nrun = \"npm run --silent format\"\n\n[tasks.type-check]\ndescription = \"Type-check the project with tsc\"\nrun = \"npm run --silent type-check\"\n\n[tasks.lint]\ndescription = \"Lint TypeScript sources with oxlint\"\nrun = \"npm run --silent lint\"\n\n[tasks.stylelint]\ndescription = \"Lint CSS sources with stylelint\"\nrun = \"npm run --silent stylelint\"\n\n[tasks.test-suite]\ndescription = \"Run the vitest suite\"\nrun = \"npm run --silent test\"\n\n[tasks.link-check]\ndescription = \"Check the external links in the sources and the documentation\"\nrun = 'lychee --no-progress . \"src/**/*.ts\" \"src/**/*.tsx\"'\n\n[tasks.check-posthog-schema]\ndescription = \"Report whether the generated PostHog schema still matches the project\"\nrun = \"fnox exec -- npm run --silent posthog:schema:status\"\n\n[tasks.pull-posthog-schema]\ndescription = \"Regenerate the typed PostHog schema from the project\"\nrun = \"fnox exec -- npm run --silent posthog:schema:pull\"\n\n[tasks.build]\ndescription = \"Build the widget for the environment selected with MISE_ENV\"\nrun = 'npm run build:${EGR_BUILD_MODE:?no environment selected, use MISE_ENV=staging, production or preview}'\n\n[tasks.publish-assets]\nhide = true # Reached through scripts/deploy.sh, which selects the environment first.\ndescription = \"Build, verify and upload the widget into the bucket root\"\nrun = [\"scripts/check-build-artifacts.sh\", \"fnox exec --no-defaults -- scripts/upload-asset-build.sh\"]\ndepends = [\"build\"]\n\n[tasks.publish-preview]\nhide = true # Reached through scripts/deploy.sh, which selects the environment first.\ndescription = \"Build, verify and upload the standalone preview page\"\nrun = [\"scripts/check-build-artifacts.sh\", \"fnox exec --no-defaults -- scripts/upload-preview-build.sh\"]\ndepends = [\"build\"]\n\n[tasks.unpublish-preview]\nhide = true # Reached through scripts/deploy.sh, which selects the environment first.\ndescription = \"Delete the preview from the staging bucket\"\nrun = \"fnox exec --no-defaults -- scripts/remove-preview.sh\"\n\n[tasks.start]\ndescription = \"Serve the widget inside the Familienportal host page snapshot\"\ndepends = [\"generate-app-wrapper\"]\nrun = \"npm start\"\n\n[tasks.audit]\ndescription = \"Collection of all audits in our project\"\ndepends = [\"audit-licenses\", \"audit-runtime-vulnerabilities\", \"audit-secrets\"]\n\n[tasks.audit-licenses]\ndescription = \"Check dependency licences against ./allowed-licenses\"\nrun = \"npm run --silent audit-licenses\"\n\n[tasks.audit-runtime-vulnerabilities]\ndescription = \"Scans the dependencies that reach the bundle, medium severity and up\"\nrun = \"trivy --quiet filesystem . --severity MEDIUM,HIGH,CRITICAL --exit-code 1 --vex vex.openvex\"\n\n[tasks.audit-all-vulnerabilities]\ndescription = \"Scans production and dev dependencies with severity from medium to critical\"\nrun = \"trivy --quiet filesystem . --include-dev-deps --severity MEDIUM,HIGH,CRITICAL --exit-code 1 --vex vex.openvex\"\n\n[tasks.audit-secrets]\ndescription = \"Scan the working tree for committed secrets with trivy\"\nrun = 'trivy --quiet filesystem . --scanners secret --exit-code 1'\n\n[tasks.generate-sbom]\ndescription = \"Write the CycloneDX bill of materials\"\nrun = \"trivy --quiet filesystem . --include-dev-deps --scanners vuln --format cyclonedx --output sbom.cdx\"\n\n[tasks.release-notes]\ndescription = \"Render the changelog of the most recent tag to stdout\"\nrun = \"git-cliff --latest\"\n=== package.json ===\n{\n  \"name\": \"@egr/egr-app\",\n  \"type\": \"module\",\n  \"files\": [\n    \"dist/*\",\n    \"src/*\"\n  ],\n  \"scripts\": {\n    \"start\": \"vite\",\n    \"build:development\": \"VITE_PREVIEW_BANNER=true vite build --mode development\",\n    \"build:production\": \"VITE_PREVIEW_BANNER=true vite build --mode production\",\n    \"build:staging\": \"VITE_PREVIEW_BANNER=true vite build --mode staging\",\n    \"test\": \"LC_ALL=de-DE.utf8 vitest run\",\n    \"test:smoke\": \"playwright test --config playwright.smoke.config.ts\",\n    \"format\": \"f() { prettier --ignore-unknown --check ${@:-.}; }; f\",\n    \"format-fix\": \"f() { prettier --ignore-unknown --write ${@:-.}; }; f\",\n    \"format-list\": \"f() { prettier --ignore-unknown --list-different ${@:-.}; }; f\",\n    \"type-check\": \"tsc\",\n    \"lint\": \"oxlint --deny-warnings --no-error-on-unmatched-pattern\",\n    \"lint-fix\": \"oxlint --fix --no-error-on-unmatched-pattern\",\n    \"stylelint\": \"f() { stylelint ${@:-\\\"src/**/*.css\\\"}; }; f\",\n    \"posthog:schema:status\": \"posthog-cli exp schema status\",\n    \"posthog:schema:pull\": \"posthog-cli exp schema pull\",\n    \"audit-licenses\": \"license-checker-rseidelsohn --onlyAllow=$(tr '\\n' ';' < ./allowed-licenses) --clarificationsFile ./license-clarifications.json --excludePackages='@egr/egr-app@1.1.2' --out /dev/null\"\n  },\n  \"engines\": {\n    \"node\": \"24\",\n    \"npm\": \"11\"\n  },\n  \"devDependencies\": {\n    \"@axe-core/playwright\": \"^4.12.1\",\n    \"@iconify-json/material-symbols\": \"^1.2.87\",\n    \"@playwright/test\": \"^1.61.1\",\n    \"@posthog/cli\": \"^0.14.0\",\n    \"@svgr/core\": \"^8.1.0\",\n    \"@svgr/plugin-jsx\": \"^8.1.0\",\n    \"@tailwindcss/container-queries\": \"^0.1.1\",\n    \"@testing-library/jest-dom\": \"^6.9.1\",\n    \"@testing-library/react\": \"^16.3.2\",\n    \"@testing-library/user-event\": \"^14.6.1\",\n    \"@types/node\": \"^26.1.1\",\n    \"@types/react\": \"^19.2.17\",\n    \"@types/react-dom\": \"^19.2.3\",\n    \"@vitejs/plugin-react\": \"^6.0.4\",\n    \"autoprefixer\": \"^10.5.4\",\n    \"axe-core\": \"^4.12.1\",\n    \"fast-check\": \"^4.9.0\",\n    \"http-server\": \"^14.1.1\",\n    \"jsdom\": \"^29.1.1\",\n    \"license-checker-rseidelsohn\": \"^5.0.1\",\n    \"node-xlsx\": \"^0.24.0\",\n    \"original-rechner\": \"git+https://gitlab.opencode.de/digitalservicebund/elterngeldrechner-legacy.git#69ad27a02bb5105e10890338845cf21b727a0c27\",\n    \"oxlint\": \"^1.75.0\",\n    \"oxlint-tsgolint\": \"^7.0.2001\",\n    \"postcss\": \"^8.5.24\",\n    \"prettier\": \"^3.9.6\",\n    \"stylelint\": \"^17.14.1\",\n    \"stylelint-config-recommended\": \"^18.0.0\",\n    \"tailwindcss\": \"^3.4.17\",\n    \"typescript\": \"^6.0.3\",\n    \"unplugin-icons\": \"^23.0.1\",\n    \"vite\": \"^8.1.5\",\n    \"vitest\": \"^4.1.10\"\n  },\n  \"dependencies\": {\n    \"@cantoo/pdf-lib\": \"^2.7.4\",\n    \"@date-fns/utc\": \"^2.1.1\",\n    \"@hookform/resolvers\": \"^5.4.3\",\n    \"@js-temporal/polyfill\": \"^0.5.1\",\n    \"@posthog/react\": \"^1.10.3\",\n    \"classnames\": \"^2.5.1\",\n    \"date-fns\": \"^4.4.0\",\n    \"posthog-js\": \"^1.407.2\",\n    \"react\": \"^19.2.8\",\n    \"react-dom\": \"^19.2.8\",\n    \"react-hook-form\": \"^7.82.0\",\n    \"react-imask\": \"^7.6.1\",\n    \"react-router\": \"^8.3.0\",\n    \"zod\": \"^4.4.3\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && for t in mise node npm npx hk aws fnox git jq; do printf \"%s: \" \"$t\"; command -v \"$t\" || echo \"NOT FOUND\"; done; echo \"---node---\"; node --version 2>/dev/null; npm --version 2>/dev/null; echo \"---npmrc---\"; cat .npmrc; echo \"---os---\"; cat /etc/os-release | head -3; whoami",
+      "exit_code": 0,
+      "stdout": "mise: NOT FOUND\nnode: NOT FOUND\nnpm: NOT FOUND\nnpx: NOT FOUND\nhk: NOT FOUND\naws: NOT FOUND\nfnox: NOT FOUND\ngit: /usr/bin/git\njq: NOT FOUND\n---node---\n---npmrc---\nengine-strict = true\nignore-scripts = true\n---os---\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nroot\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && curl -sI https://mise.run 2>&1 | head -5; echo \"exit=$?\"; echo \"---\"; curl -sI https://registry.npmjs.org 2>&1 | head -3",
+      "exit_code": 0,
+      "stdout": "HTTP/2 405 \ndate: Fri, 09 Oct 2026 22:28:12 GMT\ncontent-type: text/plain;charset=UTF-8\nallow: GET\nreport-to: {\"group\":\"cf-nel\",\"max_age\":604800,\"endpoints\":[{\"url\":\"https://a.nel.cloudflare.com/report/v4?s=p%2FMDs2TQHg6RmhMFjZKJnHU%2BBZ7j%2B2dAbkAVOMwNkHB5CspRbBVQEqcpnVFsk0WyL0NFS%2BNLHqX9gJ8Df%2FP8DWGeL6xEM2CLseABzme2wGWfzLPbY1ZUIX8hzg%3D%3D\"}]}\nexit=0\n---\nHTTP/2 200 \ndate: Fri, 09 Oct 2026 22:28:12 GMT\ncontent-type: application/json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s https://mise.run -o mise_install.sh && echo \"exit=$?\" && wc -l mise_install.sh && head -50 mise_install.sh",
+      "exit_code": 0,
+      "stdout": "exit=0\n427 mise_install.sh\n#!/bin/sh\nset -eu\n\n#region logging setup\nif [ \"${MISE_DEBUG-}\" = \"true\" ] || [ \"${MISE_DEBUG-}\" = \"1\" ]; then\n  debug() {\n    echo \"$@\" >&2\n  }\nelse\n  debug() {\n    :\n  }\nfi\n\nif [ \"${MISE_QUIET-}\" = \"1\" ] || [ \"${MISE_QUIET-}\" = \"true\" ]; then\n  info() {\n    :\n  }\nelse\n  info() {\n    echo \"$@\" >&2\n  }\nfi\n\nwarn() {\n  printf '%s\\n' \"$*\" >&2\n}\n\nerror() {\n  echo \"$@\" >&2\n  exit 1\n}\n\nunsupported_arch() {\n  arch=\"$1\"\n  warn \"unsupported architecture: $arch\"\n  warn \"\"\n  warn \"mise does not provide prebuilt binaries for this platform.\"\n  warn \"If Rust/Cargo is available, install from source with:\"\n  warn \"  cargo install --locked mise\"\n  exit 1\n}\n#endregion\n\n#region environment setup\nget_os() {\n  os=\"$(uname -s)\"\n  if [ \"$os\" = Darwin ]; then\n    echo \"macos\"\n  elif [ \"$os\" = Linux ]; then\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "uname -m; echo \"---\"; head -40 /workspace/mise.lock; echo \"...\"; grep -n \"mise\" /workspace/mise.lock | head; echo \"---check install dir---\"; grep -n \"install_path\\|MISE_INSTALL_PATH\\|\\.local/bin\" /tmp/mise_install.sh | head",
+      "exit_code": 0,
+      "stdout": "x86_64\n---\n# @generated - this file is auto-generated by `mise lock` https://mise.jdx.dev/dev-tools/mise-lock.html\n\n[[tools.1password-cli]]\nversion = \"2.38.1\"\nbackend = \"vfox:1password-cli\"\n\n[tools.1password-cli.\"platforms.linux-arm64\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_linux_arm64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.linux-arm64-musl\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_linux_arm64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.linux-x64\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_linux_amd64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.linux-x64-musl\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_linux_amd64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.macos-arm64\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_darwin_arm64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.macos-x64\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_darwin_amd64_v2.38.1.zip\"\n\n[tools.1password-cli.\"platforms.windows-x64\"]\nurl = \"https://cache.agilebits.com/dist/1P/op2/pkg/v2.38.1/op_windows_amd64_v2.38.1.zip\"\n\n[[tools.awscli]]\nversion = \"2.36.13\"\nbackend = \"aqua:aws/aws-cli\"\n\n[tools.awscli.\"platforms.linux-arm64\"]\nurl = \"https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.36.13.zip\"\n\n[tools.awscli.\"platforms.linux-arm64-musl\"]\nurl = \"https://awscli.amazonaws.com/awscli-exe-linux-aarch64-2.36.13.zip\"\n\n[tools.awscli.\"platforms.linux-x64\"]\nchecksum = \"blake3:3cc5f7ff8488a0cf5103fa4e9ec5c8fe8f1396db15fc80ae7e0ff0f2cc2ad240\"\nurl = \"https://awscli.amazonaws.com/awscli-exe-linux-x86_64-2.36.13.zip\"\n...\n1:# @generated - this file is auto-generated by `mise lock` https://mise.jdx.dev/dev-tools/mise-lock.html\n---check install dir---\n325:  install_path=\"${MISE_INSTALL_PATH:-$HOME/.local/bin/mise}\"\n326:  install_dir=\"$(dirname \"$install_path\")\"\n330:  if [ -z \"${MISE_VERSION:-}\" ] && [ -x \"$install_path\" ]; then\n331:    existing_version=\"$(installed_mise_version \"$install_path\")\"\n337:        info \"mise: $install_path is already at $existing_version, keeping installed version\"\n345:  # the wider PATH) so that skipping never leaves install_path missing.\n348:    if [ -x \"$install_path\" ]; then\n349:      existing_version=\"$(installed_mise_version \"$install_path\")\"\n351:        info \"mise: $install_path is already at version $version, skipping install\"\n372:  if [ -d \"$install_path\" ]; then\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && MISE_VERSION=v2025.10.0 sh /tmp/mise_install.sh 2>&1 | tail -20; echo \"exit=${PIPESTATUS[0]}\"; ls -la /root/.local/bin/ 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "mise: installing mise...\n#=#=#                                                                         \n##O#-#                                                                        \n##O=#  #                                                                      \n#=#=-#  #                                                                     \n-#O#- #   #                                                                   \n\n                                                                           0.5%\n#                                                                          1.5%\n##                                                                         4.1%\n######                                                                     8.8%\n###########                                                               16.6%\n################                                                          23.5%\n######################                                                    31.2%\n###########################                                               38.9%\n#################################                                         46.9%\n#######################################                                   54.9%\n############################################                              61.2%\n#################################################                         68.9%\n#####################################################                     74.0%\n########################################################                  78.0%\n###########################################################               82.3%\n##############################################################            86.2%\n#################################################################         90.6%\n#####################################################################     96.2%\n######################################################################## 100.0%\nmise: installed successfully to /root/.local/bin/mise\nmise: run `/root/.local/bin/mise --help` to get started\nexit=0\ntotal 63952\ndrwxr-xr-x 2 root root     4096 Oct  9 22:28 .\ndrwxr-xr-x 3 root root     4096 Oct  9 22:28 ..\n-rwxr-xr-x 1 root root 65477704 Oct  1  2025 mise\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise --version && mise trust 2>&1 | tail -5; echo \"trust_exit=$?\"",
+      "exit_code": 0,
+      "stdout": "2025.10.0 linux-x64 (2025-10-01)\nmise trusted /workspace\ntrust_exit=0\n",
+      "stderr": "mise WARN  mise version 2026.10.6 available\nmise WARN  To update, run mise self-update\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 550 mise install 2>&1 | tail -40; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "mise WARN  bin path does not exist: /root/.local/share/mise/installs/lychee/0.24.2/lychee\nmise lychee@0.24.2 \u2713 installed\n/root/.local/share/mise/plugins/1password-cli/bin/download: line 18: unzip: command not found\nmise 1password-cli@2.38.1 asdf-1password-cli: Could not extract /root/.local/share/mise/downloads/1password-cli/2.38.1/1password-cli-2.38.1\nmise ERROR ~/.local/share/mise/plugins/1password-cli/bin/download failed\n* Downloading 1password-cli release 2.38.1...\n/root/.local/share/mise/plugins/1password-cli/bin/download: line 18: unzip: command not found\nasdf-1password-cli: Could not extract /root/.local/share/mise/downloads/1password-cli/2.38.1/1password-cli-2.38.1\nmise jq@1.8.2        \u2713 GitHub attestations verified\nmise hk@1.53.0       extract hk-x86_64-unknown-linux-gnu.tar.gz\nmise WARN  gpg not found, skipping verification\nmise node@24.18.0    checksum node-v24.18.0-linux-x64.tar.gz\nmise git-cliff@2.13.1 checksum git-cliff-2.13.1-x86_64-unknown-linux-musl.tar.gz\nmise git-cliff@2.13.1 extract git-cliff-2.13.1-x86_64-unknown-linux-musl.tar.gz\nmise hk@1.53.0     \u2713 installed\nmise node@24.18.0    extract node-v24.18.0-linux-x64.tar.gz\nmise jq@1.8.2        checksum jq-linux-amd64\nmise jq@1.8.2        extract jq-linux-amd64\nmise jq@1.8.2      \u2713 installed\nmise git-cliff@2.13.1 \u2713 installed\nmise trivy@0.72.0    verify checksums with cosign\nmise trivy@0.72.0    checksum trivy_0.72.0_Linux-64bit.tar.gz\nmise trivy@0.72.0    extract trivy_0.72.0_Linux-64bit.tar.gz\nmise trivy@0.72.0  \u2713 installed\nmise node@24.18.0    node -v\nmise node@24.18.0    v24.18.0\nmise node@24.18.0    npm -v\nmise node@24.18.0    11.16.0\nmise node@24.18.0  \u2713 installed\nmise awscli@2.36.13  extract awscli-exe-linux-x86_64-2.36.13.zip\nmise awscli@2.36.13 \u2713 installed\nmise ERROR Failed to install asdf:mise-plugins/mise-1password-cli@2.38.1: \n   0: \u001b[91m~/.local/share/mise/plugins/1password-cli/bin/download exited with non-zero status: exit code 1\u001b[0m\n\nLocation:\n   \u001b[35msrc/plugins/script_manager.rs\u001b[0m:\u001b[35m184\u001b[0m\n\nBacktrace omitted. Run with RUST_BACKTRACE=1 environment variable to display it.\nRun with RUST_BACKTRACE=full to include source snippets.\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\nexit=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise ls 2>&1 | tail -30; echo \"---\"; command -v unzip || echo \"no unzip\"; ls /root/.local/share/mise/installs/",
+      "exit_code": 0,
+      "stdout": "mise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\n1password-cli  2.38.1 (missing)  /workspace/mise.toml  2.38.1\nawscli         2.36.13           /workspace/mise.toml  2.36.13\ngit-cliff      2.13.1            /workspace/mise.toml  2.13.1\nglab           1.111.0           /workspace/mise.toml  1.111.0\nhk             1.53.0            /workspace/mise.toml  1.53.0\njq             1.8.2             /workspace/mise.toml  1.8.2\nlychee         0.24.2            /workspace/mise.toml  0.24.2\nnode           24.18.0           /workspace/mise.toml  24.18.0\ntrivy          0.72.0            /workspace/mise.toml  0.72.0\n---\nno unzip\n1password-cli\nawscli\ngit-cliff\nglab\nhk\njq\nlychee\nnode\ntrivy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update -qq && apt-get install -y -qq unzip 2>&1 | tail -3; echo \"exit=$?\"; command -v unzip",
+      "exit_code": 0,
+      "stdout": "Preparing to unpack .../unzip_6.0-26ubuntu3.2_amd64.deb ...\nUnpacking unzip (6.0-26ubuntu3.2) ...\nSetting up unzip (6.0-26ubuntu3.2) ...\nexit=0\n/usr/bin/unzip\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 550 mise install 2>&1 | tail -15; echo \"exit=${PIPESTATUS[0]}\"; echo \"===\"; mise ls 2>&1 | grep -i missing || echo \"all installed\"",
+      "exit_code": 0,
+      "stdout": "mise ERROR ~/.local/share/mise/plugins/1password-cli/bin/install failed\n\n/root/.local/share/mise/plugins/1password-cli/lib/utils.bash: line 118: gpg: command not found\n/root/.local/share/mise/plugins/1password-cli/lib/utils.bash: line 119: gpg: command not found\nasdf-1password-cli: asdf-1password-cli download file verify fail with GPG.\nasdf-1password-cli: An error ocurred while installing 1password-cli 2.38.1.\nmise ERROR Failed to install asdf:1password-cli@2.38.1: \n   0: \u001b[91m~/.local/share/mise/plugins/1password-cli/bin/install exited with non-zero status: exit code 1\u001b[0m\n\nLocation:\n   \u001b[35msrc/plugins/script_manager.rs\u001b[0m:\u001b[35m184\u001b[0m\n\nBacktrace omitted. Run with RUST_BACKTRACE=1 environment variable to display it.\nRun with RUST_BACKTRACE=full to include source snippets.\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\nexit=1\n===\n1password-cli  2.38.1 (missing)  /workspace/mise.toml  2.38.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y -qq gnupg 2>&1 | tail -2; echo \"exit=$?\"; command -v gpg",
+      "exit_code": 0,
+      "stdout": "Setting up gnupg (2.2.27-3ubuntu2.5) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nexit=0\n/usr/bin/gpg\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 550 mise install 2>&1 | tail -12; echo \"exit=${PIPESTATUS[0]}\"; echo \"===\"; mise ls 2>&1 | grep -i missing || echo \"ALL INSTALLED\"",
+      "exit_code": 0,
+      "stdout": "gpg: Total number processed: 1\ngpg:               imported: 1\ngpg: Signature made Thu Jul 30 20:01:51 2026 UTC\ngpg:                using RSA key 3FEF9748469ADBE15DA7CA80AC2D62742012EA22\ngpg: Good signature from \"Code signing for 1Password <codesign@1password.com>\" [unknown]\ngpg: WARNING: This key is not certified with a trusted signature!\ngpg:          There is no indication that the signature belongs to the owner.\nPrimary key fingerprint: 3FEF 9748 469A DBE1 5DA7  CA80 AC2D 6274 2012 EA22\nmise 1password-cli@2.38.1 1password-cli 2.38.1 installation was successful!\nmise 1password-cli@2.38.1 \u2713 installed\nmise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise mise 2025.10.0 by @jdx \u2013 \u2713 done\nexit=0\n===\nALL INSTALLED\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 550 mise exec -- npm ci 2>&1 | tail -30; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "mise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nnpm warn deprecated whatwg-encoding@2.0.0: Use @exodus/bytes instead for a more spec-conformant and faster implementation\n\nadded 566 packages, and audited 567 packages in 37s\n\n131 packages are looking for funding\n  run `npm fund` for details\n\n24 vulnerabilities (1 low, 8 moderate, 15 high)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues possible (including breaking changes), run:\n  npm audit fix --force\n\nSome issues need review, and may require choosing\na different dependency.\n\nRun `npm audit` for details.\nnpm notice\nnpm notice New major version of npm available! 11.16.0 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\nexit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && hk install --global 2>&1 | tail -20; echo \"exit=${PIPESTATUS[0]}\"; echo \"---git hooks---\"; ls -la .git/hooks/ | head; git config --get core.hooksPath",
+      "exit_code": 1,
+      "stdout": "/bin/bash: line 3: hk: command not found\nexit=127\n---git hooks---\ntotal 68\ndrwxr-xr-x 2 root root 4096 Oct  9 22:28 .\ndrwxr-xr-x 8 root root 4096 Oct  9 22:28 ..\n-rwxr-xr-x 1 root root  478 Oct  9 22:28 applypatch-msg.sample\n-rwxr-xr-x 1 root root  896 Oct  9 22:28 commit-msg.sample\n-rwxr-xr-x 1 root root 4655 Oct  9 22:28 fsmonitor-watchman.sample\n-rwxr-xr-x 1 root root  189 Oct  9 22:28 post-update.sample\n-rwxr-xr-x 1 root root  424 Oct  9 22:28 pre-applypatch.sample\n-rwxr-xr-x 1 root root 1643 Oct  9 22:28 pre-commit.sample\n-rwxr-xr-x 1 root root  416 Oct  9 22:28 pre-merge-commit.sample\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && ls ~/.local/share/mise/shims/ 2>/dev/null; echo \"---exec---\"; mise exec -- hk --version 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "_awscrt.abi3.so\n_ruamel_yaml.cpython-314-x86_64-linux-gnu.so\naws\naws_completer\ncorepack\ngit-cliff\ngit-cliff-completions\ngit-cliff-mangen\nglab\nhk\njq\nlibbz2.so.1\nlibffi.so.6\nliblzma.so.5\nlibpython3.14.so.1.0\nlibreadline.so.6\nlibsqlite3.so\nlibtinfo.so.5\nlibuuid.so.1\nlibz.so.1\nnode\nnpm\nnpx\nop\ntrivy\n---exec---\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nhk 1.53.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise exec -- hk install --global 2>&1 | tail -20; echo \"exit=${PIPESTATUS[0]}\"; echo \"---\"; git config --global --get core.hooksPath; ls -la ~/.config/hk/ 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "mise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nError: `hk install --global` requires Git 2.54+ (config-based hooks). Detected git version does not support this. Upgrade git, or install per-repo with `hk install`.\n\nLocation:\n    src/cli/install.rs:66:17\nexit=1\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "git --version; echo \"---\"; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise exec -- hk install 2>&1 | tail -10; echo \"exit=${PIPESTATUS[0]}\"; git config --get core.hooksPath; ls -la .git/hooks/pre-commit .git/hooks/commit-msg 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "git version 2.34.1\n---\nmise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nhk Installed hk hook: /workspace/.git/hooks/pre-commit\nhk Installed hk hook: /workspace/.git/hooks/commit-msg\nexit=0\n-rwxr-xr-x 1 root root 75 Oct  9 22:30 .git/hooks/commit-msg\n-rwxr-xr-x 1 root root 75 Oct  9 22:30 .git/hooks/pre-commit\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 550 mise run build 2>&1 | tail -25; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "mise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[build] $ npm run build:${EGR_BUILD_MODE:?no environment selected, use MISE_ENV\u2026\nsh: 1: EGR_BUILD_MODE: no environment selected, use MISE_ENV=staging, production or preview\n[build] ERROR task failed\nexit=2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat mise.preview.toml; echo \"===\"; cat mise.staging.toml",
+      "exit_code": 0,
+      "stdout": "# Configuration of a branch preview, loaded with MISE_ENV=preview.\n\n[env]\nEGR_BUILD_MODE = \"staging\"\nEGR_BUCKET = \"egr-assets-staging\"\n\n# The bucket and the credentials that may write to it belong to the same\n# environment, so selecting one selects the other. See fnox.toml.\nFNOX_PROFILE = \"staging\"\n\nVITE_BASE_PATH = \"https://egr-assets-staging.object.storage.eu01.onstackit.cloud/preview/{{ env.PREVIEW_NAME }}/\"\nVITE_FEATURE_FLAG_POSTHOG_TESTING = \"true\"\nVITE_PUBLIC_POSTHOG_PROJECT_TOKEN = \"phc_rUbW5TOq15FHTu5PoKh3g4uCJNNN7MvHu2WJPUIjEpa\"\nVITE_PUBLIC_POSTHOG_HOST = \"https://ph-proxy.dev.tech.digitalservice.dev\"\n===\n# Configuration of the STACKIT staging environment, loaded with MISE_ENV=staging.\n\n[env]\nEGR_BUILD_MODE = \"staging\"\nEGR_BUCKET = \"egr-assets-staging\"\n\n# The bucket and the credentials that may write to it belong to the same\n# environment, so selecting one selects the other. See fnox.toml.\nFNOX_PROFILE = \"staging\"\n\nVITE_BASE_PATH = \"https://egr-assets-staging.object.storage.eu01.onstackit.cloud/\"\nVITE_PUBLIC_POSTHOG_PROJECT_TOKEN = \"phc_rUbW5TOq15FHTu5PoKh3g4uCJNNN7MvHu2WJPUIjEpa\"\nVITE_PUBLIC_POSTHOG_HOST = \"https://ph-proxy.dev.tech.digitalservice.dev\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && MISE_ENV=staging timeout 550 mise run build 2>&1 | tail -25; echo \"exit=${PIPESTATUS[0]}\"; echo \"---dist---\"; ls -la dist/ 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n\u001b[33m[EMPTY_IMPORT_META] \u001b[0m`import.meta` may not be a valid syntax with the `iife` output format.\n    \u001b[38;5;246m\u256d\u001b[0m\u001b[38;5;246m\u2500\u001b[0m\u001b[38;5;246m[\u001b[0m \\0vite/preload-helper.js:17:36 \u001b[38;5;246m]\u001b[0m\n    \u001b[38;5;246m\u2502\u001b[0m\n \u001b[38;5;246m17 \u2502\u001b[0m \u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mf\u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m(\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mm\u001b[0m\u001b[38;5;249mp\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mm\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249ma\u001b[0m\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249ml\u001b[0m\u001b[38;5;249mv\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249m)\u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249mu\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249mn\u001b[0m\u001b[38;5;249m \u001b[0mimport.meta\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249ml\u001b[0m\u001b[38;5;249mv\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249m(\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mp\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mc\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mf\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249m)\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m   \u2502\u001b[0m                                          \u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500  \n \u001b[38;5;240m   \u2502\u001b[0m                                               \u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500 This `import.meta` will be replaced with an empty object (`{}`) automatically. If this is desired, you can suppress this warning by adding `transform.define: { 'import.meta': {} }`. If `import.meta` needs to be kept as-is, you need to set the output format to `esm`.\n\u001b[38;5;246m\u2500\u2500\u2500\u2500\u256f\u001b[0m\n\n\u001b[33m[EMPTY_IMPORT_META] \u001b[0m`import.meta` may not be a valid syntax with the `iife` output format.\n    \u001b[38;5;246m\u256d\u001b[0m\u001b[38;5;246m\u2500\u001b[0m\u001b[38;5;246m[\u001b[0m \\0vite/preload-helper.js:21:5 \u001b[38;5;246m]\u001b[0m\n    \u001b[38;5;246m\u2502\u001b[0m\n \u001b[38;5;246m21 \u2502\u001b[0m \u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0mimport.meta\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mu\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249ml\u001b[0m\n \u001b[38;5;240m   \u2502\u001b[0m           \u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500  \n \u001b[38;5;240m   \u2502\u001b[0m                \u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500 This `import.meta` will be replaced with an empty object (`{}`) automatically. If this is desired, you can suppress this warning by adding `transform.define: { 'import.meta': {} }`. If `import.meta` needs to be kept as-is, you need to set the output format to `esm`.\n \u001b[38;5;240m   \u2502\u001b[0m \n \u001b[38;5;240m   \u2502\u001b[0m \u001b[38;5;115mHelp\u001b[0m: If you want to polyfill `import.meta.url` like Rollup does, check out the Document: https://rolldown.rs/in-depth/non-esm-output-formats#well-known-import-meta-properties\n\u001b[38;5;246m\u2500\u2500\u2500\u2500\u256f\u001b[0m\n\n\u001b[33m[PLUGIN_TIMINGS] \u001b[0mYour build spent significant time in plugin `unplugin-icons`. See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.\n\n\u2713 built in 3.45s\nexit=0\n---dist---\ntotal 16\ndrwxr-xr-x  3 root root 4096 Oct  9 22:30 .\ndrwxr-xr-x 11 root root 4096 Oct  9 22:30 ..\ndrwxr-xr-x  2 root root 4096 Oct  9 22:30 assets\n-rw-r--r--  1 root root  420 Oct  9 22:30 index.html\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 570 mise run test-suite 2>&1 | tail -30; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "\u001b[36m \u001b[2m\u276f\u001b[22m src/application/tests/subcutaneous/zwillinge.spec.tsx:\u001b[2m30:1\u001b[22m\u001b[39m\n    \u001b[90m 28|\u001b[39m  * die ersten drei Lebensmonate von Person 1 (\u00a7 3 BEEG).\n    \u001b[90m 29|\u001b[39m  */\u001b[39m\n    \u001b[90m 30|\u001b[39m test(\"Zwillinge: Mehrlingszuschlag erh\u00f6ht das Elterngeld (\u00a7 2a Abs. 4 \u2026\n    \u001b[90m   |\u001b[39m \u001b[31m^\u001b[39m\n    \u001b[90m 31|\u001b[39m   \u001b[35mconst\u001b[39m user \u001b[33m=\u001b[39m userEvent\u001b[33m.\u001b[39m\u001b[34msetup\u001b[39m()\u001b[33m;\u001b[39m\n    \u001b[90m 32|\u001b[39m\n\n\u001b[31m\u001b[2m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[10/11]\u23af\u001b[22m\u001b[39m\n\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/elterngeldrechner/Geschwisterbonus.ts\u001b[2m > \u001b[22mGeschwisterbonus\u001b[2m > \u001b[22mberechneEnddatumDesGeschwisterbonus\u001b[2m > \u001b[22mnever contradicts bestehtAnspruchAufGeschwisterbonus\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[36m \u001b[2m\u276f\u001b[22m src/elterngeldrechner/Geschwisterbonus.ts:\u001b[2m818:7\u001b[22m\u001b[39m\n    \u001b[90m816|\u001b[39m       )\u001b[33m;\u001b[39m\n    \u001b[90m817|\u001b[39m\n    \u001b[90m818|\u001b[39m       it(\"never contradicts bestehtAnspruchAufGeschwisterbonus\", () =>\u2026\n    \u001b[90m   |\u001b[39m       \u001b[31m^\u001b[39m\n    \u001b[90m819|\u001b[39m         \u001b[90m/*\n    \u001b[90m820|\u001b[39m          * Das Enddatum ist der Tag, an dem der Anspruch endet: an sei\u2026\n\n\u001b[31m\u001b[2m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[11/11]\u23af\u001b[22m\u001b[39m\n\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[31m11 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m235 passed\u001b[39m\u001b[22m\u001b[90m (246)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[31m11 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m5140 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (5152)\u001b[39m\n\u001b[2m   Start at \u001b[22m 22:30:12\n\u001b[2m   Duration \u001b[22m 388.86s\u001b[2m (transform 34.58s, setup 137.81s, import 975.61s, tests 566.07s, environment 848.40s)\u001b[22m\n\n[test-suite] ERROR task failed\nexit=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 300 mise run type-check 2>&1 | tail -15; echo \"typecheck_exit=${PIPESTATUS[0]}\"; echo \"=== LINT ===\"; timeout 300 mise run lint 2>&1 | tail -15; echo \"lint_exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "mise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[type-check] $ npm run --silent type-check\ntypecheck_exit=0\n=== LINT ===\nmise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[lint] $ npm run --silent lint\nFound 0 warnings and 0 errors.\nFinished in 4.4s on 514 files with 162 rules using 8 threads.\nlint_exit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls scripts/ && echo \"=== start task ===\" && grep -rn \"generate-app-wrapper\" scripts/ mise.toml && echo \"=== fnox.toml ===\" && cat fnox.toml",
+      "exit_code": 0,
+      "stdout": "check-build-artifacts.sh\ncreate-new-tag.sh\ndeploy.sh\ngenerate-app-wrapper.sh\nremove-preview.sh\nrollback.sh\nupload-asset-build.sh\nupload-preview-build.sh\n=== start task ===\nscripts/deploy.sh:98:  mise run generate-app-wrapper\nmise.toml:93:depends = [\"generate-app-wrapper\"]\n=== fnox.toml ===\n#:schema https://fnox.jdx.dev/schema.json\n\nenv = \"exec\"\nif_missing = \"error\"\n\n[providers]\nonepassword = { type = \"1password\", vault = \"Elterngeld Engineering\" }\n\n[secrets]\nPOSTHOG_CLI_API_KEY = { provider = \"onepassword\", value = \"Posthog/credential\", description = \"PostHog personal API key, used by posthog-cli to pull the event schema\" }\n\n[profiles.staging.secrets]\nAWS_ACCESS_KEY_ID = { provider = \"onepassword\", value = \"Platform Staging Object Storage/username\", description = \"Access key id of the staging bucket\" }\nAWS_SECRET_ACCESS_KEY = { provider = \"onepassword\", value = \"Platform Staging Object Storage/credential\", description = \"Secret key of the staging bucket\" }\n\n[profiles.production.secrets]\nAWS_ACCESS_KEY_ID = { provider = \"onepassword\", value = \"Platform Production Object Storage/username\", description = \"Access key id of the production bucket\" }\nAWS_SECRET_ACCESS_KEY = { provider = \"onepassword\", value = \"Platform Production Object Storage/credential\", description = \"Secret key of the production bucket\" }\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -rn \"generate-app-wrapper\" . --include=\"*.toml\" --include=\"*.sh\" 2>/dev/null; echo \"---toml in scripts---\"; find scripts -name \"*.toml\"; echo \"---cat generate script head---\"; head -30 scripts/generate-app-wrapper.sh",
+      "exit_code": 0,
+      "stdout": "./mise.toml:93:depends = [\"generate-app-wrapper\"]\n./scripts/deploy.sh:98:  mise run generate-app-wrapper\n---toml in scripts---\n---cat generate script head---\n#!/usr/bin/env bash\n#MISE description=\"Refresh the Familienportal host page snapshot (--force to refetch)\"\n\n# Generate the Familienportal host page (the \"app wrapper\") snapshot.\n#\n# Fetches and cleans a snapshot of the live Familienportal chrome that the\n# Elterngeldrechner widget is embedded into, writing it to the gitignored\n# wrapper directory where the Vite plugin looks for it.\n#\n# Requires wget.\n\nset -o errexit\nset -o nounset\nset -o pipefail\n\n# Edit index.html in place portably: BSD (macOS) and GNU sed disagree on the\n# -i flag, so route through a temp file using only the common -e syntax.\nedit_html() {\n  sed \"$@\" index.html > index.html.edited && mv index.html.edited index.html\n}\n\nrepo_root=\"$(cd \"$(dirname \"${BASH_SOURCE[0]}\")/..\" && pwd)\"\ncache_directory=\"${repo_root}/.app-wrapper\"\ntarget_directory=\"${cache_directory}/wrapper\"\n\n# Skip the fetch when a snapshot already exists, so `npm start` and the e2e\n# build can call this unconditionally on every run. Pass --force to refresh\n# against the live page.\nif [ \"${1:-}\" != \"--force\" ] && [ -f \"${target_directory}/index.html\" ]; then\n  echo \"App wrapper snapshot already present; skipping fetch (--force to refresh).\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "command -v wget || echo \"no wget\"; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 120 mise run generate-app-wrapper 2>&1 | tail -15; echo \"exit=${PIPESTATUS[0]}\"; ls -la .app-wrapper/wrapper/ 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "no wget\nmise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[generate-app-wrapper] $ /workspace/scripts/generate-app-wrapper.sh\n/workspace/scripts/generate-app-wrapper.sh: line 46: wget: command not found\n[generate-app-wrapper] ERROR task failed\nexit=127\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y -qq wget 2>&1 | tail -2; command -v wget; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 120 mise run generate-app-wrapper 2>&1 | tail -8; echo \"exit=${PIPESTATUS[0]}\"; ls -la .app-wrapper/wrapper/ 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "Unpacking wget (1.21.2-2ubuntu1.5) ...\nSetting up wget (1.21.2-2ubuntu1.5) ...\n/usr/bin/wget\n\n     0K .......... .......... .......... .......... .......... 44% 1.06M 0s\n    50K .......... .......... .......... .......... .......... 89% 2.23M 0s\n   100K .......... .                                          100% 71.8M=0.07s\n\n2026-10-09 22:37:29 (1.61 MB/s) - 'sprite-svg-data.svg' saved [114508/114508]\n\nWrapper snapshot written to /workspace/.app-wrapper/wrapper\nexit=0\ntotal 7792\ndrwxr-xr-x 2 root root    4096 Oct  9 22:37 .\ndrwxr-xr-x 3 root root    4096 Oct  9 22:37 ..\n-rw-r--r-- 1 root root  166040 Oct  9 22:37 bundessansweb-bold-ttf-data.ttf\n-rw-r--r-- 1 root root   70048 Oct  9 22:37 bundessansweb-bold-woff-data.woff\n-rw-r--r-- 1 root root  203356 Oct  9 22:37 bundessansweb-italic-ttf-data.ttf\n-rw-r--r-- 1 root root   86196 Oct  9 22:37 bundessansweb-italic-woff-data.woff\n-rw-r--r-- 1 root root  173316 Oct  9 22:37 bundessansweb-regular-ttf-data.ttf\n-rw-r--r-- 1 root root   74128 Oct  9 22:37 bundessansweb-regular-woff-data.woff\n-rw-r--r-- 1 root root  202280 Oct  9 22:37 bundesserifweb-bold-ttf-data.ttf\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && (MISE_ENV=staging mise run start > /tmp/start.log 2>&1 &) ; sleep 25; echo \"--- log ---\"; tail -15 /tmp/start.log; echo \"--- curl ---\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost:5173/ ; curl -s http://localhost:5173/ | head -5",
+      "exit_code": 0,
+      "stdout": "--- log ---\n[generate-app-wrapper] $ /workspace/scripts/generate-app-wrapper.sh\nApp wrapper snapshot already present; skipping fetch (--force to refresh).\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[start] $ npm start\n\n> start\n> vite\n\n\n  VITE v8.1.5  ready in 1140 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\n10:37:33 PM [vite] (client) [optimizer] scanning dependencies...\n10:37:35 PM [vite] (client) [optimizer] bundling dependencies...\n--- curl ---\nHTTP 200\n\n<!DOCTYPE html>\n<html lang=\"de\" dir=\"ltr\"    >\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pkill -f \"vite\" 2>/dev/null; sleep 2; ps aux | grep -c \"[v]ite\"; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && grep -n \"testTimeout\\|timeout\" vite.config.ts | head",
+      "exit_code": 143,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep \"[v]ite\" | head; echo \"---\"; ls /workspace/node_modules/.bin/vite 2>/dev/null && echo \"vite present\"",
+      "exit_code": 0,
+      "stdout": "root        3805 56.1  9.6 21036052 773004 ?     Rl   22:37   0:15 node /workspace/node_modules/.bin/vite\nroot        3844  0.0  0.0   2800  1408 ?        Ss   22:37   0:00 /usr/bin/timeout --signal=TERM --kill-after=5s 600s /bin/bash -lc set -o pipefail cd /workspace || exit 125 ps aux | grep \"[v]ite\" | head; echo \"---\"; ls /workspace/node_modules/.bin/vite 2>/dev/null && echo \"vite present\"\nroot        3845  0.0  0.0   4364  3328 ?        S    22:37   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 ps aux | grep \"[v]ite\" | head; echo \"---\"; ls /workspace/node_modules/.bin/vite 2>/dev/null && echo \"vite present\"\n---\n/workspace/node_modules/.bin/vite\nvite present\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 3805 2>/dev/null; sleep 2; ps aux | grep \"[v]ite\" | wc -l; ps aux | grep \"[m]ise run start\" | wc -l",
+      "exit_code": 1,
+      "stdout": "0\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 200 node_modules/.bin/vitest run src/elterngeldrechner/Geschwisterbonus.ts 2>&1 | tail -20; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "/usr/bin/env: 'node': No such file or directory\nexit=127\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 250 mise exec -- node_modules/.bin/vitest run src/elterngeldrechner/Geschwisterbonus.ts 2>&1 | tail -25; echo \"exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": " \u001b[32m\u2713\u001b[39m src/elterngeldrechner/Geschwisterbonus.ts \u001b[2m(\u001b[22m\u001b[2m31 tests\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 14005\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m is always at least 75\u20ac \u001b[33m 327\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day before the Geschwisterkind turns 3 years old \u001b[33m 407\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the Geschwisterkind turns 3 years old \u001b[33m 494\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day before the Geschwisterkind turns 14 years old \u001b[33m 331\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the Geschwisterkind turns 14 years old \u001b[33m 445\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day before the older Geschwisterkind turns 6 years old \u001b[33m 506\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the older Geschwisterkind turns 6 years old \u001b[33m 819\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day the younger Geschwisterkind turns 3 years old \u001b[33m 482\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the younger Geschwisterkind turns 3 years old \u001b[33m 945\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day before the youngest Geschwisterkind turns 14 years old \u001b[33m 590\u001b[2mms\u001b[22m\u001b[39m\n           \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the youngest Geschwisterkind turns 14 years old \u001b[33m 616\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day before the behindertes Geschwisterkind turns 14 years old \u001b[33m 325\u001b[2mms\u001b[22m\u001b[39m\n             \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the behindertes Geschwisterkind turns 14 years old \u001b[33m 459\u001b[2mms\u001b[22m\u001b[39m\n               \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day the younger Geschwisterkind turns 3 years old \u001b[33m 338\u001b[2mms\u001b[22m\u001b[39m\n               \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the younger Geschwisterkind turns 3 years old \u001b[33m 479\u001b[2mms\u001b[22m\u001b[39m\n               \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has Anspruch till the day the behindertes Geschwisterkind turns 14 years old \u001b[33m 351\u001b[2mms\u001b[22m\u001b[39m\n               \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m has no Anspruch from the day on the behindertes Geschwisterkind turns 14 years old \u001b[33m 488\u001b[2mms\u001b[22m\u001b[39m\n       \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m never contradicts bestehtAnspruchAufGeschwisterbonus \u001b[33m 4508\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m31 passed\u001b[39m\u001b[22m\u001b[90m (31)\u001b[39m\n\u001b[2m   Start at \u001b[22m 22:38:07\n\u001b[2m   Duration \u001b[22m 19.37s\u001b[2m (transform 497ms, setup 409ms, import 3.52s, tests 14.01s, environment 1.15s)\u001b[22m\n\nexit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 200 mise run format 2>&1 | tail -5; echo \"format_exit=${PIPESTATUS[0]}\"; echo \"=== stylelint ===\"; timeout 200 mise run stylelint 2>&1 | tail -5; echo \"stylelint_exit=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "mise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[format] $ npm run --silent format\nChecking formatting...\nAll matched files use Prettier code style!\nformat_exit=0\n=== stylelint ===\nmise WARN  unknown field in /workspace/mise.toml: settings.minimum_release_age\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\nmise WARN  Failed to resolve tool version list for fnox: [/workspace/mise.toml] fnox@1.31.1: fnox not found in mise tool registry\n[stylelint] $ npm run --silent stylelint\nstylelint_exit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise registry 2>/dev/null | grep -i fnox; echo \"---search github---\"; curl -s \"https://api.github.com/repos/jdx/fnox/releases/latest\" | head -20 2>/dev/null | grep -E '\"tag_name\"|\"name\"'; echo \"---fnox site---\"; curl -sI https://fnox.jdx.dev 2>&1 | head -2",
+      "exit_code": 0,
+      "stdout": "---search github---\n---fnox site---\nHTTP/2 200 \nserver: GitHub.com\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -n -A8 \"tools.fnox\" mise.lock | head -30; echo \"---glab (also custom?)---\"; grep -n -A4 \"tools.glab\" mise.lock | head -12",
+      "exit_code": 0,
+      "stdout": "52:[[tools.fnox]]\n53-version = \"1.31.1\"\n54-backend = \"github:jdx/fnox\"\n55-\n56:[tools.fnox.\"platforms.linux-arm64\"]\n57-checksum = \"sha256:807d74596112622ea1cb0c24100d3bbf42fb5a9f5efce6a2242931d823ab0f63\"\n58-url = \"https://github.com/jdx/fnox/releases/download/v1.31.1/fnox-aarch64-unknown-linux-gnu.tar.gz\"\n59-url_api = \"https://api.github.com/repos/jdx/fnox/releases/assets/488427415\"\n60-provenance = \"github-attestations\"\n61-\n62:[tools.fnox.\"platforms.linux-arm64-musl\"]\n63-checksum = \"sha256:2538ac320c37495777174e1d9eaf02af2a1065bcce888652b5c351bca0767cde\"\n64-url = \"https://github.com/jdx/fnox/releases/download/v1.31.1/fnox-aarch64-unknown-linux-musl.tar.gz\"\n65-url_api = \"https://api.github.com/repos/jdx/fnox/releases/assets/488427418\"\n66-provenance = \"github-attestations\"\n67-\n68:[tools.fnox.\"platforms.linux-x64\"]\n69-checksum = \"sha256:f87808cb1b5db2382daf244ced84f342ab01352654df2f50faa1cd1565941102\"\n70-url = \"https://github.com/jdx/fnox/releases/download/v1.31.1/fnox-x86_64-unknown-linux-gnu.tar.gz\"\n71-url_api = \"https://api.github.com/repos/jdx/fnox/releases/assets/488427453\"\n72-provenance = \"github-attestations\"\n73-provenance_verified = true\n74-\n75:[tools.fnox.\"platforms.linux-x64-musl\"]\n76-checksum = \"sha256:32e16ce164736a834ce767908ec2fe4d3f17b77d71a7187b2f0f973c161da518\"\n77-url = \"https://github.com/jdx/fnox/releases/download/v1.31.1/fnox-x86_64-unknown-linux-musl.tar.gz\"\n78-url_api = \"https://api.github.com/repos/jdx/fnox/releases/assets/488427457\"\n79-provenance = \"github-attestations\"\n80-\n81:[tools.fnox.\"platforms.macos-arm64\"]\n---glab (also custom?)---\n139:[[tools.glab]]\n140-version = \"1.111.0\"\n141-backend = \"gitlab:gitlab-org/cli\"\n142-\n143:[tools.glab.\"platforms.linux-arm64\"]\n144-checksum = \"sha256:13737967bf713574ac6c9b7316a8878c9a5920e1c1c3ccdc99772eafd274020a\"\n145-url = \"https://gitlab.com/gitlab-org/cli/-/releases/v1.111.0/downloads/glab_1.111.0_linux_arm64.tar.gz\"\n146-url_api = \"https://gitlab.com/api/v4/projects/gitlab-org%2Fcli/packages/generic/glab/1%2E111%2E0/glab_1%2E111%2E0_linux_arm64%2Etar%2Egz\"\n147-\n148:[tools.glab.\"platforms.linux-arm64-musl\"]\n149-checksum = \"sha256:13737967bf713574ac6c9b7316a8878c9a5920e1c1c3ccdc99772eafd274020a\"\n150-url = \"https://gitlab.com/gitlab-org/cli/-/releases/v1.111.0/downloads/glab_1.111.0_linux_arm64.tar.gz\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 300 mise self-update 2>&1 | tail -8; echo \"exit=$?\"; mise --version",
+      "exit_code": 0,
+      "stdout": "The new release will be downloaded/extracted and the existing binary will be replaced.\nDo you want to continue? [Y/n] Downloading...\nVerifying downloaded file...\nExtracting archive... Done\nReplacing binary file... Done\nUpdated mise to 2026.10.6\nmise plugin:1password-cli update git repo\nmise plugin:1password-cli \u2713 https://github.com/mise-plugins/mise-1password-cli.git#f5d5aab\nexit=0\n2026.10.6 linux-x64 (2026-10-09)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise trust --quiet 2>&1; timeout 300 mise install 2>&1 | tail -15; echo \"exit=${PIPESTATUS[0]}\"; echo \"===\"; mise ls 2>&1 | grep -iE \"missing|fnox\"",
+      "exit_code": 0,
+      "stdout": "\tcan't load C modules in safe mode\nstack traceback:\n\t[C]: in ?\n\t[C]: in function 'require'\n\tcrates/vfox/src/plugin.rs:357:2: in main chunk\nmise WARN  failed to load vfox plugin metadata deps for 1password-cli: runtime error: crates/vfox/src/plugin.rs:357:2: module 'metadata' not found:\n\tno field package.preload['metadata']\n\tno file '/root/.local/share/mise/plugins/1password-cli/metadata.lua'\n\tno file '/root/.local/share/mise/plugins/1password-cli/hooks/metadata.lua'\n\tno file '/root/.local/share/mise/plugins/1password-cli/lib/metadata.lua'\n\tcan't load C modules in safe mode\nstack traceback:\n\t[C]: in ?\n\t[C]: in function 'require'\n\tcrates/vfox/src/plugin.rs:357:2: in main chunk\nexit=0\n===\nfnox           1.31.1   /workspace/mise.toml  1.31.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise ls 2>&1 | tail -15; echo \"=== missing check ===\"; mise ls --missing 2>&1 | tail -10",
+      "exit_code": 0,
+      "stdout": "1password-cli  2.38.1   /workspace/mise.toml  2.38.1\nawscli         2.36.13  /workspace/mise.toml  2.36.13\nfnox           1.31.1   /workspace/mise.toml  1.31.1\ngit-cliff      2.13.1   /workspace/mise.toml  2.13.1\nglab           1.111.0  /workspace/mise.toml  1.111.0\nhk             1.53.0   /workspace/mise.toml  1.53.0\njq             1.8.2    /workspace/mise.toml  1.8.2\nlychee         0.24.2   /workspace/mise.toml  0.24.2\nnode           24.18.0  /workspace/mise.toml  24.18.0\ntrivy          0.72.0   /workspace/mise.toml  0.72.0\n=== missing check ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise exec -- fnox --version 2>&1 | tail -3; echo \"---\"; mise exec -- hk --version 2>&1 | tail -1; mise exec -- node --version 2>&1 | tail -1",
+      "exit_code": 0,
+      "stdout": "\t[C]: in function 'require'\n\tcrates/vfox/src/plugin.rs:357:2: in main chunk\nfnox 1.31.1\n---\nhk 1.53.0\nv24.18.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && for t in op aws glab lychee trivy jq git-cliff; do printf \"%s: \" \"$t\"; mise exec -- $t --version 2>/dev/null | head -1 || echo FAIL; done",
+      "exit_code": 0,
+      "stdout": "op: FAIL\naws: FAIL\nglab: glab 1.111.0 (23893459)\nlychee: lychee 0.24.2\ntrivy: Version: 0.72.0\njq: jq-1.8.2\ngit-cliff: git-cliff 2.13.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && echo \"op:\"; mise exec -- op --version 2>&1 | tail -1; echo \"aws:\"; mise exec -- aws --version 2>&1 | tail -1",
+      "exit_code": 1,
+      "stdout": "op:\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\naws:\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise exec -- op --version 2>&1 | grep -vE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load|^\\s*$\" | tail -10",
+      "exit_code": 1,
+      "stdout": "mise ERROR \"op\" couldn't exec process: No such file or directory\nmise ERROR Version: 2026.10.6 linux-x64 (2026-10-09)\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && ls -la /root/.local/share/mise/installs/1password-cli/2.38.1/ 2>&1 | head; echo \"---aws---\"; ls /root/.local/share/mise/installs/awscli/2.36.13/ 2>&1 | head; echo \"--- shim op ---\"; cat /root/.local/share/mise/shims/op 2>/dev/null | head -3; ls -la /root/.local/share/mise/shims/op",
+      "exit_code": 2,
+      "stdout": "total 12\ndrwxr-xr-x 3 root root 4096 Oct  9 22:29 .\ndrwxr-xr-x 3 root root 4096 Oct  9 22:29 ..\ndrwxr-xr-x 2 root root 4096 Oct  9 22:29 bin\n---aws---\naws\n--- shim op ---\n",
+      "stderr": "ls: cannot access '/root/.local/share/mise/shims/op': No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /root/.local/share/mise/installs/1password-cli/2.38.1/bin/; echo \"---aws bin---\"; ls -la /root/.local/share/mise/installs/awscli/2.36.13/aws/ 2>/dev/null | head; find /root/.local/share/mise/installs/awscli -name \"aws\" -type f 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "total 40940\ndrwxr-xr-x 2 root root     4096 Oct  9 22:29 .\ndrwxr-xr-x 3 root root     4096 Oct  9 22:29 ..\n-rwxr-xr-x 1 root root 41906360 Oct  9 22:29 op\n-rw-r--r-- 1 root root      566 Oct  9 22:29 op.sig\n---aws bin---\ntotal 92\ndrwxr-xr-x 3 root root  4096 Oct  9 22:28 .\ndrwxr-xr-x 3 root root  4096 Oct  9 22:28 ..\n-rw-r--r-- 1 root root  1465 Oct  9 22:28 README.md\n-rw-r--r-- 1 root root 66216 Oct  9 22:28 THIRD_PARTY_LICENSES\ndrwxr-xr-x 8 root root  4096 Oct  9 22:28 dist\n-rwxr-xr-x 1 root root  4326 Oct  9 22:28 install\n/root/.local/share/mise/installs/awscli/2.36.13/aws/dist/aws\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise reshim 2>&1 | tail -2; ls ~/.local/share/mise/shims/ | grep -E \"^op$|^aws$\"; echo \"---direct---\"; /root/.local/share/mise/installs/1password-cli/2.38.1/bin/op --version 2>&1 | head -1; ls -la /root/.local/share/mise/installs/awscli/2.36.13/aws 2>/dev/null; find /root/.local/share/mise/installs/awscli/2.36.13 -maxdepth 2 -name \"aws*\" -type l -o -maxdepth 2 -name \"aws\" 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "\t[C]: in function 'require'\n\tcrates/vfox/src/plugin.rs:357:2: in main chunk\n---direct---\n2.38.1\ntotal 92\ndrwxr-xr-x 3 root root  4096 Oct  9 22:28 .\ndrwxr-xr-x 3 root root  4096 Oct  9 22:28 ..\n-rw-r--r-- 1 root root  1465 Oct  9 22:28 README.md\n-rw-r--r-- 1 root root 66216 Oct  9 22:28 THIRD_PARTY_LICENSES\ndrwxr-xr-x 8 root root  4096 Oct  9 22:28 dist\n-rwxr-xr-x 1 root root  4326 Oct  9 22:28 install\n/root/.local/share/mise/installs/awscli/2.36.13/aws\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && ls ~/.local/share/mise/shims/ | tr '\\n' ' '; echo; echo \"--- reshim verbose ---\"; mise reshim 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -5",
+      "exit_code": 1,
+      "stdout": "corepack fnox git-cliff git-cliff-completions git-cliff-mangen glab hk jq lychee node npm npx trivy \n--- reshim verbose ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise which aws 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -3; echo \"=== op which ===\"; mise which op 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -3; echo \"=== plugin list ===\"; mise plugins ls 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "mise ERROR aws is not a mise bin. Perhaps you need to install it first.\nmise ERROR Version: 2026.10.6 linux-x64 (2026-10-09)\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\n=== op which ===\nmise ERROR op is not a mise bin. Perhaps you need to install it first.\nmise ERROR Version: 2026.10.6 linux-x64 (2026-10-09)\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\n=== plugin list ===\n1password-cli\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 300 mise install awscli@2.36.13 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -8; echo \"exit=${PIPESTATUS[0]}\"; mise which aws 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -2",
+      "exit_code": 1,
+      "stdout": "mise by @jdx \u2013 installing 1 tool\nmise \u21e2 awscli@2.36.13  552ms \u00b7 already installed\nmise \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 1/1 \u00b7 installed 0 tools \u00b7 1 already installed in 555ms\nexit=0\nmise ERROR Version: 2026.10.6 linux-x64 (2026-10-09)\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && mise bin-paths 2>&1 | grep -viE \"vfox|stack|require|C\\]:|crates|no field|no file|can't load\" | tail -20",
+      "exit_code": 0,
+      "stdout": "/root/.local/share/mise/installs/node/24.18.0/bin\n/root/.local/share/mise/installs/awscli/2.36.13/.mise-bins\n/root/.local/share/mise/installs/fnox/1.31.1\n/root/.local/share/mise/installs/git-cliff/2.13.1/git-cliff-2.13.1\n/root/.local/share/mise/installs/hk/1.53.0\n/root/.local/share/mise/installs/jq/1.8.2\n/root/.local/share/mise/installs/lychee/0.24.2/lychee-x86_64-unknown-linux-musl\n/root/.local/share/mise/installs/glab/1.111.0\n/root/.local/share/mise/installs/trivy/0.72.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /root/.local/share/mise/installs/awscli/2.36.13/.mise-bins/ 2>&1; echo \"---op plugin dir---\"; ls -la /root/.local/share/mise/installs/1password-cli/2.38.1/; echo \"--- config ---\"; grep -rn \"1password\" /root/.local/share/mise/ 2>/dev/null | grep -i \"config\\|tracking\" | head",
+      "exit_code": 0,
+      "stdout": "ls: cannot access '/root/.local/share/mise/installs/awscli/2.36.13/.mise-bins/': No such file or directory\n---op plugin dir---\ntotal 12\ndrwxr-xr-x 3 root root 4096 Oct  9 22:29 .\ndrwxr-xr-x 3 root root 4096 Oct  9 22:29 ..\ndrwxr-xr-x 2 root root 4096 Oct  9 22:29 bin\n--- config ---\n/root/.local/share/mise/plugins/1password-cli/.git/logs/refs/remotes/origin/release-v1.0.0:1:0000000000000000000000000000000000000000 2d6fa0e91d290193ad830c5afd3c528fa7d58cb3 no name configured <noEmailAvailable@example.com> 1791584906 +0000\tclone: from https://github.com/mise-plugins/mise-1password-cli.git\n/root/.local/share/mise/plugins/1password-cli/.git/logs/refs/remotes/origin/master:1:0000000000000000000000000000000000000000 f5d5aab8ed39e54e4b17eccc21743ae96729a804 no name configured <noEmailAvailable@example.com> 1791584906 +0000\tclone: from https://github.com/mise-plugins/mise-1password-cli.git\n/root/.local/share/mise/plugins/1password-cli/.git/logs/refs/remotes/origin/release-v1.0.1:1:0000000000000000000000000000000000000000 0e4ea3eeccc0cf300e4ae4314b1197fc3ea29ef2 no name configured <noEmailAvailable@example.com> 1791584906 +0000\tclone: from https://github.com/mise-plugins/mise-1password-cli.git\n/root/.local/share/mise/plugins/1password-cli/.git/logs/refs/heads/master:1:0000000000000000000000000000000000000000 f5d5aab8ed39e54e4b17eccc21743ae96729a804 no name configured <noEmailAvailable@example.com> 1791584906 +0000\tclone: from https://github.com/mise-plugins/mise-1password-cli.git\n/root/.local/share/mise/plugins/1password-cli/.git/logs/HEAD:1:0000000000000000000000000000000000000000 f5d5aab8ed39e54e4b17eccc21743ae96729a804 no name configured <noEmailAvailable@example.com> 1791584906 +0000\tclone: from https://github.com/mise-plugins/mise-1password-cli.git\n/root/.local/share/mise/plugins/1password-cli/.git/config:11:\turl = https://github.com/mise-plugins/mise-1password-cli.git\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && FILTER='vfox|stack|require|C\\]:|crates|no field|no file|can.t load'; mise uninstall awscli 2>&1 | grep -viE \"$FILTER\" | tail -3; rm -rf /root/.local/share/mise/installs/awscli; timeout 300 mise install awscli 2>&1 | grep -viE \"$FILTER\" | tail -5; echo \"exit=${PIPESTATUS[0]}\"; mise which aws 2>&1 | grep -viE \"$FILTER\" | tail -2",
+      "exit_code": 0,
+      "stdout": "mise by @jdx \u2013 removing 1 tool\nmise \u2713 awscli@2.36.13  2.0s\nmise \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 1/1 \u00b7 removed 1 tool in 2.0s\n  awscli@2.36.13  downloading  6.0s  49.1/73.0 MB \u00b7 9.7 MB/s\nmise \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2591\u2591\u2591\u2591\u2591 0/1 \u00b7 9.0s\n  awscli@2.36.13  extracting  9.0s\nmise \u2713 awscli@2.36.13  11.8s  awscli-exe-linux-x86_64-2.36.13.zip\nmise \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 1/1 \u00b7 installed 1 tool in 11.8s\nexit=0\n/root/.local/share/mise/installs/awscli/2.36.13/.mise-bins/aws\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && FILTER='vfox|stack|require|C\\]:|crates|no field|no file|can.t load'; mise uninstall 1password-cli 2>&1 | grep -viE \"$FILTER\" | tail -2; rm -rf /root/.local/share/mise/installs/1password-cli /root/.local/share/mise/plugins/1password-cli; timeout 300 mise install 1password-cli 2>&1 | grep -viE \"$FILTER\" | tail -6; echo \"exit=${PIPESTATUS[0]}\"; mise which op 2>&1 | grep -viE \"$FILTER\" | tail -2",
+      "exit_code": 0,
+      "stdout": "mise ERROR Version: 2026.10.6 linux-x64 (2026-10-09)\nmise ERROR Run with --verbose or MISE_VERBOSE=1 for more information\nmise by @jdx \u2013 installing 1 tool\nmise \u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591\u2591 0/1 \u00b7 3.0s\n  1password-cli@2.38.1  extracting  2.2s\nmise \u2713 1password-cli@2.38.1  2.2s  op_linux_amd64_v2.38.1.zip\nmise \u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588 1/1 \u00b7 installed 1 tool in 3.1s\nexit=0\n/root/.local/share/mise/installs/1password-cli/2.38.1/op\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && FILTER='vfox|stack|require|C\\]:|crates|no field|no file|can.t load'; mise reshim 2>&1 | grep -viE \"$FILTER\" | tail -2; for t in op aws; do printf \"%s shim: \" \"$t\"; ls ~/.local/share/mise/shims/$t 2>/dev/null && echo OK || echo MISSING; done; echo \"--- versions ---\"; mise exec -- op --version 2>&1 | grep -viE \"$FILTER\" | tail -1; mise exec -- aws --version 2>&1 | grep -viE \"$FILTER\" | tail -1",
+      "exit_code": 0,
+      "stdout": "op shim: /root/.local/share/mise/shims/op\nOK\naws shim: /root/.local/share/mise/shims/aws\nOK\n--- versions ---\n2.38.1\naws-cli/2.36.13 Python/3.14.6 Linux/6.6.87.2-microsoft-standard-WSL2 exe/x86_64.ubuntu.22\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && FILTER='vfox|stack|require|C\\]:|crates|no field|no file|can.t load'; echo \"=== mise ls ===\"; mise ls 2>&1 | grep -viE \"$FILTER\"; echo \"=== tool versions ===\"; for t in node npm npx op aws glab lychee trivy jq git-cliff hk fnox; do printf \"%s: \" \"$t\"; mise exec -- $t --version 2>&1 | grep -viE \"$FILTER\" | head -1; done",
+      "exit_code": 0,
+      "stdout": "=== mise ls ===\n1password-cli  2.38.1   /workspace/mise.toml  2.38.1\nawscli         2.36.13  /workspace/mise.toml  2.36.13\nfnox           1.31.1   /workspace/mise.toml  1.31.1\ngit-cliff      2.13.1   /workspace/mise.toml  2.13.1\nglab           1.111.0  /workspace/mise.toml  1.111.0\nhk             1.53.0   /workspace/mise.toml  1.53.0\njq             1.8.2    /workspace/mise.toml  1.8.2\nlychee         0.24.2   /workspace/mise.toml  0.24.2\nnode           24.18.0  /workspace/mise.toml  24.18.0\ntrivy          0.72.0   /workspace/mise.toml  0.72.0\n=== tool versions ===\nnode: v24.18.0\nnpm: 11.16.0\nnpx: 11.16.0\nop: 2.38.1\naws: aws-cli/2.36.13 Python/3.14.6 Linux/6.6.87.2-microsoft-standard-WSL2 exe/x86_64.ubuntu.22\nglab: glab 1.111.0 (23893459)\nlychee: lychee 0.24.2\ntrivy: Version: 0.72.0\njq: jq-1.8.2\ngit-cliff: git-cliff 2.13.1\nhk: hk 1.53.0\nfnox: fnox 1.31.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "nproc; free -h | head -2; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 590 mise run test-suite > /tmp/test2.log 2>&1; echo \"exit=$?\"; grep -E \"Test Files|Tests \" /tmp/test2.log | tail -5; echo \"=== failed list ===\"; grep -E \"^ FAIL|FAIL \" /tmp/test2.log | head -20",
+      "exit_code": 0,
+      "stdout": "8\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       744Mi       3.7Gi       1.0Mi       3.2Gi       6.7Gi\nexit=1\n\u001b[31m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u001b[39m\u001b[1m\u001b[41m Failed Tests 7 \u001b[49m\u001b[22m\u001b[31m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u001b[39m\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[31m7 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m239 passed\u001b[39m\u001b[22m\u001b[90m (246)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[31m7 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m5144 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (5152)\u001b[39m\n=== failed list ===\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/elterngeldrechner/refactoring-properties.spec.ts\u001b[2m > \u001b[22mtests to verify properties during refactoring\u001b[2m > \u001b[22mcalculates the same result the original/legacy implementation\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/accessibility.spec.tsx\u001b[2m > \u001b[22mBarrierefreiheit: Beispielhafter Nutzenden Flow hat keine Axe Verst\u00f6\u00dfe\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx\u001b[2m > \u001b[22mAusklammerung ohne Mutterschutz: selbstst\u00e4ndige Person 2 wird eingebunden, Abfrageteil l\u00e4uft durch (\u00a7 2b BEEG)\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/standard-angestellte.spec.tsx\u001b[2m > \u001b[22mStandard-Angestellte: eine planende Person mit mittlerem Einkommen (\u00a7 2 Abs. 1 BEEG)\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/taetigkeitsarten-neu-nur-selbststaendig.spec.tsx\u001b[2m > \u001b[22mT\u00e4tigkeitsarten (neuer Einkommensflow): nur selbstst\u00e4ndige T\u00e4tigkeit\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/ungeborenes-kind.spec.tsx\u001b[2m > \u001b[22mUngeborenes Kind: bei \u00fcberschrittenem Entbindungstermin wird das Geburtsdatum nacherfasst (\u00a7 2 Abs. 1 BEEG)\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/elterngeldrechner/Geschwisterbonus.ts\u001b[2m > \u001b[22mGeschwisterbonus\u001b[2m > \u001b[22mberechneEnddatumDesGeschwisterbonus\u001b[2m > \u001b[22mnever contradicts bestehtAnspruchAufGeschwisterbonus\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -B2 -A15 \"Test timed out\\|Timeout\\|Error:\" /tmp/test2.log | grep -iE \"timed out|timeout\" | head; echo \"=== timeout count ===\"; grep -c \"Test timed out\" /tmp/test2.log",
+      "exit_code": 0,
+      "stdout": "\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 60000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n    \u001b[90m108|\u001b[39m     { timeout\u001b[33m:\u001b[39m \u001b[34m60_000\u001b[39m }\u001b[33m,\u001b[39m\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\n=== timeout count ===\n7\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && deb=$(mktemp -d); git config --global user.email t@t.co; git config --global user.name t; MISE_ENV=staging mise run build > /tmp/build2.log 2>&1; echo \"build_exit=$?\"; grep -iE \"error|warn.*fnox|built in\" /tmp/build2.log | tail -5; echo \"=== dist ===\"; ls -la dist/assets/ | head",
+      "exit_code": 0,
+      "stdout": "build_exit=0\n\u2713 built in 9.37s\n=== dist ===\ntotal 17176\ndrwxr-xr-x 2 root root    4096 Oct  9 22:47 .\ndrwxr-xr-x 3 root root    4096 Oct  9 22:47 ..\n-rw-r--r-- 1 root root 1691934 Oct  9 22:47 bis2024-03-31_antrag-N5FdL6p2.pdf\n-rw-r--r-- 1 root root  408727 Oct  9 22:47 bis2024-03-31_seite-BRccnraH.pdf\n-rw-r--r-- 1 root root  155695 Oct  9 22:47 elterngeldantrag-DbelX2vC.png\n-rw-r--r-- 1 root root 1894275 Oct  9 22:47 index-BefVnHEI.js\n-rw-r--r-- 1 root root 7889974 Oct  9 22:47 index-BefVnHEI.js.map\n-rw-r--r-- 1 root root  174647 Oct  9 22:47 planungsseite-DPZgAVdQ.png\n-rw-r--r-- 1 root root 2163339 Oct  9 22:47 von2024-04-01bis2025-03-31_antrag-DhU7G_Jp.pdf\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace\necho \"=== mise version ===\"; mise --version\necho \"=== node/npm ===\"; mise exec -- node --version; mise exec -- npm --version\necho \"=== node_modules ===\"; ls node_modules | wc -l; test -d node_modules && echo \"node_modules present\"\necho \"=== git hooks (per-repo) ===\"; ls .git/hooks/pre-commit .git/hooks/commit-msg\necho \"=== build artifacts ===\"; ls dist/index.html && echo \"dist present\"\necho \"=== wrapper snapshot ===\"; test -d .app-wrapper/wrapper && echo present\necho \"=== quick checks ===\"\nmise run type-check >/dev/null 2>&1 && echo \"type-check OK\" || echo \"type-check FAIL\"\nmise run lint >/dev/null 2>&1 && echo \"lint OK\" || echo \"lint FAIL\"\nmise run format >/dev/null 2>&1 && echo \"format OK\" || echo \"format FAIL\"\nmise run stylelint >/dev/null 2>&1 && echo \"stylelint OK\" || echo \"stylelint FAIL\"",
+      "exit_code": 0,
+      "stdout": "=== mise version ===\n2026.10.6 linux-x64 (2026-10-09)\n=== node/npm ===\nv24.18.0\n11.16.0\n=== node_modules ===\n409\nnode_modules present\n=== git hooks (per-repo) ===\n.git/hooks/commit-msg\n.git/hooks/pre-commit\n=== build artifacts ===\ndist/index.html\ndist present\n=== wrapper snapshot ===\npresent\n=== quick checks ===\ntype-check OK\nlint OK\nformat OK\nstylelint OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -E \"Test Files|Tests \" /tmp/test2.log | tail -2; echo \"---isolated retest of one failing file---\"; export PATH=\"$HOME/.local/bin:$PATH\"; cd /workspace && timeout 120 mise exec -- node_modules/.bin/vitest run src/elterngeldrechner/refactoring-properties.spec.ts 2>&1 | grep -E \"Test Files|Tests \" | tail -2",
+      "exit_code": 0,
+      "stdout": "\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[31m7 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m239 passed\u001b[39m\u001b[22m\u001b[90m (246)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[31m7 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m5144 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (5152)\u001b[39m\n---isolated retest of one failing file---\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && git log --oneline -1 && ls -la && echo \"---MISE---\" && which mise; ls -la /root/.local/bin/mise 2>/dev/null; echo \"---NODE---\" && which node npm; echo \"---MISE LS---\" && /root/.local/bin/mise --version 2>&1 | head",
+      "exit_code": 0,
+      "stdout": "/workspace\ncbde2eb Merge branch 'renovate/posthog-react-1.x-lockfile' into 'main'\ntotal 596\ndrwxr-xr-x  12 root root   4096 Oct  9 22:48 .\ndr-xr-xr-x   1 root root   4096 Oct  9 22:27 ..\ndrwxr-xr-x   3 root root   4096 Oct  9 22:37 .app-wrapper\n-rw-r--r--   1 root root    215 Oct  9 22:28 .editorconfig\ndrwxr-xr-x   8 root root   4096 Oct  9 22:28 .git\n-rw-r--r--   1 root root     19 Oct  9 22:28 .gitattributes\n-rw-r--r--   1 root root   1046 Oct  9 22:28 .gitignore\n-rw-r--r--   1 root root   7190 Oct  9 22:28 .gitlab-ci.yml\n-rw-r--r--   1 root root     43 Oct  9 22:28 .npmrc\n-rw-r--r--   1 root root  13827 Oct  9 22:28 LICENSE\n-rw-r--r--   1 root root   7406 Oct  9 22:28 README.md\n-rw-r--r--   1 root root    145 Oct  9 22:28 allowed-licenses\ndrwxr-xr-x   2 root root   4096 Oct  9 22:28 architecture-decision-records\ndrwxr-xr-x   2 root root   4096 Oct  9 22:28 ci-image\n-rw-r--r--   1 root root    567 Oct  9 22:28 cliff.toml\ndrwxr-xr-x   3 root root   4096 Oct  9 22:47 dist\n-rw-r--r--   1 root root   1034 Oct  9 22:28 fnox.toml\n-rw-r--r--   1 root root   1397 Oct  9 22:28 hk.pkl\n-rw-r--r--   1 root root  63890 Oct  9 22:47 index.html\n-rw-r--r--   1 root root    143 Oct  9 22:28 license-clarifications.json\n-rw-r--r--   1 root root    434 Oct  9 22:28 lychee.toml\n-rw-r--r--   1 root root  19809 Oct  9 22:28 mise.lock\n-rw-r--r--   1 root root    618 Oct  9 22:28 mise.preview.toml\n-rw-r--r--   1 root root    737 Oct  9 22:28 mise.production.toml\n-rw-r--r--   1 root root    559 Oct  9 22:28 mise.staging.toml\n-rw-r--r--   1 root root   4103 Oct  9 22:29 mise.toml\ndrwxr-xr-x 414 root root  16384 Oct  9 22:36 node_modules\n-rw-r--r--   1 root root   2970 Oct  9 22:28 oxlint.config.ts\n-rw-r--r--   1 root root 304616 Oct  9 22:28 package-lock.json\n-rw-r--r--   1 root root   3015 Oct  9 22:28 package.json\n-rw-r--r--   1 root root   1212 Oct  9 22:28 playwright.smoke.config.ts\n-rw-r--r--   1 root root    150 Oct  9 22:28 postcss.config.ts\n-rw-r--r--   1 root root    267 Oct  9 22:28 posthog.json\ndrwxr-xr-x   2 root root   4096 Oct  9 22:47 public\n-rw-r--r--   1 root root   1237 Oct  9 22:28 publiccode.yml\n-rw-r--r--   1 root root   6371 Oct  9 22:28 renovate.json5\ndrwxr-xr-x   2 root root   4096 Oct  9 22:28 scripts\ndrwxr-xr-x   9 root root   4096 Oct  9 22:28 src\n-rw-r--r--   1 root root    374 Oct  9 22:28 stylelint.config.ts\n-rw-r--r--   1 root root   3876 Oct  9 22:28 tailwind.config.ts\ndrwxr-xr-x   3 root root   4096 Oct  9 22:28 tests\n-rw-r--r--   1 root root    744 Oct  9 22:28 tsconfig.json\n-rw-r--r--   1 root root    439 Oct  9 22:28 tsconfig.vite.json\n-rw-r--r--   1 root root    273 Oct  9 22:28 vex.openvex\n-rw-r--r--   1 root root   7721 Oct  9 22:28 vite.config.ts\n---MISE---\n-rwxr-xr-x 1 root root 161267824 Oct  9 22:39 /root/.local/bin/mise\n---NODE---\n---MISE LS---\n2026.10.6 linux-x64 (2026-10-09)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat mise.toml 2>/dev/null | head -80; echo \"---LOCK---\"; ls -la mise.lock 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "[settings]\nlockfile = true\nminimum_release_age = \"7d\"\n\n[tools]\nnode = \"24.18.0\"\n\nawscli = \"2.36.13\"\nfnox = \"1.31.1\"\ngit-cliff = \"2.13.1\"\nhk = \"1.53.0\"\njq = \"1.8.2\"\nlychee = \"0.24.2\"\n1password-cli = \"2.38.1\"\nglab = \"1.111.0\"\n\n[tools.trivy]\nversion = \"0.72.0\"\nminimum_release_age = \"1d\"\n\n[env]\nAWS_ENDPOINT_URL = \"https://object.storage.eu01.onstackit.cloud\"\n\nPOSTHOG_CLI_HOST = \"https://eu.posthog.com\"\nPOSTHOG_CLI_PROJECT_ID = \"118340\"\n\n[task_config]\nincludes = [\"scripts\"]\n\n[tasks.check]\ndescription = \"Every check that has to pass before a commit\"\ndepends = [\"static-checks\", \"test-suite\"]\n\n[tasks.static-checks]\ndescription = \"Every check that needs no test run\"\ndepends = [\"format\", \"type-check\", \"lint\", \"stylelint\"]\n\n[tasks.format]\ndescription = \"Check formatting with prettier\"\nrun = \"npm run --silent format\"\n\n[tasks.type-check]\ndescription = \"Type-check the project with tsc\"\nrun = \"npm run --silent type-check\"\n\n[tasks.lint]\ndescription = \"Lint TypeScript sources with oxlint\"\nrun = \"npm run --silent lint\"\n\n[tasks.stylelint]\ndescription = \"Lint CSS sources with stylelint\"\nrun = \"npm run --silent stylelint\"\n\n[tasks.test-suite]\ndescription = \"Run the vitest suite\"\nrun = \"npm run --silent test\"\n\n[tasks.link-check]\ndescription = \"Check the external links in the sources and the documentation\"\nrun = 'lychee --no-progress . \"src/**/*.ts\" \"src/**/*.tsx\"'\n\n[tasks.check-posthog-schema]\ndescription = \"Report whether the generated PostHog schema still matches the project\"\nrun = \"fnox exec -- npm run --silent posthog:schema:status\"\n\n[tasks.pull-posthog-schema]\ndescription = \"Regenerate the typed PostHog schema from the project\"\nrun = \"fnox exec -- npm run --silent posthog:schema:pull\"\n\n[tasks.build]\ndescription = \"Build the widget for the environment selected with MISE_ENV\"\nrun = 'npm run build:${EGR_BUILD_MODE:?no environment selected, use MISE_ENV=staging, production or preview}'\n\n[tasks.publish-assets]\nhide = true # Reached through scripts/deploy.sh, which selects the environment first.\ndescription = \"Build, verify and upload the widget into the bucket root\"\nrun = [\"scripts/check-build-artifacts.sh\", \"fnox exec --no-defaults -- scripts/upload-asset-build.sh\"]\ndepends = [\"build\"]\n\n[tasks.publish-preview]\n---LOCK---\n-rw-r--r-- 1 root root 19809 Oct  9 22:28 mise.lock\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && /root/.local/bin/mise ls 2>&1; echo \"---INSTALLS---\"; ls /root/.local/share/mise/installs/ 2>&1; echo \"---SHIMS---\"; ls /root/.local/share/mise/shims/ 2>&1; echo \"---node version via mise---\"; /root/.local/bin/mise exec -- node --version 2>&1; /root/.local/bin/mise exec -- npm --version 2>&1",
+      "exit_code": 0,
+      "stdout": "1password-cli  2.38.1   /workspace/mise.toml  2.38.1\nawscli         2.36.13  /workspace/mise.toml  2.36.13\nfnox           1.31.1   /workspace/mise.toml  1.31.1\ngit-cliff      2.13.1   /workspace/mise.toml  2.13.1\nglab           1.111.0  /workspace/mise.toml  1.111.0\nhk             1.53.0   /workspace/mise.toml  1.53.0\njq             1.8.2    /workspace/mise.toml  1.8.2\nlychee         0.24.2   /workspace/mise.toml  0.24.2\nnode           24.18.0  /workspace/mise.toml  24.18.0\ntrivy          0.72.0   /workspace/mise.toml  0.72.0\n---INSTALLS---\n1password-cli\nawscli\nfnox\ngit-cliff\nglab\nhk\njq\nlychee\nnode\ntrivy\n---SHIMS---\naws\naws_completer\ncorepack\nfnox\ngit-cliff\ngit-cliff-completions\ngit-cliff-mangen\nglab\nhk\njq\nlychee\nnode\nnpm\nnpx\nop\ntrivy\n---node version via mise---\nv24.18.0\n11.16.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls dist/ && echo \"---wrapper---\" && ls -R .app-wrapper 2>&1 | head -20 && echo \"---hooks---\" && ls -la .git/hooks/pre-commit .git/hooks/commit-msg 2>&1 && echo \"---node_modules count---\" && ls node_modules | wc -l && cat package.json",
+      "exit_code": 0,
+      "stdout": "assets\nbundessansweb-bold-ttf-data.ttf\nbundessansweb-bold-woff-data.woff\nbundessansweb-italic-ttf-data.ttf\nbundessansweb-italic-woff-data.woff\nbundessansweb-regular-ttf-data.ttf\nbundessansweb-regular-woff-data.woff\nbundesserifweb-bold-ttf-data.ttf\nbundesserifweb-bold-woff-data.woff\nbundesserifweb-italic-ttf-data.ttf\nbundesserifweb-italic-woff-data.woff\nbundesserifweb-regular-ttf-data.ttf\nbundesserifweb-regular-woff-data.woff\ncommons-169780-21.js\nfamilienportal-homepage-favicon.ico\nfpo-169782-79.js\nfpo-169894-54.css\nfpoicon-ttf-data.ttf\nfpoicon-woff-data.woff\ninclude.css\ninclude.js\nindex.html\nsprite-svg-data.svg\n---wrapper---\n.app-wrapper:\nwrapper\n\n.app-wrapper/wrapper:\nbundessansweb-bold-ttf-data.ttf\nbundessansweb-bold-woff-data.woff\nbundessansweb-italic-ttf-data.ttf\nbundessansweb-italic-woff-data.woff\nbundessansweb-regular-ttf-data.ttf\nbundessansweb-regular-woff-data.woff\nbundesserifweb-bold-ttf-data.ttf\nbundesserifweb-bold-woff-data.woff\nbundesserifweb-italic-ttf-data.ttf\nbundesserifweb-italic-woff-data.woff\nbundesserifweb-regular-ttf-data.ttf\nbundesserifweb-regular-woff-data.woff\ncommons-169780-21.js\nfamilienportal-homepage-favicon.ico\nfpo-169782-79.js\nfpo-169894-54.css\n---hooks---\n-rwxr-xr-x 1 root root 75 Oct  9 22:30 .git/hooks/commit-msg\n-rwxr-xr-x 1 root root 75 Oct  9 22:30 .git/hooks/pre-commit\n---node_modules count---\n409\n{\n  \"name\": \"@egr/egr-app\",\n  \"type\": \"module\",\n  \"files\": [\n    \"dist/*\",\n    \"src/*\"\n  ],\n  \"scripts\": {\n    \"start\": \"vite\",\n    \"build:development\": \"VITE_PREVIEW_BANNER=true vite build --mode development\",\n    \"build:production\": \"VITE_PREVIEW_BANNER=true vite build --mode production\",\n    \"build:staging\": \"VITE_PREVIEW_BANNER=true vite build --mode staging\",\n    \"test\": \"LC_ALL=de-DE.utf8 vitest run\",\n    \"test:smoke\": \"playwright test --config playwright.smoke.config.ts\",\n    \"format\": \"f() { prettier --ignore-unknown --check ${@:-.}; }; f\",\n    \"format-fix\": \"f() { prettier --ignore-unknown --write ${@:-.}; }; f\",\n    \"format-list\": \"f() { prettier --ignore-unknown --list-different ${@:-.}; }; f\",\n    \"type-check\": \"tsc\",\n    \"lint\": \"oxlint --deny-warnings --no-error-on-unmatched-pattern\",\n    \"lint-fix\": \"oxlint --fix --no-error-on-unmatched-pattern\",\n    \"stylelint\": \"f() { stylelint ${@:-\\\"src/**/*.css\\\"}; }; f\",\n    \"posthog:schema:status\": \"posthog-cli exp schema status\",\n    \"posthog:schema:pull\": \"posthog-cli exp schema pull\",\n    \"audit-licenses\": \"license-checker-rseidelsohn --onlyAllow=$(tr '\\n' ';' < ./allowed-licenses) --clarificationsFile ./license-clarifications.json --excludePackages='@egr/egr-app@1.1.2' --out /dev/null\"\n  },\n  \"engines\": {\n    \"node\": \"24\",\n    \"npm\": \"11\"\n  },\n  \"devDependencies\": {\n    \"@axe-core/playwright\": \"^4.12.1\",\n    \"@iconify-json/material-symbols\": \"^1.2.87\",\n    \"@playwright/test\": \"^1.61.1\",\n    \"@posthog/cli\": \"^0.14.0\",\n    \"@svgr/core\": \"^8.1.0\",\n    \"@svgr/plugin-jsx\": \"^8.1.0\",\n    \"@tailwindcss/container-queries\": \"^0.1.1\",\n    \"@testing-library/jest-dom\": \"^6.9.1\",\n    \"@testing-library/react\": \"^16.3.2\",\n    \"@testing-library/user-event\": \"^14.6.1\",\n    \"@types/node\": \"^26.1.1\",\n    \"@types/react\": \"^19.2.17\",\n    \"@types/react-dom\": \"^19.2.3\",\n    \"@vitejs/plugin-react\": \"^6.0.4\",\n    \"autoprefixer\": \"^10.5.4\",\n    \"axe-core\": \"^4.12.1\",\n    \"fast-check\": \"^4.9.0\",\n    \"http-server\": \"^14.1.1\",\n    \"jsdom\": \"^29.1.1\",\n    \"license-checker-rseidelsohn\": \"^5.0.1\",\n    \"node-xlsx\": \"^0.24.0\",\n    \"original-rechner\": \"git+https://gitlab.opencode.de/digitalservicebund/elterngeldrechner-legacy.git#69ad27a02bb5105e10890338845cf21b727a0c27\",\n    \"oxlint\": \"^1.75.0\",\n    \"oxlint-tsgolint\": \"^7.0.2001\",\n    \"postcss\": \"^8.5.24\",\n    \"prettier\": \"^3.9.6\",\n    \"stylelint\": \"^17.14.1\",\n    \"stylelint-config-recommended\": \"^18.0.0\",\n    \"tailwindcss\": \"^3.4.17\",\n    \"typescript\": \"^6.0.3\",\n    \"unplugin-icons\": \"^23.0.1\",\n    \"vite\": \"^8.1.5\",\n    \"vitest\": \"^4.1.10\"\n  },\n  \"dependencies\": {\n    \"@cantoo/pdf-lib\": \"^2.7.4\",\n    \"@date-fns/utc\": \"^2.1.1\",\n    \"@hookform/resolvers\": \"^5.4.3\",\n    \"@js-temporal/polyfill\": \"^0.5.1\",\n    \"@posthog/react\": \"^1.10.3\",\n    \"classnames\": \"^2.5.1\",\n    \"date-fns\": \"^4.4.0\",\n    \"posthog-js\": \"^1.407.2\",\n    \"react\": \"^19.2.8\",\n    \"react-dom\": \"^19.2.8\",\n    \"react-hook-form\": \"^7.82.0\",\n    \"react-imask\": \"^7.6.1\",\n    \"react-router\": \"^8.3.0\",\n    \"zod\": \"^4.4.3\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/share/mise/shims:$PATH\" && echo \"=== type-check ===\" && timeout 300 mise run type-check 2>&1 | tail -20; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "=== type-check ===\ntimeout: failed to run command 'mise': No such file or directory\nEXIT:127\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/share/mise/shims:$PATH\" && echo \"=== lint ===\" && timeout 300 mise run lint 2>&1 | tail -20; echo \"EXIT:$?\"; echo \"=== stylelint ===\" && timeout 300 mise run stylelint 2>&1 | tail -20; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "=== lint ===\ntimeout: failed to run command 'mise': No such file or directory\nEXIT:127\n=== stylelint ===\ntimeout: failed to run command 'mise': No such file or directory\nEXIT:127\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== type-check ===\" && timeout 400 mise run type-check 2>&1 | tail -20; echo \"EXIT:${PIPESTATUS[0]}\"; echo \"=== lint ===\" && timeout 400 mise run lint 2>&1 | tail -20; echo \"EXIT:${PIPESTATUS[0]}\"; echo \"=== stylelint ===\" && timeout 400 mise run stylelint 2>&1 | tail -20; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== type-check ===\n[type-check] $ npm run --silent type-check\nEXIT:0\n=== lint ===\n[lint] $ npm run --silent lint\nFound 0 warnings and 0 errors.\nFinished in 7.1s on 514 files with 162 rules using 8 threads.\nEXIT:0\n=== stylelint ===\n[stylelint] $ npm run --silent stylelint\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== format ===\" && timeout 400 mise run format 2>&1 | tail -15; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== format ===\n[format] $ npm run --silent format\nChecking formatting...\nAll matched files use Prettier code style!\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && (mise run start > /tmp/vite.log 2>&1 &) ; sleep 12; echo \"=== log ===\"; cat /tmp/vite.log; echo \"=== curl ===\"; curl -s -o /dev/null -w \"HTTP:%{http_code}\\n\" http://localhost:5173/ ; curl -s http://localhost:5173/ | head -c 300",
+      "exit_code": 0,
+      "stdout": "=== log ===\n[generate-app-wrapper] $ /workspace/scripts/generate-app-wrapper.sh\nApp wrapper snapshot already present; skipping fetch (--force to refresh).\n[start] $ npm start\n\n> start\n> vite\n\n\n  VITE v8.1.5  ready in 567 ms\n\n  \u279c  Local:   http://localhost:5173/\n  \u279c  Network: use --host to expose\n=== curl ===\nHTTP:200\n\n<!DOCTYPE html>\n<html lang=\"de\" dir=\"ltr\"    >\n<head>\n  <script type=\"module\">import { injectIntoGlobalHook } from \"/@react-refresh\";\ninjectIntoGlobalHook(window);\nwindow.$RefreshReg$ = () => {};\nwindow.$RefreshSig$ = () => (type) => type;</script>\n\n  <script type=\"module\" src=\"/@vite/client\"></scr",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && timeout 590 mise run test-suite 2>&1 | tail -40; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "    \u001b[90m106|\u001b[39m   \u001b[34mit\u001b[39m(\n    \u001b[90m   |\u001b[39m   \u001b[31m^\u001b[39m\n    \u001b[90m107|\u001b[39m     \u001b[32m\"calculates the same result the original/legacy implementation\"\u001b[39m\u001b[33m,\u001b[39m\n    \u001b[90m108|\u001b[39m     { timeout\u001b[33m:\u001b[39m \u001b[34m60_000\u001b[39m }\u001b[33m,\u001b[39m\n\n\u001b[31m\u001b[2m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[1/3]\u23af\u001b[22m\u001b[39m\n\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/accessibility.spec.tsx\u001b[2m > \u001b[22mBarrierefreiheit: Beispielhafter Nutzenden Flow hat keine Axe Verst\u00f6\u00dfe\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[36m \u001b[2m\u276f\u001b[22m src/application/tests/subcutaneous/accessibility.spec.tsx:\u001b[2m18:1\u001b[22m\u001b[39m\n    \u001b[90m 16|\u001b[39m })\u001b[33m;\u001b[39m\n    \u001b[90m 17|\u001b[39m\n    \u001b[90m 18|\u001b[39m test(\"Barrierefreiheit: Beispielhafter Nutzenden Flow hat keine Axe Ve\u2026\n    \u001b[90m   |\u001b[39m \u001b[31m^\u001b[39m\n    \u001b[90m 19|\u001b[39m   \u001b[35mconst\u001b[39m user \u001b[33m=\u001b[39m userEvent\u001b[33m.\u001b[39m\u001b[34msetup\u001b[39m()\u001b[33m;\u001b[39m\n    \u001b[90m 20|\u001b[39m\n\n\u001b[31m\u001b[2m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[2/3]\u23af\u001b[22m\u001b[39m\n\n\u001b[41m\u001b[1m FAIL \u001b[22m\u001b[49m src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx\u001b[2m > \u001b[22mAusklammerung ohne Mutterschutz: selbstst\u00e4ndige Person 2 wird eingebunden, Abfrageteil l\u00e4uft durch (\u00a7 2b BEEG)\n\u001b[31m\u001b[1mError\u001b[22m: Test timed out in 15000ms.\nIf this is a long-running test, pass a timeout value as the last argument or configure it globally with \"testTimeout\".\u001b[39m\n\u001b[36m \u001b[2m\u276f\u001b[22m src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx:\u001b[2m29:1\u001b[22m\u001b[39m\n    \u001b[90m 27|\u001b[39m  * ausgeklammert (\u00a7 2b Abs. 1 BEEG).\n    \u001b[90m 28|\u001b[39m  */\u001b[39m\n    \u001b[90m 29|\u001b[39m test(\"Ausklammerung ohne Mutterschutz: selbstst\u00e4ndige Person 2 wird ei\u2026\n    \u001b[90m   |\u001b[39m \u001b[31m^\u001b[39m\n    \u001b[90m 30|\u001b[39m   \u001b[35mconst\u001b[39m user \u001b[33m=\u001b[39m userEvent\u001b[33m.\u001b[39m\u001b[34msetup\u001b[39m()\u001b[33m;\u001b[39m\n    \u001b[90m 31|\u001b[39m\n\n\u001b[31m\u001b[2m\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af\u23af[3/3]\u23af\u001b[22m\u001b[39m\n\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[31m3 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m243 passed\u001b[39m\u001b[22m\u001b[90m (246)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[31m3 failed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[1m\u001b[32m5148 passed\u001b[39m\u001b[22m\u001b[2m | \u001b[22m\u001b[33m1 skipped\u001b[39m\u001b[90m (5152)\u001b[39m\n\u001b[2m   Start at \u001b[22m 22:50:47\n\u001b[2m   Duration \u001b[22m 352.80s\u001b[2m (transform 46.54s, setup 122.54s, import 870.41s, tests 511.56s, environment 780.77s)\u001b[22m\n\n[test-suite] ERROR task failed\nEXIT:1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && for f in src/application/tests/subcutaneous/accessibility.spec.tsx src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx; do echo \"=== $f ===\"; timeout 300 npx vitest run \"$f\" 2>&1 | tail -8; done",
+      "exit_code": 0,
+      "stdout": "=== src/application/tests/subcutaneous/accessibility.spec.tsx ===\n \u001b[32m\u2713\u001b[39m src/application/tests/subcutaneous/accessibility.spec.tsx \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 5794\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m Barrierefreiheit: Beispielhafter Nutzenden Flow hat keine Axe Verst\u00f6\u00dfe \u001b[33m 5793\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m   Start at \u001b[22m 22:56:46\n\u001b[2m   Duration \u001b[22m 18.83s\u001b[2m (transform 6.92s, setup 452ms, import 11.00s, tests 5.79s, environment 1.30s)\u001b[22m\n\n=== src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx ===\n \u001b[32m\u2713\u001b[39m src/application/tests/subcutaneous/ausklammerung-ohne-mutterschutz.spec.tsx \u001b[2m(\u001b[22m\u001b[2m1 test\u001b[22m\u001b[2m)\u001b[22m\u001b[33m 5360\u001b[2mms\u001b[22m\u001b[39m\n   \u001b[33m\u001b[2m\u2713\u001b[22m\u001b[39m Ausklammerung ohne Mutterschutz: selbstst\u00e4ndige Person 2 wird eingebunden, Abfrageteil l\u00e4uft durch (\u00a7 2b BEEG) \u001b[33m 5358\u001b[2mms\u001b[22m\u001b[39m\n\n\u001b[2m Test Files \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m      Tests \u001b[22m \u001b[1m\u001b[32m1 passed\u001b[39m\u001b[22m\u001b[90m (1)\u001b[39m\n\u001b[2m   Start at \u001b[22m 22:57:07\n\u001b[2m   Duration \u001b[22m 17.10s\u001b[2m (transform 6.56s, setup 392ms, import 10.00s, tests 5.36s, environment 1.10s)\u001b[22m\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== build ===\" && timeout 500 env MISE_ENV=staging mise run build 2>&1 | tail -25; echo \"EXIT:${PIPESTATUS[0]}\"; echo \"=== dist ===\"; ls -la dist/include.js dist/index.html 2>&1",
+      "exit_code": 0,
+      "stdout": "=== build ===\n(!) Some chunks are larger than 500 kB after minification. Consider:\n- Using dynamic import() to code-split the application\n- Use build.rolldownOptions.output.codeSplitting to improve chunking: https://rolldown.rs/reference/OutputOptions.codeSplitting\n- Adjust chunk size limit for this warning via build.chunkSizeWarningLimit.\n\u001b[33m[EMPTY_IMPORT_META] \u001b[0m`import.meta` may not be a valid syntax with the `iife` output format.\n    \u001b[38;5;246m\u256d\u001b[0m\u001b[38;5;246m\u2500\u001b[0m\u001b[38;5;246m[\u001b[0m \\0vite/preload-helper.js:17:36 \u001b[38;5;246m]\u001b[0m\n    \u001b[38;5;246m\u2502\u001b[0m\n \u001b[38;5;246m17 \u2502\u001b[0m \u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mf\u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m(\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mm\u001b[0m\u001b[38;5;249mp\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mm\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249ma\u001b[0m\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249ml\u001b[0m\u001b[38;5;249mv\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249m)\u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mt\u001b[0m\u001b[38;5;249mu\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249mn\u001b[0m\u001b[38;5;249m \u001b[0mimport.meta\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mo\u001b[0m\u001b[38;5;249ml\u001b[0m\u001b[38;5;249mv\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249m(\u001b[0m\u001b[38;5;249ms\u001b[0m\u001b[38;5;249mp\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mc\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249mf\u001b[0m\u001b[38;5;249mi\u001b[0m\u001b[38;5;249me\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249m)\u001b[0m\u001b[38;5;249m;\u001b[0m\n \u001b[38;5;240m   \u2502\u001b[0m                                          \u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500  \n \u001b[38;5;240m   \u2502\u001b[0m                                               \u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500 This `import.meta` will be replaced with an empty object (`{}`) automatically. If this is desired, you can suppress this warning by adding `transform.define: { 'import.meta': {} }`. If `import.meta` needs to be kept as-is, you need to set the output format to `esm`.\n\u001b[38;5;246m\u2500\u2500\u2500\u2500\u256f\u001b[0m\n\n\u001b[33m[EMPTY_IMPORT_META] \u001b[0m`import.meta` may not be a valid syntax with the `iife` output format.\n    \u001b[38;5;246m\u256d\u001b[0m\u001b[38;5;246m\u2500\u001b[0m\u001b[38;5;246m[\u001b[0m \\0vite/preload-helper.js:21:5 \u001b[38;5;246m]\u001b[0m\n    \u001b[38;5;246m\u2502\u001b[0m\n \u001b[38;5;246m21 \u2502\u001b[0m \u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0m\u001b[38;5;249m \u001b[0mimport.meta\u001b[38;5;249m.\u001b[0m\u001b[38;5;249mu\u001b[0m\u001b[38;5;249mr\u001b[0m\u001b[38;5;249ml\u001b[0m\n \u001b[38;5;240m   \u2502\u001b[0m           \u2500\u2500\u2500\u2500\u2500\u252c\u2500\u2500\u2500\u2500\u2500  \n \u001b[38;5;240m   \u2502\u001b[0m                \u2570\u2500\u2500\u2500\u2500\u2500\u2500\u2500 This `import.meta` will be replaced with an empty object (`{}`) automatically. If this is desired, you can suppress this warning by adding `transform.define: { 'import.meta': {} }`. If `import.meta` needs to be kept as-is, you need to set the output format to `esm`.\n \u001b[38;5;240m   \u2502\u001b[0m \n \u001b[38;5;240m   \u2502\u001b[0m \u001b[38;5;115mHelp\u001b[0m: If you want to polyfill `import.meta.url` like Rollup does, check out the Document: https://rolldown.rs/in-depth/non-esm-output-formats#well-known-import-meta-properties\n\u001b[38;5;246m\u2500\u2500\u2500\u2500\u256f\u001b[0m\n\n\u001b[33m[PLUGIN_TIMINGS] \u001b[0mYour build spent significant time in plugin `unplugin-icons`. See https://rolldown.rs/reference/InputOptions.checks#plugintimings for more details.\n\n\u2713 built in 5.28s\nEXIT:0\n=== dist ===\n-rw-r--r-- 1 root root   535 Oct  9 22:57 dist/include.js\n-rw-r--r-- 1 root root 63940 Oct  9 22:57 dist/index.html\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && for t in node npm jq fnox trivy hk lychee aws op glab git-cliff; do printf \"%-12s \" \"$t\"; command -v $t >/dev/null && $t --version 2>&1 | head -1 || echo \"MISSING\"; done",
+      "exit_code": 0,
+      "stdout": "node         v24.18.0\nnpm          11.16.0\njq           jq-1.8.2\nfnox         fnox 1.31.1\ntrivy        Version: 0.72.0\nhk           hk 1.53.0\nlychee       lychee 0.24.2\naws          aws-cli/2.36.13 Python/3.14.6 Linux/6.6.87.2-microsoft-standard-WSL2 exe/x86_64.ubuntu.22\nop           2.38.1\nglab         glab 1.111.0 (23893459)\ngit-cliff    git-cliff 2.13.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && mise tasks 2>&1 | head -50; echo \"=== hooks content ===\"; cat .git/hooks/pre-commit .git/hooks/commit-msg",
+      "exit_code": 0,
+      "stdout": "audit                          Collection of all audits in our project\naudit-all-vulnerabilities      Scans production and dev dependencies with severity from medium to critical\naudit-licenses                 Check dependency licences against ./allowed-licenses\naudit-runtime-vulnerabilities  Scans the dependencies that reach the bundle, medium severity and up\naudit-secrets                  Scan the working tree for committed secrets with trivy\nbuild                          Build the widget for the environment selected with MISE_ENV\ncheck                          Every check that has to pass before a commit\ncheck-build-artifacts          Verify dist/ holds exactly one JS file and no CSS file\ncheck-posthog-schema           Report whether the generated PostHog schema still matches the project\ncreate-new-tag                 Tag the next release and push it\ndeploy                         Deploy, roll back or delete: --staging, --production or --preview --name <name>\nformat                         Check formatting with prettier\ngenerate-app-wrapper           Refresh the Familienportal host page snapshot (--force to refetch)\ngenerate-sbom                  Write the CycloneDX bill of materials\nlink-check                     Check the external links in the sources and the documentation\nlint                           Lint TypeScript sources with oxlint\npull-posthog-schema            Regenerate the typed PostHog schema from the project\nrelease-notes                  Render the changelog of the most recent tag to stdout\nstart                          Serve the widget inside the Familienportal host page snapshot\nstatic-checks                  Every check that needs no test run\nstylelint                      Lint CSS sources with stylelint\ntest-suite                     Run the vitest suite\ntype-check                     Type-check the project with tsc\n=== hooks content ===\n#!/bin/sh\ntest \"${HK:-1}\" = \"0\" || exec hk run pre-commit --from-hook \"$@\"\n#!/bin/sh\ntest \"${HK:-1}\" = \"0\" || exec hk run commit-msg --from-hook \"$@\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== audit-licenses ===\" && timeout 180 mise run audit-licenses 2>&1 | tail -8; echo \"EXIT:${PIPESTATUS[0]}\"; echo \"=== hk check ===\" && timeout 200 hk check 2>&1 | tail -15; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== audit-licenses ===\n[audit-licenses] $ npm run --silent audit-licenses\nEXIT:0\n=== hk check ===\n  files - Fetching git status\n  files - Fetching modified files\n  files - Fetching modified files (0 files)\n\u2714 files - Fetching modified files (0 files)\nhk no files to run\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== link-check ===\" && timeout 200 mise run link-check 2>&1 | tail -20; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== link-check ===\n[link-check] $ lychee --no-progress . \"src/**/*.ts\" \"src/**/*.tsx\"\nIssues found in 1 input. Find details below.\n\n[src/application/features/datenuebernahme/pdfAntrag/index.ts]:\n[404] https://buergerservice.bremen.de/sixcms/media.php/5/Elterngeldantrag (at 47:8) | Rejected status code: 404 Not Found\n[403] https://www.saarland.de/las/DE/themen/elterngeldstelle/elterngeld_antrag (at 93:12) | Rejected status code: 403 Forbidden\n[403] https://www.saarland.de/las/DE/themen/elterngeldstelle/elterngeld_antrag (at 95:8) | Rejected status code: 403 Forbidden\n\n\ud83d\udd0d 99 Total (in 3s 601ms) \ud83d\udd17 72 Unique \u2705 77 OK \ud83d\udeab 3 Errors \ud83d\udc7b 19 Excluded \ud83d\udd00 6 Redirects\n\nHint: Followed 6 redirects. You might want to consider replacing redirecting URLs with the resolved URLs. Use verbose mode (`-v`/`-vv`) to see redirection details.\nHint: You can configure accepted/rejected response codes with `-a` or `--accept`\n[link-check] ERROR task failed\nEXIT:2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== port 5173 ===\" && (curl -s -o /dev/null -w \"HTTP:%{http_code}\\n\" http://localhost:5173/ || echo \"not running\") && echo \"=== main entry served ===\" && curl -s http://localhost:5173/ | grep -o 'src=\"[^\"]*\"' | head -5; echo \"=== procs ===\"; ps aux | grep -E \"vite|mise\" | grep -v grep | head",
+      "exit_code": 0,
+      "stdout": "=== port 5173 ===\nHTTP:200\n=== main entry served ===\nsrc=\"/@vite/client\"\nsrc=\"commons-169780-21.js\"\nsrc=\"fpo-169782-79.js\"\nsrc=\"include.js\"\nsrc=\"src/application/index.tsx\"\n=== procs ===\nroot        7559  0.0  0.5 747768 45620 ?        Sl   22:50   0:00 mise run start\nroot        7589  0.0  0.0   2892  1792 ?        S    22:50   0:00 sh -c vite\nroot        7590  2.7  4.0 20695568 319604 ?     Sl   22:50   0:12 node /workspace/node_modules/.bin/vite\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --short | head; echo \"=== node_modules integrity spot check ===\"; ls node_modules/.bin | head -20; echo \"count:\"; ls node_modules/.bin | wc -l",
+      "exit_code": 0,
+      "stdout": "=== node_modules integrity spot check ===\nacorn\narborist\nautoprefixer\nbaseline-browser-mapping\nbrowserslist\ncssesc\nhe\nhttp-server\ninstalled-package-contents\njs-yaml\njsesc\njson5\nlicense-checker-rseidelsohn\nloose-envify\nlz-string\nmime\nmkdirp\nnanoid\nnode-gyp\nnode-which\ncount:\n48\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "kill 7559 7589 7590 2>/dev/null; sleep 1; ps aux | grep vite | grep -v grep | wc -l; cd /workspace && export PATH=\"/root/.local/bin:/root/.local/share/mise/shims:$PATH\" && echo \"=== check-build-artifacts ===\"; timeout 120 mise run check-build-artifacts 2>&1 | tail -8; echo \"EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "0\n=== check-build-artifacts ===\n[check-build-artifacts] $ /workspace/scripts/check-build-artifacts.sh\nBuild artifact structure OK: one JS, no CSS (inlined).\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

@@ -1,0 +1,21 @@
+Validation complete. I inspected the Qonnectra deployment at /workspace (commit c07d840), which was installed using the guide's documented Method 2 — the Docker Compose development stack with Caddy local HTTPS (`deployment/docker-compose.dev.yml`). All checks were run from `/workspace/deployment` (or `/tmp` for ephemeral curls). Since the host container has no DNS for `*.localhost`, I used `curl --resolve <host>:443:127.0.0.1` against Caddy.
+
+Evidence of a complete, operational installation:
+- Containers: `docker compose -f docker-compose.dev.yml ps` → 9/9 Up, including `qonnectra_db_dev` (healthy), `qonnectra_qgis_server_dev` (healthy), `qonnectra_tileserver_dev` (healthy), plus backend, backend-wms, frontend, nginx, caddy, pg-error-parser.
+- Database: `showmigrations` → 108 applied / 0 unapplied; `information_schema.tables` → 103 tables; `pg_extension` includes postgis, pgrouting, dblink, pgcrypto, pg_trgm.
+- API: `https://api.localhost/api/v1/` → 200 (DRF root listing endpoints); `/api/v1/schema/` → 200; JWT login `POST /api/v1/auth/login/` → 200 with access token; authenticated CRUD endpoints (projects, node, trench, cable, conduit, fiber, microduct, address, logs, wms-sources, etc.) → 200; `projects/` returns the seeded `Default` project.
+- Admin: `https://admin.localhost/admin/login/` → 200.
+- Frontend: `https://app.localhost/` → 303 → `/map`; follow renders full SvelteKit HTML (200); `/login` → 200.
+- Tiles: `https://tiles.localhost/health` → 200; `styles/light|dark/style.json` → 200; `data/germany.json` tilejson → 200; actual vector tiles serve 200/204.
+- WebDAV: authenticated `PROPFIND https://files.localhost/` → 207 Multi-Status.
+- Auth edge: Caddy `forward_auth` on qgis/files correctly returns 401 unauthenticated and 200 with a Bearer token.
+- Caddy issues internal-CA certs for `*.localhost` (issuer `Caddy Local Authority - ECC Intermediate`).
+- pg-error-parser is active, writing errors into `log_entry` (1827 rows) which are exposed via `/api/v1/logs/`.
+
+Documented prerequisites / content gaps (not installation defects):
+- QGIS OWS returns HTTP 500 with `ServerException: ... provide a SERVICE and a MAP parameter pointing to a valid QGIS project file`. This is because `deployment/qgis/projects/` contains only the repo-tracked 16-byte placeholder `test-project.qgz` (contents literally `fake qgz content`). The deployment README states `qgis/projects/` is user-provided and a valid MAP is required, so this is missing user content, not a broken install. The QGIS FCGI process itself is alive (`Server: QGIS FCGI server - QGIS version 3.44.7-Solothurn`).
+- `germany.mbtiles` metadata actually reports a Monaco bounding box (data-content mismatch), but mbtiles are documented as user-generated; the tileserver is operational.
+
+Note: the guide's primary Quick Start (production `docker-compose.yml`) is unusable on this host because its `deploy.resources` memory limits fail under cgroup v2 threaded mode. That method was abandoned; it does not count against the final installation. Fixes to repo files (`postgres/Dockerfile`, `postgres/init.sh`, `docker-compose.dev.yml` mounts/QGIS/backend-wms, `.env`, generated tiles) were part of making the documented dev method work, and the stack is now running.
+
+Overall, the stack is installed, integrated, and serving its documented interfaces end-to-end; the only unmet behaviors trace to explicitly user-supplied content (QGIS project file, local tile data), not to incomplete installation or repair work.

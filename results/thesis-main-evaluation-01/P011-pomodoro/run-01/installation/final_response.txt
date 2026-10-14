@@ -1,0 +1,10 @@
+Successfully installed Pomodoro (pomodoro-timer 0.3.0) from the checked-out repo at /workspace and verified it runs.
+
+What was done:
+- The guide targets macOS, but the environment is Ubuntu 22.04 (Linux). No python3 was present initially, so I installed Python 3.10 + pip/venv via apt, then followed the guide's venv/editable install method.
+- `python3 -m venv .venv` in /workspace, activated it, upgraded pip, and ran `pip install -e .` — this built the editable wheel and installed PySide6 6.11.2 plus the `pomodoro` console entry point at /workspace/.venv/bin/pomodoro.
+- Qt requires system libraries not present by default; installed them (libgl1, libegl1, libglib2.0-0, xcb/x11/nss/asound libs, fontconfig, etc.). This was the only undocumented prerequisite — the guide assumes macOS where Qt bundles these.
+- Verified the app starts: `QT_QPA_PLATFORM=offscreen pomodoro` ran until an 8s timeout (exit 124 = it launched and entered the Qt event loop).
+- Ran the bundled test suite: 20 passed.
+
+Note: The macOS-specific steps (PyInstaller .app bundling, ./packaging/build.sh) were not applicable on Linux and were not attempted; the container Dockerfile path was not used either. The documented terminal/venv install method worked.

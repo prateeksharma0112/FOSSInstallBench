@@ -1,0 +1,28 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed Green Ecolution at /workspace (commit 94229d0) per Installation.md. Base image lacked all toolchains, so installed: apt build-essential/pkg-config/libssl-dev/clang/lld, Rust stable (rustup + wasm32-unknown-unknown), Node.js 24 (NodeSource, matching frontend/.node-version and flake.nix nodeVersion 24), pnpm 10.20.0 (corepack), and cargo-installed just 1.58.0, wasm-pack 0.15.0, bacon 3.26.0, sqlx-cli 0.9.0. Also installed Maven + OpenJDK 21 (needed by the Keycloak theme build, was missing) and typst 0.15.1 (version pinned in frontend/Dockerfile) for the handbook PDF. Ran `just setup` (cargo fetch, pnpm install, frontend workspace packages, domain WASM, Keycloak theme) and `just build` (frontend production bundle, backend release binary bin/green-ecolution, handbook PDF, Keycloak theme jar), both exit 0. Started infra via `just infra-up` and applied migrations with `just migrate-up` (67 migrations; verified 27 tables + _sqlx_migrations in Postgres). Started the backend release binary (:3030, APP_ENVIRONMENT=local) and the frontend Vite dev server (:5173), both routed via Traefik on port 3000. Access point: http://localhost:3000 (HTTP mode, no Porkbun keys). Note: the sandbox runs Docker-in-Docker with cgroup v2 in threaded mode, so any container requesting CPU/memory limits fails to start; the valhalla and streamlet compose services declare deploy.resources limits and required a compose override (/tmp/override.yaml) resetting deploy.resources. Final running containers: db, keycloak (healthy), valhalla (healthy), streamlet, pgadmin, reverse-proxy. Working directory: /workspace; cargo/just binaries at /root/.cargo/bin.",
+  "additional_actions": [
+    "Installed apt packages build-essential, pkg-config, libssl-dev, clang, lld",
+    "Installed Rust stable toolchain via rustup and added wasm32-unknown-unknown target",
+    "Installed Node.js 24 via NodeSource and enabled pnpm 10.20.0 via corepack",
+    "Installed Maven and OpenJDK 21 (required by build-keycloak-theme, not listed in Requirements)",
+    "Installed typst 0.15.1 binary to /usr/local/bin for handbook PDF rendering",
+    "Created /workspace/.env from .env.example",
+    "Used a docker compose override (/tmp/override.yaml) clearing deploy.resources for valhalla and streamlet to work around the threaded cgroup v2 limitation in the DinD sandbox",
+    "Started the backend and frontend dev processes manually with the run-dev environment variables instead of the interactive `just run-dev`"
+  ],
+  "verification": "Ran `just setup` and `just build` (both exit code 0) and confirmed build artifacts exist. Verified migrations with `docker exec workspace-db-1 psql ... \\dt` (27 tables + _sqlx_migrations; 67 migration records). Verified live HTTP endpoints with curl (exit 0): http://localhost:3000/ -> 200, http://localhost:3000/api/health -> 200, http://localhost:3000/api-docs/openapi.json -> 200, auth realm via Host auth.localhost -> 200, valhalla /status via Host valhalla.localhost -> 200. Confirmed all 6 compose services running (db, keycloak, valhalla healthy; streamlet, pgadmin, reverse-proxy up).",
+  "reported_outcome_evidence": [
+    "`just build` exit 0: 'Finished `release` profile ... in 5m 22s', 'cp backend/target/release/green-ecolution bin/green-ecolution', 'Build done.'",
+    "`just setup` exit 0 (after installing Maven): 'keycloak theme built in 23.41s'",
+    "`just migrate-up` exit 0: 'Migrations applied'",
+    "curl http://localhost:3000/ -> 200; /api/health -> 200; /api-docs/openapi.json -> 200 (OpenAPI title 'Green Ecolution API')",
+    "curl -H 'Host: auth.localhost' http://localhost:3000/realms/green-ecolution -> 200 (realm JSON returned)",
+    "curl -H 'Host: valhalla.localhost' http://localhost:3000/status -> 200 ({\"version\":\"3.9.0\",...})",
+    "docker exec db psql: 27 application tables present; SELECT count(*) FROM _sqlx_migrations = 67",
+    "Artifacts: bin/green-ecolution, frontend/app/dist/index.html, frontend/app/public/handbook/green-ecolution-handbuch.pdf, frontend/packages/domain-wasm/pkg/domain_wasm_bg.wasm, frontend/keycloak-theme/dist_keycloak/keycloak-theme.jar all present",
+    "Initial `just infra-up` exit 1: 'runc create failed: unable to apply cgroup configuration: cannot enter cgroupv2 /sys/fs/cgroup/docker with domain controllers -- it is in threaded mode' (worked around via deploy.resources reset override)"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

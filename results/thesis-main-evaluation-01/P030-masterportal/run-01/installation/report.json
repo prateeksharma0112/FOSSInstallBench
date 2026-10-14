@@ -1,0 +1,19 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## Method\nMasterportal (v3.26.1, commit 410dc25) was installed from the checked-out source in `/workspace` by installing Node.js, project npm dependencies, and building the portal bundle, then verifying it via a local web server.\n\n## Steps and paths\n- **Node.js prerequisite:** No Node runtime was present. Downloaded `node-v22.20.0-linux-x64.tar.xz` from nodejs.org, extracted to `/opt/node`, symlinked `node`, `npm`, `npx` into `/usr/local/bin`. Result: `node v22.20.0`, `npm 10.9.3` (matches the project's `engines` constraint).\n- **Dependencies:** `cd /workspace && npm install --no-audit --no-fund` \u2192 \"added 842 packages in 31s\", exit 0. Uses the npmjs.org registry specified in the project's `.npmrc`.\n- **Build:** The documented `npm run build` wrapper (`devtools/tasks/viteBuild.js`) is interactive (readline prompt for portal folder). It was invoked with piped stdin (defaulted to `portal`) and, for reliability, the underlying command was also run directly non-interactively: `npx cross-env PORTAL_FOLDER=portal npx vite build --config devtools/vite.config.js`. Build completed: `\u2713 built in 24.22s`, exit 0.\n- **Artifacts:** `/workspace/dist/` contains the example portals `auto/`, `basic/`, `master/` (each with `index.html`, `config.js`, `config.json`, `resources/`), plus `mastercode/3_26_1_410dc25_git_last_commit_at_2026-09-23__10-05-39/{js,css,img,locales}`. `/workspace/dist/portal/{auto,basic,master}` also present.\n\n## Access points / startup commands\n- Production build output is served statically from `/workspace/dist`; entry example: `dist/basic/index.html` (references `../mastercode/<version>/js/masterportal.js` and `css/masterportal.css`).\n- Dev server: `npm start` (Vite, HTTPS, self-signed dev cert auto-generated via `prestart`), default `https://localhost:5173`; verified on port 5175.\n\n## Final state\nInstallation completed and verified. All server processes started for verification were stopped afterwards. No incomplete work.\n\n## Note on source vs. guide\nThe supplied guide targets end users downloading a prebuilt `examples.zip` from Bitbucket. That artifact was not used; instead the developer/source build path (npm install + build) was used against the already-checked-out repository, which is the appropriate installation method for this workspace.",
+  "additional_actions": [
+    "Installed Node.js v22.20.0 manually into /opt/node and symlinked node/npm/npx into /usr/local/bin (not covered by the guide, which assumes a prebuilt download).",
+    "Ran the underlying Vite build command directly instead of the interactive `npm run build` wrapper to avoid a readline prompt."
+  ],
+  "verification": "1) `node --version` \u2192 v22.20.0 (exit 0). 2) `npm install` \u2192 exit 0, 842 packages. 3) `npx cross-env PORTAL_FOLDER=portal npx vite build --config devtools/vite.config.js` \u2192 exit 0, \"\u2713 built in 24.22s\", produced dist/. 4) Served dist/ and curl'd assets: /basic/index.html 200, masterportal.js 200, masterportal.css 200, /basic/config.json 200. 5) `npm start` dev server on HTTPS 5175 \u2192 curl -k https://127.0.0.1:5175/ 200 and https://127.0.0.1:5175/portal/basic/index.html 200.",
+  "reported_outcome_evidence": [
+    "node --version => v22.20.0 ; npm --version => 10.9.3",
+    "npm install => 'added 842 packages in 31s', EXIT=0",
+    "vite build => '\u2713 built in 24.22s', EXIT=0",
+    "ls dist => auto basic master mastercode portal",
+    "curl -o /dev/null -w '%{http_code}' http://127.0.0.1:8099/basic/index.html => 200; masterportal.js => 200; masterportal.css => 200; config.json => 200",
+    "npm start dev server: curl -k https://127.0.0.1:5175/ => 200; /portal/basic/index.html => 200; log shows 'VITE v8.1.5 ready' and generated dev certificates"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

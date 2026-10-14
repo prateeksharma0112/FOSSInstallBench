@@ -1,0 +1,88 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P044-smartplanai__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-09T23:14:13.644167+02:00",
+    "finished_at": "2026-10-09T23:24:10.625886+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P044",
+    "project": {
+      "opencode_id": "10162",
+      "name": "SmartPlanAI",
+      "description": "AI-supported application for the digitization of building plans and conversion to the XPlan standard (XPlan.gml).",
+      "catalogue_url": "https://opencode.de/de/software/smart-plan-ai-10162",
+      "type": "Application",
+      "platforms": [
+        "windows",
+        "linux",
+        "mac"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung",
+      "commit_sha": "1d70807d48a8fae19711b10422c3417ab5d05d0f",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung/-/blob/1d70807d48a8fae19711b10422c3417ab5d05d0f/README.md",
+      "language": "German",
+      "word_count": 128
+    },
+    "task_id": "P044-smartplanai"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 597.625,
+    "repository_setup_duration_seconds": 36.01600000000326,
+    "installation_duration_seconds": 523.2339999999967,
+    "validation_duration_seconds": 22.29700000002049,
+    "command_count": 28,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 17,
+    "validation_command_count": 7
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P044-smartplanai/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

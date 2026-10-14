@@ -1,0 +1,15 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "`ls -la /workspace` -> present: badge-api (88,406,058 bytes, executable), main.go, Makefile, go.mod, .badge-api.yaml, pkg/, cmd/; git head commit 8b58a9f.",
+    "`go version` -> go1.26.4 linux/amd64 at /usr/local/bin/go; `which make` -> /usr/bin/make (prerequisites present).",
+    "`./badge-api --help` (cwd /workspace) -> exit 0, lists commands attest, check, completion, help, serve.",
+    "`./badge-api check --help` -> exit 0, lists --repository, --all-repositories, --output flags as documented.",
+    "`./badge-api serve --port 8080` -> startup log shows remote config fetched from gitlab.opencode.de, git clients created, SVGs cached, config refresher started, 'starting server port=8080'.",
+    "`curl http://localhost:8080/api/v1/info` -> HTTP 200 with full config JSON (gitClients, badges, levels).",
+    "`curl http://localhost:8080/metrics` -> HTTP 200.",
+    "`curl http://localhost:8080/api/v1/svg/670fe48085aeeb75978b299f6c0a40ff.svg` -> HTTP 200.",
+    "`go test ./pkg/badges/... ./pkg/config/...` (cwd /workspace) -> ok badges, ok badges/observe, ok config; exit 0."
+  ],
+  "assessment_summary": "I reviewed the guide (build from source with Go + Make) and the installation summary (native Go 1.26.4 build producing /workspace/badge-api). Inspection confirmed the repository is at commit 8b58a9f with the binary present and executable, Go 1.26.4 and Make installed. I validated behavior rather than mere file existence: the CLI runs (`--help`, `check --help`, both exit 0), and starting `./badge-api serve --port 8080` produced a live HTTP server that downloaded the remote badge config from gitlab.opencode.de, cached badge SVGs, started its 10-minute config refresher, and logged 'starting server port=8080'. Live HTTP checks returned 200 for /api/v1/info (full configuration JSON), /metrics, and a cached SVG endpoint. `go test ./pkg/badges/... ./pkg/config/...` passed (exit 0). I then stopped the server I started. Limitations: the optional documented steps requiring external credentials/services (PostgreSQL via docker compose, .env with git tokens, nginx cache, demo frontend repo, golangci-lint, helm/kubectl deployment) were not exercised because they need tokens/separate repositories and are not required to build or run the API; the guide's config warning about missing secret token files is expected (tokens are optional for serving). These limitations do not affect the core installation, which is complete and operational."
+}

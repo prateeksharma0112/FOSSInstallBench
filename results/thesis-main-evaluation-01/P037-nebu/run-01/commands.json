@@ -1,0 +1,716 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/nebu/nebu-server /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/nebu/nebu-server.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin a4539d37b79543201248d662d2aab784b30eb1bc",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/nebu/nebu-server.git/\nFrom https://gitlab.opencode.de/nebu/nebu-server\n * branch            a4539d37b79543201248d662d2aab784b30eb1bc -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach a4539d37b79543201248d662d2aab784b30eb1bc",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at a4539d3 Merge branch 'feature/advanced-media-management' into 'main'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = a4539d37b79543201248d662d2aab784b30eb1bc",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -1",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 304\ndrwxr-xr-x 22 root root  4096 Oct  9 13:43 .\ndr-xr-xr-x  1 root root  4096 Oct  9 13:43 ..\n-rw-r--r--  1 root root    36 Oct  9 13:43 .env.example\ndrwxr-xr-x  8 root root  4096 Oct  9 13:43 .git\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 .github\n-rw-r--r--  1 root root  1325 Oct  9 13:43 .gitignore\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 .gitlab\n-rw-r--r--  1 root root 28182 Oct  9 13:43 .gitlab-ci.yml\n-rw-r--r--  1 root root  6306 Oct  9 13:43 .gitleaks.toml\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 .playwright-mcp\n-rw-r--r--  1 root root  6123 Oct  9 13:43 ARCHITECTURE.md\n-rw-r--r--  1 root root  7484 Oct  9 13:43 CHANGELOG.md\n-rw-r--r--  1 root root  2555 Oct  9 13:43 CLAUDE.md\n-rw-r--r--  1 root root  2279 Oct  9 13:43 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root 10230 Oct  9 13:43 CONTRIBUTING.md\n-rw-r--r--  1 root root 11337 Oct  9 13:43 LICENSE\n-rw-r--r--  1 root root 25660 Oct  9 13:43 Makefile\n-rw-r--r--  1 root root 14827 Oct  9 13:43 README.md\n-rw-r--r--  1 root root  6040 Oct  9 13:43 SECURITY.md\ndrwxr-xr-x 11 root root  4096 Oct  9 13:43 _bmad\ndrwxr-xr-x  7 root root  4096 Oct  9 13:43 _bmad-output\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 deploy\ndrwxr-xr-x  5 root root  4096 Oct  9 13:43 dev\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 docker\n-rw-r--r--  1 root root   621 Oct  9 13:43 docker-compose.ci.yml\n-rw-r--r--  1 root root  3079 Oct  9 13:43 docker-compose.scale.yml\n-rw-r--r--  1 root root 14086 Oct  9 13:43 docker-compose.yml\ndrwxr-xr-x  6 root root  4096 Oct  9 13:43 docs\ndrwxr-xr-x  8 root root  4096 Oct  9 13:43 e2e\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 k6\n-rw-r--r--  1 root root 19954 Oct  9 13:43 logo.png\n-rw-r--r--  1 root root   413 Oct  9 13:43 logo.svg\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 proto\n-rw-r--r--  1 root root  5206 Oct  9 13:43 publiccode.yml\n-rw-r--r--  1 root root  2101 Oct  9 13:43 renovate.json\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 scripts\ndrwxr-xr-x  7 root root  4096 Oct  9 13:43 server\ndrwxr-xr-x 16 root root  4096 Oct  9 13:43 skills\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 test\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 test-results\n-rw-r--r--  1 root root  9358 Oct  9 13:43 test_output.txt\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 tests\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 website\na4539d3 Merge branch 'feature/advanced-media-management' into 'main'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker --version; docker compose version; make --version | head -1; git --version",
+      "exit_code": 0,
+      "stdout": "Docker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\ngit version 2.34.1\n",
+      "stderr": "/bin/bash: line 3: make: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps 2>&1 | head; echo \"---\"; docker info 2>&1 | head -20",
+      "exit_code": 141,
+      "stdout": "CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n---\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which apt-get; apt-get install -y make 2>&1 | tail -5",
+      "exit_code": 100,
+      "stdout": "/usr/bin/apt-get\nPackage make is not available, but is referred to by another package.\nThis may mean that the package is missing, has been obsoleted, or\nis only available from another source\n\nE: Package 'make' has no installation candidate\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update 2>&1 | tail -3; apt-cache search '^make$' 2>&1; apt-cache search build-essential 2>&1 | head",
+      "exit_code": 0,
+      "stdout": "Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]\nFetched 49.2 MB in 10s (4892 kB/s)\nReading package lists...\nmake - utility for directing compilation\nmake-guile - utility for directing compilation with guile support\nbuild-essential - Informational list of build-essential packages\ncrossbuild-essential-arm64 - Informational list of cross-build-essential packages\ncrossbuild-essential-armhf - Informational list of cross-build-essential packages\ncrossbuild-essential-ppc64el - Informational list of cross-build-essential packages\ncrossbuild-essential-s390x - Informational list of cross-build-essential packages\ncrossbuild-essential-amd64 - Informational list of cross-build-essential packages\ncrossbuild-essential-armel - Informational list of cross-build-essential packages\ncrossbuild-essential-i386 - Informational list of cross-build-essential packages\ncrossbuild-essential-mips - Informational list of cross-build-essential packages\ncrossbuild-essential-mips64 - Informational list of cross-build-essential packages\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n \"^setup\\|^dev\\|^clean\\|^build-server\\|^redeploy\\|^test-\" Makefile | head -40",
+      "exit_code": 0,
+      "stdout": "34:build-server:\n42:redeploy:\n83:dev:\n90:dev-reset-db:\n108:setup:\n150:test-unit-go:\n154:test-unit-elixir:\n161:test-integration: setup\n178:test-integration-elixir: setup\n192:test-integration-ci: setup\n207:test-matrix-compat:\n219:test-load-silber:\n233:test-e2e:\n252:test-e2e-element:\n274:test-e2e-element-ci: setup\n289:test-e2e-element-legacy:\n299:test-e2e-admin:\n315:test-e2e-refresh:\n341:test-e2e-fluffychat:\n349:test-e2e-element-bdd: test-e2e-element\n352:test-e2e-admin-bdd: test-e2e-admin\n355:test-e2e-all: test-e2e\n360:test-compose-ports:\n375:test-compose-minio:\n419:test-iac-validate: test-load-syntax\n449:test-load-syntax:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y make 2>&1 | tail -3; make --version | head -1",
+      "exit_code": 0,
+      "stdout": "Preparing to unpack .../make_4.3-4.1build1_amd64.deb ...\nUnpacking make (4.3-4.1build1) ...\nSetting up make (4.3-4.1build1) ...\nGNU Make 4.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n '1,150p' Makefile",
+      "exit_code": 0,
+      "stdout": "# Nebu \u2014 Docker-only build system\n# All build commands run inside Docker containers.\n# No local Go, Elixir, or buf installation required.\n\n# go-removal-cleanup (full-elixir-stack): DOCKER_GO / DOCKER_NODE / DOCKER_BUF were used\n# only by the now-removed Go gateway build and admin asset pipeline.\nDOCKER_ELIXIR = docker run --rm -v $(PWD):/workspace -w /workspace elixir:1.20-alpine\nDOCKER_TOFU   = docker run --rm --entrypoint sh -v $(PWD):/workspace -w /workspace ghcr.io/opentofu/opentofu:1.9\nDOCKER_HELM   = docker run --rm --entrypoint sh -v $(PWD):/workspace -w /workspace alpine/helm:3.17\n\n# Registry used for release images \u2014 override by setting CI_REGISTRY_IMAGE in the environment.\nCI_REGISTRY_IMAGE ?= registry.gitlab.com/philippb/open-chat\n\n# Strip the leading 'v' from TAG (e.g. v1.0.0 \u2192 1.0.0) for image tagging.\nIMAGE_VERSION = $(patsubst v%,%,$(TAG))\n\n.PHONY: ci build-gateway build-media build-server redeploy dev dev-reset-db setup test-unit-go test-unit-elixir test-integration test-integration-elixir test-integration-ci test-e2e test-matrix-compat test-load-silber build-element-e2e test-e2e-element build-fluffychat-e2e test-e2e-fluffychat gen-api assets test-compose-ports test-compose-minio test-iac-validate test-load-syntax release release-push\n\n## ci: Aggregate CI gate \u2014 Elixir unit tests + the no-go-files smoke gate (AT#2).\n## go-removal-cleanup (full-elixir-stack): the canonical local CI entrypoint after\n## the Go layer was removed.\nci: test-unit-elixir\n\t./test/smoke/no-go-files.sh\n\n## build-gateway: REMOVED \u2014 the Go gateway no longer exists (full-elixir-stack migration).\nbuild-gateway:\n\t@echo \"Error: Go layer has been removed in the full-elixir-stack migration. See docs/stories/full-elixir-stack/go-removal-cleanup.md\" && exit 1\n\n## build-media: REMOVED \u2014 the Go media gateway no longer exists (full-elixir-stack migration).\nbuild-media:\n\t@echo \"Error: Go layer has been removed in the full-elixir-stack migration. See docs/stories/full-elixir-stack/go-removal-cleanup.md\" && exit 1\n\n## build-server: Compile the Elixir/OTP server inside container (mix compile \u2014 does NOT rebuild the Docker image)\nbuild-server:\n\t$(DOCKER_ELIXIR) sh -c \"cd server && mix local.hex --force && mix deps.get && mix compile\"\n\n## redeploy: Rebuild the server Docker image (via docker compose) and restart the container.\n## Use this after committing code changes \u2014 make build-server does NOT update the image used\n## by docker compose. Always use --no-cache to avoid stale layer reuse.\n## go-removal-cleanup (full-elixir-stack): the server is now the only application image \u2014 it serves\n## Matrix, /_matrix/media, and the admin UI. Build args carry real version metadata.\nredeploy:\n\tGIT_COMMIT=$$(git rev-parse --short HEAD) \\\n\tBUILD_TIME=$$(date -u +%Y-%m-%dT%H:%M:%SZ) \\\n\tRELEASE_VERSION=$$(git describe --tags --always 2>/dev/null || echo dev) \\\n\tdocker compose build --no-cache server\n\tdocker compose up -d --force-recreate server\n\n## release: Build the versioned release image locally (TAG=vN.N.N required).\n## go-removal-cleanup (full-elixir-stack): only the server image is built now \u2014 it serves\n## Matrix, /_matrix/media, and the admin UI. Image is tagged $(CI_REGISTRY_IMAGE)/nebu-server:<version>.\n## Use docker login registry.gitlab.com before pushing. Chain with release-push:\n##   TAG=v1.0.0 make release release-push\nrelease:\nifndef TAG\n\t$(error TAG is required. Usage: TAG=v1.0.0 make release)\nendif\nifeq ($(strip $(TAG)),)\n\t$(error TAG is required. Usage: TAG=v1.0.0 make release)\nendif\n\t@echo \"$(TAG)\" | grep -qE '^v[0-9]+\\.[0-9]+\\.[0-9]+$$' || \\\n\t\t(echo \"ERROR: TAG must match vN.N.N (e.g. v1.0.0). Got: $(TAG)\" && exit 1)\n\tdocker build \\\n\t\t--build-arg GIT_COMMIT=$$(git rev-parse --short HEAD) \\\n\t\t--build-arg BUILD_TIME=$$(date -u +%Y-%m-%dT%H:%M:%SZ) \\\n\t\t--build-arg RELEASE_VERSION=$(IMAGE_VERSION) \\\n\t\t-t $(CI_REGISTRY_IMAGE)/nebu-server:$(IMAGE_VERSION) \\\n\t\t./server\n\n## release-push: Push the versioned release image to the registry (TAG=vN.N.N required).\n## Run after `make release TAG=vN.N.N`. Requires docker login registry.gitlab.com.\n## go-removal-cleanup (full-elixir-stack): pushes only the nebu-server image.\nrelease-push:\nifndef TAG\n\t$(error TAG is required. Usage: TAG=v1.0.0 make release-push)\nendif\nifeq ($(strip $(TAG)),)\n\t$(error TAG is required. Usage: TAG=v1.0.0 make release-push)\nendif\n\tdocker push $(CI_REGISTRY_IMAGE)/nebu-server:$(IMAGE_VERSION)\n\n## dev: Start the full local development stack (server, postgres, dex, minio)\ndev:\n\tdocker compose up\n\n## dev-reset-db: Drop and recreate the nebu database, then restart the server so migrations re-run.\n## go-removal-cleanup (full-elixir-stack): the server now runs migrations on startup and serves health.\n## WARNING: This destroys ALL data in the local database. Use only in development.\n## Usage: make dev-reset-db\ndev-reset-db:\n\t@echo \"Stopping all containers and removing volumes (this destroys all local DB data)...\"\n\tdocker compose down --volumes\n\t@echo \"Starting postgres first to ensure roles are provisioned...\"\n\tdocker compose up -d postgres\n\t@echo \"Waiting for postgres to be ready...\"\n\t@until docker compose exec -T postgres pg_isready -U postgres -q; do sleep 1; done\n\t@echo \"Starting all services (the server will run migrations on startup)...\"\n\tdocker compose up -d\n\t@echo \"Waiting for the server to be healthy (max 120s)...\"\n\t@_retries=0; until docker compose exec -T server curl -fs http://localhost:4000/health >/dev/null 2>&1; do \\\n\t\t_retries=$$((_retries+1)); \\\n\t\tif [ \"$$_retries\" -ge 60 ]; then echo \"ERROR: server did not become healthy after 120s\"; exit 1; fi; \\\n\t\tsleep 2; \\\n\tdone\n\t@echo \"dev-reset-db complete. Run 'docker compose logs server' to verify migrations ran cleanly.\"\n\n## setup: First-time setup \u2014 generate .secrets/internal_secret, MinIO credentials, and dev credentials\nsetup:\n\t@mkdir -p .secrets\n\t@if [ ! -f .secrets/internal_secret ]; then \\\n\t\topenssl rand -hex 32 > .secrets/internal_secret; \\\n\t\techo \"Generated .secrets/internal_secret\"; \\\n\telse \\\n\t\techo \".secrets/internal_secret already exists, skipping\"; \\\n\tfi\n\t@if [ ! -f .secrets/minio_root_user ]; then \\\n\t\topenssl rand -hex 16 > .secrets/minio_root_user; \\\n\t\techo \"Generated .secrets/minio_root_user\"; \\\n\telse \\\n\t\techo \".secrets/minio_root_user already exists, skipping\"; \\\n\tfi\n\t@if [ ! -f .secrets/minio_root_password ]; then \\\n\t\topenssl rand -hex 16 > .secrets/minio_root_password; \\\n\t\techo \"Generated .secrets/minio_root_password\"; \\\n\telse \\\n\t\techo \".secrets/minio_root_password already exists, skipping\"; \\\n\tfi\n\t@if [ ! -f .secrets/minio_app_access_key ]; then \\\n\t\topenssl rand -hex 16 > .secrets/minio_app_access_key; \\\n\t\techo \"Generated .secrets/minio_app_access_key\"; \\\n\telse \\\n\t\techo \".secrets/minio_app_access_key already exists, skipping\"; \\\n\tfi\n\t@if [ ! -f .secrets/minio_app_secret_key ]; then \\\n\t\topenssl rand -hex 16 > .secrets/minio_app_secret_key; \\\n\t\techo \"Generated .secrets/minio_app_secret_key\"; \\\n\telse \\\n\t\techo \".secrets/minio_app_secret_key already exists, skipping\"; \\\n\tfi\n\t@echo \"\"\n\t@echo \"WARNING: MinIO credentials in .secrets/ are for LOCAL DEVELOPMENT only.\"\n\t@echo \"Replace before first production start.\"\n\t@echo \"\"\n\t@echo \"Dev credentials (Dex local users):\"\n\t@echo \"  kai@example.com        / changeme  (instance_admin)\"\n\t@echo \"  compliance@example.com / changeme  (compliance_officer)\"\n\t@echo \"  alex@example.com       / changeme  (user)\"\n\n## test-unit-go: REMOVED \u2014 the Go layer no longer exists (full-elixir-stack migration).\ntest-unit-go:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && make setup 2>&1 | tail -30; echo \"EXIT=$?\"; ls -la .secrets/",
+      "exit_code": 0,
+      "stdout": "Generated .secrets/internal_secret\nGenerated .secrets/minio_root_user\nGenerated .secrets/minio_root_password\nGenerated .secrets/minio_app_access_key\nGenerated .secrets/minio_app_secret_key\n\nWARNING: MinIO credentials in .secrets/ are for LOCAL DEVELOPMENT only.\nReplace before first production start.\n\nDev credentials (Dex local users):\n  kai@example.com        / changeme  (instance_admin)\n  compliance@example.com / changeme  (compliance_officer)\n  alex@example.com       / changeme  (user)\nEXIT=0\ntotal 28\ndrwxr-xr-x  2 root root 4096 Oct  9 13:44 .\ndrwxr-xr-x 23 root root 4096 Oct  9 13:44 ..\n-rw-r--r--  1 root root   65 Oct  9 13:44 internal_secret\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_app_access_key\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_app_secret_key\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_root_password\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_root_user\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '1,120p' docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "name: nebu\n\nsecrets:\n  internal_secret:\n    file: .secrets/internal_secret\n  minio_root_user:\n    file: .secrets/minio_root_user\n  minio_root_password:\n    file: .secrets/minio_root_password\n  # Story 12.3 \u2014 IAM credentials for the nebu-app MinIO user (least-privilege: PutObject+GetObject only).\n  # Generated by `make setup`. Used by the media gateway and the createbuckets init container.\n  minio_app_access_key:\n    file: .secrets/minio_app_access_key\n  minio_app_secret_key:\n    file: .secrets/minio_app_secret_key\n\nservices:\n  postgres:\n    image: postgres:16-alpine\n    environment:\n      POSTGRES_DB: nebu\n      POSTGRES_USER: nebu\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-nebu_dev_password}\n    ports:\n      - \"5432:5432\"\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U nebu -d nebu\"]\n      interval: 5s\n      timeout: 5s\n      retries: 5\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n      # Story 5.29a \u2014 AC2: DB-init script provisions nebu_migrate and nebu_app roles\n      # on first container start (docker-entrypoint-initdb.d runs only on empty volumes).\n      - ./dev/postgres/init:/docker-entrypoint-initdb.d:ro\n\n  # go-removal-cleanup (full-elixir-stack): the Go `gateway:` service was removed.\n  # The Elixir `server:` service below now serves ALL public endpoints (Matrix CS API,\n  # /_matrix/media, and the Phoenix LiveView admin /admin) on its single Bandit\n  # listener (server:4000), published to the host on 8008 (Matrix) and 8080 (admin).\n  # The server also owns the OIDC Authorization-Code + PKCE login flow and runs DB\n  # migrations on startup (see server/Dockerfile + NEBU_DB_URL_MIGRATE below).\n  server:\n    build:\n      context: ./server\n      args:\n        GIT_COMMIT: ${GIT_COMMIT:-unknown}\n        BUILD_TIME: ${BUILD_TIME:-unknown}\n        RELEASE_VERSION: ${RELEASE_VERSION:-unknown}\n    depends_on:\n      postgres:\n        condition: service_healthy\n      # media-gateway-migration (AC6): the server now serves /_matrix/media/v3/* directly\n      # (Elixir Nebu.Media), so it needs MinIO healthy and the bucket/IAM-user\n      # created \u2014 exactly the dependencies the removed `media:` service had.\n      minio:\n        condition: service_healthy\n      createbuckets:\n        condition: service_completed_successfully\n    # media-gateway-migration (AC6): MinIO IAM credentials (file-based Docker\n    # Secrets) consumed by Nebu.Media.Storage / config/runtime.exs ExAws config.\n    secrets:\n      - internal_secret\n      - minio_app_access_key\n      - minio_app_secret_key\n    environment:\n      # Story 5.29a \u2014 AC3: the server also uses nebu_app at runtime (no DDL from the server)\n      NEBU_DB_URL: \"postgresql://nebu_app:nebu_app_dev_pw@postgres:5432/nebu\"\n      DATABASE_URL: \"ecto://nebu_app:nebu_app_dev_pw@postgres:5432/nebu\"\n      # go-removal-cleanup: migrations run as nebu_migrate (table owner) \u2014 ported from\n      # the removed gateway service. server/Dockerfile invokes Nebu.Release.migrate/0 on\n      # startup before the server boots, using this connection.\n      NEBU_DB_URL_MIGRATE: \"postgresql://nebu_migrate:nebu_migrate_dev_pw@postgres:5432/nebu\"\n      NEBU_INTERNAL_SECRET_FILE: \"/run/secrets/internal_secret\"\n      NEBU_SERVER_NAME: \"localhost\"\n      NEBU_PII_ENCRYPTION_KEY: \"${NEBU_PII_ENCRYPTION_KEY:-6465766b65793030303030303030303030303030303030303030303030303030}\"\n      # oidc-bootstrap-only-config (ADR-022): OIDC is configured EXCLUSIVELY through the\n      # Bootstrap Wizard (server_config) \u2014 there are NO NEBU_OIDC_* / NEBU_ADMIN_OIDC_*\n      # config variables. A single OIDC client (dev Dex `nebu-gateway`, secret\n      # `nebu-dev-secret`, all redirect URIs registered in dev/dex/config.yaml) serves\n      # both Matrix Bearer validation and admin operator login. On a fresh DB the server\n      # boots fail-closed (all Bearer tokens 401, admin \u2192 /bootstrap); run the wizard\n      # once (issuer http://dex:5556/dex, client nebu-gateway / nebu-dev-secret, audience\n      # nebu-gateway, JWKS http://dex:5556/dex/keys) to configure it.\n      #\n      # NEBU_OIDC_JWKS_TTL is the JwksCache refresh interval (a cache-tuning knob, NOT\n      # OIDC issuer/audience/client config) and may stay.\n      NEBU_OIDC_JWKS_TTL: \"300\"\n      # DEV-ONLY: this stack serves the admin UI over plain http://localhost, so the\n      # admin session cookie must NOT be Secure (otherwise the login-state cookie is\n      # not returned on the OIDC callback in stricter browsers \u2192 \"Invalid login state\").\n      # Production serves over TLS and leaves this unset (defaults to secure:true).\n      NEBU_ADMIN_SESSION_SECURE: \"false\"\n      # Integration-test escape hatch: set NEBU_RATE_LIMIT_DISABLED=true in the host\n      # environment before `docker compose up` to disable the IP rate limiter.\n      # make test-integration sets this automatically; never set in production.\n      NEBU_RATE_LIMIT_DISABLED: \"${NEBU_RATE_LIMIT_DISABLED:-false}\"\n      # e2e-session-refresh-suites: Nebu session ceilings (default 8h, set in\n      # Nebu.Web.SessionConfig). Leave empty for normal dev/prod (\u2192 8h). The\n      # `make test-e2e-refresh` target sets these short on the host so the silent\n      # OIDC-refresh loop fires within the test window. Empty / junk \u2192 8h default\n      # (parsed by SessionConfig.parse_ttl/1, never crashes the login path).\n      NEBU_MATRIX_SESSION_TTL_SECONDS: \"${NEBU_MATRIX_SESSION_TTL_SECONDS:-}\"\n      NEBU_ADMIN_SESSION_TTL_SECONDS: \"${NEBU_ADMIN_SESSION_TTL_SECONDS:-}\"\n      # media-gateway-migration (AC6): media object storage, ported from the Go\n      # `media:` service. Same MinIO bucket + nebu-app IAM credentials.\n      NEBU_MINIO_ENDPOINT: \"minio:9000\"\n      NEBU_MINIO_ACCESS_KEY_FILE: \"/run/secrets/minio_app_access_key\"\n      NEBU_MINIO_SECRET_KEY_FILE: \"/run/secrets/minio_app_secret_key\"\n      NEBU_MINIO_BUCKET: \"nebu-media\"\n      NEBU_MINIO_USE_SSL: \"false\"\n      # media-security-admin-control/3-clamav-genserver: ClamAV scanner client.\n      # Nebu.Media.ClamAV tolerates clamd being unreachable at boot (AC7) \u2014 no\n      # depends_on/healthy-gate is required here, clamd may come up after the\n      # server (freshclam's first signature download can take a while).\n      NEBU_CLAMAV_HOST: \"clamav\"\n      NEBU_CLAMAV_PORT: \"3310\"\n    ports:\n      # go-removal-cleanup: the server now serves the public Matrix endpoint (host 8008)\n      # and the admin UI (host 8080) \u2014 both formerly published by the Go gateway \u2014\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '120,400p' docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "      # and the admin UI (host 8080) \u2014 both formerly published by the Go gateway \u2014\n      # plus its own 4000. All three map to the single Bandit listener on server:4000.\n      # (The gRPC network listener was removed \u2014 ADR-021; the server no longer opens port 9000.)\n      - \"8008:4000\"\n      - \"8080:4000\"\n      - \"4000:4000\"\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:4000/health\"]\n      interval: 10s\n      timeout: 5s\n      retries: 3\n      start_period: 30s\n\n  dex:\n    image: dexidp/dex:v2.45.1\n    command: [\"dex\", \"serve\", \"/etc/dex/config.yaml\"]\n    volumes:\n      - ./dev/dex/config.yaml:/etc/dex/config.yaml:ro\n      - dex_data:/var/dex\n    ports:\n      - \"5556:5556\"\n    healthcheck:\n      test: [\"CMD-SHELL\", \"wget -q -O- http://localhost:5556/dex/.well-known/openid-configuration || exit 1\"]\n      interval: 5s\n      timeout: 3s\n      retries: 5\n      start_period: 5s\n\n  element:\n    build:\n      context: .\n      dockerfile: docker/Dockerfile.element-e2e\n    depends_on:\n      # go-removal-cleanup: was gateway; the server now serves the public Matrix endpoint.\n      server:\n        condition: service_healthy\n    ports:\n      - \"7070:80\"\n    profiles:\n      - e2e\n\n  # Story 12.1 \u2014 MinIO object storage (S3-compatible) for media uploads.\n  # Credentials are read from Docker Secrets generated by `make setup` (.secrets/ is gitignored).\n  # ADR-013: MinIO as S3-compatible object store for MVP.\n  minio:\n    image: minio/minio:RELEASE.2025-09-07T16-13-09Z\n    restart: unless-stopped\n    command: server /data --console-address \":9001\"\n    environment:\n      # Story 12.1 \u2014 AC2: credentials read from Docker Secrets, not hardcoded.\n      # WARNING: These are example credentials for local development only.\n      # Replace before first production start.\n      MINIO_ROOT_USER_FILE: /run/secrets/minio_root_user\n      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_root_password\n    ports:\n      - \"9000:9000\"   # MinIO S3 API\n      - \"9001:9001\"   # MinIO Console\n    secrets:\n      - minio_root_user\n      - minio_root_password\n    volumes:\n      - minio_data:/data\n    healthcheck:\n      test: [\"CMD\", \"curl\", \"-f\", \"http://localhost:9000/minio/health/live\"]\n      interval: 5s\n      timeout: 5s\n      retries: 5\n      start_period: 10s\n\n  # Story 12.1 \u2014 One-shot init container that creates the `nebu-media` bucket.\n  # Story 12.3 \u2014 Extended: creates nebu-app IAM user with PutObject+GetObject policy only.\n  # Runs after MinIO is healthy; exits 0 on success (idempotent \u2014 user/policy already exists is OK).\n  createbuckets:\n    # Story 12.7 \u2014 SEC Gate 2 fix [MEDIUM-4 + MEDIUM-6]:\n    # - Bumped to 2026 release tag (security fix: Finding #6)\n    # - Credentials passed via MC_HOST_minio env var and shell variables to keep secrets\n    #   off argv (/proc/<pid>/cmdline) \u2014 defeats Docker Secrets goal if passed as mc args.\n    #\n    # 2026-07-30 correction: the `--stdin` form referenced above for `mc admin user add`\n    # does not exist on this (or the current `latest`) mc release \u2014 verified via\n    # `mc admin user add --help`, which only documents the positional\n    # `TARGET ACCESSKEY SECRETKEY` form. The previous script silently swallowed the\n    # resulting usage error via `|| true`, so the app IAM user was NEVER created \u2014\n    # every real S3 write from the server failed with an auth error (surfaced as\n    # `{:error, {:put_failed, _}}` -> 500 \"Failed to store media file\"). Reverted to\n    # the only syntax this tool actually supports; the secret values are therefore\n    # briefly visible in this container's own argv for its few-second one-shot\n    # lifetime (not persisted, not sent over the network in cleartext \u2014 MC_HOST_minio\n    # still keeps the *root* credentials off argv). If a future mc release adds a real\n    # stdin/file-based form for `admin user add`, switch back.\n    #\n    # Second bug found the same day: the policy-to-user attachment line called\n    # `mc admin user policy attach ... --user X`, which doesn't exist either (`mc\n    # admin user policy` is a read-only \"export policy as JSON\" command, and `--user`\n    # isn't one of its flags) \u2014 its fallback, `mc admin policy set`, is itself a fully\n    # removed/rejected command on this release, so BOTH attempts failed and the app\n    # user never actually held the nebu-app-policy grants. The real command is the\n    # top-level `mc admin policy attach TARGET POLICY --user USER`.\n    image: minio/mc:RELEASE.2025-08-13T08-35-41Z\n    depends_on:\n      minio:\n        condition: service_healthy\n    secrets:\n      - minio_root_user\n      - minio_root_password\n      - minio_app_access_key\n      - minio_app_secret_key\n    volumes:\n      - ./dev/minio/nebu-app-policy.json:/policy/nebu-app-policy.json:ro\n    entrypoint: |\n      /bin/sh -c '\n      export MC_HOST_minio=\"http://$(cat /run/secrets/minio_root_user):$(cat /run/secrets/minio_root_password)@minio:9000\"\n      mc mb --ignore-existing minio/nebu-media\n      APP_KEY=$$(cat /run/secrets/minio_app_access_key)\n      APP_SECRET=$$(cat /run/secrets/minio_app_secret_key)\n      mc admin user add minio \"$$APP_KEY\" \"$$APP_SECRET\" || echo \"createbuckets: user add failed or already exists (non-fatal)\"\n      mc admin policy create minio nebu-app-policy /policy/nebu-app-policy.json 2>/dev/null || mc admin policy add minio nebu-app-policy /policy/nebu-app-policy.json || true\n      mc admin policy attach minio nebu-app-policy --user \"$$APP_KEY\" || echo \"createbuckets: policy attach failed or already attached (non-fatal)\"\n      exit 0\n      '\n\n  # media-gateway-migration (AC6): the Go `media:` service was removed here. The\n  # Elixir server now serves the deprecated /_matrix/media/v3/* endpoints directly\n  # (Nebu.Media via the Bandit listener on server:4000), with the same MinIO\n  # bucket + nebu-app IAM credentials now wired into the `server:` service above.\n  # The minio + createbuckets services are intentionally retained.\n\n  # media-security-admin-control/3-clamav-genserver \u2014 malware scanner daemon\n  # (ADR-024: self-hosted ClamAV, no file content/hash leaves the deployment).\n  # The official clamav/clamav image runs both clamd and freshclam (signature\n  # updates) in one container by default \u2014 no separate sidecar needed for this\n  # story's scope. Nebu.Media.ClamAV connects via NEBU_CLAMAV_HOST/PORT\n  # (default \"clamav\"/3310, matching this service name on the default network).\n  clamav:\n    image: clamav/clamav:stable\n    # No arm64 manifest is published for this image (\"no matching manifest\n    # for linux/arm64/v8\"); pin amd64 explicitly so Docker Desktop's\n    # Rosetta/QEMU emulation runs it on Apple Silicon dev hosts (same\n    # emulated-pull pattern already implied by the dex service's platform\n    # mismatch warning above), instead of a hard pull failure.\n    platform: linux/amd64\n    restart: unless-stopped\n    # Kassandra security review (F-4, 2026-07-13): clamd has no\n    # authentication and its control protocol includes verbs like SHUTDOWN\n    # (a DoS on the scanner) \u2014 unlike postgres/minio, this is not a service\n    # meant to be reachable from the host. `server` reaches it over the\n    # compose network by service name (NEBU_CLAMAV_HOST=clamav), so no host\n    # port publish is needed; deliberately no `ports:` mapping here.\n    volumes:\n      - clamav_data:/var/lib/clamav\n    healthcheck:\n      # Bundled in the clamav/clamav image specifically for container healthchecks.\n      test: [\"CMD\", \"clamdcheck.sh\"]\n      interval: 30s\n      timeout: 10s\n      retries: 5\n      # freshclam's first signature database download can take a few minutes.\n      start_period: 180s\n\nvolumes:\n  postgres_data:\n  dex_data:\n  minio_data:\n  clamav_data:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose up -d --build > /tmp/compose_up.log 2>&1 &\necho \"started pid $!\"; sleep 30; tail -20 /tmp/compose_up.log",
+      "exit_code": 0,
+      "stdout": "started pid 789\n Image minio/mc:RELEASE.2025-08-13T08-35-41Z Pulling \n Image clamav/clamav:stable Pulling \n Image dexidp/dex:v2.45.1 Pulling \n Image minio/minio:RELEASE.2025-09-07T16-13-09Z Pulling \n Image postgres:16-alpine Pulling \n Image minio/mc:RELEASE.2025-08-13T08-35-41Z Error pull access denied for minio/mc, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\n Image postgres:16-alpine Interrupted \n Image dexidp/dex:v2.45.1 Interrupted \n Image minio/minio:RELEASE.2025-09-07T16-13-09Z Interrupted \n Image clamav/clamav:stable Interrupted \nError response from daemon: pull access denied for minio/mc, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\nError response from daemon: No such image: minio/minio:RELEASE.2025-09-07T16-13-09Z\nError response from daemon: No such image: clamav/clamav:stable\nError response from daemon: No such image: postgres:16-alpine\nError response from daemon: No such image: dexidp/dex:v2.45.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull postgres:16-alpine 2>&1 | tail -10",
+      "exit_code": 0,
+      "stdout": "25b77f59fd95: Download complete\n25b77f59fd95: Pull complete\n6c25da34e03f: Pull complete\na88782f92806: Pull complete\nd8d21be4bf02: Pull complete\n6117bd39f23f: Pull complete\n509688edf37b: Pull complete\nDigest: sha256:721873c34ceb9f8d8fc265984940dc982404c105f19ad51be9fdc5970a6080ea\nStatus: Downloaded newer image for postgres:16-alpine\ndocker.io/library/postgres:16-alpine\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat ~/.docker/config.json 2>&1; echo ---; env | grep -i -E 'docker|registry|proxy' 2>&1",
+      "exit_code": 1,
+      "stdout": "cat: /root/.docker/config.json: No such file or directory\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull minio/mc:RELEASE.2025-08-13T08-35-41Z 2>&1 | tail -5; echo \"---next---\"; docker pull dexidp/dex:v2.45.1 2>&1 | tail -3",
+      "exit_code": 0,
+      "stdout": "Error response from daemon: pull access denied for minio/mc, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\n---next---\nDigest: sha256:8499afd690c437f52301efd2b05b2455da5bd2dfc20332cd697dc9937f808462\nStatus: Downloaded newer image for dexidp/dex:v2.45.1\ndocker.io/dexidp/dex:v2.45.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s \"https://hub.docker.com/v2/repositories/minio/mc/tags?page_size=100\" 2>&1 | head -c 2000; echo; echo \"=== search RELEASE.2025-08 ===\"; curl -s \"https://hub.docker.com/v2/repositories/minio/mc/tags?page_size=100\" | grep -o 'RELEASE.2025[^\"]*' | head -30",
+      "exit_code": 1,
+      "stdout": "{\"message\":\"object not found\",\"errinfo\":{}}\n=== search RELEASE.2025-08 ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s \"https://hub.docker.com/v2/namespaces/minio/repositories/mc\" | head -c 1000; echo; echo \"=== minio ===\"; curl -s \"https://hub.docker.com/v2/namespaces/minio/repositories/minio\" | head -c 500",
+      "exit_code": 0,
+      "stdout": "{\"message\":\"object not found\",\"errinfo\":{}}\n=== minio ===\n{\"message\":\"object not found\",\"errinfo\":{}}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull minio/mc:latest 2>&1 | tail -3; echo \"===\"; docker pull minio/mc:RELEASE.2025-04-16T18-13-26Z 2>&1 | tail -3",
+      "exit_code": 1,
+      "stdout": "Error response from daemon: pull access denied for minio/mc, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\n===\nError response from daemon: pull access denied for minio/mc, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull minio/minio:RELEASE.2025-09-07T16-13-09Z 2>&1 | tail -3; echo \"===\"; docker search minio 2>&1 | head -20",
+      "exit_code": 141,
+      "stdout": "Error response from daemon: pull access denied for minio/minio, repository does not exist or may require 'docker login': denied: requested access to the resource is denied\n===\nNAME                     DESCRIPTION                                     STARS     OFFICIAL\nbitnamicharts/minio      Bitnami Helm chart for MinIO\u00ae                   9         \nelestio/minio            Minio, verified and packaged by Elestio         10        \nrook/minio               Minio is a high performance distributed obje\u2026   2         \ncleanstart/minio         Secure by Design, Built for Speed, Hardened \u2026   3         \nalpine/minio             Full story at https://github.com/minio/minio\u2026   1         \ndemisto/minio                                                            0         \nvulhub/minio                                                             0         \ncorpusops/minio          https://github.com/corpusops/docker-images/     0         \ncccs/minio                                                               0         \nairbyte/minio                                                            0         \nintel/minio                                                              0         \nmosipid/minio                                                            0         \nmosipint/minio                                                           0         \ncortexproject/minio                                                      0         \nopenebs/minio            A mirror of the minio object store (not main\u2026   0         \nopeng2p/minio                                                            0         \nhkube/minio                                                              0         \ninsectai/minio           MinIO-compatible S3 server + mc client built\u2026   0         \nminio/k8s-operator       Minio Operator for k8s https://kubernetes.io/   1         \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"%{http_code}\\n\" https://hub.docker.com/v2/repositories/minio/; curl -s \"https://hub.docker.com/v2/repositories/minio/minio/tags?page_size=5\" | head -c 500",
+      "exit_code": 0,
+      "stdout": "200\n{\"message\":\"object not found\",\"errinfo\":{}}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s \"https://hub.docker.com/v2/repositories/minio/?page_size=100\" | python3 -m json.tool 2>/dev/null | grep '\"name\"' | head -40",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s \"https://hub.docker.com/v2/repositories/minio/?page_size=100\" | head -c 3000",
+      "exit_code": 23,
+      "stdout": "{\"count\":20,\"next\":null,\"previous\":null,\"results\":[{\"name\":\"mint\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"Collection of tests for hardening and stability of MinIO server\\n\",\"is_private\":false,\"star_count\":0,\"pull_count\":80281,\"last_updated\":\"2026-01-08T10:50:41.082199Z\",\"last_modified\":\"2026-01-08T10:51:08.838158Z\",\"date_registered\":\"2017-06-16T03:10:40.666796Z\",\"affiliation\":\"\",\"media_types\":[\"application/vnd.docker.container.image.v1+json\",\"application/vnd.oci.image.config.v1+json\"],\"content_types\":[\"image\"],\"categories\":[],\"storage_size\":656685516217,\"source\":null},{\"name\":\"k8s-operator\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"Minio Operator for k8s https://kubernetes.io/\",\"is_private\":false,\"star_count\":1,\"pull_count\":765267,\"last_updated\":\"2020-11-21T06:11:25.101139Z\",\"last_modified\":\"2024-10-16T13:48:34.145251Z\",\"date_registered\":\"2018-11-29T04:08:05.652294Z\",\"affiliation\":\"\",\"media_types\":[\"application/vnd.docker.container.image.v1+json\"],\"content_types\":[\"image\"],\"categories\":[],\"storage_size\":1015706405,\"source\":null},{\"name\":\"m3-nginx\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"https://github.com/minio/m3 custom nginx tooling\",\"is_private\":false,\"star_count\":0,\"pull_count\":1590,\"last_updated\":\"2020-03-11T21:18:05.6327Z\",\"last_modified\":\"2024-10-16T13:48:34.145251Z\",\"date_registered\":\"2019-12-22T02:08:58.238372Z\",\"affiliation\":\"\",\"media_types\":[\"application/vnd.docker.container.image.v1+json\"],\"content_types\":[\"image\"],\"categories\":[],\"storage_size\":466921119,\"source\":null},{\"name\":\"warp\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"S3 benchmarking tool\\n\\n\",\"is_private\":false,\"star_count\":0,\"pull_count\":238767,\"last_updated\":\"2025-10-16T22:51:56.237013Z\",\"last_modified\":\"2024-10-16T13:48:34.145251Z\",\"date_registered\":\"2020-02-04T02:41:08.046807Z\",\"affiliation\":\"\",\"media_types\":[\"application/vnd.docker.container.image.v1+json\",\"application/vnd.docker.distribution.manifest.list.v2+json\"],\"content_types\":[\"image\"],\"categories\":[],\"storage_size\":845323950,\"source\":null},{\"name\":\"sidekick\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"*sidekick* is a high-performance sidecar load-balancer.\",\"is_private\":false,\"star_count\":1,\"pull_count\":226504,\"last_updated\":\"2023-07-08T00:42:14.302894Z\",\"last_modified\":\"2024-10-16T13:48:34.145251Z\",\"date_registered\":\"2020-03-08T18:30:20.283328Z\",\"affiliation\":\"\",\"media_types\":[\"application/vnd.docker.container.image.v1+json\",\"application/vnd.docker.distribution.manifest.list.v2+json\"],\"content_types\":[\"image\"],\"categories\":[],\"storage_size\":304276886,\"source\":null},{\"name\":\"spark\",\"namespace\":\"minio\",\"repository_type\":\"image\",\"status\":1,\"status_description\":\"active\",\"description\":\"\",\"is_private\":false,\"star_count\":0,",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull quay.io/minio/minio:RELEASE.2025-09-07T16-13-09Z 2>&1 | tail -3; echo \"=== mc quay ===\"; docker pull quay.io/minio/mc:RELEASE.2025-08-13T08-35-41Z 2>&1 | tail -3",
+      "exit_code": 1,
+      "stdout": "Error response from daemon: unauthorized: access to the requested resource is not authorized\n=== mc quay ===\nError response from daemon: unauthorized: access to the requested resource is not authorized\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker search minio/minio 2>&1 | head; echo \"===\"; curl -s \"https://hub.docker.com/v2/search/repositories/?query=minio&page_size=25\" | python3 -c \"import sys,json; d=json.load(sys.stdin); [print(r['repo_name'], r.get('star_count')) for r in d['results']]\" 2>&1 | head -30",
+      "exit_code": 127,
+      "stdout": "NAME                                DESCRIPTION                                     STARS     OFFICIAL\nrancher/minio-minio                                                                 1         \nbitnamicharts/minio                 Bitnami Helm chart for MinIO\u00ae                   9         \nrancher/mirrored-minio-minio                                                        0         \ncleanstart/minio                    Secure by Design, Built for Speed, Hardened \u2026   3         \nelestio/minio                       Minio, verified and packaged by Elestio         10        \ndemisto/minio                                                                       0         \ncloudfoundry/minio-cf-for-k8s                                                       0         \nrook/minio                          Minio is a high performance distributed obje\u2026   2         \nrapidfort/minio-ib                  RapidFort optimized, hardened image for minI\u2026   0         \n===\n/bin/bash: line 3: python3: command not found\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/docker/daemon.json 2>&1; echo ---; cat /etc/hosts; echo ---; env | grep -i proxy",
+      "exit_code": 1,
+      "stdout": "cat: /etc/docker/daemon.json: No such file or directory\n---\n127.0.0.1\tlocalhost\n127.0.1.1\tLAP776.iese.fhg.de LAP776\n::1\tip6-localhost ip6-loopback\nfe00::0\tip6-localnet\nff00::0\tip6-mcastprefix\nff02::1\tip6-allnodes\nff02::2\tip6-allrouters\n169.254.1.2\thost.containers.internal host.docker.internal\n192.168.127.2\tdd3b9d113a68 nostalgic_brattain\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"%{http_code}\\n\" https://registry-1.docker.io/v2/; curl -s -o /dev/null -w \"%{http_code}\\n\" https://hub.docker.com; curl -s -o /dev/null -w \"%{http_code}\\n\" https://quay.io",
+      "exit_code": 0,
+      "stdout": "401\n200\n200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for img in \"ghcr.io/minio/minio:latest\" \"quay.io/minio/minio:latest\" \"bitnami/minio:latest\" \"rancher/mirrored-minio-minio:latest\" \"minio/minio:latest\"; do echo \"=== $img ===\"; timeout 60 docker manifest inspect \"$img\" >/dev/null 2>&1 && echo OK || echo FAIL; done",
+      "exit_code": 0,
+      "stdout": "=== ghcr.io/minio/minio:latest ===\nFAIL\n=== quay.io/minio/minio:latest ===\nFAIL\n=== bitnami/minio:latest ===\nFAIL\n=== rancher/mirrored-minio-minio:latest ===\nFAIL\n=== minio/minio:latest ===\nFAIL\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://hub.docker.com/v2/repositories/rancher/mirrored-minio-minio/tags?page_size=20\" | head -c 1500",
+      "exit_code": 23,
+      "stdout": "{\"count\":30,\"next\":\"https://hub.docker.com/v2/repositories/rancher/mirrored-minio-minio/tags?page=2\\u0026page_size=20\",\"previous\":null,\"results\":[{\"creator\":601605,\"id\":144161884,\"images\":[{\"architecture\":\"amd64\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:704d1e1a415ddee85068fdaf35431085f5596df50f2b3bfaf46653e542c4911a\",\"os\":\"linux\",\"os_features\":\"\",\"os_version\":null,\"size\":21324169,\"status\":\"active\",\"last_pulled\":\"2026-10-09T13:23:25.356934992Z\",\"last_pushed\":\"2020-07-13T20:40:57Z\"}],\"last_updated\":\"2024-07-11T19:49:22.609403Z\",\"last_updater\":24206185,\"last_updater_username\":\"autorancher\",\"name\":\"RELEASE.2020-07-13T18-09-56Z\",\"repository\":11844319,\"full_size\":21324169,\"v2\":true,\"tag_status\":\"active\",\"tag_last_pulled\":\"2026-10-09T13:23:25.356934992Z\",\"tag_last_pushed\":\"2024-07-11T19:49:22.609403Z\",\"media_type\":\"application/vnd.docker.distribution.manifest.list.v2+json\",\"content_type\":\"image\",\"digest\":\"sha256:41e0ee9519b6609a748ed0fbe36784568e694e755666408d3052276f327249ec\"},{\"creator\":601605,\"id\":481204648,\"images\":[{\"architecture\":\"amd64\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:760ce64b2ae944a1d9daa713c409a320eb4524e0fa9bb73852b9701ee00cb15c\",\"os\":\"linux\",\"os_features\":\"\",\"os_version\":null,\"size\":105371241,\"status\":\"active\",\"last_pulled\":\"2026-10-09T13:04:35.550785225Z\",\"last_pushed\":\"2023-07-07T08:01:54Z\"},{\"architecture\":\"arm64\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:90f810f4665b90e3b28d3dfa019c91743ea5ffda4b8a5cf9a2706b7ba1e08aaf\",\"os\":\"linux\",\"os_features",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker info 2>&1 | sed -n '1,60p'; echo \"=== context ===\"; docker context ls 2>&1",
+      "exit_code": 0,
+      "stdout": "Client: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 2\n Server Version: 29.7.2\n Storage Driver: overlay2\n  Backing Filesystem: extfs\n  Supports d_type: true\n  Using metacopy: false\n  Native Overlay Diff: true\n  userxattr: true\n Logging Driver: json-file\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Plugins:\n  Volume: local\n  Network: bridge host ipvlan macvlan null overlay\n  Log: awslogs fluentd gcplogs gelf journald json-file local splunk syslog\n CDI spec directories:\n  /etc/cdi\n  /var/run/cdi\n Swarm: inactive\n Runtimes: runc io.containerd.runc.v2\n Default Runtime: runc\n Init Binary: docker-init\n containerd version: db8809540e1a7a9da5d518876894933ff55692ab\n runc version: v1.4.3-0-gbb14dabe\n init version: de40ad0\n Security Options:\n  seccomp\n   Profile: builtin\n  cgroupns\n Kernel Version: 6.6.87.2-microsoft-standard-WSL2\n Operating System: Ubuntu 22.04.5 LTS\n OSType: linux\n Architecture: x86_64\n CPUs: 8\n Total Memory: 7.602GiB\n Name: dd3b9d113a68\n ID: e95fe6af-c7eb-44a7-9eda-682a7e70dbcb\n Docker Root Dir: /var/lib/docker\n Debug Mode: false\n Experimental: false\n Insecure Registries:\n  ::1/128\n  127.0.0.0/8\n=== context ===\nNAME        DESCRIPTION                               DOCKER ENDPOINT               ERROR\ndefault *   Current DOCKER_HOST based configuration   unix:///var/run/docker.sock   \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/containers/registries.conf 2>/dev/null; find / -name 'daemon.json' 2>/dev/null; ls -la /etc/systemd/system/docker.service.d/ 2>/dev/null; systemctl cat docker 2>/dev/null | head -30",
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://hub.docker.com/v2/repositories/minio/?page_size=100\" | tr ',' '\\n' | grep '\"name\"'",
+      "exit_code": 0,
+      "stdout": "\"results\":[{\"name\":\"mint\"\n{\"name\":\"k8s-operator\"\n{\"name\":\"m3-nginx\"\n{\"name\":\"warp\"\n{\"name\":\"sidekick\"\n{\"name\":\"spark\"\n{\"name\":\"disco\"\n{\"name\":\"direct-csi\"\n{\"name\":\"hadoop\"\n{\"name\":\"vsphere\"\n{\"name\":\"bottlenet\"\n{\"name\":\"dmt\"\n{\"name\":\"operator\"\n{\"name\":\"force-unlock\"\n{\"name\":\"kitchensink\"\n{\"name\":\"remoteenv\"\n{\"name\":\"confess\"\n{\"name\":\"operator-sidecar\"\n{\"name\":\"builder-go\"\n{\"name\":\"webhook-py\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s -o /dev/null -w \"%{http_code}\\n\" \"https://hub.docker.com/v2/repositories/minio/mc/\"; timeout 30 curl -s -o /dev/null -w \"%{http_code}\\n\" \"https://hub.docker.com/v2/repositories/minio/minio/\"",
+      "exit_code": 0,
+      "stdout": "404\n404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 60 docker pull rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z 2>&1 | tail -4",
+      "exit_code": 0,
+      "stdout": "34f92c74bdaf: Pull complete\nDigest: sha256:e8dc751a74e9d353b86f18bbf227de1aa327bedb9102c0d202467c4e7e0a4f90\nStatus: Downloaded newer image for rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z\ndocker.io/rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://hub.docker.com/v2/search/repositories/?query=minio+mc&page_size=25\" | tr ',' '\\n' | grep '\"repo_name\"'",
+      "exit_code": 0,
+      "stdout": "\"results\":[{\"repo_name\":\"rancher/mirrored-minio-mc\"\n{\"repo_name\":\"bitnamicharts/minio\"\n{\"repo_name\":\"rancher/minio-minio\"\n{\"repo_name\":\"rancher/mirrored-minio-minio\"\n{\"repo_name\":\"elestio/minio\"\n{\"repo_name\":\"bitnamicharts/minio-operator\"\n{\"repo_name\":\"newrelic/synthetics-minion\"\n{\"repo_name\":\"rapidfort/minio-ib\"\n{\"repo_name\":\"mcp/hackernews-mcp\"\n{\"repo_name\":\"mcp/mcp-code-interpreter\"\n{\"repo_name\":\"rook/minio\"\n{\"repo_name\":\"rapidfort/minio-operator-ib\"\n{\"repo_name\":\"mcp/api-gateway\"\n{\"repo_name\":\"cleanstart/minio\"\n{\"repo_name\":\"mcp/mcp-discord\"\n{\"repo_name\":\"mcp/mcp-python-refactoring\"\n{\"repo_name\":\"alpine/minio\"\n{\"repo_name\":\"newrelic/synthetics-minion-runner\"\n{\"repo_name\":\"rapidfort/minio-console-ib\"\n{\"repo_name\":\"grafana/mcp-grafana\"\n{\"repo_name\":\"mcp/reddit-mcp\"\n{\"repo_name\":\"demisto/minio\"\n{\"repo_name\":\"docker/docker-mcp-cli-desktop-module\"\n{\"repo_name\":\"rapidfort/mc-ib\"\n{\"repo_name\":\"docker/mcp-gateway\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://hub.docker.com/v2/repositories/rancher/mirrored-minio-mc/tags?page_size=100\" | tr ',' '\\n' | grep '\"name\"' | head -40",
+      "exit_code": 0,
+      "stdout": "\"name\":\"RELEASE.2022-12-13T00-23-28Z-s390x\"\n\"name\":\"RELEASE.2022-12-13T00-23-28Z-arm64\"\n\"name\":\"RELEASE.2022-09-16T09-16-47Z-arm64\"\n\"name\":\"RELEASE.2023-06-28T21-54-17Z\"\n\"name\":\"RELEASE.2023-06-28T21-54-17Z-s390x\"\n\"name\":\"RELEASE.2023-06-28T21-54-17Z-arm64\"\n\"name\":\"RELEASE.2023-06-28T21-54-17Z-amd64\"\n\"name\":\"RELEASE.2023-01-28T20-29-38Z\"\n\"name\":\"RELEASE.2023-01-28T20-29-38Z-s390x\"\n\"name\":\"RELEASE.2023-01-28T20-29-38Z-arm64\"\n\"name\":\"RELEASE.2023-01-28T20-29-38Z-amd64\"\n\"name\":\"RELEASE.2022-12-13T00-23-28Z\"\n\"name\":\"RELEASE.2022-12-13T00-23-28Z-amd64\"\n\"name\":\"RELEASE.2022-11-07T23-47-39Z\"\n\"name\":\"RELEASE.2022-11-07T23-47-39Z-s390x\"\n\"name\":\"RELEASE.2022-11-07T23-47-39Z-arm64\"\n\"name\":\"RELEASE.2022-11-07T23-47-39Z-amd64\"\n\"name\":\"RELEASE.2022-09-16T09-16-47Z\"\n\"name\":\"RELEASE.2022-09-16T09-16-47Z-s390x\"\n\"name\":\"RELEASE.2022-09-16T09-16-47Z-amd64\"\n\"name\":\"RELEASE.2022-05-09T04-08-26Z\"\n\"name\":\"RELEASE.2022-05-09T04-08-26Z-s390x\"\n\"name\":\"RELEASE.2022-05-09T04-08-26Z-arm64\"\n\"name\":\"RELEASE.2022-05-09T04-08-26Z-amd64\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://hub.docker.com/v2/repositories/rancher/mirrored-minio-minio/tags?page_size=100\" | tr ',' '\\n' | grep '\"name\"' | head -40",
+      "exit_code": 0,
+      "stdout": "\"name\":\"RELEASE.2020-07-13T18-09-56Z\"\n\"name\":\"RELEASE.2023-07-07T07-13-57Z\"\n\"name\":\"RELEASE.2023-07-07T07-13-57Z-s390x\"\n\"name\":\"RELEASE.2023-07-07T07-13-57Z-arm64\"\n\"name\":\"RELEASE.2023-07-07T07-13-57Z-amd64\"\n\"name\":\"RELEASE.2023-02-10T18-48-39Z\"\n\"name\":\"RELEASE.2023-02-10T18-48-39Z-s390x\"\n\"name\":\"RELEASE.2023-02-10T18-48-39Z-arm64\"\n\"name\":\"RELEASE.2023-02-10T18-48-39Z-amd64\"\n\"name\":\"RELEASE.2022-12-12T19-27-27Z\"\n\"name\":\"RELEASE.2022-12-12T19-27-27Z-s390x\"\n\"name\":\"RELEASE.2022-12-12T19-27-27Z-arm64\"\n\"name\":\"RELEASE.2022-12-12T19-27-27Z-amd64\"\n\"name\":\"RELEASE.2022-11-11T03-44-20Z\"\n\"name\":\"RELEASE.2022-11-11T03-44-20Z-s390x\"\n\"name\":\"RELEASE.2022-11-11T03-44-20Z-arm64\"\n\"name\":\"RELEASE.2022-11-11T03-44-20Z-amd64\"\n\"name\":\"RELEASE.2022-09-17T00-09-45Z\"\n\"name\":\"RELEASE.2022-09-17T00-09-45Z-s390x\"\n\"name\":\"RELEASE.2022-09-17T00-09-45Z-arm64\"\n\"name\":\"RELEASE.2022-09-17T00-09-45Z-amd64\"\n\"name\":\"RELEASE.2022-05-08T23-50-31Z\"\n\"name\":\"RELEASE.2022-05-08T23-50-31Z-s390x\"\n\"name\":\"RELEASE.2022-05-08T23-50-31Z-arm64\"\n\"name\":\"RELEASE.2022-05-08T23-50-31Z-amd64\"\n\"name\":\"RELEASE.2022-03-24T00-43-44Z\"\n\"name\":\"RELEASE.2022-03-24T00-43-44Z-s390x\"\n\"name\":\"RELEASE.2022-03-24T00-43-44Z-arm64\"\n\"name\":\"RELEASE.2022-03-24T00-43-44Z-amd64\"\n\"name\":\"RELEASE.2020-07-13T18-09-56Z-amd64\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '1,80p' server/Dockerfile",
+      "exit_code": 0,
+      "stdout": "# server/Dockerfile\n\n# \u2500\u2500 Admin UI asset build (Tailwind + DaisyUI) \u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n# Builds the LiveView admin stylesheet from server/assets/ into priv/static/assets/app.css.\n# Runs in a Node stage so the runtime/builder images stay Node-free. Scans lib/ for the\n# Tailwind class usage in the LiveView (~H) templates. See `make assets` for local rebuilds.\nFROM node:20-alpine AS assets\nWORKDIR /app\nCOPY assets assets\nCOPY lib lib\nRUN cd assets && npm ci --no-audit --no-fund && npm run build\n\nFROM elixir:1.20-alpine AS builder\nWORKDIR /app\nRUN mix local.hex --force && mix local.rebar --force\n# ADR-019: single OTP application \u2014 one mix.exs at the project root, no umbrella apps.\nCOPY mix.exs mix.lock ./\nRUN mix deps.get --only prod\nCOPY . .\n# Overwrite the committed app.css with the freshly built one (source of truth = assets/).\nCOPY --from=assets /app/priv/static/assets/app.css priv/static/assets/app.css\nARG GIT_COMMIT=unknown\nARG BUILD_TIME=unknown\nARG RELEASE_VERSION=unknown\nENV GIT_COMMIT=${GIT_COMMIT}\nENV BUILD_TIME=${BUILD_TIME}\nENV RELEASE_VERSION=${RELEASE_VERSION}\nRUN MIX_ENV=prod mix release\n\nFROM alpine:3.23 AS runtime\nRUN apk add --no-cache libstdc++ openssl ncurses curl\nARG GIT_COMMIT=unknown\nARG BUILD_TIME=unknown\nARG RELEASE_VERSION=unknown\nENV GIT_COMMIT=${GIT_COMMIT}\nENV BUILD_TIME=${BUILD_TIME}\nENV RELEASE_VERSION=${RELEASE_VERSION}\nCOPY --from=builder /app/_build/prod/rel/nebu ./\n# go-removal-cleanup (full-elixir-stack): the server now owns DB migrations (formerly run\n# by the Go gateway). Run Nebu.Release.migrate/0 before booting the server. `exec`\n# replaces the shell so OTP receives SIGTERM/SIGINT for graceful shutdown.\nENTRYPOINT [\"/bin/sh\", \"-c\", \"./bin/nebu eval 'Nebu.Release.migrate()' && exec ./bin/nebu start\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull alpine:latest 2>&1 | tail -2; echo ===; docker pull hexpm/elixir:1.20.0-erlang-27.0-alpine-3.20 2>&1 | tail -2; echo ===; docker pull curlimages/curl:latest 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "Status: Downloaded newer image for alpine:latest\ndocker.io/library/alpine:latest\n===\nError response from daemon: manifest for hexpm/elixir:1.20.0-erlang-27.0-alpine-3.20 not found: manifest unknown: manifest unknown\n===\nStatus: Downloaded newer image for curlimages/curl:latest\ndocker.io/curlimages/curl:latest\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for img in node:20-alpine elixir:1.20-alpine alpine:3.23 clamav/clamav:stable; do echo \"=== $img ===\"; timeout 300 docker pull \"$img\" 2>&1 | tail -2; done",
+      "exit_code": 0,
+      "stdout": "=== node:20-alpine ===\nStatus: Downloaded newer image for node:20-alpine\ndocker.io/library/node:20-alpine\n=== elixir:1.20-alpine ===\nStatus: Downloaded newer image for elixir:1.20-alpine\ndocker.io/library/elixir:1.20-alpine\n=== alpine:3.23 ===\nStatus: Downloaded newer image for alpine:3.23\ndocker.io/library/alpine:3.23\n=== clamav/clamav:stable ===\nStatus: Downloaded newer image for clamav/clamav:stable\ndocker.io/clamav/clamav:stable\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for img in quay.io/prometheus/busybox:latest ghcr.io/minio/minio:latest quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z; do echo \"=== $img ===\"; timeout 90 docker pull \"$img\" 2>&1 | tail -2; done",
+      "exit_code": 1,
+      "stdout": "=== quay.io/prometheus/busybox:latest ===\nStatus: Downloaded newer image for quay.io/prometheus/busybox:latest\nquay.io/prometheus/busybox:latest\n=== ghcr.io/minio/minio:latest ===\nError response from daemon: Head \"https://ghcr.io/v2/minio/minio/manifests/latest\": denied\n=== quay.io/minio/minio:RELEASE.2025-04-22T22-12-26Z ===\nError response from daemon: unauthorized: access to the requested resource is not authorized\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose build server > /tmp/build_server.log 2>&1 &\necho \"pid $!\"",
+      "exit_code": 0,
+      "stdout": "pid 1413\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat dev/dex/config.yaml 2>/dev/null | head -60; echo \"=== .env.example ===\"; cat .env.example",
+      "exit_code": 0,
+      "stdout": "issuer: http://dex:5556/dex\n\nstorage:\n  type: sqlite3\n  config:\n    file: /var/dex/dex.db\n\nweb:\n  http: 0.0.0.0:5556\n\noauth2:\n  responseTypes: [code]\n  skipApprovalScreen: true\n  grantTypes:\n    - authorization_code\n    - refresh_token\n\nexpiry:\n  idTokens: 24h        # JWT ID token valid 24h (dev convenience \u2014 was 1h default)\n  signingKeys: 6h\n\nenablePasswordDB: true\n\n# oidc-bootstrap-only-config (ADR-022): a SINGLE OIDC client serves Matrix Bearer\n# validation AND admin operator login. It registers ALL Nebu redirect URIs (Matrix\n# SSO redirect, Element auth.html, and /admin/callback). The former separate\n# `nebu-admin` client is removed \u2014 there is no second client.\nstaticClients:\n  - id: nebu-gateway\n    name: \"Nebu\"\n    secret: nebu-dev-secret\n    redirectURIs:\n      - \"http://localhost:8008/_matrix/client/v3/login/sso/redirect/oidc\"\n      - \"http://localhost:7070/auth.html\"\n      - \"http://localhost:8008/admin/callback\"\n\nstaticPasswords:\n  - email: \"kai@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"kai\"\n    userID: \"00000000-0000-0000-0000-000000000001\"\n    groups:\n      - instance_admin\n\n  - email: \"compliance@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"compliance\"\n    userID: \"00000000-0000-0000-0000-000000000002\"\n    groups:\n      - compliance_officer\n\n  - email: \"alex@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"alex\"\n    userID: \"00000000-0000-0000-0000-000000000003\"\n    groups:\n      - user\n\n  - email: \"marie@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n=== .env.example ===\nPOSTGRES_PASSWORD=nebu_dev_password\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -s \"https://quay.io/api/v1/repository/minio/minio/tag/?limit=10\" | head -c 800; echo; echo \"=== mc ===\"; timeout 30 curl -s \"https://quay.io/api/v1/repository/minio/mc/tag/?limit=10\" | head -c 800",
+      "exit_code": 0,
+      "stdout": "{\"detail\": \"Requires authentication\", \"error_message\": \"Requires authentication\", \"error_type\": \"invalid_token\", \"title\": \"invalid_token\", \"type\": \"https://quay.io/api/v1/error/invalid_token\", \"status\": 401}\n\n=== mc ===\n{\"detail\": \"Requires authentication\", \"error_message\": \"Requires authentication\", \"error_type\": \"invalid_token\", \"title\": \"invalid_token\", \"type\": \"https://quay.io/api/v1/error/invalid_token\", \"status\": 401}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 20; tail -20 /tmp/build_server.log; echo \"EXIT check\"; jobs",
+      "exit_code": 0,
+      "stdout": "#22 5.681     \u2502                     ~\n#22 5.681     \u2502\n#22 5.681     \u2514\u2500 lib/hpax/huffman.ex:79:21: HPAX.Huffman.decode/1\n#22 5.681 \n#22 6.157 Generated hpax app\n#22 6.184 ==> mint\n#22 6.184 Compiling 1 file (.erl)\n#22 6.259 warning: \"xref: [exclude: ...]\" in your mix.exs file is deprecated, instead use: \"elixirc_options: [no_warn_undefined: ...]\"\n#22 6.259   (mix 1.20.4) lib/mix/tasks/compile.elixir.ex:243: Mix.Tasks.Compile.Elixir.xref_exclude_opts/2\n#22 6.259   (mix 1.20.4) lib/mix/tasks/compile.elixir.ex:142: Mix.Tasks.Compile.Elixir.run/1\n#22 6.259   (mix 1.20.4) lib/mix/task.ex:502: anonymous fn/3 in Mix.Task.run_task/5\n#22 6.259   (mix 1.20.4) lib/mix/task.compiler.ex:299: Mix.Task.Compiler.run_compiler/2\n#22 6.259   (mix 1.20.4) lib/mix/task.compiler.ex:287: Mix.Task.Compiler.run/4\n#22 6.259   (mix 1.20.4) lib/mix/tasks/compile.all.ex:75: Mix.Tasks.Compile.All.do_run/2\n#22 6.259 \n#22 6.267 Compiling 19 files (.ex)\n#22 7.713 Generated mint app\n#22 8.194 ==> nebu\n#22 8.194 ===> Analyzing applications...\n#22 8.252 ===> Compiling mimerl\nEXIT check\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for r in minio/minio minio/mc; do echo \"=== quay $r ===\"; timeout 30 curl -s -o /dev/null -w \"%{http_code}\\n\" \"https://quay.io/v2/$r/tags/list\"; done; echo \"=== try docker registry minio ===\"; timeout 30 curl -s -o /dev/null -w \"%{http_code}\\n\" \"https://registry.min.io/v2/\"",
+      "exit_code": 0,
+      "stdout": "=== quay minio/minio ===\n401\n=== quay minio/mc ===\n401\n=== try docker registry minio ===\n401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 45; tail -5 /tmp/build_server.log",
+      "exit_code": 0,
+      "stdout": "#22 56.43   (mix 1.20.4) lib/mix/task.compiler.ex:287: Mix.Task.Compiler.run/4\n#22 56.43   (mix 1.20.4) lib/mix/tasks/compile.all.ex:75: Mix.Tasks.Compile.All.do_run/2\n#22 56.43 \n#22 56.44 ==> postgrex\n#22 56.44 Compiling 70 files (.ex)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for img in bitnami/minio:latest elestio/minio:latest cleanstart/minio:latest; do echo \"=== $img ===\"; timeout 120 docker pull \"$img\" 2>&1 | tail -2; done",
+      "exit_code": 0,
+      "stdout": "=== bitnami/minio:latest ===\nError response from daemon: manifest for bitnami/minio:latest not found: manifest unknown: manifest unknown\n=== elestio/minio:latest ===\nStatus: Downloaded newer image for elestio/minio:latest\ndocker.io/elestio/minio:latest\n=== cleanstart/minio:latest ===\nStatus: Downloaded newer image for cleanstart/minio:latest\ndocker.io/cleanstart/minio:latest\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 120 docker pull rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z 2>&1 | tail -3",
+      "exit_code": 0,
+      "stdout": "Digest: sha256:8ccda10d75b985ca53a952f15ebc1bc0996a2620ece66a09f5ee6a4622563a1e\nStatus: Downloaded newer image for rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z\ndocker.io/rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -5 /tmp/build_server.log",
+      "exit_code": 0,
+      "stdout": "#24 DONE 0.9s\n\n#25 resolving provenance for metadata file\n#25 DONE 0.0s\n Image nebu-server Built \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for t in latest RELEASE.2025-09-07T16-13-09Z; do echo \"=== quay $t ===\"; timeout 120 docker pull quay.io/minio/minio:$t 2>&1 | tail -2; done",
+      "exit_code": 1,
+      "stdout": "=== quay latest ===\nError response from daemon: unauthorized: access to the requested resource is not authorized\n=== quay RELEASE.2025-09-07T16-13-09Z ===\nError response from daemon: unauthorized: access to the requested resource is not authorized\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker images | grep -E 'nebu|minio|postgres|dex|clamav|elixir|node|alpine'",
+      "exit_code": 0,
+      "stdout": "alpine:3.23                                                 f6d31b983274       8.42MB             0B        \nalpine:latest                                               320994c3b997       8.42MB             0B        \nclamav/clamav:stable                                        c628a79632aa        233MB             0B        \ncleanstart/minio:latest                                     956de495b8b7        233MB             0B        \ndexidp/dex:v2.45.1                                          bc399b03a1bf        162MB             0B        \nelestio/minio:latest                                        faded9b9dcd2        176MB             0B        \nelixir:1.20-alpine                                          0a0b6c7a9cdc        105MB             0B        \nnebu-server:latest                                          876d047b95d3       62.7MB             0B        \nnode:20-alpine                                              11cedc39e663        136MB             0B        \npostgres:16-alpine                                          81bd698b4594        294MB             0B        \nrancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z      ad56b1e35ffe        282MB             0B        \nrancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z   09b7752e26c2        277MB             0B        \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat > docker-compose.override.yml <<'EOF'\nservices:\n  minio:\n    image: rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z\n  createbuckets:\n    image: rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z\nEOF\necho \"override written\"; grep -c . docker-compose.override.yml",
+      "exit_code": 0,
+      "stdout": "override written\n5\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -q \"dex\" /etc/hosts || echo \"127.0.0.1 dex\" >> /etc/hosts; tail -3 /etc/hosts",
+      "exit_code": 0,
+      "stdout": "169.254.1.2\thost.containers.internal host.docker.internal\n192.168.127.2\tdd3b9d113a68 nostalgic_brattain\n127.0.0.1 dex\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose up -d > /tmp/compose2.log 2>&1 & echo \"pid $!\"; sleep 40; cat /tmp/compose2.log; echo \"=== ps ===\"; docker compose ps",
+      "exit_code": 0,
+      "stdout": "pid 2565\n Network nebu_default Creating \n Network nebu_default Creating \n Volume nebu_clamav_data Creating \n Volume nebu_clamav_data Creating \n Volume nebu_minio_data Creating \n Volume nebu_minio_data Creating \n Volume nebu_postgres_data Creating \n Volume nebu_postgres_data Creating \n Volume nebu_dex_data Creating \n Volume nebu_dex_data Creating \n Volume nebu_clamav_data Created \n Volume nebu_clamav_data Created \n Volume nebu_minio_data Created \n Volume nebu_minio_data Created \n Volume nebu_postgres_data Created \n Volume nebu_postgres_data Created \n Volume nebu_dex_data Created \n Volume nebu_dex_data Created \n Network nebu_default Created \n Network nebu_default Created \n Container nebu-postgres-1 Creating \n Container nebu-dex-1 Creating \n Container nebu-minio-1 Creating \n Container nebu-clamav-1 Creating \n Container nebu-postgres-1 Created \n Container nebu-dex-1 Created \n Container nebu-clamav-1 Created \n Container nebu-minio-1 Created \n Container nebu-createbuckets-1 Creating \n Container nebu-createbuckets-1 Created \n Container nebu-server-1 Creating \n Container nebu-server-1 Created \n Container nebu-minio-1 Starting \n Container nebu-clamav-1 Starting \n Container nebu-postgres-1 Starting \n Container nebu-dex-1 Starting \n Container nebu-clamav-1 Started \n Container nebu-minio-1 Started \n Container nebu-minio-1 Waiting \n Container nebu-postgres-1 Started \n Container nebu-dex-1 Started \n Container nebu-minio-1 Healthy \n Container nebu-createbuckets-1 Starting \n Container nebu-createbuckets-1 Started \n Container nebu-minio-1 Waiting \n Container nebu-createbuckets-1 Waiting \n Container nebu-postgres-1 Waiting \n Container nebu-minio-1 Healthy \n Container nebu-createbuckets-1 Exited \n Container nebu-postgres-1 Healthy \n Container nebu-server-1 Starting \n Container nebu-server-1 Started \n=== ps ===\nNAME              IMAGE                                                       COMMAND                  SERVICE    CREATED          STATUS                    PORTS\nnebu-clamav-1     clamav/clamav:stable                                        \"/init\"                  clamav     40 seconds ago   Up 38 seconds (healthy)   3310/tcp, 7357/tcp\nnebu-dex-1        dexidp/dex:v2.45.1                                          \"/usr/local/bin/dock\u2026\"   dex        40 seconds ago   Up 38 seconds (healthy)   0.0.0.0:5556->5556/tcp, [::]:5556->5556/tcp\nnebu-minio-1      rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z   \"/usr/bin/docker-ent\u2026\"   minio      40 seconds ago   Up 38 seconds (healthy)   0.0.0.0:9000-9001->9000-9001/tcp, [::]:9000-9001->9000-9001/tcp\nnebu-postgres-1   postgres:16-alpine                                          \"docker-entrypoint.s\u2026\"   postgres   40 seconds ago   Up 38 seconds (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp\nnebu-server-1     nebu-server                                                 \"/bin/sh -c './bin/n\u2026\"   server     39 seconds ago   Up 27 seconds (healthy)   0.0.0.0:4000->4000/tcp, [::]:4000->4000/tcp, 0.0.0.0:8008->4000/tcp, 0.0.0.0:8080->4000/tcp, [::]:8008->4000/tcp, [::]:8080->4000/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose logs server 2>&1 | grep -i \"Nebu.Application started\\|started\\|error\" | tail -20",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== health ===\"; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:4000/health; echo \"=== versions ===\"; curl -s http://localhost:8008/_matrix/client/versions; echo; echo \"=== admin ===\"; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:8080/admin; echo \"=== dex ===\"; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:5556/dex/.well-known/openid-configuration",
+      "exit_code": 0,
+      "stdout": "=== health ===\n200\n=== versions ===\n{\"versions\":[\"v1.1\",\"v1.2\",\"v1.3\",\"v1.4\",\"v1.5\",\"v1.6\",\"v1.7\",\"v1.8\",\"v1.9\",\"v1.10\",\"v1.11\"]}\n=== admin ===\n302\n=== dex ===\n200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose logs server 2>&1 | tail -40",
+      "exit_code": 0,
+      "stdout": "server-1  | \nserver-1  | 13:52:00.986 [info] Nebu.Release.migrate: applying 000024_media_storage_config.up.sql (version 24)\nserver-1  | \nserver-1  | 13:52:01.031 [info] Nebu.Release.migrate: applying 000025_media_files_filename.up.sql (version 25)\nserver-1  | \nserver-1  | 13:52:01.041 [info] Nebu.Release.migrate: applying 000026_oban_jobs.up.sql (version 26)\nserver-1  | \nserver-1  | 13:52:01.168 [info] Nebu.Release.migrate: applying 000027_media_files_uploader_user_id_nullable.up.sql (version 27)\nserver-1  | \nserver-1  | 13:52:01.176 [info] Nebu.Release.migrate: applying 000028_media_scan_failed_state.up.sql (version 28)\nserver-1  | \nserver-1  | 13:52:01.184 [info] Nebu.Release.migrate: applying 000029_media_state_transitions_actor_id_text.up.sql (version 29)\nserver-1  | \nserver-1  | 13:52:01.244 [info] Nebu.Release.migrate: applying 000030_media_admin_override_role.up.sql (version 30)\nserver-1  | \nserver-1  | 13:52:01.253 [info] Nebu.Release.migrate: applying 000031_events_content_gin_index.up.sql (version 31)\nserver-1  | \nserver-1  | 13:52:01.264 [info] Nebu.Release.migrate: applying 000032_media_scan_stats.up.sql (version 32)\nserver-1  | \nserver-1  | 13:52:01.293 [info] Nebu.Release.migrate: applying 000033_media_alerts.up.sql (version 33)\nserver-1  | \nserver-1  | 13:52:01.358 [info] Nebu.Release.migrate: applying 000034_media_config_scan_kill_switch.up.sql (version 34)\nserver-1  | =ESOCK WARNING MSG==== 09-Oct-2026::13:52:01.698048 ===\n\nserver-1  | [UNIX-ESSIO] Failed open sctp dynamic library: libsctp.so.1\n\nserver-1  | \nserver-1  | 13:52:05.956 [info] Starting Horde.RegistryImpl with name Nebu.Matrix.Room.Registry\nserver-1  | \nserver-1  | 13:52:05.957 [info] Starting Horde.DynamicSupervisorImpl with name Nebu.Matrix.Room.HordeSupervisor\nserver-1  | \nserver-1  | 13:52:05.988 [info] Running Nebu.Web.Router with Bandit 1.12.0 at 0.0.0.0:4000 (http)\nserver-1  | \nserver-1  | 13:52:07.935 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"6138f135-9ace-4f23-baf7-e8d4b063c181\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:18.003 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"07c9b681-88c2-424b-a0b6-2623eefe230c\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.593 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"341617c3-af17-4ff3-a2ec-60322476c16d\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.601 [info] [status: 200, path: \"/_matrix/client/versions\", method: \"GET\", request_id: \"e1755313-c55d-48a6-bf4a-ba6e89064a78\", route_template: \"/_matrix/client/versions\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.610 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"9c153508-3d8e-44c4-8a1d-5b9e789ad75e\", route_template: \"/admin\", duration_ms: 1]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== admin redirect ===\"; curl -s -D - -o /dev/null http://localhost:8080/admin | head -10; echo \"=== admin/ ===\"; curl -s -o /dev/null -w \"%{http_code} -> %{redirect_url}\\n\" http://localhost:8080/",
+      "exit_code": 0,
+      "stdout": "=== admin redirect ===\nHTTP/1.1 302 Found\ndate: Fri, 09 Oct 2026 13:52:27 GMT\ncontent-length: 82\nvary: accept-encoding\ncontent-type: text/html; charset=utf-8\nx-permitted-cross-domain-policies: none\nx-content-type-options: nosniff\ncontent-security-policy: default-src 'self'; connect-src 'self' ws: wss:; img-src 'self' data:; style-src 'self' 'unsafe-inline'; script-src 'self'; base-uri 'self'; frame-ancestors 'self'\nreferrer-policy: strict-origin-when-cross-origin\ncache-control: max-age=0, private, must-revalidate\n=== admin/ ===\n404 -> \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -D - -o /dev/null http://localhost:8080/admin | grep -i location; echo \"=== follow ===\"; curl -s -L http://localhost:8080/admin | head -30",
+      "exit_code": 0,
+      "stdout": "location: /admin/dashboard\n=== follow ===\n<!DOCTYPE html>\n<html lang=\"en\" data-theme=\"nebu\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"csrf-token\" content=\"MSY7BwQAUXoKFRFTKFcGZ34WN3V3NwQNzwT1lU72zmcbp0bVGPT0DSWx\">\n    <title>Bootstrap \u00b7 Nebu Admin</title>\n    <link phx-track-static rel=\"stylesheet\" href=\"/admin/static/assets/app.css\">\n    <script defer type=\"text/javascript\" src=\"/admin/static/assets/phoenix.min.js\">\n    </script>\n    <script defer type=\"text/javascript\" src=\"/admin/static/assets/phoenix_live_view.min.js\">\n    </script>\n    <script defer phx-track-static type=\"text/javascript\" src=\"/admin/static/assets/app.js\">\n    </script>\n  </head>\n  <body class=\"bg-base-100 text-base-content\">\n    <a href=\"#main-content\" class=\"sr-only focus:not-sr-only\">Skip to content</a>\n    \n<div class=\"min-h-screen flex flex-col\">\n  <header class=\"h-12 bg-base-300 flex items-center justify-between px-4 shrink-0\" role=\"banner\">\n    <span class=\"font-semibold text-base-content\">Nebu Admin</span>\n    \n  </header>\n\n  <div class=\"flex flex-1 overflow-hidden\">\n    <nav aria-label=\"Admin navigation\" class=\"w-60 bg-base-200 flex flex-col shrink-0 border-r border-base-300\">\n      <ul role=\"list\" class=\"flex flex-col gap-1 p-2 flex-1\">\n        <li>\n  <a href=\"/admin/bootstrap\" data-phx-link=\"redirect\" data-phx-link-state=\"push\" class=\"flex items-center gap-2 px-3 py-3 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-base-200 bg-primary text-primary-content font-semibold\" aria-current=\"page\" data-navkey=\"bootstrap\">\n    \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose logs server 2>&1 | grep -i \"Nebu.Application started\\|Application started\" | tail; echo \"---grep started---\"; docker compose logs server 2>&1 | grep -iE \"started|listening|Bandit\" | tail",
+      "exit_code": 0,
+      "stdout": "---grep started---\nserver-1  | 13:52:05.988 [info] Running Nebu.Web.Router with Bandit 1.12.0 at 0.0.0.0:4000 (http)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker inspect nebu-createbuckets-1 --format '{{.State.ExitCode}}'; echo \"=== createbuckets logs ===\"; docker compose logs createbuckets 2>&1 | tail -10; echo \"=== buckets ===\"; docker exec nebu-minio-1 sh -c 'ls /data' 2>&1",
+      "exit_code": 0,
+      "stdout": "0\n=== createbuckets logs ===\ncreatebuckets-1  | Bucket created successfully `minio/nebu-media`.\ncreatebuckets-1  | Added user `a836d9a028f12e209d489f39e7f42602` successfully.\ncreatebuckets-1  | Created policy `nebu-app-policy` successfully.\ncreatebuckets-1  | Attached Policies: [nebu-app-policy]\ncreatebuckets-1  | To User: a836d9a028f12e209d489f39e7f42602\n=== buckets ===\nnebu-media\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose ps --format '{{.Name}} {{.Status}}'; echo \"=== count migrations ===\"; docker exec nebu-postgres-1 psql -U nebu -d nebu -tAc \"select count(*) from schema_migrations\" 2>&1",
+      "exit_code": 0,
+      "stdout": "nebu-clamav-1 Up 47 seconds (healthy)\nnebu-dex-1 Up 47 seconds (healthy)\nnebu-minio-1 Up 47 seconds (healthy)\nnebu-postgres-1 Up 47 seconds (healthy)\nnebu-server-1 Up 36 seconds (healthy)\n=== count migrations ===\n1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker exec nebu-postgres-1 psql -U nebu -d nebu -c \"\\dt\" 2>&1 | head -40; echo \"=== migrations ===\"; docker exec nebu-postgres-1 psql -U nebu -d nebu -tAc \"select * from schema_migrations limit 5\" 2>&1",
+      "exit_code": 0,
+      "stdout": "                    List of relations\n Schema |           Name           | Type  |    Owner     \n--------+--------------------------+-------+--------------\n public | account_data             | table | nebu_migrate\n public | admin_sessions           | table | nebu_migrate\n public | admin_temporary_captures | table | nebu_migrate\n public | audit_log                | table | nebu_migrate\n public | auto_join_opt_outs       | table | nebu_migrate\n public | bootstrap_draft          | table | nebu_migrate\n public | compliance_requests      | table | nebu_migrate\n public | compliance_sessions      | table | nebu_migrate\n public | cross_signing_keys       | table | nebu_migrate\n public | device_fallback_keys     | table | nebu_migrate\n public | device_keys              | table | nebu_migrate\n public | device_one_time_keys     | table | nebu_migrate\n public | devices                  | table | nebu_migrate\n public | events                   | table | nebu_migrate\n public | forgotten_rooms          | table | nebu_migrate\n public | invalidated_tokens       | table | nebu_migrate\n public | jwt_device_bindings      | table | nebu_migrate\n public | matrix_sessions          | table | nebu_migrate\n public | media_alerts             | table | nebu_migrate\n public | media_config             | table | nebu_migrate\n public | media_files              | table | nebu_migrate\n public | media_scan_stats         | table | nebu_migrate\n public | media_state_transitions  | table | nebu_migrate\n public | media_storage_config     | table | nebu_migrate\n public | message_buffer           | table | nebu_migrate\n public | message_dead_letter      | table | nebu_migrate\n public | notifications            | table | nebu_migrate\n public | oban_jobs                | table | nebu_migrate\n public | oban_peers               | table | nebu_migrate\n public | operational_logs         | table | nebu_migrate\n public | profiles                 | table | nebu_migrate\n public | push_rules               | table | nebu_migrate\n public | pushers                  | table | nebu_migrate\n public | read_receipts            | table | nebu_migrate\n public | role_overrides           | table | nebu_migrate\n public | room_account_data        | table | nebu_migrate\n public | room_aliases             | table | nebu_migrate\n=== migrations ===\n34|f\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== register (should be 401/403 fail-closed) ===\"; curl -s -o /dev/null -w \"%{http_code}\\n\" -X POST http://localhost:8008/_matrix/client/v3/register -H 'Content-Type: application/json' -d '{}'; echo \"=== login flows ===\"; curl -s http://localhost:8008/_matrix/client/v3/login; echo; echo \"=== media config ===\"; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:8008/_matrix/media/v3/config",
+      "exit_code": 0,
+      "stdout": "=== register (should be 401/403 fail-closed) ===\n401\n=== login flows ===\n{\"flows\":[{\"identity_providers\":[{\"icon\":null,\"id\":\"oidc\",\"name\":\"SSO\"}],\"type\":\"m.login.sso\"},{\"type\":\"m.login.token\"}]}\n=== media config ===\n401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose logs server 2>&1 | grep -iE \"error|exception|crash\" | grep -v \"sctp\" | tail -20; echo \"=== done ===\"",
+      "exit_code": 0,
+      "stdout": "=== done ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== sso redirect ===\"; curl -s -D - -o /dev/null \"http://localhost:8008/_matrix/client/v3/login/sso/redirect/oidc?redirectUrl=http://localhost:8008\" | grep -iE \"^HTTP|location\"; echo; echo \"=== bootstrap page title ===\"; curl -s -L http://localhost:8080/admin | grep -o \"<title>[^<]*</title>\"",
+      "exit_code": 0,
+      "stdout": "=== sso redirect ===\nHTTP/1.1 503 Service Unavailable\n\n=== bootstrap page title ===\n<title>Bootstrap \u00b7 Nebu Admin</title>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== override ===\"; cat docker-compose.override.yml; echo \"=== final ps ===\"; docker compose ps --format '{{.Name}}\\t{{.Status}}'; echo \"=== healthcode ===\"; curl -s -o /dev/null -w \"health=%{http_code}\\n\" http://localhost:4000/health",
+      "exit_code": 0,
+      "stdout": "=== override ===\nservices:\n  minio:\n    image: rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z\n  createbuckets:\n    image: rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z\n=== final ps ===\nnebu-clamav-1\tUp 55 seconds (healthy)\nnebu-dex-1\tUp 55 seconds (healthy)\nnebu-minio-1\tUp 55 seconds (healthy)\nnebu-postgres-1\tUp 55 seconds (healthy)\nnebu-server-1\tUp 44 seconds (healthy)\n=== healthcode ===\nhealth=200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la && git log --oneline -3 2>/dev/null; echo \"---docker---\"; docker --version; docker compose version; echo \"---ps---\"; docker compose ps 2>&1 | head -40",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 312\ndrwxr-xr-x 23 root root  4096 Oct  9 13:51 .\ndr-xr-xr-x  1 root root  4096 Oct  9 13:43 ..\n-rw-r--r--  1 root root    36 Oct  9 13:43 .env.example\ndrwxr-xr-x  8 root root  4096 Oct  9 13:43 .git\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 .github\n-rw-r--r--  1 root root  1325 Oct  9 13:43 .gitignore\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 .gitlab\n-rw-r--r--  1 root root 28182 Oct  9 13:43 .gitlab-ci.yml\n-rw-r--r--  1 root root  6306 Oct  9 13:43 .gitleaks.toml\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 .playwright-mcp\ndrwxr-xr-x  2 root root  4096 Oct  9 13:44 .secrets\n-rw-r--r--  1 root root  6123 Oct  9 13:43 ARCHITECTURE.md\n-rw-r--r--  1 root root  7484 Oct  9 13:43 CHANGELOG.md\n-rw-r--r--  1 root root  2555 Oct  9 13:43 CLAUDE.md\n-rw-r--r--  1 root root  2279 Oct  9 13:43 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root 10230 Oct  9 13:43 CONTRIBUTING.md\n-rw-r--r--  1 root root 11337 Oct  9 13:43 LICENSE\n-rw-r--r--  1 root root 25660 Oct  9 13:43 Makefile\n-rw-r--r--  1 root root 14827 Oct  9 13:43 README.md\n-rw-r--r--  1 root root  6040 Oct  9 13:43 SECURITY.md\ndrwxr-xr-x 11 root root  4096 Oct  9 13:43 _bmad\ndrwxr-xr-x  7 root root  4096 Oct  9 13:43 _bmad-output\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 deploy\ndrwxr-xr-x  5 root root  4096 Oct  9 13:43 dev\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 docker\n-rw-r--r--  1 root root   621 Oct  9 13:43 docker-compose.ci.yml\n-rw-r--r--  1 root root   171 Oct  9 13:51 docker-compose.override.yml\n-rw-r--r--  1 root root  3079 Oct  9 13:43 docker-compose.scale.yml\n-rw-r--r--  1 root root 14086 Oct  9 13:43 docker-compose.yml\ndrwxr-xr-x  6 root root  4096 Oct  9 13:43 docs\ndrwxr-xr-x  8 root root  4096 Oct  9 13:43 e2e\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 k6\n-rw-r--r--  1 root root 19954 Oct  9 13:43 logo.png\n-rw-r--r--  1 root root   413 Oct  9 13:43 logo.svg\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 proto\n-rw-r--r--  1 root root  5206 Oct  9 13:43 publiccode.yml\n-rw-r--r--  1 root root  2101 Oct  9 13:43 renovate.json\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 scripts\ndrwxr-xr-x  7 root root  4096 Oct  9 13:43 server\ndrwxr-xr-x 16 root root  4096 Oct  9 13:43 skills\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 test\ndrwxr-xr-x  2 root root  4096 Oct  9 13:43 test-results\n-rw-r--r--  1 root root  9358 Oct  9 13:43 test_output.txt\ndrwxr-xr-x  4 root root  4096 Oct  9 13:43 tests\ndrwxr-xr-x  3 root root  4096 Oct  9 13:43 website\na4539d3 Merge branch 'feature/advanced-media-management' into 'main'\n---docker---\nDocker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\n---ps---\nNAME              IMAGE                                                       COMMAND                  SERVICE    CREATED              STATUS                        PORTS\nnebu-clamav-1     clamav/clamav:stable                                        \"/init\"                  clamav     About a minute ago   Up About a minute (healthy)   3310/tcp, 7357/tcp\nnebu-dex-1        dexidp/dex:v2.45.1                                          \"/usr/local/bin/dock\u2026\"   dex        About a minute ago   Up About a minute (healthy)   0.0.0.0:5556->5556/tcp, [::]:5556->5556/tcp\nnebu-minio-1      rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z   \"/usr/bin/docker-ent\u2026\"   minio      About a minute ago   Up About a minute (healthy)   0.0.0.0:9000-9001->9000-9001/tcp, [::]:9000-9001->9000-9001/tcp\nnebu-postgres-1   postgres:16-alpine                                          \"docker-entrypoint.s\u2026\"   postgres   About a minute ago   Up About a minute (healthy)   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp\nnebu-server-1     nebu-server                                                 \"/bin/sh -c './bin/n\u2026\"   server     About a minute ago   Up 59 seconds (healthy)       0.0.0.0:4000->4000/tcp, [::]:4000->4000/tcp, 0.0.0.0:8008->4000/tcp, 0.0.0.0:8080->4000/tcp, [::]:8008->4000/tcp, [::]:8080->4000/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== server logs tail ===\"; docker compose logs server --tail=60 2>&1 | tail -60; echo \"=== createbuckets ===\"; docker compose ps -a --format '{{.Name}} {{.Status}}'",
+      "exit_code": 0,
+      "stdout": "=== server logs tail ===\nserver-1  | \nserver-1  | 13:52:01.264 [info] Nebu.Release.migrate: applying 000032_media_scan_stats.up.sql (version 32)\nserver-1  | \nserver-1  | 13:52:01.293 [info] Nebu.Release.migrate: applying 000033_media_alerts.up.sql (version 33)\nserver-1  | \nserver-1  | 13:52:01.358 [info] Nebu.Release.migrate: applying 000034_media_config_scan_kill_switch.up.sql (version 34)\nserver-1  | =ESOCK WARNING MSG==== 09-Oct-2026::13:52:01.698048 ===\n\nserver-1  | [UNIX-ESSIO] Failed open sctp dynamic library: libsctp.so.1\n\nserver-1  | \nserver-1  | 13:52:05.956 [info] Starting Horde.RegistryImpl with name Nebu.Matrix.Room.Registry\nserver-1  | \nserver-1  | 13:52:05.957 [info] Starting Horde.DynamicSupervisorImpl with name Nebu.Matrix.Room.HordeSupervisor\nserver-1  | \nserver-1  | 13:52:05.988 [info] Running Nebu.Web.Router with Bandit 1.12.0 at 0.0.0.0:4000 (http)\nserver-1  | \nserver-1  | 13:52:07.935 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"6138f135-9ace-4f23-baf7-e8d4b063c181\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:18.003 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"07c9b681-88c2-424b-a0b6-2623eefe230c\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.593 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"341617c3-af17-4ff3-a2ec-60322476c16d\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.601 [info] [status: 200, path: \"/_matrix/client/versions\", method: \"GET\", request_id: \"e1755313-c55d-48a6-bf4a-ba6e89064a78\", route_template: \"/_matrix/client/versions\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:26.610 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"9c153508-3d8e-44c4-8a1d-5b9e789ad75e\", route_template: \"/admin\", duration_ms: 1]\nserver-1  | \nserver-1  | 13:52:28.102 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"82a03bec-c493-45ba-9a6b-a6e63877fa41\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:28.334 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"b18b36bf-e369-4a92-a4bc-823782b73808\", route_template: \"/admin\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:28.343 [info] [status: 404, path: \"/\", method: \"GET\", request_id: \"53cfb702-02d3-48fc-a257-1c436ebab8d0\", route_template: \"/\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:29.779 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"78bdad9e-3b1d-4fc7-a054-42e93fa6670a\", route_template: \"/admin\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:29.791 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"c06e15f9-9c75-49f4-a62c-44d7a2010461\", route_template: \"/admin\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:29.794 [info] [status: 302, path: \"/admin/dashboard\", method: \"GET\", request_id: \"d42fbc60-7a6d-40a8-a015-01b1586f1cd9\", route_template: \"/admin/dashboard\", duration_ms: 2]\nserver-1  | \nserver-1  | 13:52:29.801 [info] [status: 200, path: \"/admin/bootstrap\", method: \"GET\", request_id: \"3e3049f1-4412-4cd3-bb02-64a4c5be5bd1\", route_template: \"/admin/bootstrap\", duration_ms: 6]\nserver-1  | \nserver-1  | 13:52:37.087 [info] [status: 401, path: \"/_matrix/client/v3/register\", method: \"POST\", request_id: \"d1c1ca51-012c-4d7d-ae4d-ca7de52f08d1\", route_template: \"/_matrix/client/v3/register\", duration_ms: 1]\nserver-1  | \nserver-1  | 13:52:37.117 [info] [status: 200, path: \"/_matrix/client/v3/login\", method: \"GET\", request_id: \"7419b938-1bd7-4f8d-afe4-6ff3635f3835\", route_template: \"/_matrix/client/v3/login\", duration_ms: 1]\nserver-1  | \nserver-1  | 13:52:37.135 [info] [status: 401, path: \"/_matrix/media/v3/config\", method: \"GET\", request_id: \"fbef9e37-bd8e-45a6-8e41-46c7a82104dd\", route_template: \"/_matrix/media/v3/config\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:38.220 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"2e180cf4-b555-46ab-896e-b9b8eaa47573\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:39.760 [error] matrix SSO redirect failed: :issuer_not_configured\nserver-1  | \nserver-1  | 13:52:39.760 [info] [status: 503, path: \"/_matrix/client/v3/login/sso/redirect/oidc\", method: \"GET\", request_id: \"350078ed-0069-4a52-96a5-e863ca3c1467\", route_template: \"/_matrix/client/v3/login/sso/redirect/oidc\", duration_ms: 2]\nserver-1  | \nserver-1  | 13:52:39.772 [info] [status: 302, path: \"/admin\", method: \"GET\", request_id: \"bdf76634-8e2b-4dae-8033-ba6e806dce42\", route_template: \"/admin\", duration_ms: 1]\nserver-1  | \nserver-1  | 13:52:39.776 [info] [status: 302, path: \"/admin/dashboard\", method: \"GET\", request_id: \"c6206cd0-e048-4cfd-bfb5-641955c863fe\", route_template: \"/admin/dashboard\", duration_ms: 2]\nserver-1  | \nserver-1  | 13:52:39.782 [info] [status: 200, path: \"/admin/bootstrap\", method: \"GET\", request_id: \"ffc4e62b-0e9c-4b40-a068-7037767e1a13\", route_template: \"/admin/bootstrap\", duration_ms: 5]\nserver-1  | \nserver-1  | 13:52:41.627 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"00a9feb1-cc05-4d33-aa14-437aced41c4f\", route_template: \"/health\", duration_ms: 0]\nserver-1  | \nserver-1  | 13:52:48.272 [info] [status: 200, path: \"/health\", method: \"GET\", request_id: \"5006c3d3-90ff-4376-8453-26a87a348a45\", route_template: \"/health\", duration_ms: 0]\n=== createbuckets ===\nnebu-clamav-1 Up About a minute (healthy)\nnebu-createbuckets-1 Exited (0) About a minute ago\nnebu-dex-1 Up About a minute (healthy)\nnebu-minio-1 Up About a minute (healthy)\nnebu-postgres-1 Up About a minute (healthy)\nnebu-server-1 Up About a minute (healthy)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== health ===\"; curl -s -o /dev/null -w \"health:%{http_code}\\n\" http://localhost:4000/health; curl -s http://localhost:4000/health; echo; echo \"=== 8080 admin ===\"; curl -s -o /dev/null -w \"admin:%{http_code} redirect:%{redirect_url}\\n\" http://localhost:8080/admin; echo \"=== 8008 root ===\"; curl -s http://localhost:8008/_matrix/client/versions | head -c 400; echo; echo \"=== 8008 bootstrap ===\"; curl -s -o /dev/null -w \"bootstrap:%{http_code}\\n\" http://localhost:8008/admin/bootstrap",
+      "exit_code": 0,
+      "stdout": "=== health ===\nhealth:200\n{\"status\":\"ok\"}\n=== 8080 admin ===\nadmin:302 redirect:http://localhost:8080/admin/dashboard\n=== 8008 root ===\n{\"versions\":[\"v1.1\",\"v1.2\",\"v1.3\",\"v1.4\",\"v1.5\",\"v1.6\",\"v1.7\",\"v1.8\",\"v1.9\",\"v1.10\",\"v1.11\"]}\n=== 8008 bootstrap ===\nbootstrap:200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== postgres tables ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select count(*) as migrations from schema_migrations;\" 2>&1; docker compose exec -T postgres psql -U nebu -d nebu -c \"select count(*) as tables from information_schema.tables where table_schema='public';\" 2>&1; echo \"=== bootstrap state ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select * from instance_config limit 5;\" 2>&1 | head; docker compose exec -T postgres psql -U nebu -d nebu -c \"\\dt\" 2>&1 | grep -i bootstrap",
+      "exit_code": 0,
+      "stdout": "=== postgres tables ===\n migrations \n------------\n          1\n(1 row)\n\n tables \n--------\n     49\n(1 row)\n\n=== bootstrap state ===\nERROR:  relation \"instance_config\" does not exist\nLINE 1: select * from instance_config limit 5;\n                      ^\n public | bootstrap_draft          | table | nebu_migrate\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== minio bucket ===\"; docker compose exec -T minio sh -c 'ls -la /data' 2>&1 | head; echo \"=== dex discovery ===\"; curl -s http://localhost:5556/dex/.well-known/openid-configuration | head -c 500; echo; echo \"=== dex local users ===\"; grep -rn \"kai@example.com\" dev/ 2>/dev/null | head; echo \"=== secrets ===\"; ls -la .secrets/; echo \"=== override ===\"; cat docker-compose.override.yml",
+      "exit_code": 0,
+      "stdout": "=== minio bucket ===\ntotal 16\ndrwxr-xr-x 4 root root 4096 Oct  9 13:51 .\ndrwxr-xr-x 1 root root 4096 Oct  9 13:51 ..\ndrwxr-xr-x 7 root root 4096 Oct  9 13:51 .minio.sys\ndrwxr-xr-x 2 root root 4096 Oct  9 13:51 nebu-media\n=== dex discovery ===\n{\n  \"issuer\": \"http://dex:5556/dex\",\n  \"authorization_endpoint\": \"http://dex:5556/dex/auth\",\n  \"token_endpoint\": \"http://dex:5556/dex/token\",\n  \"jwks_uri\": \"http://dex:5556/dex/keys\",\n  \"userinfo_endpoint\": \"http://dex:5556/dex/userinfo\",\n  \"device_authorization_endpoint\": \"http://dex:5556/dex/device/code\",\n  \"introspection_endpoint\": \"http://dex:5556/dex/token/introspect\",\n  \"grant_types_supported\": [\n    \"authorization_code\",\n    \"refresh_token\"\n  ],\n  \"response_types_supported\": [\n    \"code\"\n\n=== dex local users ===\ndev/dex/config.yaml:38:  - email: \"kai@example.com\"\n=== secrets ===\ntotal 28\ndrwxr-xr-x  2 root root 4096 Oct  9 13:44 .\ndrwxr-xr-x 23 root root 4096 Oct  9 13:51 ..\n-rw-r--r--  1 root root   65 Oct  9 13:44 internal_secret\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_app_access_key\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_app_secret_key\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_root_password\n-rw-r--r--  1 root root   33 Oct  9 13:44 minio_root_user\n=== override ===\nservices:\n  minio:\n    image: rancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z\n  createbuckets:\n    image: rancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== schema_migrations content ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select * from schema_migrations order by version desc limit 5;\" 2>&1; echo \"=== bootstrap_draft ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select count(*) from bootstrap_draft;\" 2>&1; echo \"=== list tables ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"\\dt\" 2>&1 | head -60",
+      "exit_code": 0,
+      "stdout": "=== schema_migrations content ===\n version | dirty \n---------+-------\n      34 | f\n(1 row)\n\n=== bootstrap_draft ===\n count \n-------\n     0\n(1 row)\n\n=== list tables ===\n                    List of relations\n Schema |           Name           | Type  |    Owner     \n--------+--------------------------+-------+--------------\n public | account_data             | table | nebu_migrate\n public | admin_sessions           | table | nebu_migrate\n public | admin_temporary_captures | table | nebu_migrate\n public | audit_log                | table | nebu_migrate\n public | auto_join_opt_outs       | table | nebu_migrate\n public | bootstrap_draft          | table | nebu_migrate\n public | compliance_requests      | table | nebu_migrate\n public | compliance_sessions      | table | nebu_migrate\n public | cross_signing_keys       | table | nebu_migrate\n public | device_fallback_keys     | table | nebu_migrate\n public | device_keys              | table | nebu_migrate\n public | device_one_time_keys     | table | nebu_migrate\n public | devices                  | table | nebu_migrate\n public | events                   | table | nebu_migrate\n public | forgotten_rooms          | table | nebu_migrate\n public | invalidated_tokens       | table | nebu_migrate\n public | jwt_device_bindings      | table | nebu_migrate\n public | matrix_sessions          | table | nebu_migrate\n public | media_alerts             | table | nebu_migrate\n public | media_config             | table | nebu_migrate\n public | media_files              | table | nebu_migrate\n public | media_scan_stats         | table | nebu_migrate\n public | media_state_transitions  | table | nebu_migrate\n public | media_storage_config     | table | nebu_migrate\n public | message_buffer           | table | nebu_migrate\n public | message_dead_letter      | table | nebu_migrate\n public | notifications            | table | nebu_migrate\n public | oban_jobs                | table | nebu_migrate\n public | oban_peers               | table | nebu_migrate\n public | operational_logs         | table | nebu_migrate\n public | profiles                 | table | nebu_migrate\n public | push_rules               | table | nebu_migrate\n public | pushers                  | table | nebu_migrate\n public | read_receipts            | table | nebu_migrate\n public | role_overrides           | table | nebu_migrate\n public | room_account_data        | table | nebu_migrate\n public | room_aliases             | table | nebu_migrate\n public | room_defaults            | table | nebu_migrate\n public | room_invitations         | table | nebu_migrate\n public | room_members             | table | nebu_migrate\n public | rooms                    | table | nebu_migrate\n public | schema_migrations        | table | nebu_migrate\n public | server_config            | table | nebu_migrate\n public | sessions                 | table | nebu_migrate\n public | sync_tokens              | table | nebu_migrate\n public | uia_sessions             | table | nebu_migrate\n public | user_keys                | table | nebu_migrate\n public | users                    | table | nebu_migrate\n public | war_room_sessions        | table | nebu_migrate\n(49 rows)\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== dex config ===\"; cat dev/dex/config.yaml; echo \"=== make setup target ===\"; grep -n \"setup:\" -A 20 Makefile | head -40",
+      "exit_code": 0,
+      "stdout": "=== dex config ===\nissuer: http://dex:5556/dex\n\nstorage:\n  type: sqlite3\n  config:\n    file: /var/dex/dex.db\n\nweb:\n  http: 0.0.0.0:5556\n\noauth2:\n  responseTypes: [code]\n  skipApprovalScreen: true\n  grantTypes:\n    - authorization_code\n    - refresh_token\n\nexpiry:\n  idTokens: 24h        # JWT ID token valid 24h (dev convenience \u2014 was 1h default)\n  signingKeys: 6h\n\nenablePasswordDB: true\n\n# oidc-bootstrap-only-config (ADR-022): a SINGLE OIDC client serves Matrix Bearer\n# validation AND admin operator login. It registers ALL Nebu redirect URIs (Matrix\n# SSO redirect, Element auth.html, and /admin/callback). The former separate\n# `nebu-admin` client is removed \u2014 there is no second client.\nstaticClients:\n  - id: nebu-gateway\n    name: \"Nebu\"\n    secret: nebu-dev-secret\n    redirectURIs:\n      - \"http://localhost:8008/_matrix/client/v3/login/sso/redirect/oidc\"\n      - \"http://localhost:7070/auth.html\"\n      - \"http://localhost:8008/admin/callback\"\n\nstaticPasswords:\n  - email: \"kai@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"kai\"\n    userID: \"00000000-0000-0000-0000-000000000001\"\n    groups:\n      - instance_admin\n\n  - email: \"compliance@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"compliance\"\n    userID: \"00000000-0000-0000-0000-000000000002\"\n    groups:\n      - compliance_officer\n\n  - email: \"alex@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"alex\"\n    userID: \"00000000-0000-0000-0000-000000000003\"\n    groups:\n      - user\n\n  - email: \"marie@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"marie\"\n    userID: \"00000000-0000-0000-0000-000000000004\"\n    groups:\n      - user\n\n  - email: \"tom@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"tom\"\n    userID: \"00000000-0000-0000-0000-000000000005\"\n    groups:\n      - user\n\n  - email: \"compliance2@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"compliance2\"\n    userID: \"00000000-0000-0000-0000-000000000006\"\n    groups:\n      - compliance_officer\n\n  # Story direct-room-heroes: DM / small-room hero test users\n  - email: \"alice@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"alice\"\n    userID: \"00000000-0000-0000-0000-000000000007\"\n    groups:\n      - user\n\n  - email: \"bob@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"bob\"\n    userID: \"00000000-0000-0000-0000-000000000008\"\n    groups:\n      - user\n\n  - email: \"charlie@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"charlie\"\n    userID: \"00000000-0000-0000-0000-000000000009\"\n    groups:\n      - user\n\n  # Story rate-limit-isolation: dedicated users for auto-join integration tests\n  - email: \"carol@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"carol\"\n    userID: \"00000000-0000-0000-0000-000000000010\"\n    groups:\n      - user\n\n  - email: \"anna@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"anna\"\n    userID: \"00000000-0000-0000-0000-000000000011\"\n    groups:\n      - user\n=== make setup target ===\n107:## setup: First-time setup \u2014 generate .secrets/internal_secret, MinIO credentials, and dev credentials\n108:setup:\n109-\t@mkdir -p .secrets\n110-\t@if [ ! -f .secrets/internal_secret ]; then \\\n111-\t\topenssl rand -hex 32 > .secrets/internal_secret; \\\n112-\t\techo \"Generated .secrets/internal_secret\"; \\\n113-\telse \\\n114-\t\techo \".secrets/internal_secret already exists, skipping\"; \\\n115-\tfi\n116-\t@if [ ! -f .secrets/minio_root_user ]; then \\\n117-\t\topenssl rand -hex 16 > .secrets/minio_root_user; \\\n118-\t\techo \"Generated .secrets/minio_root_user\"; \\\n119-\telse \\\n120-\t\techo \".secrets/minio_root_user already exists, skipping\"; \\\n121-\tfi\n122-\t@if [ ! -f .secrets/minio_root_password ]; then \\\n123-\t\topenssl rand -hex 16 > .secrets/minio_root_password; \\\n124-\t\techo \"Generated .secrets/minio_root_password\"; \\\n125-\telse \\\n126-\t\techo \".secrets/minio_root_password already exists, skipping\"; \\\n127-\tfi\n128-\t@if [ ! -f .secrets/minio_app_access_key ]; then \\\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== server_config ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select * from server_config;\" 2>&1 | head -20; echo \"=== bootstrap page html (first 60 lines) ===\"; curl -s http://localhost:8080/admin/bootstrap | head -80",
+      "exit_code": 0,
+      "stdout": "=== server_config ===\n           key           | value |    set_at     \n-------------------------+-------+---------------\n oidc_user_id_claim      | name  | 1791553918858\n oidc_displayname_claim  | name  | 1791553918858\n oidc_email_claim        | email | 1791553918858\n oidc_directory_enabled  | false | 1791553918858\n oidc_directory_endpoint |       | 1791553918858\n scim_enabled            | false | 1791553918858\n scim_base_url           |       | 1791553918858\n scim_bearer_token       |       | 1791553918858\n(8 rows)\n\n=== bootstrap page html (first 60 lines) ===\n<!DOCTYPE html>\n<html lang=\"en\" data-theme=\"nebu\">\n  <head>\n    <meta charset=\"utf-8\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\">\n    <meta name=\"csrf-token\" content=\"RioYEEE3HyEXVBt_Rll8MjdiHA48Ah9YpmvHxyNRS9B7v0O_X5zXKuHj\">\n    <title>Bootstrap \u00b7 Nebu Admin</title>\n    <link phx-track-static rel=\"stylesheet\" href=\"/admin/static/assets/app.css\">\n    <script defer type=\"text/javascript\" src=\"/admin/static/assets/phoenix.min.js\">\n    </script>\n    <script defer type=\"text/javascript\" src=\"/admin/static/assets/phoenix_live_view.min.js\">\n    </script>\n    <script defer phx-track-static type=\"text/javascript\" src=\"/admin/static/assets/app.js\">\n    </script>\n  </head>\n  <body class=\"bg-base-100 text-base-content\">\n    <a href=\"#main-content\" class=\"sr-only focus:not-sr-only\">Skip to content</a>\n    \n<div class=\"min-h-screen flex flex-col\">\n  <header class=\"h-12 bg-base-300 flex items-center justify-between px-4 shrink-0\" role=\"banner\">\n    <span class=\"font-semibold text-base-content\">Nebu Admin</span>\n    \n  </header>\n\n  <div class=\"flex flex-1 overflow-hidden\">\n    <nav aria-label=\"Admin navigation\" class=\"w-60 bg-base-200 flex flex-col shrink-0 border-r border-base-300\">\n      <ul role=\"list\" class=\"flex flex-col gap-1 p-2 flex-1\">\n        <li>\n  <a href=\"/admin/bootstrap\" data-phx-link=\"redirect\" data-phx-link-state=\"push\" class=\"flex items-center gap-2 px-3 py-3 rounded text-sm focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2 focus:ring-offset-base-200 bg-primary text-primary-content font-semibold\" aria-current=\"page\" data-navkey=\"bootstrap\">\n    \n          Bootstrap Setup\n        \n  </a>\n</li>\n        \n        \n        \n        \n        \n        \n        \n        \n        \n      </ul>\n      \n    </nav>\n\n    <main id=\"main-content\" class=\"flex-1 overflow-auto p-6\" role=\"main\">\n      <div class=\"admin-bootstrap\" data-page=\"bootstrap\" data-step=\"1\" data-step-active=\"1\">\n  <h1 class=\"text-2xl font-bold mb-2\">Bootstrap Setup</h1>\n\n  <ol class=\"steps mb-6\" data-progress aria-label=\"Bootstrap progress\">\n    <li class=\"step step-primary\" data-progress-step=\"1\" aria-current=\"step\">\n      <span class=\"font-semibold\">\n        Instance\n      </span>\n    </li><li class=\"step \">\n      <span class=\"\">\n        OIDC\n      </span>\n    </li><li class=\"step \">\n      <span class=\"\">\n        Claim Mapping\n      </span>\n    </li>\n  </ol>\n\n  \n\n  \n\n  <form id=\"bootstrap-step-1\" method=\"post\" action=\"/admin/bootstrap/step/1\">\n    <input type=\"hidden\" name=\"_csrf_token\" value=\"RioYEEE3HyEXVBt_Rll8MjdiHA48Ah9YpmvHxyNRS9B7v0O_X5zXKuHj\">\n    <label class=\"form-control\">\n      <span class=\"label-text\">Instance Name</span>\n      <input type=\"text\" name=\"instance_name\" aria-label=\"Instance Name\" class=\"input input-bordered\" required>\n    </label>\n    <button type=\"submit\" class=\"btn btn-primary mt-4\">Next</button>\n  </form>\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== matrix login flows ===\"; curl -s http://localhost:8008/_matrix/client/v3/login | head -c 600; echo; echo \"=== admin bootstrap API (GET/POST?) ===\"; grep -rn \"bootstrap\" server/lib/nebu_web/router.ex 2>/dev/null | head -30; echo \"=== find router ===\"; find server -name \"router.ex\" | head",
+      "exit_code": 0,
+      "stdout": "=== matrix login flows ===\n{\"flows\":[{\"identity_providers\":[{\"icon\":null,\"id\":\"oidc\",\"name\":\"SSO\"}],\"type\":\"m.login.sso\"},{\"type\":\"m.login.token\"}]}\n=== admin bootstrap API (GET/POST?) ===\n=== find router ===\nserver/lib/nebu/admin/router.ex\nserver/lib/nebu/web/router.ex\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== static assets ===\"; for p in /admin/static/assets/app.js /admin/static/assets/app.css /admin/static/assets/phoenix.min.js; do curl -s -o /dev/null -w \"$p -> %{http_code} %{size_download} bytes\\n\" http://localhost:8080$p; done; echo \"=== dex auth page ===\"; curl -s -o /dev/null -w \"dex/auth -> %{http_code}\\n\" \"http://localhost:5556/dex/auth\"; echo \"=== admin callback ===\"; curl -s -o /dev/null -w \"admin/callback -> %{http_code}\\n\" \"http://localhost:8080/admin/callback\"; echo \"=== server->dex from container ===\"; docker compose exec -T server sh -c 'wget -q -O- http://dex:5556/dex/.well-known/openid-configuration 2>/dev/null | head -c 120; echo' 2>&1; echo; echo \"=== /etc/hosts ===\"; grep dex /etc/hosts",
+      "exit_code": 0,
+      "stdout": "=== static assets ===\n/admin/static/assets/app.js -> 200 93580 bytes\n/admin/static/assets/app.css -> 200 105265 bytes\n/admin/static/assets/phoenix.min.js -> 200 24723 bytes\n=== dex auth page ===\ndex/auth -> 302\n=== admin callback ===\nadmin/callback -> 400\n=== server->dex from container ===\n{\n  \"issuer\": \"http://dex:5556/dex\",\n  \"authorization_endpoint\": \"http://dex:5556/dex/auth\",\n  \"token_endpoint\": \"http:/\n\n=== /etc/hosts ===\n127.0.0.1 dex\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== server container process ===\"; docker compose exec -T server sh -c 'ps aux | head -20' 2>&1; echo \"=== minio console health ===\"; curl -s -o /dev/null -w \"minio9001 -> %{http_code}\\n\" http://localhost:9001; echo \"=== postgres user ===\"; docker compose exec -T postgres psql -U nebu -d nebu -c \"select current_user, current_database();\" 2>&1; echo \"=== minio app policy/bucket check via mc ===\"; docker compose run --rm --entrypoint sh createbuckets -c 'mc alias set local http://minio:9000 \"$MINIO_ROOT_USER\" \"$MINIO_ROOT_PASSWORD\" >/dev/null 2>&1; mc ls local;' 2>&1 | head",
+      "exit_code": 1,
+      "stdout": "=== server container process ===\nPID   USER     TIME  COMMAND\n    1 root      0:13 /erts-17.1/bin/beam.smp -- -root / -bindir /erts-17.1/bin -progname erl -- -home /root -- -noshell -s elixir start_cli -mode embedded -setcookie GROS7TUPIXFB5SEL666BMTIYKCLGXIQEUCSFUR5T76TBDBLCTBFA==== -sname nebu -config //releases/0.1.0/sys -boot //releases/0.1.0/start -boot_var RELEASE_LIB //lib -- -- -extra --no-halt\n  101 root      0:00 [epmd]\n  102 root      0:00 /erts-17.1/bin/epmd -daemon\n  106 root      0:00 erl_child_setup 1048576\n  143 root      0:00 /erts-17.1/bin/inet_gethost 4\n  144 root      0:00 /erts-17.1/bin/inet_gethost 4\n  201 root      0:00 sh -c ps aux | head -20\n  207 root      0:00 ps aux\n  208 root      0:00 head -20\n=== minio console health ===\nminio9001 -> 200\n=== postgres user ===\n current_user | current_database \n--------------+------------------\n nebu         | nebu\n(1 row)\n\n=== minio app policy/bucket check via mc ===\n Container nebu-minio-1 Running \n Container nebu-minio-1 Waiting \n Container nebu-minio-1 Healthy \n Container nebu-createbuckets-run-3fc20ef25965 Creating \n Container nebu-createbuckets-run-3fc20ef25965 Created \nmc: <ERROR> Unable to list folder. Access Denied.\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== connectors in dex config ===\"; grep -n \"connectors\\|type: local\\|id: local\\|name: Local\" dev/dex/config.yaml; echo \"exit:$?\"; echo \"=== full head ===\"; sed -n '1,50p' dev/dex/config.yaml; echo \"=== dex logs ===\"; docker compose logs dex --tail=30 2>&1 | tail -30",
+      "exit_code": 0,
+      "stdout": "=== connectors in dex config ===\nexit:1\n=== full head ===\nissuer: http://dex:5556/dex\n\nstorage:\n  type: sqlite3\n  config:\n    file: /var/dex/dex.db\n\nweb:\n  http: 0.0.0.0:5556\n\noauth2:\n  responseTypes: [code]\n  skipApprovalScreen: true\n  grantTypes:\n    - authorization_code\n    - refresh_token\n\nexpiry:\n  idTokens: 24h        # JWT ID token valid 24h (dev convenience \u2014 was 1h default)\n  signingKeys: 6h\n\nenablePasswordDB: true\n\n# oidc-bootstrap-only-config (ADR-022): a SINGLE OIDC client serves Matrix Bearer\n# validation AND admin operator login. It registers ALL Nebu redirect URIs (Matrix\n# SSO redirect, Element auth.html, and /admin/callback). The former separate\n# `nebu-admin` client is removed \u2014 there is no second client.\nstaticClients:\n  - id: nebu-gateway\n    name: \"Nebu\"\n    secret: nebu-dev-secret\n    redirectURIs:\n      - \"http://localhost:8008/_matrix/client/v3/login/sso/redirect/oidc\"\n      - \"http://localhost:7070/auth.html\"\n      - \"http://localhost:8008/admin/callback\"\n\nstaticPasswords:\n  - email: \"kai@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"kai\"\n    userID: \"00000000-0000-0000-0000-000000000001\"\n    groups:\n      - instance_admin\n\n  - email: \"compliance@example.com\"\n    hash: \"$2a$10$E4ye88CWSgoigClMVojmGOu.gHlKe7L7RRf07QWZ60aZmZ7Rfak/6\"\n    username: \"compliance\"\n    userID: \"00000000-0000-0000-0000-000000000002\"\n    groups:\n      - compliance_officer\n=== dex logs ===\ndex-1  | time=2026-10-09T13:51:46.429Z level=INFO msg=\"Version info\" dex_version=v2.45.1 go.version=go1.26.0 go.os=linux go.arch=amd64\ndex-1  | time=2026-10-09T13:51:46.429Z level=INFO msg=\"config issuer\" issuer=http://dex:5556/dex\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"config storage\" storage_type=sqlite3\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"config static client\" client_name=Nebu\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"config connector: local passwords enabled\"\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"config response types accepted\" response_types=[code]\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"config skipping approval screen\"\ndex-1  | time=2026-10-09T13:51:47.273Z level=INFO msg=\"continue on connector failure feature flag enabled\"\ndex-1  | time=2026-10-09T13:51:47.276Z level=INFO msg=\"config id tokens\" valid_for=24h0m0s\ndex-1  | time=2026-10-09T13:51:47.276Z level=WARN msg=\"config expiry.signingKeys will be removed in a future release\" use_instead=signer.config.keysRotationPeriod current_value=6h deprecated=true\ndex-1  | time=2026-10-09T13:51:47.276Z level=INFO msg=\"signer configured\" type=local keys_rotation_period=6h\ndex-1  | time=2026-10-09T13:51:47.276Z level=INFO msg=\"config refresh tokens rotation\" enabled=true\ndex-1  | time=2026-10-09T13:51:47.285Z level=ERROR msg=\"failed to get signing algorithm\" err=\"failed to get keys: not found\"\ndex-1  | time=2026-10-09T13:51:47.286Z level=INFO msg=\"keys expired, rotating\"\ndex-1  | time=2026-10-09T13:51:47.429Z level=INFO msg=\"keys rotated\" next_rotation=2026-10-09T19:51:47.406Z\ndex-1  | time=2026-10-09T13:51:47.429Z level=INFO msg=\"listening on\" server=http address=0.0.0.0:5556\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== bootstrap_active refs ===\"; grep -rn \"bootstrap_active\\|bootstrap_enabled\\|bootstrap_mode\" server/lib server/priv 2>/dev/null | head -20; echo \"=== admin router bootstrap routes ===\"; grep -n \"bootstrap\" server/lib/nebu/admin/router.ex | head -40",
+      "exit_code": 0,
+      "stdout": "=== bootstrap_active refs ===\nserver/lib/nebu/matrix/session/bootstrap_checker/postgres.ex:24:  VALUES ('bootstrap_active', 'true', $1)\nserver/lib/nebu/matrix/session/bootstrap_checker.ex:9:  When bootstrap triggers: inserts 'bootstrap_active' = 'true' into server_config,\n=== admin router bootstrap routes ===\n55:  The following LiveView has been CONVERTED to a plain HTTP controller (fix-bootstrap-wizard-liveview-bugs):\n56:    - BootstrapLive   \u2192 BootstrapController (GET /bootstrap, POST /bootstrap/step/1-3)\n108:  # EXCEPTION: `/admin/bootstrap/select-claim` (POST) is explicitly excluded.\n111:  @csrf_bypass_excluded_paths [\"/admin/bootstrap/select-claim\"]\n134:    get \"/bootstrap/select-claim\", LoginController, :select_claim\n135:    post \"/bootstrap/select-claim\", LoginController, :confirm_claim\n138:    # No admin session required \u2014 accessible before bootstrap is complete.\n139:    # The :bootstrap_gate plug in BootstrapController redirects to /admin/login\n140:    # once bootstrap IS complete (the wizard must be locked after first-time setup).\n141:    get \"/bootstrap\", BootstrapController, :index\n142:    post \"/bootstrap/step/1\", BootstrapController, :save_step1\n143:    post \"/bootstrap/step/2\", BootstrapController, :save_step2\n144:    post \"/bootstrap/step/3\", BootstrapController, :save_step3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== admin login ===\"; curl -s -o /dev/null -w \"admin/login -> %{http_code}\\n\" http://localhost:8080/admin/login; echo \"=== admin dashboard unauth ===\"; curl -s -o /dev/null -w \"admin/dashboard -> %{http_code} redirect:%{redirect_url}\\n\" http://localhost:8080/admin/dashboard; echo \"=== matrix well-known ===\"; curl -s -o /dev/null -w \"well-known -> %{http_code}\\n\" http://localhost:8008/.well-known/matrix/client; curl -s http://localhost:8008/.well-known/matrix/client; echo; echo \"=== sync unauth (expect 401) ===\"; curl -s -o /dev/null -w \"sync -> %{http_code}\\n\" \"http://localhost:8008/_matrix/client/v3/sync\"; echo \"=== compose config validity ===\"; docker compose config --quiet && echo \"compose config OK\"; echo \"=== git status ===\"; git status --short",
+      "exit_code": 0,
+      "stdout": "=== admin login ===\nadmin/login -> 302\n=== admin dashboard unauth ===\nadmin/dashboard -> 302 redirect:http://localhost:8080/admin/bootstrap\n=== matrix well-known ===\nwell-known -> 200\n{\"io.element.e2ee\":{\"force_disable\":true},\"m.homeserver\":{\"base_url\":\"http://localhost:8008\"}}\n=== sync unauth (expect 401) ===\nsync -> 401\n=== compose config validity ===\ncompose config OK\n=== git status ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== container restart counts / health ===\"; docker inspect --format '{{.Name}} restarts={{.RestartCount}} health={{if .State.Health}}{{.State.Health.Status}}{{else}}n/a{{end}} state={{.State.Status}}' $(docker compose ps -q) 2>&1; echo \"=== images ===\"; docker images | grep -E \"nebu|minio|postgres|dex|clamav\" | head; echo \"=== make setup dry-run check ===\"; grep -n \"^setup:\\|^dev:\\|^test-unit-elixir:\\|^build-server:\\|^redeploy:\" Makefile",
+      "exit_code": 0,
+      "stdout": "=== container restart counts / health ===\n/nebu-clamav-1 restarts=0 health=healthy state=running\n/nebu-dex-1 restarts=0 health=healthy state=running\n/nebu-minio-1 restarts=0 health=healthy state=running\n/nebu-postgres-1 restarts=0 health=healthy state=running\n/nebu-server-1 restarts=0 health=healthy state=running\n=== images ===\nclamav/clamav:stable                                        c628a79632aa        233MB             0B   U    \ncleanstart/minio:latest                                     956de495b8b7        233MB             0B        \ndexidp/dex:v2.45.1                                          bc399b03a1bf        162MB             0B   U    \nelestio/minio:latest                                        faded9b9dcd2        176MB             0B        \nnebu-server:latest                                          876d047b95d3       62.7MB             0B   U    \npostgres:16-alpine                                          81bd698b4594        294MB             0B   U    \nrancher/mirrored-minio-mc:RELEASE.2023-06-28T21-54-17Z      ad56b1e35ffe        282MB             0B   U    \nrancher/mirrored-minio-minio:RELEASE.2023-07-07T07-13-57Z   09b7752e26c2        277MB             0B   U    \n=== make setup dry-run check ===\n34:build-server:\n42:redeploy:\n83:dev:\n108:setup:\n154:test-unit-elixir:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== bootstrap step1 POST no csrf (expect 403/400, route live) ===\"; curl -s -o /dev/null -w \"POST step1 -> %{http_code}\\n\" -X POST http://localhost:8080/admin/bootstrap/step/1 -d \"instance_name=test\"; echo \"=== dex local login page ===\"; curl -s \"http://localhost:5556/dex/auth/local?req=x\" -o /dev/null -w \"dex local -> %{http_code}\\n\"; echo \"=== keys/upload stub (unauth) ===\"; curl -s -o /dev/null -w \"keys/upload -> %{http_code}\\n\" -X POST http://localhost:8008/_matrix/client/v3/keys/upload; echo \"=== server release ===\"; docker compose exec -T server sh -c 'ls -la /app/releases/0.1.0/ 2>/dev/null | head; ls /app/bin 2>/dev/null' 2>&1 | head",
+      "exit_code": 1,
+      "stdout": "=== bootstrap step1 POST no csrf (expect 403/400, route live) ===\nPOST step1 -> 403\n=== dex local login page ===\ndex local -> 404\n=== keys/upload stub (unauth) ===\nkeys/upload -> 401\n=== server release ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== docker-compose server svc ===\"; sed -n '/^  server:/,/^  [a-z]/p' docker-compose.yml | head -80",
+      "exit_code": 0,
+      "stdout": "=== docker-compose server svc ===\n  server:\n    build:\n      context: ./server\n      args:\n        GIT_COMMIT: ${GIT_COMMIT:-unknown}\n        BUILD_TIME: ${BUILD_TIME:-unknown}\n        RELEASE_VERSION: ${RELEASE_VERSION:-unknown}\n    depends_on:\n      postgres:\n        condition: service_healthy\n      # media-gateway-migration (AC6): the server now serves /_matrix/media/v3/* directly\n      # (Elixir Nebu.Media), so it needs MinIO healthy and the bucket/IAM-user\n      # created \u2014 exactly the dependencies the removed `media:` service had.\n      minio:\n        condition: service_healthy\n      createbuckets:\n        condition: service_completed_successfully\n    # media-gateway-migration (AC6): MinIO IAM credentials (file-based Docker\n    # Secrets) consumed by Nebu.Media.Storage / config/runtime.exs ExAws config.\n    secrets:\n      - internal_secret\n      - minio_app_access_key\n      - minio_app_secret_key\n    environment:\n      # Story 5.29a \u2014 AC3: the server also uses nebu_app at runtime (no DDL from the server)\n      NEBU_DB_URL: \"postgresql://nebu_app:nebu_app_dev_pw@postgres:5432/nebu\"\n      DATABASE_URL: \"ecto://nebu_app:nebu_app_dev_pw@postgres:5432/nebu\"\n      # go-removal-cleanup: migrations run as nebu_migrate (table owner) \u2014 ported from\n      # the removed gateway service. server/Dockerfile invokes Nebu.Release.migrate/0 on\n      # startup before the server boots, using this connection.\n      NEBU_DB_URL_MIGRATE: \"postgresql://nebu_migrate:nebu_migrate_dev_pw@postgres:5432/nebu\"\n      NEBU_INTERNAL_SECRET_FILE: \"/run/secrets/internal_secret\"\n      NEBU_SERVER_NAME: \"localhost\"\n      NEBU_PII_ENCRYPTION_KEY: \"${NEBU_PII_ENCRYPTION_KEY:-6465766b65793030303030303030303030303030303030303030303030303030}\"\n      # oidc-bootstrap-only-config (ADR-022): OIDC is configured EXCLUSIVELY through the\n      # Bootstrap Wizard (server_config) \u2014 there are NO NEBU_OIDC_* / NEBU_ADMIN_OIDC_*\n      # config variables. A single OIDC client (dev Dex `nebu-gateway`, secret\n      # `nebu-dev-secret`, all redirect URIs registered in dev/dex/config.yaml) serves\n      # both Matrix Bearer validation and admin operator login. On a fresh DB the server\n      # boots fail-closed (all Bearer tokens 401, admin \u2192 /bootstrap); run the wizard\n      # once (issuer http://dex:5556/dex, client nebu-gateway / nebu-dev-secret, audience\n      # nebu-gateway, JWKS http://dex:5556/dex/keys) to configure it.\n      #\n      # NEBU_OIDC_JWKS_TTL is the JwksCache refresh interval (a cache-tuning knob, NOT\n      # OIDC issuer/audience/client config) and may stay.\n      NEBU_OIDC_JWKS_TTL: \"300\"\n      # DEV-ONLY: this stack serves the admin UI over plain http://localhost, so the\n      # admin session cookie must NOT be Secure (otherwise the login-state cookie is\n      # not returned on the OIDC callback in stricter browsers \u2192 \"Invalid login state\").\n      # Production serves over TLS and leaves this unset (defaults to secure:true).\n      NEBU_ADMIN_SESSION_SECURE: \"false\"\n      # Integration-test escape hatch: set NEBU_RATE_LIMIT_DISABLED=true in the host\n      # environment before `docker compose up` to disable the IP rate limiter.\n      # make test-integration sets this automatically; never set in production.\n      NEBU_RATE_LIMIT_DISABLED: \"${NEBU_RATE_LIMIT_DISABLED:-false}\"\n      # e2e-session-refresh-suites: Nebu session ceilings (default 8h, set in\n      # Nebu.Web.SessionConfig). Leave empty for normal dev/prod (\u2192 8h). The\n      # `make test-e2e-refresh` target sets these short on the host so the silent\n      # OIDC-refresh loop fires within the test window. Empty / junk \u2192 8h default\n      # (parsed by SessionConfig.parse_ttl/1, never crashes the login path).\n      NEBU_MATRIX_SESSION_TTL_SECONDS: \"${NEBU_MATRIX_SESSION_TTL_SECONDS:-}\"\n      NEBU_ADMIN_SESSION_TTL_SECONDS: \"${NEBU_ADMIN_SESSION_TTL_SECONDS:-}\"\n      # media-gateway-migration (AC6): media object storage, ported from the Go\n      # `media:` service. Same MinIO bucket + nebu-app IAM credentials.\n      NEBU_MINIO_ENDPOINT: \"minio:9000\"\n      NEBU_MINIO_ACCESS_KEY_FILE: \"/run/secrets/minio_app_access_key\"\n      NEBU_MINIO_SECRET_KEY_FILE: \"/run/secrets/minio_app_secret_key\"\n      NEBU_MINIO_BUCKET: \"nebu-media\"\n      NEBU_MINIO_USE_SSL: \"false\"\n      # media-security-admin-control/3-clamav-genserver: ClamAV scanner client.\n      # Nebu.Media.ClamAV tolerates clamd being unreachable at boot (AC7) \u2014 no\n      # depends_on/healthy-gate is required here, clamd may come up after the\n      # server (freshclam's first signature download can take a while).\n      NEBU_CLAMAV_HOST: \"clamav\"\n      NEBU_CLAMAV_PORT: \"3310\"\n    ports:\n      # go-removal-cleanup: the server now serves the public Matrix endpoint (host 8008)\n      # and the admin UI (host 8080) \u2014 both formerly published by the Go gateway \u2014\n      # plus its own 4000. All three map to the single Bandit listener on server:4000.\n      # (The gRPC network listener was removed \u2014 ADR-021; the server no longer opens port 9000.)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== server release dirs ===\"; docker compose exec -T server sh -c 'ls / ; echo ---; ls /releases 2>/dev/null; ls /lib 2>/dev/null | head -5' 2>&1 | head -30; echo \"=== count libs ===\"; docker compose exec -T server sh -c 'ls /lib | wc -l' 2>&1; echo \"=== all ports ===\"; docker compose ps --format '{{.Service}}: {{.Ports}}'",
+      "exit_code": 0,
+      "stdout": "=== server release dirs ===\nbin\ndev\nerts-17.1\netc\nhome\nlib\nmedia\nmnt\nopt\nproc\nreleases\nroot\nrun\nsbin\nsrv\nsys\ntmp\nusr\nvar\n---\n0.1.0\nCOOKIE\nstart_erl.data\napk\nasn1-5.5.2\nassent-0.3.1\nbandit-1.12.0\ncertifi-2.15.0\n=== count libs ===\n68\n=== all ports ===\nclamav: 3310/tcp, 7357/tcp\ndex: 0.0.0.0:5556->5556/tcp, [::]:5556->5556/tcp\nminio: 0.0.0.0:9000-9001->9000-9001/tcp, [::]:9000-9001->9000-9001/tcp\npostgres: 0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp\nserver: 0.0.0.0:4000->4000/tcp, [::]:4000->4000/tcp, 0.0.0.0:8008->4000/tcp, 0.0.0.0:8080->4000/tcp, [::]:8008->4000/tcp, [::]:8080->4000/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

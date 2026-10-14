@@ -1,0 +1,15 @@
+Validation complete: the Smart City Hub `data_store_backend` service installed via the guide's documented Docker Compose quickstart is correctly installed, complete, and operational.
+
+Commands and results (working dir `/workspace/deployment/runtimes/compose/dev` unless noted):
+
+- `docker ps -a` → container `data-store-backend-service` running, image `scenarios-data_store_backend`, `0.0.0.0:8007->8000/tcp`. `docker inspect` → `status=running restarts=0`.
+- `docker compose -f scenarios/debug-data_store_backend.yml ps` → service up. `make ps SCENARIO=data_store_backend` equivalent.
+- Logs: gunicorn 23.0.0 listening on 0.0.0.0:8000, "Application startup complete", no errors.
+- `curl http://127.0.0.1:8007/healthz` → `{"status":"ok"}` HTTP 200.
+- `curl http://127.0.0.1:8007/docs/` → HTTP 200; `curl /docs/openapi.json` → HTTP 200, valid spec (title "Data Store", version 0.1.0).
+- Functional round-trip: unauthenticated POST → HTTP 401 (basic auth enforced); authenticated POST `-u ReceiveDataUser:ChangeMe` → HTTP 200; GET same path → HTTP 200 returning `{"hello":"world","validation":true}`; GET missing path → HTTP 404.
+- Persistence: files written to bind mount `/workspace/apps/data_store_backend/data_store/validation-check.json.{file,meta}` (format matches `FileSystemDataStoreRepository`).
+- `curl /admin/configflat` → HTTP 200 with resolved config (env COMPOSE_ALL, storage type file_system).
+- `docker exec ... pip list` → private dependency `api-logging 2.0.0` plus spg-configuration 1.0.1, spg-rest-auth 1.5.3, fastapi 0.112.2 installed.
+
+Limitations: only the `data_store_backend` Compose scenario was installed/validated; the Kubernetes full-platform method (`make local-up`) was not attempted (k3d/kubectl/helm absent) — this is a separate, uninstalled method and does not affect the chosen Compose install. Other services/scenarios were not evaluated.

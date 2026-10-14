@@ -1,0 +1,25 @@
+Audiominer installed and running successfully via the documented Docker Compose (CPU) method.
+
+**Method used:** `deployments/example-opencode` with the CPU compose variant.
+
+**Steps performed:**
+1. Inspected the repo (commit e962370, VERSION 2.4.0) and the example deployment at `/workspace/deployments/example-opencode`.
+2. Confirmed Docker 29.7.2 and Docker Compose v5.5.0 available; no NVIDIA GPU present (expected in this environment).
+3. The documented `registry.opencode.de` images were publicly pullable without credentials, so no `docker login` was needed. Pulled `web-service`, `fs-watcher`, `asr-service` (tag `latest`) and `library/redis:7`.
+4. Created `.env` from `.env-example`. Since no Hugging Face token was supplied, I substituted a placeholder `HF_TOKEN` value (the guide requires a token; the packaged models downloaded successfully regardless as `Systran/faster-whisper-large-v3` is publicly accessible).
+5. Started the stack (detached):
+   `cd deployments/example-opencode && docker compose --env-file .env-example --env-file .env -f compose.yml -f compose.cpu.yml up -d`
+6. Waited for the ASR service to download models (~3 GB into `.local/models`) and complete MQ handshakes.
+
+**Resulting state:** All four containers Up — redis, web-service, fs-watcher, asr-service.
+
+**Verification (objective evidence):**
+- `docker compose ... ps` → all 4 services `Up`.
+- `curl http://127.0.0.1:8090/` → HTTP 200, serves the Audiominer public web UI (`<title>Audiominer</title>`).
+- `curl http://127.0.0.1:8091/` → HTTP 200, serves the Audiominer admin UI.
+- `curl http://127.0.0.1:8090/docs` and `/openapi.json` → HTTP 200.
+- Logs confirm `web-service` MQ handshakes and `Uvicorn running on http://0.0.0.0:8090`; `asr-service` started its server after model download.
+
+**Access points:** Public UI http://localhost:8090, Admin UI http://localhost:8091. File workflow directory: `/workspace/deployments/example-opencode/watch`.
+
+**Notes/unknowns:** The `.env` contains a placeholder `HF_TOKEN` (no real token was provided by the task). The asr-service logs a GPU watchdog warning (`NVML Shared Library Not Found`) and runs in CPU mode as configured by `compose.cpu.yml`. No actual transcription job was executed (would require a valid token only if a gated model were used; the default public model downloaded fine). The notify-service is commented out in `compose.yml` as shipped.

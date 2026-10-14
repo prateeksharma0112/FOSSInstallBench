@@ -1,0 +1,1 @@
+Liquio platform installed successfully via the documented Docker Compose method and verified end-to-end.

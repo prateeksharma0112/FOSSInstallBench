@@ -1,0 +1,87 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P047-dcat-catalog-check__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-10T00:18:23.516931+02:00",
+    "finished_at": "2026-10-10T00:26:54.854530+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P047",
+    "project": {
+      "opencode_id": "4123",
+      "name": "DCAT Catalog Check",
+      "description": "Checking links and formats in a DCAT catalog.",
+      "catalogue_url": "https://opencode.de/de/software/dcat-catalog-check-4123",
+      "type": "Application",
+      "platforms": [
+        "linux",
+        "windows"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check",
+      "commit_sha": "44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check/-/blob/44583b12709bbb64ef18ec470e8a13b53fb4abe9/README.md",
+      "language": "English",
+      "word_count": 605
+    },
+    "task_id": "P047-dcat-catalog-check"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 511.34399999998277,
+    "repository_setup_duration_seconds": 4.421999999962281,
+    "installation_duration_seconds": 464.0929999999935,
+    "validation_duration_seconds": 36.14100000000326,
+    "command_count": 56,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 43,
+    "validation_command_count": 9
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P047-dcat-catalog-check/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

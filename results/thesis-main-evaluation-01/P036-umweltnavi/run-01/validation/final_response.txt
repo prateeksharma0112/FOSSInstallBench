@@ -1,0 +1,44 @@
+# Validation Report — UmweltNAVI (umwelt_navi_app)
+
+## Assessed outcome: **success**
+
+The installation is complete and operational. The required toolchain is present at the exact versions specified in the guide, project dependencies resolve, and the app compiles into a valid Android APK reproducibly.
+
+## Outcome evidence
+
+**1. Toolchain versions match the guide exactly** (`/workspace`, PATH=/opt/flutter/bin)
+- `flutter --version` → `Flutter 3.35.7 • channel stable • ... Tools • Dart 3.9.2` (guide requires Flutter 3.35.7 / Dart 3.9.2). Exit 0.
+- `dart --version` → `Dart SDK version: 3.9.2 (stable)`.
+- `java -version` → `openjdk version "17.0.20.1"` (guide requires Java 17). JDK at `/usr/lib/jvm/java-17-openjdk-amd64`.
+- `/etc/profile.d/flutter.sh` exports PATH, ANDROID_HOME, ANDROID_SDK_ROOT, JAVA_HOME. `flutter config --list` shows `android-sdk: /opt/android-sdk`, `jdk-dir: /usr/lib/jvm/java-17-openjdk-amd64`.
+
+**2. `flutter doctor -v`** (exit 0)
+- `[✓] Flutter (Channel stable, 3.35.7 ... Dart 3.9.2)`
+- `[✓] Android toolchain — Android SDK version 35.0.0 ... JDK ... 17.0.20.1 ... All Android licenses accepted.`
+- `[✓] Linux toolchain`, `[✓] Connected device (Linux desktop)`, `[✓] Network resources`
+- `[✗] Chrome` and `[!] Android Studio (not installed)` — expected headless limitations, see below.
+
+**3. Dependencies resolve** — `flutter pub get --offline` in `/workspace` → `Got dependencies!` (266 packages in `.dart_tool/package_config.json`). `flutter analyze` → `96 issues found` (all info-level lint/deprecation; **0 errors**).
+
+**4. Android SDK present** — `/opt/android-sdk` contains `platform-tools`, `build-tools/34.0.0`+`35.0.0`, `cmdline-tools/latest`, `ndk/27.0.12077973`, platforms 29/31/33/34/35/36 (matches/ exceeds guide's "Platform 34 or above" + Platform-Tools).
+
+**5. App builds reproducibly (decisive check)** — re-ran:
+`flutter build apk --debug --flavor ni --dart-define=PARTNER=ni --dart-define=cronetHttpNoPlay=true` → `✓ Built build/app/outputs/flutter-apk/app-ni-debug.apk`, exit 0 (Gradle `assembleNiDebug`, 61.2s).
+
+**6. APK is valid and correct**
+- `unzip -t app-ni-debug.apk` → `No errors detected in compressed data`.
+- `sha1sum` → `b5c9beeba...` matches `app-ni-debug.apk.sha1`; file reproducibly 201,557,558 bytes.
+- `apkanalyzer apk summary` → `wemove.app.bipu  1  2.8.0` (matches pubspec version `2.8.0+1`); manifest shows package `wemove.app.bipu`, launcher activity with `MAIN`/`LAUNCHER`, and flavor-specific assets (`assets/flavors/ni/...`) confirming the `ni` flavor was applied.
+- Required generated files exist: `android/key.properties`, `android/app/debug-keystore.jks`, `assets/keys/api_keys.json` (placeholder `{}`).
+
+## Assessment summary
+
+I inspected the workspace and toolchain locations (`/opt/flutter`, `/opt/android-sdk`, JDK 17), verified versions against the guide, then performed behavioral checks: `flutter doctor -v`, `flutter pub get --offline`, `flutter analyze`, and — most importantly — a full re-build of the flavor-specific debug APK, followed by structural validation of the resulting artifact with `unzip -t`, `sha1sum`, and `apkanalyzer`. All core checks passed. The installation method (direct Flutter SDK tarball instead of the guide's *recommended* fvm) yields the exact required Flutter/Dart versions, so it does not constitute a deviation. The two commits' worth of leftover build artifacts confirm the action was performed by the app's own toolchain.
+
+**Limitations / unresolved points (do not affect the assessed outcome):**
+- **No Android emulator/AVD** — the `emulator` package is not installed (`/opt/android-sdk/emulator` absent, `avdmanager list avd` empty), so I could not launch the app on an Android virtual device to observe runtime UI. `/dev/kvm` exists, but the emulator was never installed; installing it is outside validation boundaries.
+- **No `test/` directory** in the repo, so no unit/widget test suite could be executed.
+- **Android Studio (GUI) and Chrome are absent** — the guide lists Android Studio as a doctor requirement, but it is a GUI IDE that cannot be installed in this headless Linux container and is not required to build or run the Android app (the CLI toolchain covers it). The guide explicitly says iOS/Xcode is Mac-only, which is inapplicable here.
+- The installed Android SDK/build-tools (35.0.0) is newer than the APK was compiled against (compileSdk 36 was resolved), but the app builds and packages successfully, so this is not a defect.
+
+Given that the toolchain matches the guide precisely, all dependencies resolve, and the application successfully compiles into a valid, correctly-configured APK on reproduction, the installation is complete and operational.

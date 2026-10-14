@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-01__P041-eam-portal-bund__run-01",
+    "experiment_id": "thesis-main-evaluation-01",
+    "run_number": 1,
+    "started_at": "2026-10-09T22:27:22.634863+02:00",
+    "finished_at": "2026-10-09T22:31:00.090656+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P041",
+    "project": {
+      "opencode_id": "9575",
+      "name": "EAM-Portal Bund",
+      "description": "Central platform for enterprise architecture management in public administration.",
+      "catalogue_url": "https://opencode.de/de/software/eam-portal-bund-9575",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/egovlab/eam-portal",
+      "commit_sha": "38e7f2d5f88686e9e292f4d67ea0b570e19886e2",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/egovlab/eam-portal/-/blob/38e7f2d5f88686e9e292f4d67ea0b570e19886e2/README.md",
+      "language": "German",
+      "word_count": 27
+    },
+    "task_id": "P041-eam-portal-bund"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "openai/coding",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "openai/coding",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 217.46899999998277,
+    "repository_setup_duration_seconds": 5.046999999962281,
+    "installation_duration_seconds": 154.26600000000326,
+    "validation_duration_seconds": 49.85999999998603,
+    "command_count": 21,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 8,
+    "validation_command_count": 9
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-01/P041-eam-portal-bund/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

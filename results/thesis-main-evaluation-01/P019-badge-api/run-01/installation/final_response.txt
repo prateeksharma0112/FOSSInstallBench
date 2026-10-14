@@ -1,0 +1,24 @@
+## Badge API — Installation Successful
+
+The Badge API (Go backend) was built from source and verified end-to-end.
+
+### What was done
+1. **Repository** already checked out at `/workspace` (commit `8b58a9f`, `go.mod` requires Go 1.26.4).
+2. **Installed Go 1.26.4** to `/usr/local/go` from the official download (`https://dl.google.com/go/go1.26.4.linux-amd64.tar.gz`); symlinked `go`/`gofmt` into `/usr/local/bin`. This toolchain was absent from the environment.
+3. **Installed GNU Make** (`apt-get install -y make`) since `make` was missing and the guide's `make run`/`make badge-api` targets require it.
+4. **Built the binary** with `make badge-api` (equivalent to `go build -o badge-api -ldflags -w -trimpath main.go`), producing the 88 MB executable `/workspace/badge-api`.
+5. **Built all packages** (`go build ./...`) — exit 0.
+6. **Ran the server** (`./badge-api serve --port 8080`) and verified live HTTP endpoints.
+7. **Ran unit tests** (`go test ./pkg/badges/... ./pkg/config/...`) — all `ok`.
+
+### Verification
+- `./badge-api --help` → exit 0, shows commands `serve`, `check`, `attest`.
+- `./badge-api serve --port 8080` → server log ends with `starting server port=8080`; it fetched the remote badge config from gitlab.opencode.de and cached SVGs.
+- `GET http://localhost:8080/api/v1/info` → **HTTP 200** with full JSON config (gitClients, badges, levels, checks).
+- `GET http://localhost:8080/metrics` → **HTTP 200** (Prometheus).
+- `go test ./pkg/badges/... ./pkg/config/...` → exit 0 (`ok` for badges, observe, config).
+
+### Notes / incomplete items
+- The guide's optional steps (PostgreSQL, `.env`, git provider secret tokens, nginx cache, demo frontend, linting, helm/kubectl deployment) were not performed; they require external credentials/services or a separate frontend repository and are not needed to build/run the API. The server runs without a database for the config/info endpoints.
+- Git provider token files (`secrets/glpat.secret`, etc.) are absent, so git-client auth is unauthenticated — expected in this workspace and non-blocking for installation.
+- To start later: `cd /workspace && ./badge-api serve --port 8080` (or `go run main.go serve` / `make run`).

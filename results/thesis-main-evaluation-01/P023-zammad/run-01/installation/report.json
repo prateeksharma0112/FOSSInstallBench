@@ -1,0 +1,26 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "Installed Zammad at /workspace using the guide's documented Manual Setup method, since the recommended devcontainer method relies on VS Code's \"Reopen in Container\" workflow which is not available in this headless environment.\n\nEnvironment/toolchain installed natively:\n- Ruby 3.4.9 compiled from source to /usr/local (matches .ruby-version), gem/bundler 2.6.9.\n- Node.js v24.21.0 (NodeSource) + pnpm 11.25.0 via corepack (matches package.json engines).\n- PostgreSQL 14 native service with role `zammad` and databases `zammad_development` and `zammad_test`.\n- Redis 7 native service (redis-server), verified with redis-cli ping = PONG.\n- Elasticsearch 8.15.5 run via Docker container `zammad-es` (image docker.elastic.co/elasticsearch/elasticsearch:8.15.5) on 127.0.0.1:9200; Zammad requires ES >= 8.15.\n- System build deps: build-essential, libssl/readline/yaml/ffi/gdbm/ncurses/pq, libimlib2 + libimlib2-dev, libxml2/xslt.\n\nApplication setup in /workspace:\n- `bundle config set path vendor/bundle` then `bundle install` \u2192 318 gems.\n- `pnpm install --frozen-lockfile` \u2192 Node deps.\n- Created config/database.yml (gitignored) pointing to 127.0.0.1 postgres as user zammad.\n- `RAILS_ENV=development bundle exec rails db:prepare` \u2192 migrations + seeds applied successfully.\n- `Setting.set('es_url', 'http://127.0.0.1:9200')`, `rails zammad:setup:auto_wizard`, `rails zammad:searchindex:rebuild`, `rails assets:precompile`.\n- `foreman start -f Procfile.dev` (foreman installed as the documented Linux alternative to forego, which had no downloadable binary) launches 5 processes: vite, puma web (port 3000), websocket (6042), background worker, dartsass.\n\nRuntime environment variables used: RAILS_ENV=development, REDIS_URL=redis://127.0.0.1:6379, VITE_RUBY_HOST=127.0.0.1, ZAMMAD_BIND_IP=0.0.0.0. These are captured in /tmp/zammad_env.sh.\n\nVerification: HTTP GET http://127.0.0.1:3000/ returns 200 with the Zammad login page; POST /api/v1/signin with admin@example.com / test returns HTTP 201 with a full authenticated session; SearchIndexBackend.info confirms ES 8.15.5 connectivity; all 5 processes running.\n\nAccess point: http://localhost:3000, default credentials admin@example.com / test. Startup command: source /tmp/zammad_env.sh && cd /workspace && foreman start -f Procfile.dev .",
+  "additional_actions": [
+    "Compiled Ruby 3.4.9 from source instead of using rbenv/RVM (not preinstalled and not required by guide)",
+    "Installed Node.js 24 from NodeSource apt repository and activated pnpm 11.25.0 via corepack",
+    "Ran Elasticsearch 8.15.5 in a Docker container on the host (guide assumes a devcontainer compose service); chose 8.15.5 because Zammad's lib/search_index_backend.rb requires ES >= 8.15.0 and < 10",
+    "Installed the foreman Ruby gem as the guide's documented Linux substitute for forego, since the forego GitHub release asset could not be downloaded (404 / API rate-limited)",
+    "Created config/database.yml manually with local PostgreSQL credentials",
+    "Created /tmp/zammad_env.sh exporting runtime env vars (RAILS_ENV, REDIS_URL, VITE_RUBY_HOST, ZAMMAD_BIND_IP, ports) to launch via foreman"
+  ],
+  "verification": "Command: `curl -s -o /dev/null -w \"%{http_code}\" http://127.0.0.1:3000/` \u2192 200 (serves Zammad Test System login HTML). Command: `curl -X POST http://127.0.0.1:3000/api/v1/signin -H 'X-Browser-Fingerprint: ...' -d '{\"username\":\"admin@example.com\",\"password\":\"test\"}'` \u2192 HTTP 201 with session object (login succeeded). Command: `bundle exec rails r 'SearchIndexBackend.info'` \u2192 ES version 8.15.5. `redis-cli ping` \u2192 PONG. `psql ... select` \u2192 postgres OK. `ps aux | grep -E 'puma|vite|websocket-server|background-worker|dartsass'` \u2192 6 matching processes running under foreman. Observed result: application installed and serving live HTTP requests with valid authentication.",
+  "reported_outcome_evidence": [
+    "curl http://127.0.0.1:3000/ returned HTTP 200 with page title 'Zammad Test System'",
+    "POST /api/v1/signin for admin@example.com/test returned HTTP 201 and a session payload (login succeeded)",
+    "bundle exec rails r 'SearchIndexBackend.info' printed ES info: 8.15.5",
+    "bundle exec rails db:prepare exited 0 with all migrations applied",
+    "bundle exec rails zammad:setup:auto_wizard exited 0",
+    "bundle exec rails zammad:searchindex:rebuild exited 0 (indexed all models)",
+    "bundle exec rails assets:precompile exited 0",
+    "ruby --version \u2192 ruby 3.4.9; node --version \u2192 v24.21.0; pnpm --version \u2192 11.25.0",
+    "redis-cli ping \u2192 PONG; psql select \u2192 'postgres OK'; docker ps \u2192 zammad-es Up"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

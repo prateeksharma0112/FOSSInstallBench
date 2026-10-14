@@ -1,0 +1,13 @@
+Validation complete. SVA Studio is installed correctly and the resulting build is operational.
+
+Evidence (all in /workspace, Ubuntu 22.04, commit 6394d99):
+- Toolchain: node v24.15.0 (matches .nvmrc/.node-version, /usr/local/bin/node), pnpm 11.3.0 (matches packageManager, /usr/local/bin/pnpm).
+- `pnpm check:toolchain-consistency` → exit 0 (all lockfile deps match).
+- Dependencies installed: node_modules populated (1529 .pnpm entries), all workspace projects linked.
+- `pnpm nx run sva-studio-react:verify:runtime-artifact --skip-nx-cache` → exit 0 (independently re-run). Fresh report status "ok", failureClass "none", all 11 phases ok; goose migrated Postgres to version 102; /health/live, /health/ready (db/redis/keycloak=true) and / (HTTP 200) all probed green.
+- Independent boot of the built artifact `node apps/sva-studio-react/.output/server/index.mjs` (PORT 3111) → listening, `GET /health/live` → HTTP 200 {"status":"alive"}.
+- git tree clean (0 tracked changes).
+
+Limitation: the guide's primary local profile command `pnpm env:up:local-keycloak` (and env:status:local-keycloak) fails because config/runtime/base.vars and config/runtime/local-keycloak.vars are absent and gitignored (.gitignore lines 85/87); no base.vars.example or generator exists in the repo. These are site-specific/secret operator-supplied files, not part of the installable software, so their absence is a documented configuration gap rather than an incomplete installation. The guide's own binding local build/runtime gates (toolchain consistency + verify:runtime-artifact) both pass.
+
+Outcome: success — the installed toolchain, dependencies and built production artifact are complete and demonstrably operational.

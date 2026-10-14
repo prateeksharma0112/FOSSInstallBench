@@ -1,0 +1,29 @@
+## OpenCulturas installation — SUCCESS
+
+The OpenCulturas Drupal distribution was installed successfully using the documented DDEV-based development method.
+
+### Method used (final, successful)
+- Working directory: `/workspace` (repository checked out at commit `838d5d0`, detached HEAD on `3.1.x`).
+- `ddev start` → started `ddev-openculturas-web`, `ddev-openculturas-db`, `ddev-router`, phpmyadmin (Drupal 11 / PHP 8.4 / MySQL 8.0).
+- `ddev composer install` → installed all Composer dependencies, applied all tracked `cweagans/composer-patches` patches, scaffolded `web/`.
+- `ddev composer run si` → `drush site:install --yes` (profile-based install of the `openculturas` profile). Completed with `[success] Installation complete.`
+
+### Resulting state (verified)
+- `drush core:status`: Drupal `11.3.17`, Database `Connected`, bootstrap `Successful`, Install profile `openculturas`, Default theme `opcult`.
+- 175 modules enabled.
+- Homepage `http://openculturas.ddev.site/` returns HTTP 200 with `<title>Welcome | OpenCulturas</title>`; `/user/login` returns 200.
+- `drush updatedb` reports "No pending updates"; `drush cache:rebuild` succeeds; one-time login link generated.
+- Access point: `http://openculturas.ddev.site` (admin user `admin`, generated password `La6EbG9tzc`), or `ddev launch /admin`.
+
+### Abandoned attempt
+The guide's dev command `ddev drush site:install --yes --existing-config` failed reproducibly during config import with:
+`The service "openculturas_openstreetmap.addressLookup" has a dependency on a non-existent service "geocoder.throttle".`
+This is caused by `openculturas_openstreetmap` being enabled before the `geocoder` module in `config/sync/core.extension.yml`, while its `AddressLookup` service autowires `geocoder.throttle` — a bug in the checked-out commit's config ordering, not an environment problem. Installation was recovered using the alternative documented install path (`ddev composer run si`), which enables modules in dependency order.
+
+### Additional actions performed (not in the guide)
+- Installed DDEV v1.25.4 (guide assumes it is present); DDEV refuses to run as root, so a non-root user `ddevuser` (docker group) was created and `/workspace` chowned to it.
+- Installed the `unzip` package (used only to inspect the upstream `drupal/openculturas_project` template; not required for the final install).
+- Added `safe.directory` git config for the workspace.
+
+### Environment
+Ubuntu 22.04 container on WSL2; Docker Engine 29.7.2 with working daemon; PHP/Composer/MySQL run inside DDEV containers (no host PHP/Composer).

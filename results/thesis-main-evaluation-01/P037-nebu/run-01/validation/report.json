@@ -1,0 +1,16 @@
+{
+  "assessed_outcome": "success",
+  "outcome_evidence": [
+    "`docker compose ps` (cwd /workspace, exit 0): nebu-server-1, nebu-postgres-1, nebu-dex-1, nebu-minio-1, nebu-clamav-1 all 'Up (healthy)'; nebu-createbuckets-1 'Exited (0)'.",
+    "`docker inspect` restart counts 0 and health=healthy for all 5 long-running containers; `docker compose config --quiet` exit 0.",
+    "`curl http://localhost:4000/health` -> 200 {\"status\":\"ok\"}.",
+    "Server logs: 'applying 000034_media_config_scan_kill_switch.up.sql', 'Running Nebu.Web.Router with Bandit 1.12.0 at 0.0.0.0:4000', no errors.",
+    "`curl http://localhost:8008/_matrix/client/versions` -> 200 {\"versions\":[\"v1.1\"..\"v1.11\"]}; `GET /_matrix/client/v3/login` -> 200 flows m.login.sso(id oidc)+m.login.token; `/.well-known/matrix/client` -> 200 with force_disable e2ee; unauthenticated sync/register/media -> 401.",
+    "`curl http://localhost:8080/admin` -> 302 -> /admin/dashboard -> 302 -> /admin/bootstrap; `GET /admin/bootstrap` -> 200 rendering wizard step 1; static app.js/app.css/phoenix.min.js -> 200; `POST /admin/bootstrap/step/1` (no CSRF) -> 403.",
+    "Postgres: `select version from schema_migrations` = 34 (dirty=f); 49 tables in public schema.",
+    "MinIO: /data contains 'nebu-media' bucket; console :9001 -> 200.",
+    "Dex: health 'healthy'; /.well-known/openid-configuration issuer http://dex:5556/dex; logs 'config connector: local passwords enabled' and 'config static client client_name=Nebu'; dev users present in dev/dex/config.yaml.",
+    "/etc/hosts contains '127.0.0.1 dex' (guide step 3 satisfied)."
+  ],
+  "assessment_summary": "I inspected the running Compose stack in /workspace and exercised runtime behavior rather than checking files alone. Final method (make setup + docker compose up) is confirmed: all long-running services are Up (healthy) with zero restarts, createbuckets exited 0, and compose config validates. The server applied migrations 1-34, boots an OTP release (Bandit on 0.0.0.0:4000), and returns 200 on /health. The Matrix API answers (versions, login flows incl. m.login.sso/oidc, well-known client), serves an E2EE-disabled well-known, and correctly 401s unauthenticated register/sync/media on a fresh DB. The Admin/Bootstrap UI serves the wizard (302 to /admin/bootstrap, 200 page, working static assets, CSRF-enforced POST route). Backing services verified: Postgres 34 migrations + 49 tables, MinIO nebu-media bucket, healthy Dex with local password connector and dev users, and the /etc/hosts dex entry. Limitations/uncertainty: the interactive Bootstrap Wizard login (guide step 4) and browser-based Element SSO sign-in (step 5) were not completed, because they require a browser session; the server is intentionally fail-closed in this documented fresh-install state, so this does not indicate incompleteness. I also observed documentation drift (guide's removed nebu-admin client/secret and 'Nebu.Application started' log token vs. repo's nebu-gateway client and Bandit listener log), which is a doc mismatch rather than an installation defect. A Dex /dex/auth/local request returned 404 in a bare call, but Dex logs confirm the local password connector is enabled and healthy, so this is not disqualifying. Overall, objective evidence demonstrates a complete, operational installation per the guide."
+}

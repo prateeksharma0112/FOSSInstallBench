@@ -1,0 +1,21 @@
+GeospatialAnalyzer was successfully installed and verified using the documented Docker Compose method. The full stack (app + PostgreSQL/PostGIS + pgAdmin) is running and functional.
+
+**Actions performed**
+1. Explored the repo at `/workspace` (GeospatialAnalyzer, NestJS/Node 24, pnpm 11).
+2. Confirmed Node/pnpm were absent locally but Docker 29.7.2 with Compose v5.5.0 was available; pulled `postgis/postgis:15-3.4`.
+3. Ran `docker compose -f docker-compose.yml up --build -d`. First run built the app image but the app container crashed with `Error: EISDIR: illegal operation on a directory, read` (from `ConfigModule.loadEnvFile`).
+4. Root cause: the repo had no `.env.dev` file, so the compose bind mount `./.env.dev:/app/.env.dev:ro` created a *directory* at `/app/.env.dev`; NestJS tried to read it as a file. The guide itself states `.env.dev` must be created from `env.dev.sample`.
+5. Fixed by `docker compose down`, `rm -rf .env.dev`, `cp .env.dev.sample .env.dev`, then restarted the stack.
+
+**Verified end state**
+- `docker compose ps`: app Up (healthy), postgres Up (healthy), pgadmin Up.
+- `GET /health` → HTTP 200 `{"response":"ok"}`; container healthcheck reports `healthy`.
+- `GET /api` and `GET /api-json` (Swagger UI/JSON) → HTTP 200.
+- `GET /v2/topics` → HTTP 200 with topic metadata (`sn_land_f`, `sn_kreis_f`).
+- Functional `POST /v2/intersect` (`outputFormat:"esrijson"`, `outSRS:4326`) returned real geometry for a Dresden point.
+- DB restore confirmed: schema `ga` tables present; extensions `postgis`, `postgis_raster`, `postgis_topology`, `fuzzystrmatch`, `postgis_tiger_geocoder`.
+- pgAdmin at http://localhost:5050 → HTTP 302.
+
+**Access points:** API http://localhost:3000/api, OpenAPI JSON http://localhost:3000/api-json, health http://localhost:3000/health, pgAdmin http://localhost:5050, PostgreSQL localhost:5432.
+
+Only one deviation from the guide was required: creating `/workspace/.env.dev` from `.env.dev.sample`.
