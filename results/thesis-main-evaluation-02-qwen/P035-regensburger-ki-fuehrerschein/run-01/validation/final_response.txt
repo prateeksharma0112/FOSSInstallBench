@@ -1,0 +1,19 @@
+Validation of Regensburger KI-Führerschein installation: SUCCESS.
+
+Verified against the guide:
+1. Prerequisites: Node.js v22.23.3 (≥18) and Bun 1.4.3 installed at /usr/local/bin.
+2. `bun install`: node_modules present (412 top-level packages); only modification to tracked files is the trustedDependencies block added by `bun pm trust` (a normal installation artifact).
+3. Configuration: .env.local exists, copied from .env.example per the guide; MONGODB_URI/DB left as optional placeholders (guide documents MongoDB as optional); DASHBOARD_PASSWORD set to a dev value.
+4. Runtime: `bun dev` (next dev --turbopack --port 5173, Next.js 15.4.10) running; dev log shows "✓ Ready in 2.3s".
+
+Live HTTP checks on http://localhost:5173 (the guide's advertised URL):
+- / → 200, title "KI Führerschein Regensburg", real app content
+- /journey/1 → 200 (40 KB, station-map learning content)
+- /certificate, /dashboard, /settings, /imprint, /favicon.ico → all 200
+- Stability: 5 consecutive requests to / all 200.
+
+Two routes return 500, both application-level rather than installation issues:
+- /metrics: `querySrv EBADNAME _mongodb._tcp.<CLUSTER>.mongodb.net` — placeholder URI; guide explicitly states the app works without MongoDB ("Wenn nicht gesetzt, funktioniert die Anwendung ohne Datenbank").
+- /chapter/1: `ReferenceError: localStorage is not defined` at src/app/chapter/[chapterId]/page.tsx:18; `git diff HEAD` shows the file is unmodified from the upstream SHA — an upstream SSR code defect, not caused by the installation.
+
+Conclusion: The installation is complete and the software is operational according to the supplied guide.

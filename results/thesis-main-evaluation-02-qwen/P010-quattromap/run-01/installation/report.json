@@ -1,0 +1,18 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "## Installation: QuattroMap\n\n**Environment:** Ubuntu 22.04 container, shared workspace at `/workspace` (repo already checked out at commit `24041c0`). Node.js/npm were NOT preinstalled.\n\n### Method (final)\nFollowed the guide's \"Develop\" section: `npm install` + `npm start` (dev server) and `npm run build`, after first installing the Node.js prerequisite.\n\n### Steps performed\n1. **Prerequisite (not in guide):** Installed Node.js 20.20.2 / npm 10.8.2 via the NodeSource apt repository (`curl -fsSL https://deb.nodesource.com/setup_20.x | bash` then `apt-get install -y nodejs`), because the project's webpack 5.110 / webpack-dev-server 6 require Node >= 18 and Ubuntu 22.04's repo node is older.\n2. `cd /workspace && npm install` \u2014 exit 0; 283 packages in `/workspace/node_modules` (npm reported 15 pre-existing audit vulnerabilities, non-blocking).\n3. `cd /workspace && npm run build` \u2014 exit 0; webpack 5.110.3 compiled with warnings only (bundle size / dynamic-require notices, non-fatal). Build output in `/workspace/dist/`: `index.html`, `bundle.js` (~1.24 MiB), `vendor/maplibre/`, `img/`, `oss-licenses.json`.\n4. `cd /workspace && npm start` (webpack-dev-server, per webpack.config.js with no explicit port \u2192 default 8080, matching the guide) \u2014 compiled successfully; verified serving then stopped the server by PID so port 8080 is now free.\n\n### Access points / startup\n- Dev server: `cd /workspace && npm start` \u2192 http://localhost:8080/\n- Production build: `/workspace/dist/` (static, servable by any web server); `npm run deploy` publishes to gh-pages (not run).\n- Runtime configuration lives in `/workspace/src/config.json` (center, zoom, maps, crosshair, layers) per the guide.\n\n### Final state\nNode 20.20.2 + npm 10.8.2 installed system-wide; `/workspace/node_modules` and `/workspace/dist/` populated; no dev server currently running. No source files were modified.",
+  "additional_actions": [
+    "Installed Node.js 20.20.2 and npm 10.8.2 via NodeSource apt repository (prerequisite not documented in the guide)",
+    "Verified dev server HTTP responses with curl (index.html and bundle.js) and then stopped the webpack dev server by PID to free port 8080"
+  ],
+  "verification": "Verification: started dev server with `cd /workspace && npm start`, then `curl -s -o /tmp/page.html -w \"HTTP_CODE:%{http_code}\" http://localhost:8080/` returned HTTP_CODE:200 with the QuattroMap index.html content; `curl http://localhost:8080/bundle.js` returned HTTP 200, 1,356,256 bytes. Build artifacts confirmed in /workspace/dist/ (index.html, bundle.js, vendor/, img/). After stopping the server, `curl http://localhost:8080/` no longer responds, confirming clean shutdown.",
+  "reported_outcome_evidence": [
+    "node --version \u2192 v20.20.2; npm --version \u2192 10.8.2",
+    "cd /workspace && npm install \u2192 exit 0 (node_modules populated, 283 top-level entries)",
+    "cd /workspace && npm run build \u2192 exit 0, 'webpack 5.110.3 compiled with 4 warnings in 20507 ms'; dist/ contains index.html (9372 B), bundle.js (1295148 B), vendor/, img/, oss-licenses.json",
+    "npm start \u2192 webpack-dev-server compiled; curl http://localhost:8080/ \u2192 HTTP 200, body starts with '<title>QuattroMap</title>' page",
+    "curl http://localhost:8080/bundle.js \u2192 HTTP 200, size 1356256"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

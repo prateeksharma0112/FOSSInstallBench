@@ -1,0 +1,1 @@
+QuattroMap installed successfully. Installed the Node.js 20 toolchain (not present in the Ubuntu 22.04 container), ran `npm install` and `npm run build` in /workspace (exit 0, output in /workspace/dist/), and verified the dev server (`npm start`) serves the app at http://localhost:8080/ with HTTP 200 (both index.html and bundle.js). The dev server was then stopped cleanly.

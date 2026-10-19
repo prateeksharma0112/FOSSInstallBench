@@ -1,0 +1,16 @@
+Validation of the Mitmachportal Würzburg (Consul fork) installation is complete. Assessment: SUCCESS.
+
+Key evidence:
+- Toolchain exactly matches pinned versions: Ruby 3.1.4p223, Node v20.11.0, PostgreSQL 14.24, plus CMake/ImageMagick/shared-mime-info/memcached.
+- All three databases exist with 262 tables; consul_production has the required extensions (plpgsql, unaccent, pg_trgm in shared_extensions) and database-level search_path.
+- `bundle check` satisfied; node_modules populated (419 packages).
+- Config files as documented: database.yml, secrets.yml (generated secret_key_base, force_ssl: true), secret_emails.yml.
+- Production DB seeded (admin + 237 settings + 1 projekt); dev DB has 48 users including all six documented accounts, all BCrypt-verified against Aa12345678.
+- Live behavioral proof: dev server on :3000 returns 200 on public pages; a real HTTP login as admin@consul.dev (user[login]/user[password]) returns 302 and then /admin, /admin/projekts, /admin/users, /admin/settings all 200. mod@consul.dev login also succeeds.
+- Production boot independently verified: RAILS_ENV=production server on :3001 started cleanly with precompiled assets and enforced force_ssl (301 → https, documented expected behavior without TLS); stopped after check.
+- Precompiled assets (211 files incl. application JS/CSS + sprockets manifest) and whenever crontab installed; memcached responds (VERSION 1.6.14).
+
+Limitations (documented, not installer faults):
+- `db:dev_seed` aborts at the Debates section (`unknown attribute 'projekt' for Debate`). I confirmed this is pre-existing committed-code drift (git HEAD seeds pass `projekt:`; models refactored to projekt_phase; no seed creates ProjektPhases), i.e. application-code rework beyond installation scope.
+- rspec runs but suites dependent on the drifted factories fail (same root cause).
+- Nginx/Let's Encrypt/Capistrano/systemd units (guide production steps 8–11) are infeasible in this systemd-less container; all app-level production setup was completed and verified. SMTP not configured (no external mail server; mail is queue-based per the guide).

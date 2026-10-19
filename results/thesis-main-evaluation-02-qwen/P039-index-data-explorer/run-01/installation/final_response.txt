@@ -1,0 +1,12 @@
+Successfully installed Index Data Explorer (static web app) in the container per the Installation.md guide, with both prerequisites (web server + Elasticsearch) set up locally and verified in a real headless browser.
+
+**What was done:**
+1. **Web server (prerequisite):** Installed nginx 1.18 (doc root `/var/www/html`) and PHP 8.1 + php-fpm + `php8.1-curl` (required by the shipped `php/` proxy). nginx configured to serve static files and execute `.php` via FastCGI; both daemons started and running.
+2. **Elasticsearch (prerequisite):** Downloaded Elasticsearch 7.17.28 (open-source build, artifacts.elastic.co), installed at `/opt/elasticsearch-7.17.28` (symlink `/opt/es`), running as dedicated `elastic` user, single-node on `127.0.0.1:9200`, cluster `index-data-explorer` — status **green**. Enabled CORS (`http.cors.allow-origin: http://localhost`) so the shipped default config (direct mode, `proxyUrl: null`) works from a browser on port 80.
+3. **Deployment (per guide):** Copied `config/`, `externalPackages/`, `i18n/`, `src/`, `php/`, `examples/` and the top-level HTML pages (`index.html`, `csvParse.html`, `plausibilityCheck.html`, `elasticsearchIndexAdministration.html`, `logo.png`) into `/var/www/html`, plus a toplevel `data/` folder (needed by `examples/kosis` instances).
+4. **Sample data:** Created indices `index_data_explorer_demo` (10 docs) and `spotify_tracks` (6 docs, using the mapping shipped in `examples/spotify/data/`) so the explorer pages have data to analyze.
+5. **Verification:** All deployed assets return HTTP 200; PHP proxy forwards queries to ES correctly; Playwright/Chromium headless browser confirmed full user flow on both `http://localhost/index.html` (index picker lists ES indices, mapping loads, real `_search` returns 200/10 hits, SVG bar chart renders) and `http://localhost/examples/spotify/indexSpotify.html` (field list populated from mapping, `_search` 200/6 hits, bar chart rendered). Screenshots: `/tmp/verify/main_page.png`, `/tmp/verify/spotify_barchart.png`.
+
+**Access points:** Web UI at `http://localhost/` (and `http://localhost/examples/...`); Elasticsearch at `http://localhost:9200`.
+
+**Known caveat (upstream, not blocking):** The shipped PHP proxy mangles empty JSON objects in queries (PHP `json_decode` turns `{}` into `[]`), so e.g. `{"match_all":{}}` fails only in proxy mode; real queries work through the proxy, and the default direct mode is unaffected.

@@ -1,0 +1,1 @@
+Harbor v2.15.0 installed and verified successfully via the documented Docker Compose local deployment (remote images from 8gears.container-registry.com/8gcr/). All 9 services are healthy, the API responds at http://localhost, admin/Harbor12345 login works, and a full docker login/tag/push/pull cycle through localhost:80 succeeded.

@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P021-klimadashboard-muenster__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-16T14:27:02.241399+02:00",
+    "finished_at": "2026-10-16T14:43:55.455932+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P021",
+    "project": {
+      "opencode_id": "629",
+      "name": "Klimadashboard M\u00fcnster",
+      "description": "The M\u00fcnster Climate Dashboard visualizes real-time information about the city of M\u00fcnster's climate footprint. The dashboard displays data with various graphs in a tile-based layout, with separate pages for each of the four categories. The data comes from many different providers, including the City of M\u00fcnster's open data portal, the German Meteorological Service (DWD), and BrightSky.",
+      "catalogue_url": "https://opencode.de/de/software/klimadashboard-munster-629",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster",
+      "commit_sha": "ffb429f03b5b63ee97bca85bb9fce1ec0de91769",
+      "license": "AGPL-3.0-or-later"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster/-/blob/ffb429f03b5b63ee97bca85bb9fce1ec0de91769/README.md",
+      "language": "English",
+      "word_count": 44
+    },
+    "task_id": "P021-klimadashboard-muenster"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "failure",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "failure",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1013.25,
+    "repository_setup_duration_seconds": 20.078999999999724,
+    "installation_duration_seconds": 769.9210000000003,
+    "validation_duration_seconds": 205.3130000000001,
+    "command_count": 70,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 37,
+    "validation_command_count": 29
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P021-klimadashboard-muenster/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

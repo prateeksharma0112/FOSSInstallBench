@@ -1,0 +1,35 @@
+## Installation Report: Smart City Hub
+
+### Outcome: SUCCESS (Docker Compose method, per the guide's quickstart)
+
+### What was done
+
+**Environment setup** (workspace `/workspace`, repo at commit `7b1730e`, Ubuntu 22.04 container, Docker 29.7.2, 8 CPU / 7 GB RAM):
+- Installed prerequisites not present in the image: `make` 4.3 and `python3` 3.10 via apt; `kubectl` v1.37.1, `Helm` v3.16.4, `k3d` v5.9.0 from official distributions (required by the Kubernetes runtime Makefile `doctor` checks).
+
+**Method 1 — Docker Compose (guide's documented quickstart command; the one used):**
+- `cd /workspace/deployment/runtimes/compose/dev && PIP_EXTRA_INDEX_URL="https://gitlab.opencode.de/api/v4/projects/9921/packages/pypi/simple" make up SCENARIO=data_store_backend`
+- The `INDEX_URL` build arg points at the project's own package registry (URL pattern from `packages/.env.example`); the `spg-*` packages (`spg-rest-auth==1.5.3`, `spg-configuration==1.0.1`, `middlewares`, `api-logging`) live there and are publicly downloadable, so the build succeeded and pushed the image `scenarios-data_store_backend` locally, starting container `data-store-backend-service` (port 8007→8000).
+- `make ps SCENARIO=data_store_backend` shows the container **Up** (31+ min).
+
+**Verification (objective evidence):**
+- `curl http://localhost:8007/healthz` → `HTTP 200` `{"status":"ok"}`
+- `curl http://localhost:8007/docs/` (Swagger UI) → `HTTP 200`
+- Authenticated data round-trip using the service's configured Basic auth (`ReceiveDataUser`/`ChangeMe` from `apps/data_store_backend/src/appsettings.json`):
+  - `POST http://localhost:8007/data/final-check/topic1` (JSON body) → `HTTP 200`
+  - `GET http://localhost:8007/data/final-check/topic1` → `HTTP 200`, returned the exact payload `{"final":"verification","ts":1}`
+
+**Method 2 — Kubernetes full platform (`make local-up`, attempted, blocked by environment):**
+- `make doctor` passed; k3d registry + cluster `sch-local` were created.
+- The k3s server node crash-looped with `level=fatal msg="failed to find cpuset cgroup (v2)"` on both `rancher/k3s:v1.35.5-k3s1` (Makefile default) and `rancher/k3s:v1.30.5-k3s1` (explicitly tested as a workaround).
+- Root cause confirmed by direct probe of the sandbox: the delegated cgroup v2 hierarchy exposes only `cpu io memory pids` (`/sys/fs/cgroup/cgroup.controllers`), no `cpuset` files exist, and `echo +cpuset > /sys/fs/cgroup/cgroup.subtree_control` fails. The `cpuset` cgroup controller is not delegated to this nested Docker (WSL2) sandbox, so no k3s/k3d node can boot here. This is a hard environment limitation that cannot be changed from inside the container.
+- `images-build-push`, `platform-install`, and `smoke-local` were therefore never reached. The partial k3d cluster and orphaned registry were deleted (`k3d cluster delete sch-local`, `k3d registry delete k3d-sch-registry.localhost`) to leave a clean state.
+
+### Final running state
+- Container `data-store-backend-service` (compose project `scenarios`) running: `0.0.0.0:8007->8000/tcp`
+- Access points: `http://localhost:8007/healthz`, Swagger at `http://localhost:8007/docs/`, data API `POST/GET /data/{path}` (Basic auth `ReceiveDataUser`/`ChangeMe`)
+- Start/stop commands: `cd /workspace/deployment/runtimes/compose/dev && make up|down|ps|logs SCENARIO=data_store_backend`
+- Note: the deployed instance is the `data_store_backend` service with its local image — the concrete command given in the Installation.md quickstart. The heavier full-platform deployments (`SCENARIO=all` compose, or the Kubernetes stack with ~20 services incl. Keycloak, Kafka, NiFi, Harbor, core apps) were not brought up in this environment.
+
+### Known incomplete/abandoned
+- Kubernetes reference implementation (`make local-up`): abandoned due to the missing `cpuset` cgroup controller in the sandbox (evidence above); no repository changes were made to work around it.

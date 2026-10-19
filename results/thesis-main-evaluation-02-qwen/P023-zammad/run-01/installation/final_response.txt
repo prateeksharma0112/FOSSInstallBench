@@ -1,0 +1,30 @@
+## Zammad Installation — SUCCESS
+
+Zammad **7.2.0** is installed and running as a development environment, verified end-to-end.
+
+### Method used
+The recommended **Devcontainer Setup** from the guide requires VS Code + the Dev Containers extension ("Reopen in Container"), which is not available in this headless container. I therefore reproduced the devcontainer exactly using the repository's own `.devcontainer/default/compose.yaml` via `docker compose`, plus the devcontainer's declared features and `post_create.sh` steps, all running inside the `ghcr.io/rails/devcontainer/images/ruby:3.4.9` devcontainer image (Ubuntu/Debian host, Docker 29.7).
+
+### Stack (all containers `Up`, project: `zammad-devcontainer`)
+- **devcontainer** `zammad-devcontainer-devcontainer-1` (ruby 3.4.9 via mise) — runs the app at `/workspaces/workspace`
+- **postgresql** 17.5-alpine, **redis** 7.0, **memcached** 1.6.38, **elasticsearch** 9.3.2 (all started by `docker compose up -d`)
+
+### Actions performed (in the devcontainer)
+1. Reproduced devcontainer features: apt packages (`curl gnupg libimlib2-dev postgresql-client libpq-dev`), Go 1.24 + `go install github.com/ddollar/forego@master`, Node 24.22.0 + pnpm 11.25.0 via mise.
+2. `chown -R 1000:1000 /workspace` — the repo was root-owned and the container user (uid 1000) couldn't write `Gemfile.lock` (first `bin/setup` failed with "error while trying to write to Gemfile.lock"); after chown, setup succeeded.
+3. `bin/setup --skip-server` → **exit 0**: bundle install, `pnpm install --frozen-lockfile`, created `config/database.yml`, `db:prepare` (all migrations ran).
+4. `rails r "Setting.set('es_url','http://elasticsearch:9200')"` → set.
+5. `rails zammad:setup:auto_wizard` → **exit 0** (seeded `admin@example.com` + default data).
+6. `rails zammad:searchindex:rebuild` → **exit 0** (all ES indexes built; note: it initially failed twice with `resource_already_exists_exception` because it ran concurrently with the dev worker — fixed by stopping `bin/dev`, rebuilding cleanly, then restarting).
+7. `bin/dev` (forego: vite, web/puma, websocket, worker, css) → **running**.
+
+### Access point
+- App: `http://localhost:3000` (inside devcontainer: `http://127.0.0.1:3000`), Vite dev server on 3036, websocket on 6042.
+- Credentials: `admin@example.com` / `test`.
+
+### Verification evidence
+- `GET http://127.0.0.1:3000/` → **200**, `<title>Zammad Test System</title>`
+- `POST /api/v1/signin` (JSON `username=admin@example.com, password=test, fingerprint=...`, with CSRF token) → **201** authenticated session; `GET /api/v1/signshow` → **200**
+- Vite frontend proxy `/assets/frontend/vite-dev/@vite/client` → **200**
+- `docker compose ps` → all 5 services Up; 6 app processes running
+- ES `_cat/indices` → all `zammad_development_*` indexes present

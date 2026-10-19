@@ -1,0 +1,252 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 1d70807d48a8fae19711b10422c3417ab5d05d0f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung.git/\nFrom https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/ki-bauleitplaene/smartplanai-anwendung\n * branch            1d70807d48a8fae19711b10422c3417ab5d05d0f -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 1d70807d48a8fae19711b10422c3417ab5d05d0f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 1d70807 Merge branch 'test' into 'main'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 1d70807d48a8fae19711b10422c3417ab5d05d0f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la && cat Makefile 2>/dev/null; echo \"---\"; cat windows_run.cmd 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "total 2884\ndrwxr-xr-x 6 root root    4096 Oct 18 13:07 .\ndr-xr-xr-x 1 root root    4096 Oct 18 13:04 ..\ndrwxr-xr-x 8 root root    4096 Oct 18 13:07 .git\n-rw-r--r-- 1 root root    2078 Oct 18 13:07 Dockerfile\n-rw-r--r-- 1 root root     623 Oct 18 13:07 Makefile\n-rw-r--r-- 1 root root   15445 Oct 18 13:07 Nutzungsleitfaden.md\n-rwxr-xr-x 1 root root 2506007 Oct 18 13:07 Nutzungsleitfaden.pdf\n-rw-r--r-- 1 root root    2707 Oct 18 13:07 README.md\ndrwxr-xr-x 5 root root    4096 Oct 18 13:07 blp_streamlit_pipeline\ndrwxr-xr-x 2 root root    4096 Oct 18 13:07 deployment\ndrwxr-xr-x 3 root root    4096 Oct 18 13:07 docs\n-rw-r--r-- 1 root root  378939 Oct 18 13:07 poetry.lock\n-rw-r--r-- 1 root root    3476 Oct 18 13:07 publiccode.yml\n-rw-r--r-- 1 root root     949 Oct 18 13:07 pyproject.toml\n-rw-r--r-- 1 root root     760 Oct 18 13:07 windows_run.cmd\nbuild-and-tag-image:\n\tdocker build --build-arg http_proxy=$$http_proxy \\\n\t\t--build-arg https_proxy=$$https_proxy \\\n\t\t--build-arg no_proxy=$$no_proxy \\\n\t\t--build-arg HTTP_PROXY=$$HTTP_PROXY \\\n\t\t--build-arg HTTPS_PROXY=$$HTTPS_PROXY \\\n\t\t--build-arg NO_PROXY=$$NO_PROXY \\\n\t\t--no-cache .\n\t\t\n#\t\t--progress plain \n\nbuild-and-save-image:\n\tmake build-and-tag-image\n\tdocker image save blp-streamlit-pipeline:latest | gzip > blp-streamlit-pipeline.tar.gz\n\nrun:\n\tdocker compose -f deployment/docker-compose.yml up --build\n\nlocal-run:\n\tpoetry lock\n\tpoetry install\n\tcd blp_streamlit_pipeline && poetry run python -m streamlit run run.py---\n@echo off\nsetlocal\n\nset \"CONTAINER_NAME=blp-streamlit-pipeline\"\n\ndocker rm -f \"%CONTAINER_NAME%\" >nul 2>nul\ndocker build -t %CONTAINER_NAME%:latest .\n\necho Die Anwendung wird separat gestartet. Dieses Fenster schliesst sich automatisch.\n\nstart \"SmartPlanAI Backend\" /D \"%CD%\" cmd /c ^\n  \"echo Die Anwendung wird gestartet und kann im Browser unter der Adresse http://localhost:8501/ aufgerufen werden. & echo Um die Anwendung zu beenden, schliessen Sie bitte dieses Fenster. & docker run --rm -p 8501:8501 --name %CONTAINER_NAME% %CONTAINER_NAME%:latest >nul 2>nul\"\n\n:wait\ncurl -fsS \"http://localhost:8501/\" >nul 2>nul\nif %errorlevel%==0 goto ready\n\nping 127.0.0.1 -n 1 -w 200 >nul\ngoto wait\n\n:ready\nexplorer \"http://localhost:8501/\"\nexit",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat Dockerfile; echo \"===\"; ls deployment/; echo \"===\"; cat deployment/docker-compose.yml; echo \"===\"; git log --oneline -3; git status",
+      "exit_code": 0,
+      "stdout": "# BUILD Stage\nFROM python:3.13-slim AS builder\n\nENV PYTHONUSERBASE=/pyroot\nENV PIP_USER=0\nENV PIP_IGNORE_INSTALLED=1\n\nENV POETRY_REQUESTS_TIMEOUT=9999\nENV POETRY_VIRTUALENVS_OPTIONS_NO_SETUPTOOLS=true\nENV POETRY_VIRTUALENVS_OPTIONS_NO_PIP=true\nENV POETRY_VIRTUALENVS_PREFER_ACTIVE_PYTHON=true\n\nRUN pip3 install poetry --no-warn-script-location\n\nCOPY poetry.lock .\nCOPY pyproject.toml .\n\nCOPY ./blp_streamlit_pipeline/src/ext/streamlit-draw-image-mask /blp_streamlit_pipeline/src/ext/streamlit-draw-image-mask\n\nRUN python3 -m poetry config virtualenvs.create false\nRUN python3 -m poetry install --only main --no-root --no-interaction --no-ansi\n\n# run paddleocr to preload images\nRUN apt-get update && apt-get install --no-install-recommends -y ccache poppler-utils ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists\nRUN python -c \"\\\nfrom paddleocr import PaddleOCR; \\\nocr = PaddleOCR(lang='de', \\\n                use_doc_orientation_classify=False, \\\n                use_doc_unwarping=False, \\\n                use_textline_orientation=False); \\\n\"\n\n# RUNTIME Stage\nFROM python:3.13-slim AS runtime\n\nARG DEBIAN_FRONTEND=noninteractive\n\nENV PYTHONUSERBASE=/pyroot\nENV BASIC_INSTALL_PATH=/usr/local\nENV PATH=\"${PYTHONUSERBASE}/bin:${PATH}\"\n\nENV PADDLE_PDX_DISABLE_MODEL_SOURCE_CHECK=True\n\nRUN groupadd --gid 1000 appgroup && \\\n    useradd --uid 1000 \\\n    --gid appgroup \\\n    --shell /bin/bash \\\n    --create-home appuser\n\n# cv2 & paddleocr won't work without ffmpeg on this image\nRUN apt-get update && apt-get install --no-install-recommends -y ccache poppler-utils ffmpeg && apt-get clean && rm -rf /var/lib/apt/lists\n\nCOPY --from=builder $BASIC_INSTALL_PATH/lib/ ${PYTHONUSERBASE}/lib/\n\nCOPY --from=builder --chown=appuser:appgroup /root/.paddlex/official_models/ /home/appuser/.paddlex/official_models/ \n\nCOPY --chown=appuser:appgroup ./blp_streamlit_pipeline /app/blp_streamlit_pipeline/\nWORKDIR /app/blp_streamlit_pipeline\n\nUSER appuser\n\nEXPOSE 8501\nHEALTHCHECK CMD curl --fail http://localhost:8501/_stcore/health\n\nCMD [\"python3\", \"-u\", \"-m\", \"streamlit\", \"run\", \"run.py\"]\n===\ndocker-compose.yml\n===\nservices:\n  streamlit-pipeline:\n    build:\n      context: ..\n      dockerfile: Dockerfile\n      args:\n        http_proxy: ${http_proxy}\n        https_proxy: ${https_proxy}\n        no_proxy: ${no_proxy}\n        HTTP_PROXY: ${HTTP_PROXY}\n        HTTPS_PROXY: ${HTTPS_PROXY}\n        NO_PROXY: ${NO_PROXY}\n      tags:\n        - blp-streamlit-pipeline:latest\n    image: blp-streamlit-pipeline:latest\n    environment:\n      HTTP_PROXY: ${HTTP_PROXY}\n      HTTPS_PROXY: ${HTTPS_PROXY}\n      NO_PROXY: ${NO_PROXY}\n      http_proxy: ${http_proxy}\n      https_proxy: ${https_proxy}\n      no_proxy: ${no_proxy}\n    ports:\n      - 8501:8501\n    networks:\n      - default\n    restart: unless-stopped\n    develop:\n      watch:\n        # sync code (and restart) if changes were made in app\n        - action: sync # +restart\n          path: ../blp_streamlit_pipeline/\n          target: /app/blp_streamlit_pipeline/\n        # rebuild if dependencies changed or changes were made in deployment directory\n        - action: rebuild\n          path: .\n        - action: rebuild\n          path: ../poetry.lock\n        - action: rebuild\n          path: ../Makefile\n        - action: rebuild\n          path: ../Dockerfile\n\nnetworks:\n  default:\n    driver: bridge\n===\n1d70807 Merge branch 'test' into 'main'\nHEAD detached at 1d70807\nnothing to commit, working tree clean\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which docker; docker version 2>&1 | head -20; echo \"===\"; docker info 2>&1 | head -20",
+      "exit_code": 141,
+      "stdout": "/usr/bin/docker\nClient: Docker Engine - Community\n Version:           29.7.2\n API version:       1.55\n Go version:        go1.26.5\n Git commit:        a7dcaa6\n Built:             Wed Aug  5 18:28:48 2026\n OS/Arch:           linux/amd64\n Context:           default\n\nServer: Docker Engine - Community\n Engine:\n  Version:          29.7.2\n  API version:      1.55 (minimum version 1.40)\n  Go version:       go1.26.5\n  Git commit:       6a43e3d\n  Built:            Wed Aug  5 18:28:48 2026\n  OS/Arch:          linux/amd64\n  Experimental:     false\n containerd:\n  Version:          v2.3.4\n===\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "df -h /var/lib/docker /workspace /tmp 2>/dev/null; echo \"===\"; free -h; echo \"===\"; nproc; echo \"===\"; docker system df",
+      "exit_code": 0,
+      "stdout": "Filesystem      Size  Used Avail Use% Mounted on\n/dev/sde       1007G  5.3G  951G   1% /var/lib/docker\noverlay        1007G  5.3G  951G   1% /\noverlay        1007G  5.3G  951G   1% /\n===\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       497Mi       6.0Gi       2.0Mi       1.1Gi       6.9Gi\nSwap:          2.0Gi        86Mi       1.9Gi\n===\n8\n===\nTYPE            TOTAL     ACTIVE    SIZE      RECLAIMABLE\nImages          0         0         0B        0B\nContainers      0         0         0B        0B\nLocal Volumes   0         0         0B        0B\nBuild Cache     0         0         0B        0B\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup make run > /workspace/make_run.log 2>&1 & echo \"started PID $!\"",
+      "exit_code": 0,
+      "stdout": "started PID 391\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -30 /workspace/make_run.log; echo \"=== procs ===\"; ps aux | grep -E \"docker|make\" | grep -v grep | head -10",
+      "exit_code": 0,
+      "stdout": "nohup: failed to run command 'make': No such file or directory\n=== procs ===\nroot           4  0.2  1.0 2394616 81752 ?       Sl   13:04   0:00 dockerd --host=unix:///var/run/docker.sock --storage-driver=overlay2\nroot          21  0.1  0.5 2191016 41216 ?       Ssl  13:04   0:00 containerd --config /var/run/docker/containerd/containerd.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release | head -3; which apt-get yum apk dnf 2>/dev/null",
+      "exit_code": 1,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\n/usr/bin/apt-get\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update -qq && apt-get install -y -qq make 2>&1 | tail -3; which make && make --version | head -1",
+      "exit_code": 0,
+      "stdout": "Preparing to unpack .../make_4.3-4.1build1_amd64.deb ...\nUnpacking make (4.3-4.1build1) ...\nSetting up make (4.3-4.1build1) ...\n/usr/bin/make\nGNU Make 4.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup make run > /workspace/make_run.log 2>&1 & echo \"started PID $!\"; sleep 45; tail -20 /workspace/make_run.log",
+      "exit_code": 0,
+      "stdout": "started PID 680\n#9 20.37 Get:139 http://deb.debian.org/debian trixie/main amd64 libavformat61 amd64 7:7.1.5-0+deb13u1 [1203 kB]\n#9 20.56 Get:140 http://deb.debian.org/debian trixie/main amd64 libbs2b0 amd64 3.1.0+dfsg-8+b1 [12.5 kB]\n#9 20.56 Get:141 http://deb.debian.org/debian trixie/main amd64 libflite1 amd64 2.2-7 [12.8 MB]\n#9 22.36 Get:142 http://deb.debian.org/debian trixie/main amd64 libserd-0-0 amd64 0.32.4-1 [47.0 kB]\n#9 22.36 Get:143 http://deb.debian.org/debian trixie/main amd64 libzix-0-0 amd64 0.6.2-1 [23.1 kB]\n#9 22.36 Get:144 http://deb.debian.org/debian trixie/main amd64 libsord-0-0 amd64 0.16.18-1 [18.0 kB]\n#9 22.37 Get:145 http://deb.debian.org/debian trixie/main amd64 libsratom-0-0 amd64 0.6.18-1 [17.7 kB]\n#9 22.37 Get:146 http://deb.debian.org/debian trixie/main amd64 liblilv-0-0 amd64 0.24.26-1 [43.5 kB]\n#9 22.37 Get:147 http://deb.debian.org/debian trixie/main amd64 libmysofa1 amd64 1.3.3+dfsg-1 [1158 kB]\n#9 22.51 Get:148 http://deb.debian.org/debian trixie/main amd64 libvulkan1 amd64 1.4.309.0-1 [130 kB]\n#9 22.53 Get:149 http://deb.debian.org/debian trixie/main amd64 libplacebo349 amd64 7.349.0-3 [2542 kB]\n#9 22.90 Get:150 http://deb.debian.org/debian trixie/main amd64 libblas3 amd64 3.12.1-6 [160 kB]\n#9 22.92 Get:151 http://deb.debian.org/debian trixie/main amd64 libgfortran5 amd64 14.2.0-19 [836 kB]\n#9 23.04 Get:152 http://deb.debian.org/debian trixie/main amd64 liblapack3 amd64 3.12.1-6 [2447 kB]\n#9 23.37 Get:153 http://deb.debian.org/debian trixie/main amd64 libasyncns0 amd64 0.8-6+b5 [12.0 kB]\n#9 23.37 Get:154 http://deb.debian.org/debian trixie/main amd64 libdbus-1-3 amd64 1.16.2-2 [178 kB]\n#9 23.40 Get:155 http://deb.debian.org/debian trixie/main amd64 libflac14 amd64 1.5.0+ds-2 [210 kB]\n#9 23.43 Get:156 http://deb.debian.org/debian trixie/main amd64 libsndfile1 amd64 1.2.2-2+deb13u1 [199 kB]\n#9 23.46 Get:157 http://deb.debian.org/debian trixie/main amd64 libpulse0 amd64 17.0+dfsg1-2+b1 [276 kB]\n#9 23.49 Get:158 http://deb.debian.org/debian trixie/main amd64 libsphinxbase3t64 amd64 0.8+5prealpha+1-21+b1 [121 kB]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; tail -5 /workspace/make_run.log; echo \"===\"; docker images; docker ps -a",
+      "exit_code": 0,
+      "stdout": "#16 1.825 \u001b[33mChecking connectivity to the model hosters, this may take a while. To bypass this check, set `DISABLE_MODEL_SOURCE_CHECK` to `True`.\u001b[0m\n#16 17.67 \u001b[32mCreating model: ('PP-OCRv5_server_det', None)\u001b[0m\n#16 17.67 \u001b[32mUsing official model (PP-OCRv5_server_det), the model files will be automatically downloaded and saved in `/root/.paddlex/official_models/PP-OCRv5_server_det`.\u001b[0m\n#16 18.16 \nFetching 6 files:   0%|          | 0/6 [00:00<?, ?it/s]\nFetching 6 files:  17%|\u2588\u258b        | 1/6 [00:00<00:00,  5.85it/s]\nFetching 6 files:  83%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u258e | 5/6 [00:11<00:02,  2.35s/it]\nFetching 6 files: 100%|\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588\u2588| 6/6 [00:11<00:00,  1.85s/it]\n#16 36.11 \u001b[32mCreating model: ('latin_PP-OCRv5_mobile_rec', None)\u001b[0m\n===\nIMAGE   ID             DISK USAGE   CONTENT SIZE   EXTRA\nCONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 420; tail -5 /workspace/make_run.log; echo \"===\"; docker images; docker ps -a",
+      "exit_code": 0,
+      "stdout": "streamlit-pipeline-1  | \nstreamlit-pipeline-1  |   Local URL: http://localhost:8501\nstreamlit-pipeline-1  |   Network URL: http://172.18.0.2:8501\nstreamlit-pipeline-1  |   External URL: http://153.96.134.91:8501\nstreamlit-pipeline-1  | \n===\nIMAGE                           ID             DISK USAGE   CONTENT SIZE   EXTRA\nblp-streamlit-pipeline:latest   2ffb806b008e       3.11GB             0B   U    \nCONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS                     PORTS                                         NAMES\ne98e27642a9f   blp-streamlit-pipeline:latest   \"python3 -u -m strea\u2026\"   6 minutes ago   Up 6 minutes (unhealthy)   0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp   deployment-streamlit-pipeline-1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; docker ps; echo \"===\"; docker logs deployment-streamlit-pipeline-1 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "CONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS                     PORTS                                         NAMES\ne98e27642a9f   blp-streamlit-pipeline:latest   \"python3 -u -m strea\u2026\"   8 minutes ago   Up 8 minutes (unhealthy)   0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp   deployment-streamlit-pipeline-1\n===\n\n  You can now view your Streamlit app in your browser.\n\n  Local URL: http://localhost:8501\n  Network URL: http://172.18.0.2:8501\n  External URL: http://153.96.134.91:8501\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"health: %{http_code}\\n\" http://localhost:8501/_stcore/health; curl -s -o /dev/null -w \"root: %{http_code}\\n\" http://localhost:8501/; docker inspect --format '{{json .State.Health}}' deployment-streamlit-pipeline-1 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "health: 200\nroot: 200\n{\"Status\":\"unhealthy\",\"FailingStreak\":16,\"Log\":[{\"Start\":\"2026-10-18T13:22:04.720207685Z\",\"End\":\"2026-10-18T13:22:04.81206584Z\",\"ExitCode\":127,\"Output\":\"/bin/sh: 1: curl: not found\\n\"},{\"Start\":\"2026-10-18T13:22:34.813094496Z\",\"End\":\"2026-10-18T13:22:34.88351688Z\",\"ExitCode\":127,\"Output\":\"/bin/sh: 1: curl: not found\\n\"},{\"Start\":\"2026-10-18T13:23:04.884279231Z\",\"End\":\"2026-10-18T13:23:04.953447554Z\",\"ExitCode\":127,\"Output\":\"/bin/sh: 1: curl: not found\\n\"},{\"Start\":\"2026-10-18T13:23:34.954545419Z\",\"End\":\"2026-10-18T13:23:35.054208992Z\",\"ExitCode\":127,\"Output\":\"/bin/sh: 1: curl: not found\\n\"},{\"Start\":\"2026-10-18T13:24:05.055918887Z\",\"End\":\"2026-10-18T13:24:05.118135624Z\",\"ExitCode\":127,\"Output\":\"/bin/sh: 1: curl: not found\\n\"}]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s http://localhost:8501/ | grep -o -i -m5 -E \"SmartPlan|streamlit|appTitle|<title>[^<]*\" | head -10; echo \"===\"; docker exec deployment-streamlit-pipeline-1 sh -c \"ps aux | grep -i streamlit | grep -v grep; python3 -c \\\"import streamlit, paddleocr; print('streamlit', streamlit.__version__)\\\"\"",
+      "exit_code": 0,
+      "stdout": "Streamlit\n<title>Streamlit\n===\nstreamlit 1.55.0\n",
+      "stderr": "sh: 1: ps: not found\n\u001b[33mConnectivity check to the model hoster has been skipped because `DISABLE_MODEL_SOURCE_CHECK` is enabled.\u001b[0m\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"set_page_config\\|page_title\" /workspace/blp_streamlit_pipeline/run.py | head -5; echo \"===\"; curl -s -o /dev/null -w \"health: %{http_code}\\n\" http://localhost:8501/_stcore/health; docker ps --format \"{{.Names}}\\t{{.Status}}\\t{{.Ports}}\"; tail -3 /workspace/make_run.log",
+      "exit_code": 0,
+      "stdout": "===\nhealth: 200\ndeployment-streamlit-pipeline-1\tUp 8 minutes (unhealthy)\t0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp\nstreamlit-pipeline-1  |   Network URL: http://172.18.0.2:8501\nstreamlit-pipeline-1  |   External URL: http://153.96.134.91:8501\nstreamlit-pipeline-1  | \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -40 /workspace/blp_streamlit_pipeline/run.py; echo \"===\"; ls /workspace/blp_streamlit_pipeline/; grep -rn \"title\\|SmartPlan\" /workspace/blp_streamlit_pipeline/.streamlit/config.toml 2>/dev/null",
+      "exit_code": 1,
+      "stdout": "import logging\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s %(name)s [%(threadName)s] %(levelname)s %(message)s\",\n)\n\nimport streamlit as st\n\nfrom src.utils.session_state import initialize_session_state\n\n\nlogger = logging.getLogger(__name__)\n\ninitialize_session_state()\n\nst.switch_page(list(st.session_state.pipeline_pages)[st.session_state.page_nr][\"path\"])\n===\npages\nrun.py\nsrc\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"health: %{http_code}\\n\" http://localhost:8501/_stcore/health; curl -s -o /dev/null -w \"root: %{http_code}\\n\" http://localhost:8501/; sleep 3; docker logs deployment-streamlit-pipeline-1 2>&1 | grep -iE \"error|traceback|exception\" | tail -5; echo \"--- no errors above means clean ---\"; docker ps --format \"{{.Names}}\\t{{.Status}}\"",
+      "exit_code": 0,
+      "stdout": "health: 200\nroot: 200\n--- no errors above means clean ---\ndeployment-streamlit-pipeline-1\tUp 8 minutes (unhealthy)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && git log --oneline -3 2>/dev/null; git status 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "total 3136\ndrwxr-xr-x 6 root root    4096 Oct 18 13:07 .\ndr-xr-xr-x 1 root root    4096 Oct 18 13:04 ..\ndrwxr-xr-x 8 root root    4096 Oct 18 13:07 .git\n-rw-r--r-- 1 root root    2078 Oct 18 13:07 Dockerfile\n-rw-r--r-- 1 root root     623 Oct 18 13:07 Makefile\n-rw-r--r-- 1 root root   15445 Oct 18 13:07 Nutzungsleitfaden.md\n-rwxr-xr-x 1 root root 2506007 Oct 18 13:07 Nutzungsleitfaden.pdf\n-rw-r--r-- 1 root root    2707 Oct 18 13:07 README.md\ndrwxr-xr-x 5 root root    4096 Oct 18 13:07 blp_streamlit_pipeline\ndrwxr-xr-x 2 root root    4096 Oct 18 13:07 deployment\ndrwxr-xr-x 3 root root    4096 Oct 18 13:07 docs\n-rw-r--r-- 1 root root  250021 Oct 18 13:16 make_run.log\n-rw-r--r-- 1 root root  378939 Oct 18 13:07 poetry.lock\n-rw-r--r-- 1 root root    3476 Oct 18 13:07 publiccode.yml\n-rw-r--r-- 1 root root     949 Oct 18 13:07 pyproject.toml\n-rw-r--r-- 1 root root     760 Oct 18 13:07 windows_run.cmd\n1d70807 Merge branch 'test' into 'main'\nHEAD detached at 1d70807\nUntracked files:\n  (use \"git add <file>...\" to include in what will be committed)\n\tmake_run.log\n\nnothing added to commit but untracked files present (use \"git add\" to track)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker version --format '{{.Server.Version}}' 2>&1; docker info --format '{{.ServerVersion}} compose: {{.Plugins}}' 2>/dev/null | head -5; docker ps -a",
+      "exit_code": 0,
+      "stdout": "29.7.2\n29.7.2 compose: {[local] [bridge host ipvlan macvlan null overlay] [] [awslogs fluentd gcplogs gelf journald json-file local splunk syslog]}\nCONTAINER ID   IMAGE                           COMMAND                  CREATED         STATUS                     PORTS                                         NAMES\ne98e27642a9f   blp-streamlit-pipeline:latest   \"python3 -u -m strea\u2026\"   8 minutes ago   Up 8 minutes (unhealthy)   0.0.0.0:8501->8501/tcp, [::]:8501->8501/tcp   deployment-streamlit-pipeline-1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat Makefile && echo ---- && ls deployment/ && echo ---- && cat deployment/docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "build-and-tag-image:\n\tdocker build --build-arg http_proxy=$$http_proxy \\\n\t\t--build-arg https_proxy=$$https_proxy \\\n\t\t--build-arg no_proxy=$$no_proxy \\\n\t\t--build-arg HTTP_PROXY=$$HTTP_PROXY \\\n\t\t--build-arg HTTPS_PROXY=$$HTTPS_PROXY \\\n\t\t--build-arg NO_PROXY=$$NO_PROXY \\\n\t\t--no-cache .\n\t\t\n#\t\t--progress plain \n\nbuild-and-save-image:\n\tmake build-and-tag-image\n\tdocker image save blp-streamlit-pipeline:latest | gzip > blp-streamlit-pipeline.tar.gz\n\nrun:\n\tdocker compose -f deployment/docker-compose.yml up --build\n\nlocal-run:\n\tpoetry lock\n\tpoetry install\n\tcd blp_streamlit_pipeline && poetry run python -m streamlit run run.py----\ndocker-compose.yml\n----\nservices:\n  streamlit-pipeline:\n    build:\n      context: ..\n      dockerfile: Dockerfile\n      args:\n        http_proxy: ${http_proxy}\n        https_proxy: ${https_proxy}\n        no_proxy: ${no_proxy}\n        HTTP_PROXY: ${HTTP_PROXY}\n        HTTPS_PROXY: ${HTTPS_PROXY}\n        NO_PROXY: ${NO_PROXY}\n      tags:\n        - blp-streamlit-pipeline:latest\n    image: blp-streamlit-pipeline:latest\n    environment:\n      HTTP_PROXY: ${HTTP_PROXY}\n      HTTPS_PROXY: ${HTTPS_PROXY}\n      NO_PROXY: ${NO_PROXY}\n      http_proxy: ${http_proxy}\n      https_proxy: ${https_proxy}\n      no_proxy: ${no_proxy}\n    ports:\n      - 8501:8501\n    networks:\n      - default\n    restart: unless-stopped\n    develop:\n      watch:\n        # sync code (and restart) if changes were made in app\n        - action: sync # +restart\n          path: ../blp_streamlit_pipeline/\n          target: /app/blp_streamlit_pipeline/\n        # rebuild if dependencies changed or changes were made in deployment directory\n        - action: rebuild\n          path: .\n        - action: rebuild\n          path: ../poetry.lock\n        - action: rebuild\n          path: ../Makefile\n        - action: rebuild\n          path: ../Dockerfile\n\nnetworks:\n  default:\n    driver: bridge\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w 'root: %{http_code}\\n' http://localhost:8501/ ; curl -s -o /dev/null -w 'health: %{http_code}\\n' http://localhost:8501/_stcore/health ; curl -s http://localhost:8501/_stcore/health ; echo; curl -s http://localhost:8501/ | head -c 500",
+      "exit_code": 0,
+      "stdout": "root: 200\nhealth: 200\nok\n<!--\n Copyright (c) Streamlit Inc. (2018-2022) Snowflake Inc. (2022-2026)\n\n Licensed under the Apache License, Version 2.0 (the \"License\");\n you may not use this file except in compliance with the License.\n You may obtain a copy of the License at\n\n     http://www.apache.org/licenses/LICENSE-2.0\n\n Unless required by applicable law or agreed to in writing, software\n distributed under the License is distributed on an \"AS IS\" BASIS,\n WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or im",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s http://localhost:8501/ | grep -i -o '<title>[^<]*</title>'; docker inspect deployment-streamlit-pipeline-1 --format 'Status: {{.State.Status}} Health: {{if .State.Health}}{{range .State.Health.Log}}{{.ExitCode}} {{.Output}}{{end}}{{else}}none{{end}}'",
+      "exit_code": 0,
+      "stdout": "<title>Streamlit</title>\nStatus: running Health: 127 /bin/sh: 1: curl: not found\n127 /bin/sh: 1: curl: not found\n127 /bin/sh: 1: curl: not found\n127 /bin/sh: 1: curl: not found\n127 /bin/sh: 1: curl: not found\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker logs --tail 40 deployment-streamlit-pipeline-1 2>&1; echo '--- ERROR SCAN ---'; docker logs deployment-streamlit-pipeline-1 2>&1 | grep -iE 'traceback|error|exception' | head -20; echo \"(scan exit $?)\"",
+      "exit_code": 0,
+      "stdout": "\n  You can now view your Streamlit app in your browser.\n\n  Local URL: http://localhost:8501\n  Network URL: http://172.18.0.2:8501\n  External URL: http://153.96.134.91:8501\n\n--- ERROR SCAN ---\n(scan exit 1)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec deployment-streamlit-pipeline-1 sh -c 'which curl || echo \"no curl in image\"; ls /app | head; head -30 /app/blp_streamlit_pipeline/run.py'",
+      "exit_code": 0,
+      "stdout": "no curl in image\nblp_streamlit_pipeline\nimport logging\n\nlogging.basicConfig(\n    level=logging.INFO,\n    format=\"%(asctime)s %(name)s [%(threadName)s] %(levelname)s %(message)s\",\n)\n\nimport streamlit as st\n\nfrom src.utils.session_state import initialize_session_state\n\n\nlogger = logging.getLogger(__name__)\n\ninitialize_session_state()\n\nst.switch_page(list(st.session_state.pipeline_pages)[st.session_state.page_nr][\"path\"])\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "tail -25 /workspace/make_run.log; echo '==='; grep -E 'naming to|Successfully|Image:|Creating|Started' /workspace/make_run.log | tail -10",
+      "exit_code": 0,
+      "stdout": "#21 exporting layers\n#21 exporting layers 19.9s done\n#21 writing image sha256:2ffb806b008e2b2a499dfd8dabfe346c6f1857fa24ca5ab5312bce51d4594b65 0.0s done\n#21 naming to docker.io/library/blp-streamlit-pipeline:latest 0.0s done\n#21 DONE 20.0s\n\n#22 resolving provenance for metadata file\n#22 DONE 0.0s\n Image blp-streamlit-pipeline:latest Built \n Network deployment_default Creating \n Network deployment_default Creating \n Network deployment_default Created \n Network deployment_default Created \n Container deployment-streamlit-pipeline-1 Creating \n Container deployment-streamlit-pipeline-1 Created \nAttaching to streamlit-pipeline-1\n Container deployment-streamlit-pipeline-1 Starting \n Container deployment-streamlit-pipeline-1 Started \nstreamlit-pipeline-1  | \nstreamlit-pipeline-1  |   You can now view your Streamlit app in your browser.\nstreamlit-pipeline-1  | \nstreamlit-pipeline-1  |   Local URL: http://localhost:8501\nstreamlit-pipeline-1  |   Network URL: http://172.18.0.2:8501\nstreamlit-pipeline-1  |   External URL: http://153.96.134.91:8501\nstreamlit-pipeline-1  | \n===\n#7 36.15 Successfully installed SecretStorage-3.5.0 anyio-4.15.1 backports.zstd-1.8.0 build-1.6.1 cachecontrol-0.14.4 certifi-2026.7.22 cffi-2.1.1 charset_normalizer-3.5.2 cleo-2.1.0 crashtest-0.4.1 cryptography-50.0.2 distlib-0.4.4 dulwich-1.2.17 fastjsonschema-2.22.2 filelock-4.2.2 findpython-0.8.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 installer-1.1.0 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.6.0 jeepney-0.9.0 keyring-25.7.0 more-itertools-11.2.1 msgpack-1.2.3 packaging-26.3 pbs-installer-2026.10.13 pkginfo-1.13.3 platformdirs-4.13.4 poetry-2.5.1 poetry-core-2.5.0 pycparser-3.11 pyproject-hooks-1.3.3 python-discovery-1.6.3 rapidfuzz-3.14.6 requests-2.34.2 requests-toolbelt-1.0.0 shellingham-1.5.4 tomlkit-0.15.2 trove-classifiers-2026.9.21.13 typing_extensions-4.16.0 urllib3-2.8.0 virtualenv-21.14.11\n#16 17.67 \u001b[32mCreating model: ('PP-OCRv5_server_det', None)\u001b[0m\n#16 36.11 \u001b[32mCreating model: ('latin_PP-OCRv5_mobile_rec', None)\u001b[0m\n#21 naming to docker.io/library/blp-streamlit-pipeline:latest 0.0s done\n Network deployment_default Creating \n Network deployment_default Creating \n Container deployment-streamlit-pipeline-1 Creating \n Container deployment-streamlit-pipeline-1 Started \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec deployment-streamlit-pipeline-1 sh -c 'cd /app/blp_streamlit_pipeline && ls && python3 -c \"\nimport importlib\nimport streamlit\nprint(\\\"streamlit\\\", streamlit.__version__)\nimport src\nfor m in [\\\"src.utils.session_state\\\"]:\n    importlib.import_module(m)\n    print(\\\"imported\\\", m)\nimport paddle\nprint(\\\"paddle\\\", paddle.__version__)\n\"' 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "pages\nrun.py\nsrc\n\u001b[33mConnectivity check to the model hoster has been skipped because `DISABLE_MODEL_SOURCE_CHECK` is enabled.\u001b[0m\nstreamlit 1.55.0\nimported src.utils.session_state\npaddle 3.2.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec deployment-streamlit-pipeline-1 sh -c 'find /root/.paddlex /app/.paddlex /home -maxdepth 3 -iname \"*PP-OCR*\" -o -maxdepth 3 -iname \"*paddlex*\" 2>/dev/null | head; ls /usr/local/bin/ | grep -iE \"paddle|ffmpeg|pdftoppm\" | head' 2>&1; docker exec deployment-streamlit-pipeline-1 which ffmpeg pdftoppm 2>&1",
+      "exit_code": 0,
+      "stdout": "/home/appuser/.paddlex\n/usr/bin/ffmpeg\n/usr/bin/pdftoppm\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

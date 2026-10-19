@@ -1,0 +1,1 @@
+UmweltNAVI (Flutter app) is validated as correctly and completely installed and operational. All requirements from the installation guide's "Final Check" pass, dependencies resolve, a signed release APK for the `ni` flavor was produced, and the app runs and renders UI on a connected Android emulator without crashes.

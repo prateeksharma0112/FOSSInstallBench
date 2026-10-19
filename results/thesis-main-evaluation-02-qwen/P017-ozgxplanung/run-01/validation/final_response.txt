@@ -1,0 +1,55 @@
+## Validation Result: SUCCESS
+
+The xPlanBox (ozgxplanung) installation is **complete and operational** per Installation.md. I verified every required component end-to-end with live behavior, not just file presence.
+
+### Evidence collected during validation
+
+**Build artifacts & deployment**
+- `grep "BUILD SUCCESS" /workspace/build.log` → `BUILD SUCCESS` (61 modules)
+- Distribution `/workspace/xplan-distribution/target/xplan-distribution-9.4-SNAPSHOT.zip` (1.19 GB) present
+- All 11 WARs deployed: 5 in /opt/tomcat-dienste, 3 in /opt/tomcat-anwendung, 3 in /opt/tomcat-api; all three Tomcat 11.0.23 instances running and answering on 18080/18081/18082
+
+**OGC services (8 guide-documented URLs) — all HTTP 200**
+- WMS: `/xplan-services-wms/services/wms?...GetCapabilities` → 200 (genuine `WMS_Capabilities`, Title `XPlanWMS`, 990 KB)
+- WFS 4.0/4.1/5.0/5.1/5.2/6.0 → all 200 (genuine `WFS_Capabilities`, e.g. `XPlanWFS52`, xplangml/5/2 namespace)
+- SynWFS: `/xplan-services-wfs-syn/services/xplansynwfs?...` → 200
+- XPlanValidatorWMS → 200
+- **End-to-end proof:** WMS `GetMap` (layer `rp_plan`, style `default`, EPSG:4326) → `200 image/png`, `file` reports a real **300×300 8-bit RGBA PNG** (HTTP request → deegree → PostgreSQL/PostGIS → rendered image)
+- WFS 5.2 `GetFeature typeNames=xplan:BP_AbgrabungsFlaeche` → genuine `wfs:FeatureCollection` with XPlanGML 5.2 namespaces
+
+**Web UIs** — landing `/` → 200 (`<title>xPlanBox</title>`); `/xplan-manager-web/` → 200 (`XPlanManagerWeb`); `/xplan-validator-web/` → 200 (`XPlanValidatorWeb`)
+
+**REST APIs (live Spring Boot, not just swagger shell)**
+- `/xplan-manager-api/api/v2` → 200 (148,847 B OpenAPI); `/xplan-manager-api/api/v2/plans` → **200 `[]`** (real data call on fresh install)
+- `/xplan-validator-api/api/v2` → 200 (61,425 B); `/xplan-validator-api/xvalidator/api/v1` → 200
+- `/xplan-dokumente-api/` → 200 (swagger-ui). All three contexts redirect `/` → `/swagger-ui/index.html` (200)
+
+**Database XPlanDB (PostgreSQL 15 + PostGIS 3.6)**
+- DB `xplanbox` exists; **34 application schemas** (xplanvalidator 256 tables, xplansyn 254, inspireplu 160, xplanmgr 13, xplan52/50/51/60/61…); `postgis_version()` = `3.6`
+- Liquibase `databasechangelog` = **12,235 rows**, latest `lastGitRev-239d434c…` matches the checked-out commit 239d434 → migration ran against this exact build
+
+**RabbitMQ 3.9.27** (queried via rabbitmqctl as rabbitmq user, correct nodename)
+- Quorum queues `latlon.xplanbox.private.import` and `.validation` (type=quorum, durable=true) + app-created anonymous classic queues (proves the applications connected and declared them)
+- Policy `xplanbox-delivery-limit` = `{"delivery-limit":1}`; user `xplanbox` [administrator]
+
+**S3 / MinIO** — `127.0.0.1:9000/minio/health/live` → 200; buckets `xplan-attachments`, `xplan-validation`, `xplan-mapproxycache` present. All `XPLAN_S3_*`, `XPLAN_DB_*`, `XPLAN_RABBIT_*` env vars set in `/etc/xplanbox.env`.
+
+**Standalone components**
+- XPlanCLI: `xpb version` → `xPlanBox 9.4-SNAPSHOT` (Java 17)
+- XPlanValidatorExecutor: `Started SpringBootApp`, HTTP on 8090, `ConnectionProviderProvider:xplan` connected to PostgreSQL
+- MapServer WMS via Apache CGI (`/xplan-mapserver/`) → 200 `WMS_Capabilities`
+
+**Security/post-install** — `config.apikey` = `xplanbox` at DEEGREE_WORKSPACE_ROOT; `webapps.properties` mapping file present; Apache proxy is the single :8080 front routing all service contexts (documented post-install measure).
+
+### Skipped components — all explicitly optional in the guide
+- **MapProxy** (optional; requires Python ≥3.12, environment has 3.10.12) — not installed, correct
+- **ldproxy, Keycloak, HALE CLI** (all marked "optional" in the guide) — not installed, correct
+- **INSPIRE PLU** (marked optional) — actually deployed and answering 200 at `viewservice`/`downloadservice`
+
+### Limitations / non-issues observed
+- No RabbitMQ management HTTP UI (15672) — not required by the guide; AMQP (5672) is up and fully functional
+- Historical `SEVERE` entries in the Tomcat logs are from earlier transient startup failures (the flat-workspace-extraction issue, since fixed); every later startup succeeded and all endpoints verified live above
+- A few `GetCapabilities`/`GetFeature` probes returned OGC `ExceptionReport`s when I used wrong parameter names (e.g. `srs` vs `crs`, missing `STYLES`) — correct re-issues all succeeded, confirming correct parameter handling, not a fault
+
+### Assessment
+Objective, independently-collected command evidence shows the software is installed completely (all mandatory components present and configured) and operational (all services, UIs, APIs, database, broker, S3, CLI, and executor return correct live responses, including a real rendered WMS image and real WFS feature data). Skipped pieces are all explicitly optional in the guide. This meets the definition of **success**.

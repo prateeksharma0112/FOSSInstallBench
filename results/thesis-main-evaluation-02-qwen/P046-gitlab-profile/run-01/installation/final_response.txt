@@ -1,0 +1,1 @@
+Successfully installed gitlab-profile (KommunalEnergie) via the guide's default method: pre-built images from registry.opencode.de + Docker Compose. All 4 containers (postgres, traefik, web, iothubsh-adapter) are running in /workspace; PostgreSQL initialized, 25 Yii migrations applied, Apache serving, Swagger UI and API endpoint verified functional.

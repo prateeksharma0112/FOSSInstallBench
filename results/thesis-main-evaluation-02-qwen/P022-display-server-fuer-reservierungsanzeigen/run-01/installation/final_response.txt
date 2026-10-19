@@ -1,0 +1,1 @@
+Installed and verified the display-server (Smart City Ulm Co-Learning Spaces booking display) via Docker Compose in /workspace, backed by a self-hosted Biletado API (README Option 2) since the .env.example SaaS placeholders have no real credentials. Guide verification commands return HTTP 200 HTML reservation pages.

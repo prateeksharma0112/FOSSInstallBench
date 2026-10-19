@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P048-elterngeldrechner__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T19:34:29.277708+02:00",
+    "finished_at": "2026-10-18T20:04:45.215464+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P048",
+    "project": {
+      "opencode_id": "3175",
+      "name": "elterngeldrechner",
+      "description": "Parental allowance calculator and planner for non-binding calculation and planning of parental allowance receipt.",
+      "catalogue_url": "https://opencode.de/de/software/elterngeldrechner-3175",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/digitalservicebund/elterngeldrechner",
+      "commit_sha": "cbde2ebfd8e78e21c60e9064bfe8f665113a1b98",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/digitalservicebund/elterngeldrechner/-/blob/cbde2ebfd8e78e21c60e9064bfe8f665113a1b98/README.md",
+      "language": "English",
+      "word_count": 580
+    },
+    "task_id": "P048-elterngeldrechner"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1815.9679999999935,
+    "repository_setup_duration_seconds": 63.57799999999406,
+    "installation_duration_seconds": 1094.9850000000006,
+    "validation_duration_seconds": 648.9220000000059,
+    "command_count": 78,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 36,
+    "validation_command_count": 38
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P048-elterngeldrechner/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

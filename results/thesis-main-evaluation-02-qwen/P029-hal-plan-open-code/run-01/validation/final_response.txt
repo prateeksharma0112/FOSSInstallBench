@@ -1,0 +1,44 @@
+## Validation Report: HAL-Plan Open Code (Buildplace)
+
+**Assessed outcome: SUCCESS**
+
+The manual setup (Option 2) was executed correctly and the software is operational end-to-end.
+
+### Verified components
+
+**Toolchain**
+- Node.js v24.15.0 (matches `engines` in package.json), pnpm 11.2.2, git 2.34.1
+
+**Docker services (all Up, 16 min)**
+- `postgis/postgis` on 5432 — PostGIS extension installed (8500 projections in `spatial_ref_sys`)
+- `valkey-cache` on 6379 → `PONG`
+- `valkey-queue` on 6380 → `PONG`, `maxmemory-policy = noeviction` (as required for BullMQ)
+
+**Database**
+- Databases `ffy_dev`, `ffy_shadow`, `ffy_test` exist
+- `pnpm prisma migrate status` → "7 migrations found in prisma/migrations — Database schema is up to date!"
+- Seed data present: 8 users (incl. `superadmin@buildplace.io`), 105 buildings, 92 parcels, 15 GeoDataViews
+
+**Build/codegen artifacts**
+- `shared/graphql/types.ts` + `api/lib/graphql/schema.graphql` generated and tracked
+- `web-ifc*.wasm` copied to `web/public/web-ifc/` (required because `.npmrc` sets `ignore-scripts=true`)
+- `.env` created from `.env.defaults` with all required vars populated
+
+**Running application** (`pnpm dev`, tsx watch + Vite)
+- `GET /` → HTTP 200, Buildplace HTML shell with Vite client
+- `GET /src/main.tsx` → HTTP 200, Vite transforms the React + Apollo app code
+- `POST /api/graphql {"query":"query { __typename }"}` → 200 `{"data":{"__typename":"Query"}}`
+- `POST /api/auth/login` (superadmin/somepassword) → 200 `{"success":true}`
+- `GET /api/auth/current-user` (with session cookie) → 200 full SUPERADMIN user object
+- Authorization layer functioning (correct `ForbiddenError("No tenant.")` when requested tenant doesn't match session — confirms real permission checks, not a bypass)
+
+### Guide verification checklist
+- App at localhost:3000 ✅
+- GraphQL endpoint working ✅
+- Working authentication with configured dev user ✅
+- PostgreSQL on 5432, both Valkey instances on 6379/6380 ✅
+- `pnpm prisma migrate status` clean ✅
+
+### Limitations
+- The 3D map view (Babylon.js rendering of terrain/buildings) could not be visually verified — the environment is headless with no browser. However, the frontend module graph loads, Vite compiles successfully, and the `web-ifc` WASM files required for 3D model loading are in place.
+- Some seed users have no active tenant/account (superadmin shows `"accounts":[]`), which is consistent with the seed data design rather than an installation defect.

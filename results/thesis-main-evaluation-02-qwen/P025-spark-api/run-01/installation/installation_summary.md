@@ -1,0 +1,28 @@
+## Environment
+- Workspace: `/workspace` (SPARK API monorepo, commit 520d93f, v0.5.0). Ubuntu 22.04 container, Docker 29.7.2 + BuildKit (dockerd on `/var/run/docker.sock`), 8 CPU / 7.6 GB RAM.
+- Host tools installed during the task: `uv` 0.13.1 (standalone installer, `/root/.local/bin`), `rsync`.
+
+## Method (per the provided guide, with necessary additions)
+1. **Base-image replacement**: applied the guide's `sed` to all 34 Dockerfiles (`<CONTAINER_REGISTRY>/astral-uv-python-3.12-bookworm:1.0.0` → `ghcr.io/astral-sh/uv:python3.12-bookworm`, `python-3.12-bookworm:1.0.0` → `python:3.12-bookworm`, hashed uv-slim → `ghcr.io/astral-sh/uv:0.9.30-python3.12-bookworm-slim`). Addon `FROM <CONTAINER_REGISTRY>/demospipes-base-*:*` → local tags per the guide's demospipes section.
+2. **Missing lock files**: the repo contains **no `uv.lock`** although every Dockerfile runs `uv sync --locked`. Generated `uv.lock` for all 37 Python projects (26 backend dirs, 6 demospipes sub-projects, 6 shared services — 41 pyprojects total minus workspaces) using host uv from the monorepo root.
+3. **Frontend lockfile**: `01-frontend/package-lock.json` was out of sync with workspace manifests (`npm ci` EUSAGE error, e.g. `@hey-api/openapi-ts@0.80.18 missing`). Regenerated with `npm install --package-lock-only` (package versions unchanged, e.g. react-hook-form 7.87.0 both before/after).
+4. **Path dependencies (guide's option 2)**: every backend `uv sync` stage depends on `03-shared-services/*` via relative paths. For each service I staged `<service>/*` plus the full transitive closure of the six shared libs (and `tatbestandsmerkmalsextraction` for rechtsquellenvorbereitung) flat into `/workspace/.build-logs/stage/<name>/`, relabeled `[tool.uv.sources.*] path` entries (`.build-logs/rewrite_paths.py`), re-ran `uv lock`, and inserted `COPY . <WORKDIR>/` (+ `--chown user:user` where the stage runs as a non-root user, e.g. `bmi_user`) before the first `uv sync` (`.build-logs/patch_dockerfile.py`), because the Dockerfiles run `uv sync` before `COPY . /app` and originally resolved those deps from the private registry.
+5. **Build secrets**: all builds passed `--secret id=TECHNICAL_USER_USERNAME,env=x --secret id=TECHNICAL_USER_TOKEN,env=x` (dummy values) as the guide documents.
+6. **demospipes `<REDACTED>` private pip index** (core + bmds addons): not publicly resolvable. Replaced the `pip wheel --extra-index-url https://user:pass@<REDACTED>` step with local wheels of the path-dep packages (`uv build --wheel` for `data-structures` / `data_structures`, `COPY local-wheels/ + --find-links`, `.build-logs/fix_pipwheel.py`). Verified: the packages do not exist on public PyPI (HTTP 404), and they are **present in the built images** (`demospipes_data_structures 1.0.3` in `demospipes-base-executors`).
+7. **Build order**: demospipes bases first (`demospipes-base-api`, `demospipes-base-executors`), then addons (`demospipes-bmds-api`, `demospipes-bmds-executors`) FROM the local base tags.
+
+## Resulting state — 32 SPARK service images built (all exit 0)
+- 24 standalone backends: berichtskonfigurator, decision-log-store-service, demos-einwendungsmanagement, dokumentenaufbereitung-data-service, dokumentenaufbereitung-monorepo, dokumentenpruefung, dokumentenschwaerzung-orchestrator, dokumentenschwaerzung-pdf-pii-detector, dokumentensuche, fristenmanagement, graph-api, ki-guv-ai-testing, ki-guv-explainability, ki-guv-feedback, kommentar-service, nachforderungen, ner-extraction, norm-matching, rechtsquellenvorbereitung, request-proxy, risikohinweis-service, subsumtion-service, tex2pdf-service, xoev-adapter
+- 4 demospipes: demospipes-base-api, demospipes-base-executors, demospipes-bmds-api, demospipes-bmds-executors
+- 1 shared library: ki-validierung
+- 3 frontends: `frontend` (main monorepo image, nginx on :8080 with all 8 MFE + 8 injector dists), `mfe-ewm`, `mfe-fp`
+- Build logs/orchestrators: `/workspace/.build-logs/` (scripts, per-service logs, results files)
+
+## Fixes required beyond the guide (repo defects encountered)
+- `02-backend/tex2pdf-service/CHANGELOG.md` is referenced by its Dockerfile (`COPY CHANGELOG.md`) but absent from the repo → added a stub.
+- Frontend main Dockerfile runs 16 parallel `vite build`s; on the 7.6 GB container several were OOM-killed (exit 137) and the unguarded `wait` masked the failure → batched to 2-3 parallel per MFE pair in the staged build context (original Dockerfile untouched).
+- Standalone `shell`/`mfe-ws` Dockerfiles: `shell` lacks a `build:injector` script (silently fails under `wait`); `mfe-ws` is missing the `shared` build step its siblings have. Corrected mfe-ws still fails on a pre-existing phantom dependency (`import "uuid"` in `RedactionsLayer.tsx`, undeclared) and `shell` on a pre-existing `TS2322` type error in `MandatoryFeedback.tsx` — both are repo source issues, and both services build and serve correctly inside the main `frontend` image (the guide's recommended method).
+
+## Known startup requirements (documented by the guide)
+- Backends start via their ENTRYPOINT (e.g. `/app/.venv/bin/<service>` or `uv run ... uvicorn ...`); three services (kommentar-service, demospipes-bmds-api/executors) require their documented runtime env vars (`SERVICE_NAME/SERVICE_VERSION/POSTGRE_*`, `PREFECT_FLOW_NAME`, `URL_ORIGINAL/URL_REPLACEMENT`, `MICROSERVICE_*_URL`) at import time — verified to import successfully once supplied.
+- Frontend: `docker run -p 8080:8080 frontend`.

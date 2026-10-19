@@ -1,0 +1,444 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 27a58131fa8dc521cd02c92c0b8e6a4854599d80",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject.git/\nFrom https://gitlab.opencode.de/bmi/opendesk/component-code/project-management/openproject/openproject\n * branch              27a58131fa8dc521cd02c92c0b8e6a4854599d80 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 27a58131fa8dc521cd02c92c0b8e6a4854599d80",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 27a58131 update locales from crowdin [ci skip]\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 27a58131fa8dc521cd02c92c0b8e6a4854599d80",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && docker --version 2>&1; docker info 2>&1 | head -30",
+      "exit_code": 141,
+      "stdout": "/workspace\ntotal 1136\ndrwxr-xr-x 31 root root   4096 Oct 17 01:12 .\ndr-xr-xr-x  1 root root   4096 Oct 17 01:06 ..\n-rw-r--r--  1 root root    116 Oct 17 01:11 .buildpacks\n-rw-r--r--  1 root root    720 Oct 17 01:11 .dockerignore\n-rw-r--r--  1 root root  34451 Oct 17 01:11 .editorconfig\n-rw-r--r--  1 root root   2771 Oct 17 01:11 .env.example\n-rw-r--r--  1 root root   2192 Oct 17 01:11 .env.test.local.example\n-rw-r--r--  1 root root   1091 Oct 17 01:11 .erb_lint.yml\ndrwxr-xr-x  2 root root   4096 Oct 17 01:11 .erb_linters\ndrwxr-xr-x  8 root root   4096 Oct 17 01:12 .git\n-rw-r--r--  1 root root    439 Oct 17 01:11 .git-blame-ignore-revs\ndrwxr-xr-x  5 root root   4096 Oct 17 01:11 .github\n-rw-r--r--  1 root root   3235 Oct 17 01:11 .gitignore\n-rw-r--r--  1 root root     68 Oct 17 01:11 .jshintignore\n-rw-r--r--  1 root root     26 Oct 17 01:11 .npmrc\n-rw-r--r--  1 root root   1474 Oct 17 01:11 .openproject-token.pub\n-rw-r--r--  1 root root   1462 Oct 17 01:11 .pkgr.yml\ndrwxr-xr-x  3 root root   4096 Oct 17 01:11 .redocly\n-rw-r--r--  1 root root   1424 Oct 17 01:11 .redocly.lint-ignore.yaml\n-rw-r--r--  1 root root    189 Oct 17 01:11 .redocly.yaml\n-rw-r--r--  1 root root    170 Oct 17 01:11 .rspec_parallel\n-rw-r--r--  1 root root  10901 Oct 17 01:11 .rubocop.yml\n-rw-r--r--  1 root root      6 Oct 17 01:11 .ruby-version\n-rw-r--r--  1 root root    148 Oct 17 01:11 .yamllint.yml\n-rw-r--r--  1 root root   5400 Oct 17 01:11 AGENTS.md\n-rw-r--r--  1 root root    139 Oct 17 01:11 CHANGELOG.md\nlrwxrwxrwx  1 root root      9 Oct 17 01:11 CLAUDE.md -> AGENTS.md\n-rw-r--r--  1 root root   1490 Oct 17 01:11 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root   6758 Oct 17 01:11 CONTRIBUTING.md\n-rw-r--r--  1 root root   2438 Oct 17 01:11 COPYRIGHT\n-rw-r--r--  1 root root   1141 Oct 17 01:11 COPYRIGHT_short\n-rw-r--r--  1 root root   1730 Oct 17 01:11 Dangerfile\n-rw-r--r--  1 root root  12699 Oct 17 01:11 Gemfile\n-rw-r--r--  1 root root  97139 Oct 17 01:11 Gemfile.lock\n-rw-r--r--  1 root root   2725 Oct 17 01:11 Gemfile.modules\n-rw-r--r--  1 root root 646436 Oct 17 01:11 GitHub-tab-new.png\n-rw-r--r--  1 root root   2308 Oct 17 01:11 Guardfile\n-rw-r--r--  1 root root  35147 Oct 17 01:11 LICENSE\n-rw-r--r--  1 root root    132 Oct 17 01:11 Procfile\n-rw-r--r--  1 root root    216 Oct 17 01:11 Procfile.dev\n-rw-r--r--  1 root root   6918 Oct 17 01:11 README.md\n-rwxr-xr-x  1 root root   1529 Oct 17 01:11 Rakefile\n-rw-r--r--  1 root root    133 Oct 17 01:11 SECURITY.md\ndrwxr-xr-x 19 root root   4096 Oct 17 01:11 app\ndrwxr-xr-x  2 root root   4096 Oct 17 01:11 bin\ndrwxr-xr-x  8 root root   4096 Oct 17 01:11 config\n-rw-r--r--  1 root root   1648 Oct 17 01:11 config.ru\n-rw-r--r--  1 root root   1032 Oct 17 01:11 crowdin.yml\ndrwxr-xr-x  3 root root   4096 Oct 17 01:11 db\ndrwxr-xr-x  6 root root   4096 Oct 17 01:11 docker\n-rw-r--r--  1 root root   1024 Oct 17 01:11 docker-compose.ci.yml\n-rw-r--r--  1 root root    547 Oct 17 01:11 docker-compose.override.example.yml\n-rw-r--r--  1 root root   8456 Oct 17 01:11 docker-compose.yml\ndrwxr-xr-x 18 root root   4096 Oct 17 01:12 docs\ndrwxr-xr-x  3 root root   4096 Oct 17 01:12 extensions\ndrwxr-xr-x  4 root root   4096 Oct 17 01:12 extra\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 files\ndrwxr-xr-x  6 root root   4096 Oct 17 01:12 frontend\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 help\n-rw-r--r--  1 root root   2702 Oct 17 01:12 lefthook.yml\ndrwxr-xr-x 16 root root   4096 Oct 17 01:12 lib\ndrwxr-xr-x  6 root root   4096 Oct 17 01:12 lib_static\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 log\ndrwxr-xr-x  4 root root   4096 Oct 17 01:12 lookbook\ndrwxr-xr-x 32 root root   4096 Oct 17 01:12 modules\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 nix\n-rw-r--r--  1 root root   2287 Oct 17 01:12 package-lock.json\n-rw-r--r--  1 root root    581 Oct 17 01:12 package.json\ndrwxr-xr-x  5 root root   4096 Oct 17 01:12 packaging\ndrwxr-xr-x  4 root root   4096 Oct 17 01:12 public\n-rw-r--r--  1 root root   7439 Oct 17 01:12 publiccode.yml\n-rw-r--r--  1 root root   2582 Oct 17 01:12 publiccode_logo.svg\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 screenshots\ndrwxr-xr-x 12 root root   4096 Oct 17 01:12 script\ndrwxr-xr-x 38 root root   4096 Oct 17 01:12 spec\ndrwxr-xr-x  3 root root   4096 Oct 17 01:12 tmp\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 vendor\ndrwxr-xr-x  2 root root   4096 Oct 17 01:12 vendored-plugins\nDocker version 29.7.2, build a7dcaa6\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n  Backing Filesystem: extfs\n  Supports d_type: true\n  Using metacopy: false\n  Native Overlay Diff: true\n  userxattr: true\n Logging Driver: json-file\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Plugins:\n  Volume: local\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && git log --oneline -3 2>/dev/null; cat .ruby-version; grep -m1 version config/initializers/version.rb 2>/dev/null; ls docker/ 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "27a58131 update locales from crowdin [ci skip]\n4.0.7\nci\ndev\nprod\npullpreview\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"%{http_code}\" --max-time 20 https://registry-1.docker.io/v2/ 2>&1; echo; curl -s --max-time 20 \"https://hub.docker.com/v2/repositories/openproject/openproject/tags/?page_size=5\" 2>&1 | head -c 2000",
+      "exit_code": 0,
+      "stdout": "401\n{\"count\":1115,\"next\":\"https://hub.docker.com/v2/repositories/openproject/openproject/tags/?page=2\\u0026page_size=5\",\"previous\":null,\"results\":[{\"creator\":469970,\"id\":1351211103,\"images\":[{\"architecture\":\"\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:26138bfaecf5182af262bfeee8493cbc7301fe373029f629f4b6f653385076b3\",\"os\":\"\",\"os_features\":\"\",\"os_version\":null,\"size\":8507856,\"status\":\"active\",\"last_pulled\":\"2026-10-17T01:02:36.046737973Z\",\"last_pushed\":\"2026-10-16T02:51:38.296890778Z\"}],\"last_updated\":\"2026-10-16T02:51:38.584082Z\",\"last_updater\":469970,\"last_updater_username\":\"openprojectci\",\"name\":\"sha256-76eb502a42c7b50d7e9bf998b53fae4d3341ad990d2594457b153be9fec07cee.att\",\"repository\":23783847,\"full_size\":8507856,\"v2\":true,\"tag_status\":\"active\",\"tag_last_pulled\":\"2026-10-17T01:02:36.046737973Z\",\"tag_last_pushed\":\"2026-10-16T02:51:38.584082Z\",\"media_type\":\"application/vnd.oci.image.config.v1+json\",\"content_type\":\"image\",\"digest\":\"sha256:26138bfaecf5182af262bfeee8493cbc7301fe373029f629f4b6f653385076b3\"},{\"creator\":469970,\"id\":1351210571,\"images\":[{\"architecture\":\"\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:88c50773ff85ecd6e1eccf13ac8fc49086a10f2fc27c3beb3da4c571ce72e3c8\",\"os\":\"\",\"os_features\":\"\",\"os_version\":null,\"size\":5270836,\"status\":\"active\",\"last_pulled\":\"2026-10-17T01:02:26.406158757Z\",\"last_pushed\":\"2026-10-16T02:50:54.969184912Z\"}],\"last_updated\":\"2026-10-16T02:50:55.229874Z\",\"last_updater\":469970,\"last_updater_username\":\"openprojectci\",\"name\":\"sha256-abcaeff52e4eeb00b22e77c4a244f4da647c9864e4efab96dcf93d46fd144a0c.att\",\"repository\":23783847,\"full_size\":5270836,\"v2\":true,\"tag_status\":\"active\",\"tag_last_pulled\":\"2026-10-17T01:02:26.406158757Z\",\"tag_last_pushed\":\"2026-10-16T02:50:55.229874Z\",\"media_type\":\"application/vnd.oci.image.config.v1+json\",\"content_type\":\"image\",\"digest\":\"sha256:88c50773ff85ecd6e1eccf13ac8fc49086a10f2fc27c3beb3da4c571ce72e3c8\"},{\"creator\":469970,\"id\":1351210532,\"images\":[{\"architecture\":\"\",\"features\":\"\",\"variant\":null,\"digest\":\"sha25",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s --max-time 30 \"https://hub.docker.com/v2/repositories/openproject/openproject/tags/?page_size=100&name=17\" 2>&1 | python3 -c \"import json,sys; d=json.load(sys.stdin); print([r['name'] for r in d['results']])\"",
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "uname -m; free -h; df -h / /var/lib/docker 2>/dev/null; nproc",
+      "exit_code": 0,
+      "stdout": "x86_64\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       537Mi       5.3Gi       1.0Mi       1.7Gi       6.9Gi\nSwap:          2.0Gi        70Mi       1.9Gi\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  5.4G  951G   1% /\n/dev/sde       1007G  5.4G  951G   1% /var/lib/docker\n8\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s --max-time 30 \"https://hub.docker.com/v2/repositories/openproject/openproject/tags/?page_size=100&name=17.\" 2>&1 | grep -o '\"name\":\"[^\"]*\"' | head -20; echo \"---\"; curl -s --max-time 30 \"https://hub.docker.com/v2/repositories/openproject/openproject/tags/17\" 2>&1 | head -c 500",
+      "exit_code": 0,
+      "stdout": "\"name\":\"17.9-rc-slim\"\n\"name\":\"17.9-rc-slim-bim\"\n\"name\":\"17.9-rc\"\n\"name\":\"17.9\"\n\"name\":\"17.9-slim-bim\"\n\"name\":\"17.9.2\"\n\"name\":\"17.9.2-slim-bim\"\n\"name\":\"17.9-slim\"\n\"name\":\"17.9.2-slim\"\n\"name\":\"17.9.1\"\n\"name\":\"17.9.1-slim-bim\"\n\"name\":\"17.9.1-slim\"\n\"name\":\"17.9.0\"\n\"name\":\"17.9.0-slim-bim\"\n\"name\":\"17.9.0-slim\"\n\"name\":\"17.8-slim\"\n\"name\":\"17.8.1-slim\"\n\"name\":\"17.8-slim-bim\"\n\"name\":\"17.8.1-slim-bim\"\n\"name\":\"17.8\"\n---\n{\"creator\":469970,\"id\":1048416972,\"images\":[{\"architecture\":\"amd64\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:d8a60a9d0c1e7cb39c97992d53668783ff7f386f0b4a30b99fcb1205febf983a\",\"os\":\"linux\",\"os_features\":\"\",\"os_version\":null,\"size\":880847511,\"status\":\"active\",\"last_pulled\":\"2026-10-17T01:02:16.594335263Z\",\"last_pushed\":\"2026-10-15T12:09:28.238242367Z\"},{\"architecture\":\"arm64\",\"features\":\"\",\"variant\":null,\"digest\":\"sha256:87be9e464f92dce29dc62b0001b4ad721eaa5e7bf241eac5130702ecc8b6eb07\",\"os\":\"",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mkdir -p /workspace/openproject-install /var/lib/openproject/pgdata /var/lib/openproject/assets && openssl rand -hex 64 > /workspace/openproject-install/secret_key_base.txt && chmod 600 /workspace/openproject-install/secret_key_base.txt && cat /workspace/openproject-install/secret_key_base.txt | wc -c",
+      "exit_code": 0,
+      "stdout": "129\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && time docker pull openproject/openproject:17 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "453cc98850fe: Pull complete\n0782fb3c5437: Verifying Checksum\n0782fb3c5437: Download complete\n169623cfc724: Verifying Checksum\n169623cfc724: Download complete\nb751bbbb7fc6: Verifying Checksum\nb751bbbb7fc6: Download complete\nc5b3f58f9f1d: Verifying Checksum\nc5b3f58f9f1d: Download complete\nfc5ca3113720: Verifying Checksum\nfc5ca3113720: Download complete\nc5b3f58f9f1d: Pull complete\nfc5ca3113720: Pull complete\n24a9019d0c2b: Pull complete\n0782fb3c5437: Pull complete\n169623cfc724: Pull complete\nb751bbbb7fc6: Pull complete\nDigest: sha256:3603f071443e16f773ca0e6bbe7f12f66eeeb95cca4540c4f93ec504305a0596\nStatus: Downloaded newer image for openproject/openproject:17\ndocker.io/openproject/openproject:17\n",
+      "stderr": "\nreal\t4m15.782s\nuser\t0m0.576s\nsys\t0m0.784s\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "SKB=$(cat /workspace/openproject-install/secret_key_base.txt) && docker run -d -p 8080:80 --name openproject \\\n  -e OPENPROJECT_HOST__NAME=localhost:8080 \\\n  -e OPENPROJECT_HTTPS=false \\\n  -e OPENPROJECT_DEFAULT__LANGUAGE=en \\\n  -e SECRET_KEY_BASE=\"$SKB\" \\\n  -v /var/lib/openproject/pgdata:/var/openproject/pgdata \\\n  -v /var/lib/openproject/assets:/var/openproject/assets \\\n  openproject/openproject:17",
+      "exit_code": 0,
+      "stdout": "409b0b083ab01e4bf87935667905e5c17dabc504be183675e2d253e27b24f9ce\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 45; docker ps -a --filter name=openproject --format '{{.Names}}: {{.Status}}'; echo \"=== LOGS ===\"; docker logs openproject 2>&1 | tail -30",
+      "exit_code": 0,
+      "stdout": "openproject: Up 48 seconds\n=== LOGS ===\nVer Cluster Port Status Owner    Data directory              Log file\n17  main    5433 down   postgres /var/lib/postgresql/17/main /var/log/postgresql/postgresql-17-main.log\n-----> Database cluster not found. Creating a new one in /var/openproject/pgdata...\nchown: warning: '.' should be ':': \u2018postgres.postgres\u2019\n       The files belonging to this database system will be owned by user \"postgres\".\n       This user must also own the server process.\n       \n       The database cluster will be initialized with locale \"C.UTF-8\".\n       The default text search configuration will be set to \"english\".\n       \n       Data page checksums are disabled.\n       \n       fixing permissions on existing directory /var/openproject/pgdata ... ok\n       creating subdirectories ... ok\n       selecting dynamic shared memory implementation ... posix\n       selecting default \"max_connections\" ... 100\n       selecting default \"shared_buffers\" ... 128MB\n       selecting default time zone ... Etc/UTC\n       creating configuration files ... ok\n       running bootstrap script ... ok\n       performing post-bootstrap initialization ... ok\n       syncing data to disk ... ok\n       \n       Success. You can now start the database server using:\n       \n           /usr/lib/postgresql/17/bin/pg_ctl -D /var/openproject/pgdata -l logfile start\n       \n       waiting for server to start.... done\n       server started\n       CREATE ROLE\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; docker ps -a --filter name=openproject --format '{{.Names}}: {{.Status}}'; echo \"=== LOGS ===\"; docker logs openproject 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "openproject: Up 2 minutes\n=== LOGS ===\n       This user must also own the server process.\n       \n       The database cluster will be initialized with locale \"C.UTF-8\".\n       The default text search configuration will be set to \"english\".\n       \n       Data page checksums are disabled.\n       \n       fixing permissions on existing directory /var/openproject/pgdata ... ok\n       creating subdirectories ... ok\n       selecting dynamic shared memory implementation ... posix\n       selecting default \"max_connections\" ... 100\n       selecting default \"shared_buffers\" ... 128MB\n       selecting default time zone ... Etc/UTC\n       creating configuration files ... ok\n       running bootstrap script ... ok\n       performing post-bootstrap initialization ... ok\n       syncing data to disk ... ok\n       \n       Success. You can now start the database server using:\n       \n           /usr/lib/postgresql/17/bin/pg_ctl -D /var/openproject/pgdata -l logfile start\n       \n       waiting for server to start.... done\n       server started\n       CREATE ROLE\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; docker ps -a --filter name=openproject --format '{{.Names}}: {{.Status}}'; echo \"=== LOGS (last 40) ===\"; docker logs openproject 2>&1 | tail -40",
+      "exit_code": 0,
+      "stdout": "openproject: Up 4 minutes\n=== LOGS (last 40) ===\n2026-10-17 01:20:19,481 INFO success: postgres entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n2026-10-17 01:20:19,481 INFO success: apache2 entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n2026-10-17 01:20:19,481 INFO success: web entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n2026-10-17 01:20:19,481 INFO success: worker entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n2026-10-17 01:20:19,481 INFO success: hocuspocus entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n2026-10-17 01:20:19,481 INFO success: memcached entered RUNNING state, process has stayed up for > than 1 seconds (startsecs)\n\n  Hocuspocus v4.6.0 running at:\n\n  > HTTP: http://0.0.0.0:1234\n  > WebSocket: ws://0.0.0.0:1234\n\n  Extensions:\n  - OpenProjectApi\n  - Logger\n\n  Ready.\n\n=> Booting Puma\n=> Rails 8.1.3.1 application starting in production \n=> Run `bin/rails server --help` for more startup options\nI, [2026-10-17T01:20:30.096071 #223]  INFO -- : Increasing database pool size to 17 to match max threads\nI, [2026-10-17T01:20:30.582650 #217]  INFO -- : Increasing database pool size to 17 to match max threads\nI, [2026-10-17T01:21:15.452843 #223]  INFO -- : [GoodJob] [223] GoodJob 4.19.2 started scheduler with queues=* max_threads=20.\nI, [2026-10-17T01:21:15.619592 #223]  INFO -- : [GoodJob] GoodJob started cron with 20 jobs.\nI, [2026-10-17T01:21:15.696797 #223]  INFO -- : [GoodJob] Notifier subscribed with LISTEN\n[217] Puma starting in cluster mode...\n[217] * Puma version: 8.0.2 (\"Into the Arena\")\n[217] * Ruby version: ruby 4.0.6 (2026-07-14 revision 03b6d3f889) +YJIT +PRISM [x86_64-linux]\n[217] *  Min threads: 4\n[217] *  Max threads: 16\n[217] *  Environment: production\n[217] *   Master PID: 217\n[217] *      Workers: 2\n[217] *     Restarts: (\u2714) hot (\u2716) phased (\u2716) refork\n[217] * Preloading application\n[217] * Listening on http://0.0.0.0:8080\n[217] Use Ctrl-C to stop\n[217] - Worker 0 (PID: 556) booted in 0.01s, phase: 0\n[217] - Worker 1 (PID: 562) booted in 0.01s, phase: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 20; curl -s -o /dev/null -w \"HTTP %{http_code} (redirect: %{redirect_url})\\n\" --max-time 30 http://localhost:8080/; curl -s --max-time 30 http://localhost:8080/ | head -c 1500",
+      "exit_code": 0,
+      "stdout": "HTTP 302 (redirect: http://localhost:8080/login)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"login page: HTTP %{http_code}\\n\" --max-time 30 http://localhost:8080/login; curl -s --max-time 30 http://localhost:8080/login | grep -oiE \"<title>[^<]*</title>|OpenProject\" | head -5",
+      "exit_code": 0,
+      "stdout": "login page: HTTP 200\n<title>Sign in | OpenProject</title>\nOpenProject\nopenproject\nopenproject\nopenproject\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker logs openproject 2>&1 | grep -iE \"admin|password|seeder|seed\" | head -20",
+      "exit_code": 141,
+      "stdout": "-----> Seeding database...\n       Executing database seed...\n       *** Seeding for locale: 'en'\n       *** Seeding basic data for standard edition\n       Loading discovered seeders: Wikis::InternalProviderSeeder, Documents::TypeSeeder\n        \u21b3 BuiltinUsersSeeder\n        \u21b3 ProjectRoleSeeder\n        \u21b3 WorkPackageRoleSeeder\n        \u21b3 ProjectQueryRoleSeeder\n        \u21b3 GlobalRoleSeeder\n        \u21b3 TimeEntryActivitySeeder\n        \u21b3 ColorSeeder\n        \u21b3 ColorSchemeSeeder\n        \u21b3 PluginAuthProviderSeeder\n        \u21b3 ProjectPhaseColorSeeder\n        \u21b3 ProjectPhaseDefinitionSeeder\n        \u21b3 StatusSeeder\n        \u21b3 TypeSeeder\n        \u21b3 WorkflowSeeder\n        \u21b3 PrioritySeeder\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker logs openproject 2>&1 | grep -iB2 -A8 \"default.*password\\|password.*admin\\|admin.*admin\" | head -40",
+      "exit_code": 0,
+      "stdout": "       server stopped\n-----> Database setup finished.\n       On first installation, the default admin credentials are login: admin, password: admin\n-----> Launching supervisord...\n2026-10-17 01:20:16,695 INFO Set uid to user 0 succeeded\n2026-10-17 01:20:16,700 INFO RPC interface 'supervisor' initialized\n2026-10-17 01:20:16,700 CRIT Server 'unix_http_server' running without any HTTP authentication checking\n2026-10-17 01:20:16,701 INFO supervisord started with pid 1\n2026-10-17 01:20:17,704 INFO spawned: 'postgres' with pid 215\n2026-10-17 01:20:17,705 INFO spawned: 'apache2' with pid 216\n2026-10-17 01:20:17,707 INFO spawned: 'web' with pid 217\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps --filter name=openproject --format 'Container: {{.Names}} | {{.Status}} | {{.Image}}'; docker logs openproject 2>&1 | grep -iE \"OpenProject version|version.*17\\.\" | head -3; echo \"=== API test (admin login) ===\"; curl -s -o /dev/null -w \"GET /api/v3/users/me with basic auth admin:admin -> HTTP %{http_code}\\n\" --max-time 30 -u admin:admin http://localhost:8080/api/v3/users/me; curl -s --max-time 30 -u admin:admin http://localhost:8080/api/v3/users/me | head -c 400",
+      "exit_code": 0,
+      "stdout": "Container: openproject | Up 5 minutes | openproject/openproject:17\n=== API test (admin login) ===\nGET /api/v3/users/me with basic auth admin:admin -> HTTP 401\n{\"_type\":\"Error\",\"errorIdentifier\":\"urn:openproject-org:api:v3:errors:Unauthenticated\",\"message\":\"You did not provide the correct credentials.\"}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker logs openproject 2>&1 | grep -iE \"user|admin\" | grep -ivE \"supervis|pid|role|userxattr\" | head -30",
+      "exit_code": 0,
+      "stdout": "The files belonging to this database system will be owned by user \"postgres\".\nThis user must also own the server process.\n       The files belonging to this database system will be owned by user \"postgres\".\n       This user must also own the server process.\n        \u21b3 BuiltinUsersSeeder\n        \u21b3 UserCustomFieldSectionSeeder\n       *** Seeding admin user\n       On first installation, the default admin credentials are login: admin, password: admin\n2026-10-17 01:20:16,695 INFO Set uid to user 0 succeeded\nI, [2026-10-17T01:22:12.483608 #562]  INFO -- : [cc99a1be-7070-417b-a40d-2e266101a8bc] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=24543 duration=636.77 view=0.00 db=188.77 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:22:12.616489 #562]  INFO -- : [bfc8241c-19fc-4b25-b41f-c4410a0c6422] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=1818 duration=74.46 view=0.00 db=12.17 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:22:17.496963 #562]  INFO -- : [73ce7cc4-8668-4a04-a772-b6bf7552b93a] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=63266 duration=2009.02 view=1606.76 db=78.49 user=2\nI, [2026-10-17T01:22:19.258597 #562]  INFO -- : [e2105d6b-20c3-4d42-808a-f731200d63c8] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17802 duration=1464.46 view=1177.44 db=68.70 user=2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && rm -f op_cookies.txt\n# Get CSRF token\nCSRF=$(curl -s -c op_cookies.txt --max-time 30 http://localhost:8080/login | grep -oE 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"//')\necho \"CSRF token found: ${CSRF:0:20}...\"\ncurl -s -b op_cookies.txt -c op_cookies.txt -o /dev/null -w \"POST /login -> HTTP %{http_code} (redirect: %{redirect_url})\\n\" --max-time 30 \\\n  -d \"authenticity_token=$CSRF&user[login]=admin&user[password]=admin\" \\\n  http://localhost:8080/login",
+      "exit_code": 0,
+      "stdout": "CSRF token found: NTl94BsIHM8HotYdYPtt...\nPOST /login -> HTTP 422 (redirect: )\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && rm -f op_cookies.txt\nCSRF=$(curl -s -c op_cookies.txt --max-time 30 http://localhost:8080/login | grep -oE 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"//')\ncurl -s -b op_cookies.txt -c op_cookies.txt --max-time 30 \\\n  -d \"authenticity_token=$CSRF&user[login]=admin&user[password]=admin\" \\\n  http://localhost:8080/login | grep -oiE \"<title>[^<]*</title>|error[^<]{0,80}|invalid[^<]{0,60}|alert[^<]{0,80}\" | head -10",
+      "exit_code": 0,
+      "stdout": "<title>Sign in | OpenProject</title>\nInvalid user or password or the account is blocked due to multiple \nerror flash-error\">\nInvalid user or password or the account is blocked due to multiple \nalerts\nErrorIcon\">\nalert-fill\">\nErrorIcon\">\nalert-fill\">\nErrorIcon\">\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker logs openproject 2>&1 | grep -iE \"unauthentic|invalid|blocked|bruteforce|login attempt|password\" | tail -15",
+      "exit_code": 0,
+      "stdout": "       On first installation, the default admin credentials are login: admin, password: admin\nW, [2026-10-17T01:22:42.349374 #562]  WARN -- : [e5eb18e1-ba23-43ac-bd13-8b88c5a6ecb6] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:42 UTC: invalid credentials\nW, [2026-10-17T01:22:46.572478 #562]  WARN -- : [cddc6eb3-3b5c-4d7d-91ca-f9793597cbd7] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:46 UTC: invalid credentials\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s -c op2.txt --max-time 30 http://localhost:8080/login | grep -oE '<(input|form)[^>]*>' | grep -iE 'name=|action=' | head -20",
+      "exit_code": 0,
+      "stdout": "<form action=\"/login\" accept-charset=\"UTF-8\" method=\"post\">\n<input type=\"hidden\" name=\"authenticity_token\" value=\"W8SL-E-lv4ZICY5kbXaBL_t65N7B7P0uIbFAyvq0YQooxqgFCK4mOnXaleawg9_4KYu106GoyTcjPh0UZtJLJw\" />\n<input id=\"username-pulldown\" autofocus=\"autofocus\" autocomplete=\"username\" aria-required=\"true\" aria-describedby=\"validation-23e8dcce-d04c-49cc-a0fc-9ec70ebf751f\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" type=\"text\" name=\"username\" />\n<input id=\"password-pulldown\" type=\"password\" autocomplete=\"current-password\" aria-required=\"true\" aria-describedby=\"validation-da6f93de-ac4d-438f-90a6-4631117d0c45\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" name=\"password\" />\n<form data-turbo=\"false\" data-test-selector=\"user-login--form\" action=\"/login\" accept-charset=\"UTF-8\" method=\"post\">\n<input type=\"hidden\" name=\"authenticity_token\" value=\"TlL1QjszgWPUe-FL7sVQUKWquJgUOvUfoGiyWpGEt5o9UNa_fDgY3-mo-skzMA6Hd1vplXR-wQai5--EDeKdtw\" />\n<input id=\"username\" autofocus=\"autofocus\" autocomplete=\"username\" aria-required=\"true\" aria-describedby=\"validation-8905fee8-004c-49f8-94de-7a925f1af093\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" type=\"text\" name=\"username\" />\n<input id=\"password\" type=\"password\" autocomplete=\"current-password\" aria-required=\"true\" aria-describedby=\"validation-7b63e2ad-0684-4f43-9f3c-4ff93b9d37f4\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" name=\"password\" />\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && rm -f op3.txt\nCSRF=$(curl -s -c op3.txt --max-time 30 http://localhost:8080/login | grep -oE 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"//')\ncurl -s -b op3.txt -c op3.txt -o /dev/null -w \"POST /login (correct fields) -> HTTP %{http_code} (redirect: %{redirect_url})\\n\" --max-time 30 \\\n  -d \"authenticity_token=$CSRF&username=admin&password=admin\" \\\n  http://localhost:8080/login\ncurl -s -b op3.txt -o /dev/null -w \"GET / (after login) -> HTTP %{http_code}\\n\" --max-time 30 http://localhost:8080/",
+      "exit_code": 0,
+      "stdout": "POST /login (correct fields) -> HTTP 422 (redirect: )\nGET / (after login) -> HTTP 302\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && rm -f op4.txt\nCSRF=$(curl -s -c op4.txt --max-time 30 http://localhost:8080/login | grep -oE 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"//')\ncurl -s -b op4.txt -c op4.txt --max-time 30 \\\n  -d \"authenticity_token=$CSRF&username=admin&password=admin\" \\\n  http://localhost:8080/login > body.html\ngrep -oiE \"flash-error[^>]*>[^<]{0,120}|<title>[^<]*</title>\" body.html | head -6\ndocker logs openproject 2>&1 | grep -iE \"Failed login\" | tail -3",
+      "exit_code": 0,
+      "stdout": "<title>Change password | Account settings | OpenProject</title>\nflash-error\">\nW, [2026-10-17T01:22:42.349374 #562]  WARN -- : [e5eb18e1-ba23-43ac-bd13-8b88c5a6ecb6] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:42 UTC: invalid credentials\nW, [2026-10-17T01:22:46.572478 #562]  WARN -- : [cddc6eb3-3b5c-4d7d-91ca-f9793597cbd7] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:46 UTC: invalid credentials\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps --filter name=openproject --format 'Container: {{.Names}} | State: {{.Status}} | Image: {{.Image}}'; echo; echo \"=== Data persistence ===\"; du -sh /var/lib/openproject/pgdata /var/lib/openproject/assets 2>/dev/null; ls /var/lib/openproject/pgdata | head -8; echo; echo \"=== Key log lines ===\"; docker logs openproject 2>&1 | grep -E \"default admin credentials|Database setup finished|Puma version|Listening on\" | head -6; echo; echo \"=== HTTP checks ===\"; curl -s -o /dev/null -w \"GET /login -> %{http_code}\\n\" --max-time 30 http://localhost:8080/login; curl -s --max-time 30 http://localhost:8080/login | grep -oE \"<title>[^<]*</title>\"",
+      "exit_code": 0,
+      "stdout": "Container: openproject | State: Up 5 minutes | Image: openproject/openproject:17\n\n=== Data persistence ===\n80M\t/var/lib/openproject/pgdata\n916K\t/var/lib/openproject/assets\nPG_VERSION\nbase\nglobal\npg_commit_ts\npg_dynshmem\npg_hba.conf\npg_ident.conf\npg_logical\n\n=== Key log lines ===\n-----> Database setup finished.\n       On first installation, the default admin credentials are login: admin, password: admin\n[217] * Puma version: 8.0.2 (\"Into the Arena\")\n[217] * Listening on http://0.0.0.0:8080\n\n=== HTTP checks ===\nGET /login -> 200\n<title>Sign in | OpenProject</title>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker ps -a --format '{{.Names}} | {{.Image}} | {{.Status}} | {{.Ports}}' && echo \"---\" && docker version --format 'Client: {{.ClientVersion}} Server: {{.ServerVersion}}'",
+      "exit_code": 1,
+      "stdout": "openproject | openproject/openproject:17 | Up 6 minutes | 0.0.0.0:8080->80/tcp, [::]:8080->80/tcp\n---\nClient: \n",
+      "stderr": "template: version:1:10: executing \"version\" at <.ClientVersion>: can't evaluate field ClientVersion in type system.versionInfo\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /workspace/openproject-install/ 2>/dev/null; echo \"---\"; stat -c '%s %n' /workspace/openproject-install/secret_key_base.txt 2>/dev/null; echo \"---\"; ls -ld /var/lib/openproject /var/lib/openproject/pgdata /var/lib/openproject/assets 2>/dev/null; echo \"---\"; du -sh /var/lib/openproject/pgdata /var/lib/openproject/assets 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "total 12\ndrwxr-xr-x  2 root root 4096 Oct 17 01:12 .\ndrwxr-xr-x 32 root root 4096 Oct 17 01:12 ..\n-rw-------  1 root root  129 Oct 17 01:12 secret_key_base.txt\n---\n129 /workspace/openproject-install/secret_key_base.txt\n---\ndrwxr-xr-x  4 root root 4096 Oct 17 01:12 /var/lib/openproject\ndrwxr-xr-x  5 1000 1000 4096 Oct 17 01:17 /var/lib/openproject/assets\ndrwx------ 19  102  106 4096 Oct 17 01:20 /var/lib/openproject/pgdata\n---\n80M\t/var/lib/openproject/pgdata\n916K\t/var/lib/openproject/assets\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker logs openproject 2>&1 | tail -30; echo \"=== grep for admin message ===\"; docker logs openproject 2>&1 | grep -i \"admin\" | head -5",
+      "exit_code": 0,
+      "stdout": "[217] * Ruby version: ruby 4.0.6 (2026-07-14 revision 03b6d3f889) +YJIT +PRISM [x86_64-linux]\n[217] *  Min threads: 4\n[217] *  Max threads: 16\n[217] *  Environment: production\n[217] *   Master PID: 217\n[217] *      Workers: 2\n[217] *     Restarts: (\u2714) hot (\u2716) phased (\u2716) refork\n[217] * Preloading application\n[217] * Listening on http://0.0.0.0:8080\n[217] Use Ctrl-C to stop\n[217] - Worker 0 (PID: 556) booted in 0.01s, phase: 0\n[217] - Worker 1 (PID: 562) booted in 0.01s, phase: 0\nI, [2026-10-17T01:22:12.483608 #562]  INFO -- : [cc99a1be-7070-417b-a40d-2e266101a8bc] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=24543 duration=636.77 view=0.00 db=188.77 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:22:12.616489 #562]  INFO -- : [bfc8241c-19fc-4b25-b41f-c4410a0c6422] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=1818 duration=74.46 view=0.00 db=12.17 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:22:17.496963 #562]  INFO -- : [73ce7cc4-8668-4a04-a772-b6bf7552b93a] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=63266 duration=2009.02 view=1606.76 db=78.49 user=2\nI, [2026-10-17T01:22:19.258597 #562]  INFO -- : [e2105d6b-20c3-4d42-808a-f731200d63c8] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17802 duration=1464.46 view=1177.44 db=68.70 user=2\nI, [2026-10-17T01:22:41.746877 #562]  INFO -- : [0f2f552b-ba9d-4901-895b-8bc67e2c43ac] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17737 duration=451.62 view=316.87 db=41.20 user=2\nW, [2026-10-17T01:22:42.349374 #562]  WARN -- : [e5eb18e1-ba23-43ac-bd13-8b88c5a6ecb6] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:42 UTC: invalid credentials\nI, [2026-10-17T01:22:42.789019 #562]  INFO -- : [e5eb18e1-ba23-43ac-bd13-8b88c5a6ecb6] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=26782 duration=984.71 view=402.20 db=109.19 user=2\nI, [2026-10-17T01:22:46.444550 #562]  INFO -- : [18bf68df-e9df-40b6-9277-04fc79ee48d3] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17765 duration=319.84 view=210.38 db=25.06 user=2\nW, [2026-10-17T01:22:46.572478 #562]  WARN -- : [cddc6eb3-3b5c-4d7d-91ca-f9793597cbd7] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:46 UTC: invalid credentials\nI, [2026-10-17T01:22:46.723308 #562]  INFO -- : [cddc6eb3-3b5c-4d7d-91ca-f9793597cbd7] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=20003 duration=233.89 view=135.65 db=25.78 user=2\nI, [2026-10-17T01:22:54.080842 #562]  INFO -- : [e66fc460-342d-47d1-a1cf-f298f39ebb14] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17777 duration=685.83 view=603.50 db=34.85 user=2\nI, [2026-10-17T01:22:57.526745 #562]  INFO -- : [f7ca3db5-c7e0-47be-b64f-0a2657825387] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17791 duration=494.74 view=374.60 db=56.11 user=2\nI, [2026-10-17T01:22:59.674966 #562]  INFO -- : [727fd6ea-477e-45db-a5e8-f3c9b41d0721] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=35664 duration=2085.78 view=152.21 db=84.44 user=2\nI, [2026-10-17T01:22:59.746350 #562]  INFO -- : [94bf5125-1484-40ce-944f-0680f4a24a18] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=1876 duration=46.82 view=0.00 db=4.66 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:23:02.564103 #562]  INFO -- : [4e1658a7-9f1a-46c8-a262-b5fb00227b98] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17766 duration=284.85 view=244.01 db=26.94 user=2\nI, [2026-10-17T01:23:05.716835 #562]  INFO -- : [b0ef2718-3f1d-4dfb-b090-fdd5c17f6602] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=27218 duration=3104.56 view=158.42 db=59.86 user=2\nI, [2026-10-17T01:23:09.444876 #562]  INFO -- : [fe6727ed-c6cb-4003-bf42-baa495adea07] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17771 duration=149.09 view=106.02 db=28.26 user=2\nI, [2026-10-17T01:23:09.668411 #562]  INFO -- : [07521963-12be-4b93-8e35-a4b26a9ca55e] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17776 duration=175.95 view=85.55 db=30.90 user=2\n=== grep for admin message ===\n       *** Seeding admin user\n       On first installation, the default admin credentials are login: admin, password: admin\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w 'HTTP %{http_code} | time %{time_total}s | final URL: %{url_effective}\\n' http://localhost:8080/ ; echo \"---\"; curl -s -o /dev/null -w 'login page: HTTP %{http_code}\\n' http://localhost:8080/users/sign_in",
+      "exit_code": 0,
+      "stdout": "HTTP 302 | time 0.076070s | final URL: http://localhost:8080/\n---\nlogin page: HTTP 404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== API check with default admin/admin ===\"; curl -s -o /dev/null -w 'GET /api/v3/me (admin:admin): HTTP %{http_code}\\n' -u admin:admin http://localhost:8080/api/v3/me; curl -s -u admin:admin http://localhost:8080/api/v3/me | head -c 400; echo; echo \"=== API without auth ===\"; curl -s -o /dev/null -w 'GET /api/v3/me (no auth): HTTP %{http_code}\\n' http://localhost:8080/api/v3/me; echo \"=== version ===\"; curl -s -u admin:admin http://localhost:8080/api/v3/version; echo",
+      "exit_code": 0,
+      "stdout": "=== API check with default admin/admin ===\nGET /api/v3/me (admin:admin): HTTP 401\n{\"_type\":\"Error\",\"errorIdentifier\":\"urn:openproject-org:api:v3:errors:Unauthenticated\",\"message\":\"You did not provide the correct credentials.\"}\n=== API without auth ===\nGET /api/v3/me (no auth): HTTP 401\n=== version ===\n{\"_type\":\"Error\",\"errorIdentifier\":\"urn:openproject-org:api:v3:errors:Unauthenticated\",\"message\":\"You did not provide the correct credentials.\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker inspect openproject --format 'Image: {{.Image}}'; docker image inspect openproject/openproject:17 --format 'Digest: {{.Id}}' 2>/dev/null; docker inspect openproject --format 'RepoDigests: {{range .RepoDigests}}{{.}}{{end}}' 2>/dev/null; echo \"=== Env ===\"; docker inspect openproject --format '{{range .Config.Env}}{{println .}}{{end}}' | grep -Ei 'OPENPROJECT|SECRET' ; echo \"=== Mounts ===\"; docker inspect openproject --format '{{range .Mounts}}{{.Type}}: {{.Source}} -> {{.Destination}}{{println}}{{end}}'",
+      "exit_code": 0,
+      "stdout": "Image: sha256:6807914883d11612f76e8a2b046cceaf29031a6a8c4bf69352542ed08bfee5a9\nDigest: sha256:6807914883d11612f76e8a2b046cceaf29031a6a8c4bf69352542ed08bfee5a9\n\n=== Env ===\nOPENPROJECT_HTTPS=false\nOPENPROJECT_DEFAULT__LANGUAGE=en\nSECRET_KEY_BASE=6fb570b41e43f13518f35175e8af66c5ea5e28aa1318fa37700c15b60880bd427490896edb5d012c96750ef25c2a032ee0dd869bdb69277fdc522a846cd674c1\nOPENPROJECT_HOST__NAME=localhost:8080\nAPP_DATA_PATH=/var/openproject/assets\nOPENPROJECT_EDITION=standard\nOPENPROJECT_INSTALLATION__TYPE=docker\nOPENPROJECT_ATTACHMENTS__STORAGE__PATH=/var/openproject/assets/files\nOPENPROJECT_RAILS__CACHE__STORE=memcache\nOPENPROJECT_ANGULAR_UGLIFY=true\nOPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__URL=auto\nOPENPROJECT_COLLABORATIVE__EDITING__HOCUSPOCUS__SECRET=\nDATABASE_URL=postgres://openproject:openproject@127.0.0.1/openproject\nPGDATA=/var/openproject/pgdata\n=== Mounts ===\nbind: /var/lib/openproject/pgdata -> /var/openproject/pgdata\nbind: /var/lib/openproject/assets -> /var/openproject/assets\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject psql -U openproject -d openproject -c \"SELECT id, login, admin, last_login_on, failed_login_count FROM users ORDER BY id LIMIT 5;\" 2>&1; echo \"exit: $?\"",
+      "exit_code": 0,
+      "stdout": "psql: error: connection to server on socket \"/var/run/postgresql/.s.PGSQL.5432\" failed: FATAL:  Peer authentication failed for user \"openproject\"\nexit: 2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && rm -f op_cj.txt\nPAGE=$(curl -s -c op_cj.txt http://localhost:8080/login)\nTOKEN=$(echo \"$PAGE\" | grep -o 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"$//')\necho \"token_len=${#TOKEN}\"\ncurl -s -b op_cj.txt -c op_cj.txt -o /dev/null -w 'POST /login: HTTP %{http_code} -> %{redirect_url}\\n' -X POST http://localhost:8080/login \\\n  -H 'Origin: http://localhost:8080' -H 'Referer: http://localhost:8080/login' -H 'X-Requested-With: XMLHttpRequest' \\\n  --data-urlencode \"authenticity_token=$TOKEN\" \\\n  --data-urlencode \"login=admin\" \\\n  --data-urlencode \"password=admin\"\necho \"--- follow session ---\"\ncurl -s -b op_cj.txt -c op_cj.txt -o /dev/null -w 'GET /projects (authed): HTTP %{http_code} final=%{url_effective}\\n' -L http://localhost:8080/projects",
+      "exit_code": 0,
+      "stdout": "token_len=86\nPOST /login: HTTP 422 -> \n--- follow session ---\nGET /projects (authed): HTTP 200 final=http://localhost:8080/login?back_url=http%3A%2F%2Flocalhost%3A8080%2Fprojects\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker logs openproject --since 5m 2>&1 | grep -E 'login|WARN|ERROR' | tail -10",
+      "exit_code": 0,
+      "stdout": "I, [2026-10-17T01:23:02.564103 #562]  INFO -- : [4e1658a7-9f1a-46c8-a262-b5fb00227b98] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17766 duration=284.85 view=244.01 db=26.94 user=2\nI, [2026-10-17T01:23:05.716835 #562]  INFO -- : [b0ef2718-3f1d-4dfb-b090-fdd5c17f6602] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=27218 duration=3104.56 view=158.42 db=59.86 user=2\nI, [2026-10-17T01:23:09.444876 #562]  INFO -- : [fe6727ed-c6cb-4003-bf42-baa495adea07] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17771 duration=149.09 view=106.02 db=28.26 user=2\nI, [2026-10-17T01:23:09.668411 #562]  INFO -- : [07521963-12be-4b93-8e35-a4b26a9ca55e] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17776 duration=175.95 view=85.55 db=30.90 user=2\nI, [2026-10-17T01:23:30.929525 #562]  INFO -- : [c87eb23b-75cf-4b5f-9802-4d43b3599dd3] method=GET path=/ format=*/* controller=HomescreenController action=index status=302 allocations=1791 duration=35.92 view=0.00 db=7.38 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:23:53.922158 #562]  INFO -- : [113af79d-5fed-49d6-8663-955bb9071792] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17774 duration=91.08 view=71.63 db=12.35 user=2\nW, [2026-10-17T01:23:54.037902 #562]  WARN -- : [0ffd357b-0d65-4b9f-924d-0a7d15cd003c] Failed login for '' from 172.17.0.1 at 2026-10-17 01:23:54 UTC: invalid credentials\nI, [2026-10-17T01:23:54.101920 #562]  INFO -- : [0ffd357b-0d65-4b9f-924d-0a7d15cd003c] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=23035 duration=151.27 view=55.43 db=24.22 user=2\nI, [2026-10-17T01:23:54.140545 #562]  INFO -- : [90c576d8-dde2-4df0-8cca-6bb45bfd76fc] method=GET path=/projects format=*/* controller=ProjectsController action=index status=302 allocations=2010 duration=21.59 view=0.00 db=3.87 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:23:54.214037 #562]  INFO -- : [ad243555-f43f-4777-a77d-5db3448e5c7e] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=18061 duration=67.14 view=50.77 db=10.87 user=2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject env PGPASSWORD=openproject psql -h 127.0.0.1 -U openproject -d openproject -c \"SELECT id, login, admin, failed_login_count FROM users ORDER BY id LIMIT 5;\" 2>&1; echo \"exit: $?\"; docker exec openproject env PGPASSWORD=openproject psql -h 127.0.0.1 -U openproject -d openproject -c \"SELECT count(*) AS projects FROM projects;\" 2>&1",
+      "exit_code": 0,
+      "stdout": " id | login | admin | failed_login_count \n----+-------+-------+--------------------\n  1 |       | t     |                  1\n  2 |       | f     |                  0\n  3 |       | f     |                  0\n  4 | admin | t     |                  2\n(4 rows)\n\nexit: 0\n projects \n----------\n        2\n(1 row)\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && curl -s http://localhost:8080/login | grep -oE '<(input|form|label)[^>]*(name|action|type|for)=\"[^\"]*\"[^>]*>' | head -30",
+      "exit_code": 0,
+      "stdout": "<form action=\"/login\" accept-charset=\"UTF-8\" method=\"post\">\n<input type=\"hidden\" name=\"authenticity_token\" value=\"EWgCTzqT3LItwpvS-zdSeEe1jo7VMfkCqXARjoMtjI0TPB-zNAMqPiEbfMCpbpbkJdyOfIKOb9pMW5aznS4zxw\" />\n<label for=\"username-pulldown\" id=\"label-e7c1b81f-b8d1-461a-ada6-283fec47e06a\" class=\"FormControl-label\">\n<input id=\"username-pulldown\" autofocus=\"autofocus\" autocomplete=\"username\" aria-required=\"true\" aria-describedby=\"validation-e7c1b81f-b8d1-461a-ada6-283fec47e06a\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" type=\"text\" name=\"username\" />\n<label for=\"password-pulldown\" id=\"label-e424d70e-aa46-475b-af5f-10fa1839a001\" class=\"FormControl-label\">\n<input id=\"password-pulldown\" type=\"password\" autocomplete=\"current-password\" aria-required=\"true\" aria-describedby=\"validation-e424d70e-aa46-475b-af5f-10fa1839a001\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" name=\"password\" />\n<form data-turbo=\"false\" data-test-selector=\"user-login--form\" action=\"/login\" accept-charset=\"UTF-8\" method=\"post\">\n<input type=\"hidden\" name=\"authenticity_token\" value=\"6JA7znWdBtg4hHKjFZV2MrfX4A_BiUEV8OlZq1XQVHjqxCYyew3wVDRdlbFHzLKu1b7g_ZY2180Vwt6WS9PrMg\" />\n<label for=\"username\" id=\"label-3b3ded87-9d5d-4da5-9c95-d784c83656bb\" class=\"FormControl-label\">\n<input id=\"username\" autofocus=\"autofocus\" autocomplete=\"username\" aria-required=\"true\" aria-describedby=\"validation-3b3ded87-9d5d-4da5-9c95-d784c83656bb\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" type=\"text\" name=\"username\" />\n<label for=\"password\" id=\"label-4dbc1caa-9bff-43ef-9d6c-efa94bb67b7b\" class=\"FormControl-label\">\n<input id=\"password\" type=\"password\" autocomplete=\"current-password\" aria-required=\"true\" aria-describedby=\"validation-4dbc1caa-9bff-43ef-9d6c-efa94bb67b7b\" data-target=\"primer-text-field.inputElement \" class=\"FormControl-input FormControl-medium\" name=\"password\" />\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && rm -f op_cj2.txt\nPAGE=$(curl -s -c op_cj2.txt http://localhost:8080/login)\nTOKEN=$(echo \"$PAGE\" | grep -o 'name=\"authenticity_token\" value=\"[^\"]*\"' | head -1 | sed 's/.*value=\"//;s/\"$//')\necho \"token_len=${#TOKEN}\"\ncurl -s -b op_cj2.txt -c op_cj2.txt -o /tmp/login_resp.html -w 'POST /login: HTTP %{http_code}\\n' -X POST http://localhost:8080/login \\\n  -H 'Origin: http://localhost:8080' -H 'Referer: http://localhost:8080/login' \\\n  --data-urlencode \"authenticity_token=$TOKEN\" \\\n  --data-urlencode \"username=admin\" \\\n  --data-urlencode \"password=admin\"\necho \"--- follow session ---\"\ncurl -s -b op_cj2.txt -c op_cj2.txt -o /tmp/projects.html -w 'GET /projects (authed): HTTP %{http_code} final=%{url_effective}\\n' -L http://localhost:8080/projects\necho \"--- projects page title ---\"; grep -oE '<title>[^<]*</title>' /tmp/projects.html | head -1\necho \"--- check admin logged in (look for admin name or sign out) ---\"; grep -oiE 'Signed in as [^<]*|admin' /tmp/projects.html | head -3",
+      "exit_code": 1,
+      "stdout": "token_len=86\nPOST /login: HTTP 422\n--- follow session ---\nGET /projects (authed): HTTP 200 final=http://localhost:8080/login?back_url=http%3A%2F%2Flocalhost%3A8080%2Fprojects\n--- projects page title ---\n<title>Sign in | OpenProject</title>\n--- check admin logged in (look for admin name or sign out) ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -oE 'class=\"[^\"]*(error|flash|validation)[^\"]*\"[^>]*>[^<]*' /tmp/login_resp.html | head -10; echo \"=== logs ===\"; docker logs openproject --since 2m 2>&1 | grep -E 'WARN|ERROR' | tail -5",
+      "exit_code": 0,
+      "stdout": "class=\"op-primer-flash--item\">\nclass=\"Banner flash Banner--error flash-error\">\nclass=\"flash-close Banner-close\">\n=== logs ===\nW, [2026-10-17T01:22:42.349374 #562]  WARN -- : [e5eb18e1-ba23-43ac-bd13-8b88c5a6ecb6] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:42 UTC: invalid credentials\nW, [2026-10-17T01:22:46.572478 #562]  WARN -- : [cddc6eb3-3b5c-4d7d-91ca-f9793597cbd7] Failed login for '' from 172.17.0.1 at 2026-10-17 01:22:46 UTC: invalid credentials\nW, [2026-10-17T01:23:54.037902 #562]  WARN -- : [0ffd357b-0d65-4b9f-924d-0a7d15cd003c] Failed login for '' from 172.17.0.1 at 2026-10-17 01:23:54 UTC: invalid credentials\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "python3 - <<'EOF'\nimport re\nhtml = open('/tmp/login_resp.html').read()\n# extract banner text\nm = re.search(r'flash-error\">(.*?)</div>\\s*</div>', html, re.S)\nprint(\"BANNER:\", re.sub(r'<[^>]+>', ' ', m.group(1)).strip() if m else \"not found\")\nEOF\necho \"=== logs since 60s ===\"; docker logs openproject --since 60s 2>&1 | grep -vE '^$' | tail -8",
+      "exit_code": 0,
+      "stdout": "=== logs since 60s ===\nI, [2026-10-17T01:23:54.101920 #562]  INFO -- : [0ffd357b-0d65-4b9f-924d-0a7d15cd003c] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=23035 duration=151.27 view=55.43 db=24.22 user=2\nI, [2026-10-17T01:23:54.140545 #562]  INFO -- : [90c576d8-dde2-4df0-8cca-6bb45bfd76fc] method=GET path=/projects format=*/* controller=ProjectsController action=index status=302 allocations=2010 duration=21.59 view=0.00 db=3.87 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:23:54.214037 #562]  INFO -- : [ad243555-f43f-4777-a77d-5db3448e5c7e] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=18061 duration=67.14 view=50.77 db=10.87 user=2\nI, [2026-10-17T01:24:06.792532 #562]  INFO -- : [af8bc5f4-458c-49c4-91b1-bdce3d20b1a6] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17771 duration=119.33 view=79.19 db=22.06 user=2\nI, [2026-10-17T01:24:11.619037 #562]  INFO -- : [728dd83f-17a3-4678-b06f-9fa9689aa39d] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=17784 duration=346.00 view=223.76 db=40.05 user=2\nI, [2026-10-17T01:24:13.001109 #562]  INFO -- : [65039b85-d935-4e87-a78a-34d5ff5b86d6] method=POST path=/login format=*/* controller=AccountController action=login status=422 allocations=26857 duration=1295.51 view=66.49 db=55.97 user=2\nI, [2026-10-17T01:24:13.033785 #562]  INFO -- : [d7553cff-5cdb-46b9-9f92-bad60eaa9842] method=GET path=/projects format=*/* controller=ProjectsController action=index status=302 allocations=1915 duration=13.07 view=0.00 db=3.40 location=http://localhost:8080/login user=2\nI, [2026-10-17T01:24:13.098491 #562]  INFO -- : [ee0b97dc-e53a-4842-99c1-17a385590ce5] method=GET path=/login format=*/* controller=AccountController action=login status=200 allocations=18064 duration=56.27 view=37.53 db=13.11 user=2\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -oE 'Banner flash Banner--error flash-error\">[^<]*' /tmp/login_resp.html | head -5; echo \"---- any text nodes ----\"; grep -oE '<p[^>]*>[A-Z][^<]{5,150}' /tmp/login_resp.html | head -10; echo \"==== logs around 01:24:13 ====\"; docker logs openproject --since 4m 2>&1 | grep -E '01:24:1[0-5]' | grep -iE 'warn|error|fail|for |attempt' | head -8",
+      "exit_code": 1,
+      "stdout": "Banner flash Banner--error flash-error\">\n---- any text nodes ----\n<p class=\"Banner-title\" data-target=\"x-banner.titleText\">A new password is required.\n==== logs around 01:24:13 ====\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject env PGPASSWORD=openproject psql -h 127.0.0.1 -U openproject -d openproject -c \"\\d users\" 2>&1 | grep -iE 'password|force|change|must' ; echo \"=== full admin row ===\"; docker exec openproject env PGPASSWORD=openproject psql -h 127.0.0.1 -U openproject -d openproject -x -c \"SELECT * FROM users WHERE login='admin';\" 2>&1 | grep -iE 'password|force|change|must|auth|id|login|admin'",
+      "exit_code": 0,
+      "stdout": " force_password_change | boolean                  |           |          | false\n=== full admin row ===\nid                    | 4\nlogin                 | admin\nlastname              | Admin\nmail                  | admin@example.net\nadmin                 | t\nlast_login_on         | \nldap_auth_source_id   | \nidentity_url          | \nfirst_login           | t\nforce_password_change | t\nfailed_login_count    | 3\nlast_failed_login_on  | 2026-10-17 01:24:12.442792+00\nwebauthn_id           | \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject env RAILS_ENV=production timeout 90 bundle exec rails runner \"u=User.find_by(login:'admin'); puts 'valid_password(admin): ' + u.valid_password?('admin').to_s; puts 'force_password_change: ' + u.force_password_change?.to_s; puts 'admin_flag: ' + u.admin?.to_s; puts 'status: ' + u.status.to_s\" 2>&1 | grep -vE '^\\[' | tail -10",
+      "exit_code": 1,
+      "stdout": "I, [2026-10-17T01:25:08.928837 #639]  INFO -- : Increasing database pool size to 17 to match max threads\nPlease specify a valid ruby command or the path of a script to run.\nRun 'bin/rails runner -h' for help.\n\nundefined method 'valid_password?' for an instance of User\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== processes inside container ===\"; docker exec openproject sh -c 'ps -eo comm= 2>/dev/null | sort | uniq -c | sort -rn' | head -20; echo \"=== listening ports ===\"; docker exec openproject sh -c '(ss -tlnp 2>/dev/null || netstat -tlnp 2>/dev/null) | head -15'",
+      "exit_code": 0,
+      "stdout": "=== processes inside container ===\n     21 postgres\n      3 ruby\n      3 apache2\n      2 sort\n      2 sh\n      2 MainThread\n      1 worker\n      1 uniq\n      1 supervisord\n      1 qmgr\n      1 ps\n      1 pickup\n      1 npm run start\n      1 memcached\n      1 master\n      1 hocuspocus\n      1 esbuild\n      1 bundle\n      1 apache2ctl\n=== listening ports ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject env RAILS_ENV=production timeout 90 bundle exec rails runner 'u=User.find_by(login:\"admin\"); puts \"authenticate(admin/admin): \" + (u.authenticate(\"admin\") ? \"TRUE - password valid\" : \"FALSE\")' 2>&1 | grep -vE '^\\[' | tail -3",
+      "exit_code": 1,
+      "stdout": "Run 'bin/rails runner -h' for help.\n\nundefined method 'authenticate' for an instance of User\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject sh -c 'grep -rn \"def crypt_password\\|def self.crypt_password\\|crypted_password\\|digest_algorithm\\|SecureRandom\\|Digest::\" /app/app/models/user.rb 2>/dev/null | head; echo \"=== class methods for password ===\"; grep -n \"def self\\.\\|def crypt\\|def check_password\\|def valid_password\\|def authenticate\" /app/app/models/user.rb 2>/dev/null | head'",
+      "exit_code": 0,
+      "stdout": "=== class methods for password ===\n159:  def self.create_blocked_scope(scope, blocked)\n163:  def self.blocked_condition(blocked)\n213:  def self.unique_attribute\n246:  def self.available_custom_fields(_user)\n266:  def self.search_in_project(query, options)\n271:  def self.try_to_login(login, password, session = nil)\n290:  def self.try_authentication_for_existing_user(user, password, session = nil)\n303:  def self.activate_user!(user, session)\n317:  def self.try_authentication_and_create_user(login, password)\n330:  def self.columns_for_name(formatter = nil)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject sh -c 'cat /app/config/VERSION 2>/dev/null; echo \"---\"; cat /app/VERSION 2>/dev/null; echo \"--- version via node/env ---\"; grep -rn \"OPENPROJECT_VERSION\\|VERSION=\" /app/config/initializers/*.rb 2>/dev/null | head -3'",
+      "exit_code": 0,
+      "stdout": "---\n--- version via node/env ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject sh -c 'sed -n \"271,300p\" /app/app/models/user.rb'",
+      "exit_code": 0,
+      "stdout": "  def self.try_to_login(login, password, session = nil)\n    # Make sure no one can sign in with an empty password\n    return nil if password.to_s.empty?\n\n    user = find_by_login(login)\n    user = if user\n             try_authentication_for_existing_user(user, password, session)\n           else\n             try_authentication_and_create_user(login, password)\n           end\n    unless prevent_brute_force_attack(user, login).nil?\n      user.log_successful_login if user && !user.new_record?\n      return user\n    end\n    nil\n  end\n\n  # Tries to authenticate a user in the database via external auth source\n  # or password stored in the database\n  def self.try_authentication_for_existing_user(user, password, session = nil)\n    activate_user! user, session if session\n\n    return nil unless user.active?\n    return nil unless user.check_password?(password)\n\n    unless user.ldap_auth_source\n      return nil if user.force_password_change\n      return nil if user.password_expired?\n    end\n    user\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject env RAILS_ENV=production timeout 90 bundle exec rails runner 'u=User.find_by(login:\"admin\"); puts \"check_password?(admin): \" + u.check_password?(\"admin\").to_s; puts \"check_password?(wrongpass): \" + u.check_password?(\"wrongpass\").to_s; puts \"force_password_change: \" + u.force_password_change?.to_s' 2>&1 | grep -E 'check_password|force_password'",
+      "exit_code": 0,
+      "stdout": "check_password?(admin): true\ncheck_password?(wrongpass): false\nforce_password_change: true\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec openproject sh -c 'ruby -e \"require '\\''yaml'\\''; puts File.read(\\\"\\''/app/package.json'\\''\\\").lines.first(5).join\" 2>/dev/null | head; grep -m1 \"\\\"version\\\"\" /app/package.json 2>/dev/null; echo \"--- image tag ---\"; docker image inspect openproject/openproject:17 --format 'Tag: {{.Config.Image}}  Created: {{.Created}}' 2>/dev/null; docker image ls openproject/openproject --digests 2>/dev/null | head -3'",
+      "exit_code": 127,
+      "stdout": "  \"version\": \"0.1.0\",\n--- image tag ---\n",
+      "stderr": "{{.Config.Image}}: 1: docker: not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker image ls openproject/openproject --digests 2>&1 | head; echo \"=== app version inside ===\"; docker exec openproject sh -c 'grep -m1 -iE \"version\" /app/config/initializers/011-version.rb 2>/dev/null; cat /app/app/VERSION 2>/dev/null; ls /app/app/ 2>/dev/null | head'; echo \"=== health: puma + pg alive ===\"; docker exec openproject sh -c 'pg_isready -h 127.0.0.1 2>&1'",
+      "exit_code": 0,
+      "stdout": "REPOSITORY                TAG       DIGEST                                                                    IMAGE ID       CREATED        SIZE\nopenproject/openproject   17        sha256:3603f071443e16f773ca0e6bbe7f12f66eeeb95cca4540c4f93ec504305a0596   6807914883d1   37 hours ago   2.22GB\n=== app version inside ===\nAGENTS.md\nCLAUDE.md\nassets\ncomponents\nconstants\ncontracts\ncontrollers\nforms\nhelpers\nmailers\n=== health: puma + pg alive ===\n127.0.0.1:5432 - accepting connections\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "rm -f /tmp/op_cj.txt /tmp/op_cj2.txt /tmp/login_resp.html /tmp/projects.html && echo \"temp files cleaned\"",
+      "exit_code": 0,
+      "stdout": "temp files cleaned\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

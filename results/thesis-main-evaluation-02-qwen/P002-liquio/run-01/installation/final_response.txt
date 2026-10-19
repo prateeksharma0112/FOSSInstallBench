@@ -1,0 +1,1 @@
+Liquio installed successfully via the documented Docker Compose method. All 20 containers are Up (healthy); admin panel (8082), cabinet (8081), and ID front (8080) serve HTTP 200; all exposed APIs (8100–8105) answer /test/ping; generated config, CA, and admin.p12/demo.p12 keys are in place (admin.p12 verified OK against the generated CA).

@@ -1,0 +1,876 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin b1eae252f8ab54c59cda7c3ac10f440ecca46906",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen.git/\nFrom https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen\n * branch            b1eae252f8ab54c59cda7c3ac10f440ecca46906 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach b1eae252f8ab54c59cda7c3ac10f440ecca46906",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at b1eae25 Neues Feld Inkraftdatum/Inkrafttreten in UI und XML Export\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = b1eae252f8ab54c59cda7c3ac10f440ecca46906",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 40\ndrwxr-xr-x 4 root root 4096 Oct 16 11:05 .\ndr-xr-xr-x 1 root root 4096 Oct 16 11:05 ..\ndrwxr-xr-x 8 root root 4096 Oct 16 11:05 .git\n-rw-r--r-- 1 root root   97 Oct 16 11:05 .gitignore\n-rw-r--r-- 1 root root 6233 Oct 16 11:05 README.md\n-rw-r--r-- 1 root root 6529 Oct 16 11:05 logo.svg\n-rw-r--r-- 1 root root 3737 Oct 16 11:05 publiccode.yml\ndrwxr-xr-x 5 root root 4096 Oct 16 11:05 src\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release && uname -a",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\nLinux 2f9040d9e2ae 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/README.md",
+      "exit_code": 0,
+      "stdout": "# Introduction\n\nStra\u00dfenname ist ein Open-Source-Projekt der Stadt Leipzig.\n\nEs ist eine Anwendung, die eine \u00dcbersicht \u00fcber Stra\u00dfen, Beschl\u00fcsse, Namenskomplexe, Erl\u00e4uterungstafeln darstellt,\num den Stra\u00dfenbenennungsverlauf nachvollziehen zu k\u00f6nnen.\n\n# Getting Started\n\n## Keycloak\n\nEs wird eine laufende Instanz von [Keycloak](https://www.keycloak.org/getting-started/getting-started-docker)\nf\u00fcr die Authentifizierung ben\u00f6tigt.  \nEs muss ein Client (vorzugsweise \"strassennamen\") eingerichtet sein,\nauf den Frontend wie Backend zugreifen k\u00f6nnen.\n\nFolgende Rollen sind zwingend vorausgesetzt:\n\n- app-access (Diese Rolle gibt die Anwendung f\u00fcr den Nutzer frei)\n- editor (Diese Rolle gibt Bearbeitungsrecht frei)\n\n### Client Konfiguration\n\nDes Weiteren muss der Client auf Frontend und Backend konfiguriert werden:\n\n#### Allgemeine Einstellungen\n\n`Client-ID` muss zu den Einstellungen im Backend und Frontend passen.\n\n#### Zugriffseinstellungen\n\n`Root URL` und `Home-URL` m\u00fcssen die URL des Frontends sein.\n\n`Valid redirect URIs` m\u00fcssen Backend und Frontend eingetragen werden. Diese enden immer mit einem *.\n\nBeispiel:\n\n- http://localhost:4200/*\n- http://localhost:5000/*\n\n`Valid post logout redirect URIs` muss immer das Frontend sein und mit einem * enden.\n\nBeispiel:\n\n- http://localhost:4200/*\n\n`Web Origins` und `Admin URL` muss das Frontend angegeben werden.\n\n#### Protokolleinstellungen\n\nAuthentifizierungsablauf muss folgende aktiviert werden:\n\n* Standard-Flow\n* Direct access grants\n* Implicit flow\n\nDie Client-Authentifizierung und die Autorisierung d\u00fcrfen nicht aktiviert sein.\nDer Rest unter `Protokolleinstellungen` sollte standard sein.\n\n## Frontend\n\nDas Frontend verwendet [Angular](https://angular.dev/). \u00dcber den Konsolen-Befehl `npm i`,\nim Verzeichnis des Frontends `./src/Frontend/Strassennamen`, kann die App installiert werden.\n\nIm Ordner `./src/Frontend/Strassennamen/configs/config.development.json` muss die `endPointUrl` zum Backend angegeben werden.\nIn `keycloak` m\u00fcssen die Zugriffsdaten von keykloak hinterlegt werden.\n`resource` bezieht sich hierbei auf den Client im Keycloak.\n\nBeispiel Konfiguration:\n\n```json\n{\n  \"endPointUrl\": \"http://localhost:5000/api\",\n  \"keycloak\": {\n    \"realm\": \"my-realm\",\n    \"authServerUrl\": \"http://localhost:8080/\",\n    \"resource\": \"strassennamen\"\n  }\n}\n```\n\n**Achtung, die URL zum Frontend, muss im Backend als CORS Konfiguration hintergelegt sein.**\n\n## Backend\n\nHierzu wird eine Entwicklungsumgebung ben\u00f6tigt. Die Entwicklung entstand mit Rider.\nKann aber auch mit [Visual Studio Community](https://visualstudio.microsoft.com/de/vs/community/)\noder Vergleichbarem gestartet werden.\n\nZuerst ist eine Datenbank mit SQL vonn\u00f6ten. Diese muss zu [Entity Framework](https://github.com/dotnet/efcore) kompatibel sein.\nZum Einsatz kam eine MS-SQL Datenbank.\nLokal sollte\neine [SQL Server Express LocalDB](https://learn.microsoft.com/de-de/sql/database-engine/configure-windows/sql-server-express-localdb)\nausreichen.\n\nIm Ordner `./src/Backend/appsettings.Development.json` wird das Backend konfiguriert. Wichtig sind dabei vor allem, die Angabe der Keycloak\nKonfiguration,\nder CorsOrigins und den ConnectionStrings.\n\nBeispiel Konfiguration:\n\n```json\n{\n  \"Serilog\": {\n    \"Using\":  [ \"Serilog.Sinks.File\" ],\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft.AspNetCore\": \"Information\",\n        \"Microsoft.EntityFrameworkCore\": \"Warning\",\n        \"System.Net.Http\": \"Warning\"\n      }\n    },\n    \"WriteTo\": [\n      {\n        \"Name\": \"File\",\n        \"Args\": {\n          \"path\": \"Logs/log-.txt\",\n          \"rollingInterval\": \"Day\",\n          \"retainedFileCountLimit\": \"15\"\n        }\n      }\n    ]\n  },\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"Microsoft.EntityFrameworkCore.Database.Command\": \"Warning\"\n    }\n  },\n  \"Keycloak\": {\n    \"Realm\": \"my-realm\",\n    \"AuthServerUrl\": \"http://localhost:8080/\",\n    \"SslRequired\": \"none\",\n    \"Resource\": \"strassennamen\",\n    \"PublicClient\": true,\n    \"VerifyTokenAudience\": false,\n    \"ConfidentialPort\": 0,\n    \"ClientName\": \"strassennamen\"\n  },\n  \"CorsOrigins\": [\n    \"http://localhost:4200\"\n  ],\n  \"ConnectionStrings\": {\n    \"DB\": \"Server=(localdb)\\\\MSSQLLocalDB;Database=Strassennamen;Integrated Security=true\"\n  },\n  \"Jobs\": {\n    \"Heartbeat\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0/5 * 1/1 * ? *\"\n    },\n    \"XmlExportStrassen\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0 1 1/1 * ? *\",\n      \"FilePath\": \"Export/strassen.xml\",\n      \"FilterStrassenStatus\": \"Aktiv\"\n    }\n  }\n}\n```\n\n*Anmerkungen*\n\n- CorsOrigins:\n    - hier sollte die fronend domain hinterlegt werden, damit das backend den Zugriff erlaubt\n- Serilog:\n    - path angabe wohin die log files geschrieben werden sollen. schreibrechte sollten vorhanden sein\n- Jobs\n    - Heartbeat: Sorgt daf\u00fcr, dass der XmlExportStrassen 1x beim Start sofort ausgef\u00fchrt wird\n    - XmlExportStrassen:\n        - Kann mit Intervall die Stra\u00dfen zu einer XML-Datei ausliefern\n        - Der Filepath muss entsprechend angepasst werden und Zugriff (z.B. anderer Netzwerkpfad) sollte vom Webserver aus gew\u00e4hrleistet\n          sein\n        - FilterStrassenStatus: Gib an welche Stra\u00dfen exportiert werden wollen. Default Aktiv\n            - Status-angaben: Aktiv, Inaktiv, Unbekannt, InBearbeitung. null\n            - null bedeutet, dass alle Stra\u00dfen ausgegeben werden\n\n**Sollte das Frontend nicht unter `http://localhost:4200` laufen, muss dies unter `CorsOrigins` angepasst werden.**\n\n# Build and Start\n\n## Backend\n\nHierzu muss je nach Entwicklungsumgebung, das Projekt `Lecos.Strassennamen.RestAPI` als Startprojekt festgelegt werden.\n\n## Frontend\n\n\u00dcber den Konsolen-Befehl `npm run start` kann das Frontend gestartet werden.\nDa eine Authentifizierung immer dringend vonn\u00f6ten ist, wird die Anwendung zuerst auf den Keycloak-Server weiterleiten, um sich anzumelden.\nBitte darauf achten, dass im Keycloak die entsprechenden Urls hinterlegt sind, damit Frontend und Backend zur\u00fcckgeleitet werden k\u00f6nnen.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /workspace/src -maxdepth 3 -type d | head -50",
+      "exit_code": 0,
+      "stdout": "/workspace/src\n/workspace/src/Frontend\n/workspace/src/Frontend/Strassennamen\n/workspace/src/Frontend/Strassennamen/public\n/workspace/src/Frontend/Strassennamen/src\n/workspace/src/Backend\n/workspace/src/Backend/Lecos.Strassennamen.Data\n/workspace/src/Backend/Lecos.Strassennamen.Data/Repositories\n/workspace/src/Backend/Lecos.Strassennamen.Data/Export\n/workspace/src/Backend/Lecos.Strassennamen.Data/Entities\n/workspace/src/Backend/Lecos.Strassennamen.Data/Extensions\n/workspace/src/Backend/Lecos.Strassennamen.Data/Interfaces\n/workspace/src/Backend/Lecos.Strassennamen.Data/Migrations\n/workspace/src/Backend/Lecos.Strassennamen.Data/Configurations\n/workspace/src/Backend/Lecos.Strassennamen.Shared.Test\n/workspace/src/Backend/Lecos.Strassennamen.Shared\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Enums\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Resources\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models\n/workspace/src/Backend/Lecos.Strassennamen.Data.Test\n/workspace/src/Backend/Lecos.Strassennamen.Data.Test/Repositories\n/workspace/src/Backend/Lecos.Strassennamen.Data.Test/Export\n/workspace/src/Backend/Lecos.Strassennamen.Data.Test/Extensions\n/workspace/src/Backend/Lecos.Strassennamen.Data.Test/Util\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/DTOs\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Authorization\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Jobs\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Services\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Extensions\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Interfaces\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Validators\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Properties\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test/Authorization\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test/Services\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test/Extensions\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test/Validators\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI.Test/Controllers\n/workspace/src/Backend/Lecos.Strassennamen.TestUtil\n/workspace/src/NOTICE\n/workspace/src/NOTICE/Frontend Licenses\n/workspace/src/NOTICE/Frontend Licenses/Lodash\n/workspace/src/NOTICE/Frontend Licenses/ngx-translate-core\n/workspace/src/NOTICE/Frontend Licenses/Luxon\n/workspace/src/NOTICE/Frontend Licenses/DOMPurify\n/workspace/src/NOTICE/Frontend Licenses/Favicon\n/workspace/src/NOTICE/Frontend Licenses/PrimeNG\n/workspace/src/NOTICE/Frontend Licenses/Keycloak JS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which docker docker-compose node npm dotnet 2>&1; echo \"---\"; docker --version 2>&1; echo \"---\"; node --version 2>&1; npm --version 2>&1; dotnet --version 2>&1",
+      "exit_code": 127,
+      "stdout": "/usr/bin/docker\n---\nDocker version 29.7.2, build a7dcaa6\n---\n/bin/bash: line 3: node: command not found\n/bin/bash: line 3: npm: command not found\n/bin/bash: line 3: dotnet: command not found\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/src/Backend/ && cat /workspace/src/Backend/*.sln 2>/dev/null | head -30; ls /workspace/src/Frontend/Strassennamen/",
+      "exit_code": 0,
+      "stdout": "Lecos.Strassennamen.Data\nLecos.Strassennamen.Data.Test\nLecos.Strassennamen.RestAPI\nLecos.Strassennamen.RestAPI.Test\nLecos.Strassennamen.Shared\nLecos.Strassennamen.Shared.Test\nLecos.Strassennamen.TestUtil\nLecos.Strassennamen.sln\nREADME.md\nlicenses.txt\nlicenses_readme.txt\n\ufeff\nMicrosoft Visual Studio Solution File, Format Version 12.00\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.RestAPI\", \"Lecos.Strassennamen.RestAPI\\Lecos.Strassennamen.RestAPI.csproj\", \"{31D39725-A5AB-4008-8BB3-796F83A8CEC0}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.Data\", \"Lecos.Strassennamen.Data\\Lecos.Strassennamen.Data.csproj\", \"{785DA8AF-E8CD-435F-9920-1F317B08E6BA}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.Data.Test\", \"Lecos.Strassennamen.Data.Test\\Lecos.Strassennamen.Data.Test.csproj\", \"{2B669D03-4614-4936-854A-8C971C7896D6}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.TestUtil\", \"Lecos.Strassennamen.TestUtil\\Lecos.Strassennamen.TestUtil.csproj\", \"{3535FDC8-1E19-4CB7-BB5B-8F63B8951701}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.RestAPI.Test\", \"Lecos.Strassennamen.RestAPI.Test\\Lecos.Strassennamen.RestAPI.Test.csproj\", \"{55530630-5F06-4EAF-963D-460D20010900}\"\nEndProject\nProject(\"{2150E333-8FDC-42A3-9474-1A3956D46DE8}\") = \"test\", \"test\", \"{C0FD20B6-9CF6-4343-A4C8-15F1574D18DA}\"\nEndProject\nProject(\"{2150E333-8FDC-42A3-9474-1A3956D46DE8}\") = \"src\", \"src\", \"{7C3930EE-E479-4411-BCC9-8DC8F8D2F12C}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.Shared\", \"Lecos.Strassennamen.Shared\\Lecos.Strassennamen.Shared.csproj\", \"{0A3F2E2D-1F00-42B8-8CB8-FD65351C4408}\"\nEndProject\nProject(\"{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}\") = \"Lecos.Strassennamen.Shared.Test\", \"Lecos.Strassennamen.Shared.Test\\Lecos.Strassennamen.Shared.Test.csproj\", \"{4EF7D061-5E15-42C3-A70E-2D9A3E7D2F4E}\"\nEndProject\nGlobal\n\tGlobalSection(SolutionConfigurationPlatforms) = preSolution\n\t\tDebug|Any CPU = Debug|Any CPU\n\t\tRelease|Any CPU = Release|Any CPU\n\tEndGlobalSection\n\tGlobalSection(ProjectConfigurationPlatforms) = postSolution\n\t\t{31D39725-A5AB-4008-8BB3-796F83A8CEC0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU\n\t\t{31D39725-A5AB-4008-8BB3-796F83A8CEC0}.Debug|Any CPU.Build.0 = Debug|Any CPU\n\t\t{31D39725-A5AB-4008-8BB3-796F83A8CEC0}.Release|Any CPU.ActiveCfg = Release|Any CPU\n\t\t{31D39725-A5AB-4008-8BB3-796F83A8CEC0}.Release|Any CPU.Build.0 = Release|Any CPU\nREADME.md\nangular.json\nkarma.conf.js\npackage-lock.json\npackage.json\nproxy.config.json\npublic\nsrc\ntsconfig.app.json\ntsconfig.json\ntsconfig.spec.json\nwebstorm.xml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker info 2>&1 | head -20",
+      "exit_code": 141,
+      "stdout": "Client: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -h \"TargetFramework\" /workspace/src/Backend/*/*.csproj; echo \"---\"; cat /workspace/src/Frontend/Strassennamen/package.json | head -60",
+      "exit_code": 0,
+      "stdout": "        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n        <TargetFramework>net9.0</TargetFramework>\n---\n{\n  \"name\": \"strassennamen\",\n  \"version\": \"1.1.0\",\n  \"scripts\": {\n    \"ng\": \"ng\",\n    \"start\": \"ng serve\",\n    \"build\": \"ng build\",\n    \"build-prod\": \"npm run build -- --configuration production --base-href /\",\n    \"watch\": \"ng build --watch --configuration development\",\n    \"test\": \"ng test\"\n  },\n  \"prettier\": {\n    \"printWidth\": 100,\n    \"singleQuote\": true,\n    \"overrides\": [\n      {\n        \"files\": \"*.html\",\n        \"options\": {\n          \"parser\": \"angular\"\n        }\n      }\n    ]\n  },\n  \"private\": true,\n  \"dependencies\": {\n    \"@angular/animations\": \"^21.2.14\",\n    \"@angular/cdk\": \"^21.2.12\",\n    \"@angular/common\": \"^21.2.14\",\n    \"@angular/compiler\": \"^21.2.14\",\n    \"@angular/core\": \"^21.2.0\",\n    \"@angular/forms\": \"^21.2.14\",\n    \"@angular/platform-browser\": \"^21.2.14\",\n    \"@angular/router\": \"^21.2.14\",\n    \"@ngx-translate/core\": \"^17.0.0\",\n    \"@ngx-translate/http-loader\": \"^17.0.0\",\n    \"@primeng/themes\": \"^21.0.4\",\n    \"@tailwindcss/aspect-ratio\": \"^0.4.2\",\n    \"@tailwindcss/forms\": \"^0.5.11\",\n    \"@tailwindcss/postcss\": \"^4.3.0\",\n    \"@tailwindcss/typography\": \"^0.5.19\",\n    \"@types/dompurify\": \"^3.2.0\",\n    \"@types/lodash\": \"^4.17.24\",\n    \"@types/luxon\": \"^3.7.1\",\n    \"angular-svg-icon\": \"^19.1.1\",\n    \"dompurify\": \"^3.4.5\",\n    \"flowbite\": \"^4.0.1\",\n    \"keycloak-js\": \"^26.2.4\",\n    \"lodash\": \"^4.18.1\",\n    \"luxon\": \"^3.7.2\",\n    \"postcss\": \"^8.5.15\",\n    \"primeicons\": \"^7.0.0\",\n    \"primelocale\": \"^2.3.2\",\n    \"primeng\": \"^21.1.8\",\n    \"rxjs\": \"~7.8.2\",\n    \"tailwindcss\": \"^4.3.0\",\n    \"tailwindcss-primeui\": \"^0.6.1\",\n    \"tslib\": \"^2.8.1\",\n    \"zone.js\": \"^0.16.2\"\n  },\n  \"devDependencies\": {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "df -h /workspace / /tmp | head; free -h; nproc",
+      "exit_code": 0,
+      "stdout": "Filesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.5G  952G   1% /\noverlay        1007G  4.5G  952G   1% /\noverlay        1007G  4.5G  952G   1% /\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       489Mi       6.6Gi       3.0Mi       530Mi       7.0Gi\nSwap:          2.0Gi        60Mi       1.9Gi\n8\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/src/Frontend/Strassennamen/configs 2>&1; ls /workspace/src/Backend/*.json; cat /workspace/src/Backend/appsettings.Development.json 2>/dev/null",
+      "exit_code": 1,
+      "stdout": "ls: cannot access '/workspace/src/Frontend/Strassennamen/configs': No such file or directory\n",
+      "stderr": "ls: cannot access '/workspace/src/Backend/*.json': No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /workspace/src/Frontend -name \"*.json\" -not -path \"*/node_modules/*\" | head -20; echo \"---\"; ls -la /workspace/src/Backend/; echo \"---\"; find /workspace/src/Backend -name \"appsettings*\"",
+      "exit_code": 0,
+      "stdout": "/workspace/src/Frontend/Strassennamen/package-lock.json\n/workspace/src/Frontend/Strassennamen/package.json\n/workspace/src/Frontend/Strassennamen/tsconfig.json\n/workspace/src/Frontend/Strassennamen/tsconfig.app.json\n/workspace/src/Frontend/Strassennamen/.eslintrc.json\n/workspace/src/Frontend/Strassennamen/public/assets/resources/de.json\n/workspace/src/Frontend/Strassennamen/public/assets/schueler-audit.json\n/workspace/src/Frontend/Strassennamen/public/assets/vorgaenge.json\n/workspace/src/Frontend/Strassennamen/public/assets/strasse.json\n/workspace/src/Frontend/Strassennamen/public/assets/vorgang.json\n/workspace/src/Frontend/Strassennamen/public/assets/strassen.json\n/workspace/src/Frontend/Strassennamen/public/configs/prod/config.production.json\n/workspace/src/Frontend/Strassennamen/public/configs/config.development.json\n/workspace/src/Frontend/Strassennamen/.postcssrc.json\n/workspace/src/Frontend/Strassennamen/angular.json\n/workspace/src/Frontend/Strassennamen/tsconfig.spec.json\n/workspace/src/Frontend/Strassennamen/proxy.config.json\n---\ntotal 88\ndrwxr-xr-x  9 root root  4096 Oct 16 11:05 .\ndrwxr-xr-x  5 root root  4096 Oct 16 11:05 ..\n-rw-r--r--  1 root root  6856 Oct 16 11:05 .gitignore\ndrwxr-xr-x  9 root root  4096 Oct 16 11:05 Lecos.Strassennamen.Data\ndrwxr-xr-x  6 root root  4096 Oct 16 11:05 Lecos.Strassennamen.Data.Test\ndrwxr-xr-x 11 root root  4096 Oct 16 11:05 Lecos.Strassennamen.RestAPI\ndrwxr-xr-x  7 root root  4096 Oct 16 11:05 Lecos.Strassennamen.RestAPI.Test\ndrwxr-xr-x  5 root root  4096 Oct 16 11:05 Lecos.Strassennamen.Shared\ndrwxr-xr-x  2 root root  4096 Oct 16 11:05 Lecos.Strassennamen.Shared.Test\ndrwxr-xr-x  2 root root  4096 Oct 16 11:05 Lecos.Strassennamen.TestUtil\n-rw-r--r--  1 root root  4909 Oct 16 11:05 Lecos.Strassennamen.sln\n-rw-r--r--  1 root root 15188 Oct 16 11:05 README.md\n-rw-r--r--  1 root root 15128 Oct 16 11:05 licenses.txt\n-rw-r--r--  1 root root   354 Oct 16 11:05 licenses_readme.txt\n---\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Frontend/Strassennamen/public/configs/config.development.json; echo \"===\"; cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json; echo \"===\"; cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.json",
+      "exit_code": 0,
+      "stdout": "\ufeff{\n  \"endPointUrl\": \"https://example.com/api\",\n  \"auth\": {\n    \"realm\": \"...\",\n    \"authServerUrl\": \"https://example.com/auth\",\n    \"resource\": \"strassennamen\"\n  }\n}\n===\n{\n  \"Serilog\": {\n    \"Using\":  [ \"Serilog.Sinks.File\" ],\n    \"MinimumLevel\": {\n      \"Default\": \"Information\",\n      \"Override\": {\n        \"Microsoft.AspNetCore\": \"Information\",\n        \"Microsoft.EntityFrameworkCore\": \"Warning\",\n        \"System.Net.Http\": \"Warning\"\n      }\n    },\n    \"WriteTo\": [\n      {\n        \"Name\": \"File\",\n        \"Args\": {\n          \"path\": \"Logs/log-.txt\",\n          \"rollingInterval\": \"Day\",\n          \"retainedFileCountLimit\": \"60\"\n        }\n      }\n    ]\n  },\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"Microsoft.EntityFrameworkCore.Database.Command\": \"Warning\"\n    }\n  },\n  \"Keycloak\": {\n    \"Realm\": null,\n    \"AuthServerUrl\": null,\n    \"SslRequired\": null,\n    \"Resource\": null,\n    \"PublicClient\": null,\n    \"VerifyTokenAudience\": null,\n    \"ConfidentialPort\": null,\n    \"ClientName\": null\n  },\n  \"CorsOrigins\": [\n    null\n  ],\n  \"ConnectionStrings\": {\n    \"DB\": null\n  },\n  \"Jobs\": {\n    \"Heartbeat\": {\n      \"Active\": false,\n      \"CronSchedule\": null\n    },\n    \"XmlExportStrassen\": {\n      \"Active\": false,\n      \"CronSchedule\": null,\n      \"FilePath\": null,\n      \"FilterStrassenStatus\": null\n    }\n  }\n}\n===\n{\n  \"Serilog\": {\n    \"Using\":  [ \"Serilog.Sinks.File\" ],\n    \"MinimumLevel\": {\n      \"Default\": \"Information\",\n      \"Override\": {\n        \"Microsoft.AspNetCore\": \"Information\",\n        \"Microsoft.EntityFrameworkCore\": \"Warning\",\n        \"System.Net.Http\": \"Warning\"\n      }\n    },\n    \"WriteTo\": [\n      { \n        \"Name\": \"File\",\n        \"Args\": {\n          \"path\": \"Logs/log-.txt\",\n          \"rollingInterval\": \"Day\",\n          \"retainedFileCountLimit\": \"60\"\n        }\n      }\n    ]\n  },\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Information\",\n      \"Microsoft.AspNetCore\": \"Warning\"\n    }\n  },\n  \"KeycloakUserSettings\": {\n    \"ClientName\": \"strassennamen\"\n  },\n  \"ConnectionStrings\": {\n    \"DB\": \"\"\n  },\n  \"CorsOrigins\": [],\n  \"UserServiceSettings\": {\n    \"KeycloakBaseUrl\": \"\",\n    \"Realm\": \"\",\n    \"ClientId\": \"\",\n    \"ClientSecret\": \"\",\n    \"KeycloakLoginPath\": \"\"\n  },\n  \"Jobs\": {\n    \"Heartbeat\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0/5 * 1/1 * ? *\"\n    },\n    \"XmlExportStrassen\": {\n      \"Active\": false,\n      \"CronSchedule\": \"0 0 1 1/1 * ? *\",\n      \"FilePath\": null,\n      \"FilterStrassenStatus\": \"Aktiv\"\n    }\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/README.md",
+      "exit_code": 0,
+      "stdout": "# Leipziger Stra\u00dfennamen\n\n## 3rd Party Libs and Licences\n\n| Package                                               | Version  | License Information Origin | License Expression | License Url                             | Copyright                                                                 | Authors                                                         | Package Project Url                                                           | Error                        | Error Context                                                                                                                                   |\n| ----------------------------------------------------- | -------- | -------------------------- | ------------------ | --------------------------------------- | ------------------------------------------------------------------------- | --------------------------------------------------------------- | ----------------------------------------------------------------------------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |\n| AwesomeAssertions                                     | 9.2.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   | Copyright Dennis Doomen 2010-2025, AwesomeAssertions 2025-                | AwesomeAssertions, Dennis Doomen, Jonas Nyrup and contributors  | https://github.com/AwesomeAssertions/AwesomeAssertions                        |                              |                                                                                                                                                 |\n| FluentMigrator                                        | 7.1.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   | FluentMigrator project 2008-2024                                          | Sean Chambers,Josh Coffman,Tom Marien,Mark Junker,John Zabroski | https://github.com/fluentmigrator/fluentmigrator/wiki                         |                              |                                                                                                                                                 |\n| FluentMigrator.Runner.SqlServer                       | 7.1.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   | FluentMigrator project 2008-2024                                          | Sean Chambers,Josh Coffman,Tom Marien,Mark Junker,John Zabroski | https://github.com/fluentmigrator/fluentmigrator/wiki                         |                              |                                                                                                                                                 |\n| FluentValidation                                      | 12.0.0   | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   | Copyright (c) Jeremy Skinner, .NET Foundation, and contributors 2008-2025 | Jeremy Skinner                                                  | https://fluentvalidation.net/                                                 |                              |                                                                                                                                                 |\n| FluentValidation.AspNetCore                           | 11.3.1   | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   | Copyright (c) Jeremy Skinner, .NET Foundation, and contributors 2008-2022 | Jeremy Skinner                                                  | https://fluentvalidation.net/                                                 |                              |                                                                                                                                                 |\n| JetBrains.Annotations                                 | 2025.2.2 | Expression                 | MIT                | https://licenses.nuget.org/MIT          | Copyright (c) 2016-2025 JetBrains s.r.o.                                  | JetBrains                                                       | https://www.jetbrains.com/help/resharper/Code_Analysis__Code_Annotations.html |                              |                                                                                                                                                 |\n| Keycloak.AuthServices.Authentication                  | 2.7.0    | Expression                 | MIT                | https://licenses.nuget.org/MIT          |                                                                           | Oleksii Nikiforov (@nikiforovall)                               | https://github.com/NikiforovAll/keycloak-authorization-services-dotnet        |                              |                                                                                                                                                 |\n| Keycloak.AuthServices.Authorization                   | 2.7.0    | Expression                 | MIT                | https://licenses.nuget.org/MIT          |                                                                           | Oleksii Nikiforov (@nikiforovall)                               | https://github.com/NikiforovAll/keycloak-authorization-services-dotnet        |                              |                                                                                                                                                 |\n| Microsoft.AspNetCore.OpenApi                          | 9.0.9    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://asp.net/                                                              |                              |                                                                                                                                                 |\n| Microsoft.EntityFrameworkCore                         | 9.0.9    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://docs.microsoft.com/ef/core/                                           |                              |                                                                                                                                                 |\n| Microsoft.EntityFrameworkCore.InMemory                | 9.0.10   | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://docs.microsoft.com/ef/core/                                           |                              |                                                                                                                                                 |\n| Microsoft.EntityFrameworkCore.SqlServer               | 9.0.9    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://docs.microsoft.com/ef/core/                                           |                              |                                                                                                                                                 |\n| Microsoft.Extensions.Configuration.Abstractions       | 9.0.9    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://dot.net/                                                              |                              |                                                                                                                                                 |\n| Microsoft.Extensions.DependencyInjection.Abstractions | 9.0.9    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://dot.net/                                                              |                              |                                                                                                                                                 |\n| Microsoft.Extensions.Diagnostics.Testing              | 9.9.0    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://dot.net/                                                              |                              |                                                                                                                                                 |\n| Microsoft.NET.Test.Sdk                                | 17.14.1  | Expression                 | MIT                | https://licenses.nuget.org/MIT          | \u00a9 Microsoft Corporation. All rights reserved.                             | Microsoft                                                       | https://github.com/microsoft/vstest                                           |                              |                                                                                                                                                 |\n| NSubstitute                                           | 5.3.0    | Expression                 | BSD-3-Clause       | https://licenses.nuget.org/BSD-3-Clause |                                                                           | Anthony Egerton,David Tchepak,Alexandr Nikitin,Oleksandr Povar  | https://nsubstitute.github.io/                                                |                              |                                                                                                                                                 |\n| NUnit                                                 | 4.4.0    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | Copyright (c) Charlie Poole, Rob Prouse and Contributors. MIT License.    | Charlie Poole, Rob Prouse                                       | https://nunit.org/                                                            |                              |                                                                                                                                                 |\n| NUnit.Analyzers                                       | 4.10.0   | Expression                 | MIT                | https://licenses.nuget.org/MIT          | Copyright (c) 2018-2025 NUnit project                                     | NUnit                                                           | https://github.com/nunit/nunit.analyzers                                      |                              |                                                                                                                                                 |\n| PAP.NSubstitute.FluentAssertionsBridge                | 1.0.0    | Manual                     | MIT                | https://licenses.nuget.org/MIT          | Copyright Pap Group Co 2020                                               | Hadi Ahmadi                                                     | https://github.com/PapGroup/NSubstitute.FluentAssertionsBridge                |                              |                                                                                                                                                 |\n| Serilog.AspNetCore                                    | 9.0.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   |                                                                           | Microsoft,Serilog Contributors                                  | https://github.com/serilog/serilog-aspnetcore                                 |                              |                                                                                                                                                 |\n| Serilog.Settings.Configuration                        | 9.0.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   |                                                                           | Serilog Contributors                                            | https://github.com/serilog/serilog-settings-configuration                     |                              |                                                                                                                                                 |\n| Serilog.Sinks.File                                    | 7.0.0    | Expression                 | Apache-2.0         | https://licenses.nuget.org/Apache-2.0   |                                                                           | Serilog Contributors                                            | https://github.com/serilog/serilog-sinks-file                                 |                              |                                                                                                                                                 |\n| Swashbuckle.AspNetCore                                | 9.0.6    | Expression                 | MIT                | https://licenses.nuget.org/MIT          |                                                                           | domaindrivendev                                                 | https://github.com/domaindrivendev/Swashbuckle.AspNetCore                     |                              |                                                                                                                                                 |\n| Swashbuckle.AspNetCore.Annotations                    | 9.0.6    | Expression                 | MIT                | https://licenses.nuget.org/MIT          | Copyright (c) 2016-2025 Richard Morris                                    | domaindrivendev                                                 | https://github.com/domaindrivendev/Swashbuckle.AspNetCore                     |                              |                                                                                                                                                 |\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Lecos.Strassennamen.RestAPI.csproj; echo \"===\"; cat /workspace/src/Backend/Lecos.Strassennamen.Data/Lecos.Strassennamen.Data.csproj",
+      "exit_code": 0,
+      "stdout": "<Project Sdk=\"Microsoft.NET.Sdk.Web\">\n    <PropertyGroup>\n        <TargetFramework>net9.0</TargetFramework>\n        <Nullable>enable</Nullable>\n        <VersionPrefix>1.0.0</VersionPrefix>\n        <ImplicitUsings>enable</ImplicitUsings>\n        <DockerDefaultTargetOS>Linux</DockerDefaultTargetOS>\n        <PackageReadmeFile>README.md</PackageReadmeFile>\n    </PropertyGroup>\n\n    <ItemGroup>\n        <PackageReference Include=\"FluentMigrator.Runner.SqlServer\" Version=\"7.1.0\"/>\n        <PackageReference Include=\"FluentValidation\" Version=\"12.0.0\"/>\n        <PackageReference Include=\"FluentValidation.AspNetCore\" Version=\"11.3.1\" />\n        <PackageReference Include=\"Keycloak.AuthServices.Authentication\" Version=\"2.7.0\"/>\n        <PackageReference Include=\"Keycloak.AuthServices.Authorization\" Version=\"2.7.0\"/>\n        <PackageReference Include=\"Microsoft.AspNetCore.OpenApi\" Version=\"9.0.9\"/>\n        <PackageReference Include=\"Quartz.AspNetCore\" Version=\"3.18.1\" />\n        <PackageReference Include=\"Serilog.AspNetCore\" Version=\"9.0.0\" />\n        <PackageReference Include=\"Serilog.Settings.Configuration\" Version=\"9.0.0\" />\n        <PackageReference Include=\"Serilog.Sinks.File\" Version=\"7.0.0\" />\n        <PackageReference Include=\"Swashbuckle.AspNetCore\" Version=\"9.0.6\"/>\n        <PackageReference Include=\"Swashbuckle.AspNetCore.Annotations\" Version=\"9.0.6\"/>\n    </ItemGroup>\n\n    <ItemGroup>\n        <ProjectReference Include=\"..\\Lecos.Strassennamen.Data\\Lecos.Strassennamen.Data.csproj\"/>\n        <ProjectReference Include=\"..\\Lecos.Strassennamen.Shared\\Lecos.Strassennamen.Shared.csproj\" />\n    </ItemGroup>\n\n    <ItemGroup>\n        <AssemblyAttribute Include=\"System.Runtime.CompilerServices.InternalsVisibleToAttribute\">\n            <_Parameter1>$(AssemblyName).Test</_Parameter1>\n        </AssemblyAttribute>\n    </ItemGroup>\n\n    <ItemGroup>\n      <Compile Remove=\"Export\\**\" />\n    </ItemGroup>\n\n    <ItemGroup>\n      <EmbeddedResource Remove=\"Export\\**\" />\n    </ItemGroup>\n\n    <ItemGroup>\n      <Content Remove=\"Export\\**\" />\n    </ItemGroup>\n\n    <ItemGroup>\n      <None Remove=\"Export\\**\" />\n    </ItemGroup>\n</Project>\n===\n\ufeff<Project Sdk=\"Microsoft.NET.Sdk\">\n    <PropertyGroup>\n        <TargetFramework>net9.0</TargetFramework>\n        <ImplicitUsings>enable</ImplicitUsings>\n        <Nullable>enable</Nullable>\n        <WarningLevel>4</WarningLevel>\n        <WarningsAsErrors/>\n    </PropertyGroup>\n\n    <ItemGroup>\n        <PackageReference Include=\"Audit.EntityFramework.Core\" Version=\"32.0.0\" />\n        <PackageReference Include=\"Audit.EntityFramework.Identity.Core\" Version=\"32.0.0\" />\n        <PackageReference Include=\"Audit.NET\" Version=\"32.0.0\" />\n        <PackageReference Include=\"FluentMigrator\" Version=\"7.1.0\"/>\n        <PackageReference Include=\"Microsoft.AspNetCore.Http\" Version=\"2.3.9\" />\n        <PackageReference Include=\"Microsoft.AspNetCore.Http.Abstractions\" Version=\"2.3.9\" />\n        <PackageReference Include=\"Microsoft.EntityFrameworkCore\" Version=\"9.0.9\"/>\n        <PackageReference Include=\"Microsoft.EntityFrameworkCore.SqlServer\" Version=\"9.0.9\"/>\n        <PackageReference Include=\"Microsoft.Extensions.Configuration.Abstractions\" Version=\"9.0.9\"/>\n        <PackageReference Include=\"Microsoft.Extensions.DependencyInjection.Abstractions\" Version=\"9.0.9\"/>\n        <PackageReference Include=\"Newtonsoft.Json\" Version=\"13.0.3\" />\n    </ItemGroup>\n\n    <ItemGroup>\n        <ProjectReference Include=\"..\\Lecos.Strassennamen.Shared\\Lecos.Strassennamen.Shared.csproj\" />\n    </ItemGroup>\n\n    <ItemGroup>\n        <AssemblyAttribute Include=\"System.Runtime.CompilerServices.InternalsVisibleToAttribute\">\n            <_Parameter1>$(AssemblyName).Test</_Parameter1>\n        </AssemblyAttribute>\n    </ItemGroup>\n</Project>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Program.cs",
+      "exit_code": 0,
+      "stdout": "using System.Text.Json.Serialization;\nusing FluentMigrator.Runner;\nusing FluentValidation;\nusing Keycloak.AuthServices.Authentication;\nusing Keycloak.AuthServices.Authorization;\nusing Keycloak.AuthServices.Common;\nusing Lecos.Strassennamen.Data;\nusing Lecos.Strassennamen.RestAPI.Authorization;\nusing Lecos.Strassennamen.RestAPI.Interfaces;\nusing Lecos.Strassennamen.RestAPI.Jobs;\nusing Lecos.Strassennamen.RestAPI.Services;\nusing Microsoft.OpenApi.Models;\nusing Newtonsoft.Json;\nusing Quartz;\nusing Serilog;\n\nnamespace Lecos.Strassennamen.RestAPI;\n\npublic static class Program\n{\n    public static void Main(string[] args)\n    {\n        var builder = WebApplication.CreateBuilder(args);\n        builder.Services\n            .AddAuthorization()\n            .AddKeycloakAuthorization()\n            .AddAuthorizationServer(options => { builder.Configuration.BindKeycloakOptions(options); });\n\n        builder.Services.AddKeycloakWebApiAuthentication(builder.Configuration);\n        builder.Services\n            .AddAuthorizationBuilder()\n            .ConfigureAuthorization(\n                builder.Configuration.GetRequiredSection(\"Keycloak\").GetValue<string>(\"ClientName\")\n                ?? throw new ApplicationException(\"Missing Keycloak ClientName\")\n                );\n\n        var keycloakSettings = builder.Configuration.GetRequiredSection(\"Keycloak\").Get<KeycloakAuthenticationOptions>();\n        if (keycloakSettings is null)\n        {\n            throw new ApplicationException(\"Could not read Keycloak settings!\");\n        }\n        if (keycloakSettings.AuthServerUrl is null || keycloakSettings.Realm is null)\n        {\n            throw new ApplicationException(\"Invalid Keycloak configuration!\");\n        }\n        \n        var jobSettings = builder.Configuration.GetRequiredSection(\"Jobs\").Get<JobSettings>();\n        if (jobSettings is null)\n        {\n            throw new ApplicationException(\"Could not read job settings!\");\n        }\n        if (jobSettings?.XmlExportStrassen?.Active is null || jobSettings?.XmlExportStrassen?.CronSchedule is null || jobSettings?.XmlExportStrassen?.FilePath is null)\n        {\n            throw new ApplicationException(\"Invalid XmlExportJob configuration!\");\n        }\n        \n        builder.ConfigureLogging();\n        builder.Services.ConfigureAppServices(jobSettings);\n\n        builder.Services.AddEndpointsApiExplorer();\n        builder.Services.AddSwaggerGen(options =>\n            {\n                var authserverBaseUrl = $\"{keycloakSettings.AuthServerUrl}realms/{keycloakSettings.Realm}/protocol/openid-connect\";\n\n                options.EnableAnnotations();\n                options.AddSecurityDefinition(\n                    \"OAuth2\",\n                    new()\n                    {\n                        Type = SecuritySchemeType.OAuth2,\n                        Flows = new()\n                        {\n                            Implicit = new()\n                            {\n                                AuthorizationUrl = new($\"{authserverBaseUrl}/auth\"),\n                                TokenUrl = new($\"{authserverBaseUrl}/token\"),\n                            },\n                        },\n                    }\n                );\n\n                options.AddSecurityRequirement(\n                    new()\n                    {\n                        {\n                            new()\n                            {\n                                Reference = new()\n                                {\n                                    Type = ReferenceType.SecurityScheme,\n                                    Id = \"OAuth2\",\n                                },\n                            },\n                            Array.Empty<string>()\n                        },\n                    }\n                );\n            }\n        );\n        \n        builder.Services.AddEndpointsApiExplorer();\n        builder.Services.AddSwaggerGen();\n        builder.Services\n            .AddFluentMigratorCore()\n            .ConfigureRunner(r => r\n                .AddSqlServer()\n                .WithGlobalConnectionString(builder.Configuration.GetConnectionString(\"DB\"))\n                .ScanIn(DataConfiguration.GetAssembly())\n                .For.All()\n            );\n        \n        builder.Services\n            .AddControllers()\n            .AddJsonOptions(options => options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter()));\n        \n        ValidatorOptions.Global.LanguageManager.Culture = new(\"de-DE\");\n        builder.Services.AddValidatorsFromAssembly(typeof(Program).Assembly);\n\n        builder.Services.AddCors(options =>\n        {\n            options.AddPolicy(\"cors\", policy =>\n            {\n                var origins = builder.Configuration.GetSection(\"CorsOrigins\").Get<string[]>() ?? [];\n                policy.WithOrigins(origins).AllowAnyHeader().AllowCredentials().AllowAnyMethod();\n            });\n        });\n        \n        DataConfiguration.Configure(builder.Services, builder.Configuration);\n\n        var app = builder.Build();\n        \n        app.MapControllers();\n        app.UseHttpsRedirection();\n        app.UseCors(\"cors\");\n        app.UseAuthentication();\n        app.UseAuthorization();\n        \n        if (app.Environment.IsDevelopment())\n        {\n            app.UseSwagger();\n            app.UseSwaggerUI(options =>\n                options.OAuthClientId(app.Configuration.GetRequiredSection(\"Keycloak\")[\"Resource\"])\n            );\n        }\n        \n        var scope = app.Services.CreateScope();\n        var runner = scope.ServiceProvider.GetRequiredService<IMigrationRunner>();\n        runner.MigrateUp();\n        scope.Dispose();\n\n        app.Run();\n    }\n    \n    private static void ConfigureLogging(this IHostApplicationBuilder builder)\n    {\n        if (builder.Configuration.GetChildren().Any(x => x.Key == \"Serilog\"))\n        {\n            Log.Logger = new LoggerConfiguration()\n                .ReadFrom.Configuration(builder.Configuration)\n                .CreateLogger();\n            builder.Logging.AddSerilog();\n        }\n    }\n    \n    private static IServiceCollection ConfigureAppServices(this IServiceCollection services, JobSettings jobSettings)\n    {\n        services\n            .AddScoped<IStrasseService, StrasseService>()\n            .AddScoped<IVorgangService, VorgangService>()\n            .AddScoped<IBeschlussService, BeschlussService>()\n            .AddScoped<IVorgangSelectiveUpdater, VorgangSelectiveUpdater>()\n            .AddHttpContextAccessor();\n\n        services\n            .AddQuartz(config =>\n            {\n                if (jobSettings.XmlExportStrassen?.Active is true)\n                {\n                    config.SetupHeartbeatJob(jobSettings);\n                }\n                if (jobSettings.XmlExportStrassen?.Active is true)\n                {\n                    config.SetupXmlExportStrassenJob(jobSettings);\n                }\n            })\n            .AddQuartzHostedService(options => options.WaitForJobsToComplete = true);\n   \n        return services;\n    }\n\n    private static void SetupHeartbeatJob(this IServiceCollectionQuartzConfigurator config, JobSettings jobSettings)\n    {\n        config.AddJob<HeartbeatJob>(options => options.WithIdentity(HeartbeatJob.Key));\n        \n        config.AddTrigger(options => options\n            .ForJob(HeartbeatJob.Key)\n            .WithIdentity(HeartbeatJob.Trigger)\n            .WithCronSchedule(jobSettings.Heartbeat?.CronSchedule ?? HeartbeatJob.DefaultCronSchedule)\n        );\n    }\n    \n    private static void SetupXmlExportStrassenJob(this IServiceCollectionQuartzConfigurator config, JobSettings jobSettings)\n    {\n        var jobData = new XmlExportStrassenJobData()\n        {\n            FilePath = jobSettings.XmlExportStrassen?.FilePath,\n            FilterStrassenStatus = jobSettings.XmlExportStrassen?.FilterStrassenStatus\n        };\n                \n        config.AddJob<XmlExportStrassenJob>(options => options.WithIdentity(XmlExportStrassenJob.Key));\n        \n        config.AddTrigger(options => options\n            .ForJob(XmlExportStrassenJob.Key)\n            .WithIdentity(XmlExportStrassenJob.Trigger + \"RunOnceAtStart\")\n            .StartNow()\n            .WithPriority(0)\n            .WithSimpleSchedule(x => x.WithMisfireHandlingInstructionIgnoreMisfires())\n            .UsingJobData(new JobDataMap() { [XmlExportStrassenJob.Name] = JsonConvert.SerializeObject(jobData) })\n        );\n\n        config.AddTrigger(options => options\n            .ForJob(XmlExportStrassenJob.Key)\n            .WithIdentity(XmlExportStrassenJob.Trigger)\n            .WithCronSchedule(jobSettings.XmlExportStrassen?.CronSchedule ?? XmlExportStrassenJob.DefaultCronSchedule)\n            .UsingJobData(new JobDataMap() { [XmlExportStrassenJob.Name] = JsonConvert.SerializeObject(jobData) })\n        );\n    }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"appsettings\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/*.cs | head; grep -rln \"Migrat\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/ | head; grep -rn \"Migrate\" /workspace/src/Backend/Lecos.Strassennamen.Data/ -l 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Lecos.Strassennamen.RestAPI.csproj\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Program.cs\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Properties/launchSettings.json 2>/dev/null; ls /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Properties/ 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "\ufeff{\n  \"$schema\": \"https://json.schemastore.org/launchsettings.json\",\n  \"profiles\": {\n    \"http\": {\n      \"commandName\": \"Project\",\n      \"dotnetRunMessages\": true,\n      \"launchBrowser\": false,\n      \"launchUrl\": \"swagger\",\n      \"applicationUrl\": \"http://localhost:5000\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    },\n    \"https\": {\n      \"commandName\": \"Project\",\n      \"dotnetRunMessages\": true,\n      \"launchBrowser\": false,\n      \"applicationUrl\": \"https://localhost:5000;http://localhost:5004\",\n      \"environmentVariables\": {\n        \"ASPNETCORE_ENVIRONMENT\": \"Development\"\n      }\n    }\n  }\n}\nlaunchSettings.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -sI --max-time 15 https://registry.npmjs.org/ | head -3; echo \"===nuget===\"; curl -sI --max-time 15 https://api.nuget.org/v3/index.json | head -3; echo \"===mcr===\"; curl -sI --max-time 15 https://mcr.microsoft.com/v2/ | head -3",
+      "exit_code": 0,
+      "stdout": "HTTP/2 200 \ndate: Fri, 16 Oct 2026 11:06:52 GMT\ncontent-type: application/json\n===nuget===\nHTTP/2 200 \ndate: Fri, 16 Oct 2026 11:06:52 GMT\ncontent-type: application/json\n===mcr===\nHTTP/2 200 \ncontent-length: 2\ncontent-type: application/json; charset=utf-8\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "export DEBIAN_FRONTEND=noninteractive; curl -fsSL https://deb.nodesource.com/setup_22.x -o /tmp/nodesource_setup.sh && bash /tmp/nodesource_setup.sh >/tmp/nodesource.log 2>&1; tail -5 /tmp/nodesource.log; apt-get install -y nodejs >>/tmp/nodesource.log 2>&1 && node --version && npm --version",
+      "exit_code": 0,
+      "stdout": "\u001b[1;34m2026-10-16 11:07:33 - Repository configured successfully.\u001b[0m\n\u001b[38;5;79m2026-10-16 11:07:33 - To install Node.js, run: apt install nodejs -y\u001b[0m\n\u001b[38;5;79m2026-10-16 11:07:33 - You can use N|solid Runtime as a node.js alternative\u001b[0m\n\u001b[1;32m2026-10-16 11:07:33 - To install N|solid Runtime, run: apt install nsolid -y \n\u001b[0m\nv22.23.3\n10.9.9\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -fsSL https://dot.net/v1/dotnet-install.sh -o /tmp/dotnet-install.sh && chmod +x /tmp/dotnet-install.sh && /tmp/dotnet-install.sh --channel 9.0 --install-dir /usr/local/dotnet >/tmp/dotnet-install.log 2>&1; tail -8 /tmp/dotnet-install.log; ln -sf /usr/local/dotnet/dotnet /usr/local/bin/dotnet; dotnet --version",
+      "exit_code": 134,
+      "stdout": "dotnet-install: Extracting archive from https://builds.dotnet.microsoft.com/dotnet/Sdk/9.0.319/dotnet-sdk-9.0.319-linux-x64.tar.gz\ndotnet-install: Downloaded file size is 218314841 bytes.\ndotnet-install: The remote and local file sizes are equal.\ndotnet-install: Installed version is 9.0.319\ndotnet-install: Adding to current process PATH: `/usr/local/dotnet`. Note: This change will be visible only when sourcing script.\ndotnet-install: Note that the script does not resolve dependencies during installation.\ndotnet-install: To check the list of dependencies, go to https://learn.microsoft.com/dotnet/core/install, select your operating system and check the \"Dependencies\" section.\ndotnet-install: Installation finished successfully.\n",
+      "stderr": "Process terminated. Couldn't find a valid ICU package installed on the system. Please install libicu (or icu-libs) using your package manager and try again. Alternatively you can set the configuration flag System.Globalization.Invariant to true if you want to run with no globalization support. Please see https://aka.ms/dotnet-missing-libicu for more information.\n   at System.Environment.FailFast(System.Runtime.CompilerServices.StackCrawlMarkHandle, System.String, System.Runtime.CompilerServices.ObjectHandleOnStack, System.String)\n   at System.Environment.FailFast(System.Threading.StackCrawlMark ByRef, System.String, System.Exception, System.String)\n   at System.Environment.FailFast(System.String)\n   at System.Globalization.GlobalizationMode+Settings..cctor()\n   at System.Globalization.CultureData.CreateCultureWithInvariantData()\n   at System.Globalization.CultureData.get_Invariant()\n   at System.Globalization.CultureInfo..cctor()\n   at System.Globalization.CultureInfo.get_CurrentUICulture()\n   at System.TimeZoneInfo.GetUtcStandardDisplayName()\n   at System.TimeZoneInfo.CreateUtcTimeZone()\n   at System.TimeZoneInfo..cctor()\n   at System.DateTime.get_Now()\n   at Microsoft.DotNet.Cli.Program.Main(System.String[])\n/usr/bin/timeout: the monitored command dumped core\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y libicu74 >>/tmp/icu.log 2>&1 || apt-get install -y libicu-dev >>/tmp/icu.log 2>&1; dotnet --version",
+      "exit_code": 0,
+      "stdout": "9.0.319\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull quay.io/keycloak/keycloak:26.4.6 2>&1 | tail -3",
+      "exit_code": 0,
+      "stdout": "Digest: sha256:d0d4037f17521a7f06137afd5a0eecb1f977f4ade773ae7755f1ee82cad8a576\nStatus: Downloaded newer image for quay.io/keycloak/keycloak:26.4.6\nquay.io/keycloak/keycloak:26.4.6\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run -d --name keycloak -p 8080:8080 -e KC_BOOTSTRAP_ADMIN_USERNAME=admin -e KC_BOOTSTRAP_ADMIN_PASSWORD=admin -e KEYCLOAK_IMPORT=/tmp/strassennamen-realm.json quay.io/keycloak/keycloak:26.4.6 start-dev 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "5258beb72a2b7671d8513962e69df12fe6019d39fe048f1c6d05833bed0c3bd6\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 5; docker ps -a --filter name=keycloak --format \"{{.Status}}\"; docker logs keycloak 2>&1 | tail -10",
+      "exit_code": 0,
+      "stdout": "Up 11 seconds\nUpdating the configuration and installing your custom providers, if any. Please wait.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/src/Frontend/Strassennamen && nohup npm i > /tmp/npm-install.log 2>&1 &\necho \"npm i started in background\"",
+      "exit_code": 0,
+      "stdout": "npm i started in background\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for i in $(seq 1 30); do status=$(docker ps --filter name=keycloak --format \"{{.Status}}\"); echo \"$i: $status\"; if echo \"$status\" | grep -q \"Up\"; then if curl -s --max-time 3 http://localhost:8080/realms/master >/dev/null 2>&1; then echo \"KEYCLOAK READY\"; break; fi; fi; sleep 10; done; docker logs keycloak 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "1: Up 21 seconds\n2: Up 32 seconds\n3: Up 42 seconds\n4: Up 52 seconds\n5: Up About a minute\n6: Up About a minute\n7: Up About a minute\n8: Up About a minute\n9: Up About a minute\n10: Up About a minute\nKEYCLOAK READY\n2026-10-16 11:12:11,008 INFO  [org.keycloak.services] (main) KC-SERVICES0050: Initializing master realm\n2026-10-16 11:12:15,758 INFO  [org.keycloak.services] (main) KC-SERVICES0077: Created temporary admin user with username admin\n2026-10-16 11:12:16,343 INFO  [io.quarkus] (main) Keycloak 26.4.6 on JVM (powered by Quarkus 3.27.0) started in 40.308s. Listening on: http://0.0.0.0:8080\n2026-10-16 11:12:16,344 INFO  [io.quarkus] (main) Profile dev activated. \n2026-10-16 11:12:16,345 INFO  [io.quarkus] (main) Installed features: [agroal, cdi, hibernate-orm, jdbc-h2, keycloak, narayana-jta, opentelemetry, reactive-routes, rest, rest-jackson, smallrye-context-propagation, vertx]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which jq || apt-get install -y jq >>/tmp/jq.log 2>&1; jq --version",
+      "exit_code": 0,
+      "stdout": "jq-1.6\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s -c kc-cookies.txt -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"client_id=admin-cli\" -d \"grant_type=password\" -d \"username=admin\" -d \"password=admin\" -o kc-token.json && jq -r .access_token kc-token.json > kc-token.txt && echo \"TOKEN OK\" && TOKEN=$(cat kc-token.txt) && curl -s -X POST http://localhost:8080/admin/realms -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"realm\":\"my-realm\",\"enabled\":true}' -w \"\\nHTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "TOKEN OK\n\nHTTP:201\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\n  \"clientId\": \"strassennamen\",\n  \"enabled\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"baseUrl\": \"http://localhost:4200/\",\n  \"redirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"webOrigins\": [\"http://localhost:4200/*\"],\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"validRedirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"validPostLogoutRedirectUris\": [\"http://localhost:4200/*\"],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"frontchannelLogout\": true,\n  \"attributes\": {}\n}' -w \"\\nHTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"Invalid json representation for ClientRepresentation. Unrecognized field \\\"validRedirectUris\\\" at line 9 column 25.\"}\nHTTP:400\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\n  \"clientId\": \"strassennamen\",\n  \"enabled\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"baseUrl\": \"http://localhost:4200/\",\n  \"redirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"webOrigins\": [\"http://localhost:4200/*\"],\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"validPostLogoutRedirectUris\": [\"http://localhost:4200/*\"],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"frontchannelLogout\": true,\n  \"attributes\": {}\n}' -w \"\\nHTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"Invalid json representation for ClientRepresentation. Unrecognized field \\\"validPostLogoutRedirectUris\\\" at line 9 column 35.\"}\nHTTP:400\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\n  \"clientId\": \"strassennamen\",\n  \"enabled\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"baseUrl\": \"http://localhost:4200/\",\n  \"redirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"webOrigins\": [\"http://localhost:4200/*\"],\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"postLogoutRedirectUris\": [\"http://localhost:4200/*\"],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"frontchannelLogout\": true,\n  \"attributes\": {}\n}' -w \"\\nHTTP:%{http_code}\\n\" | tail -3",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"Invalid json representation for ClientRepresentation. Unrecognized field \\\"postLogoutRedirectUris\\\" at line 9 column 30.\"}\nHTTP:400\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"clientId\":\"probe\",\"enabled\":true,\"publicClient\":true}' | jq -r 'keys' | tr -d '[]\",' | tr '\\n' ' '; echo",
+      "exit_code": 0,
+      "stdout": "\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"clientId\":\"probe\",\"enabled\":true,\"publicClient\":true}' -o /tmp/probe.json -w \"HTTP:%{http_code}\\n\" && cat /tmp/probe.json | jq 'keys'",
+      "exit_code": 0,
+      "stdout": "HTTP:409\n[\n  \"errorMessage\"\n]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s \"http://localhost:8080/admin/realms/my-realm/clients?clientId=*\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | .clientId + \" enabled=\\(.enabled)\"'",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -o /tmp/clients.json -w \"HTTP:%{http_code}\\n\" && head -c 500 /tmp/clients.json",
+      "exit_code": 0,
+      "stdout": "HTTP:200\n[{\"id\":\"5379f32a-0071-4d73-8f43-dfeafe937e7c\",\"clientId\":\"account\",\"name\":\"${client_account}\",\"rootUrl\":\"${authBaseUrl}\",\"baseUrl\":\"/realms/my-realm/account/\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[\"/realms/my-realm/account/*\"],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccount",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"clientId\":\"probe2\",\"enabled\":true,\"publicClient\":true}' -w \"\\nHTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "\nHTTP:201\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | select(.clientId==\"probe2\") | keys' | tr -d '[]\",' | tr '\\n' ' '",
+      "exit_code": 0,
+      "stdout": "   access   alwaysDisplayInConsole   attributes   authenticationFlowBindingOverrides   bearerOnly   clientAuthenticatorType   clientId   consentRequired   defaultClientScopes   directAccessGrantsEnabled   enabled   frontchannelLogout   fullScopeAllowed   id   implicitFlowEnabled   nodeReRegistrationTimeout   notBefore   optionalClientScopes   protocol   publicClient   redirectUris   serviceAccountsEnabled   standardFlowEnabled   surrogateAuthRequired   webOrigins  ",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && PROBE_ID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | select(.clientId==\"probe2\") | .id') && curl -s -X DELETE \"http://localhost:8080/admin/realms/my-realm/clients/$PROBE_ID\" -w \"delete probe2: HTTP:%{http_code}\\n\" && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\"clientId\":\"strassennamen\",\"enabled\":true,\"publicClient\":true}' -w \"\\ncreate: HTTP:%{http_code}\\n\" && CLIENT_ID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | select(.clientId==\"strassennamen\") | .id') && echo \"CLIENT_ID=$CLIENT_ID\" && echo $CLIENT_ID > /tmp/client_id.txt",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"HTTP 401 Unauthorized\"}delete probe2: HTTP:401\n\ncreate: HTTP:201\nCLIENT_ID=fe46cc38-b90a-4bd4-ae89-c3075c2dc455\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"client_id=admin-cli\" -d \"grant_type=password\" -d \"username=admin\" -d \"password=admin\" -o kc-token.json && jq -r .access_token kc-token.json > kc-token.txt && TOKEN=$(cat kc-token.txt) && CLIENT_ID=$(cat client_id.txt) && echo \"refreshed, client_id=$CLIENT_ID\" && curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID\" -H \"Authorization: Bearer $TOKEN\" | jq '{clientId, redirectUris, webOrigins, standardFlowEnabled, directAccessGrantsEnabled, implicitFlowEnabled, serviceAccountsEnabled, publicClient, rootUrl, adminUrl}'",
+      "exit_code": 0,
+      "stdout": "refreshed, client_id=fe46cc38-b90a-4bd4-ae89-c3075c2dc455\n{\n  \"clientId\": \"strassennamen\",\n  \"redirectUris\": [],\n  \"webOrigins\": [],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": false,\n  \"implicitFlowEnabled\": false,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"rootUrl\": null,\n  \"adminUrl\": null\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && CLIENT_ID=$(cat /tmp/client_id.txt) && curl -s -X PUT \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\n  \"clientId\": \"strassennamen\",\n  \"enabled\": true,\n  \"publicClient\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"baseUrl\": \"http://localhost:4200/\",\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"redirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"webOrigins\": [\"http://localhost:4200/*\"],\n  \"postLogoutRedirectUris\": [\"http://localhost:4200/*\"],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"frontchannelLogout\": true\n}' -w \"PUT client: HTTP:%{http_code}\\n\" && echo \"=== verify ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID\" -H \"Authorization: Bearer $TOKEN\" | jq '{clientId, redirectUris, webOrigins, postLogoutRedirectUris, standardFlowEnabled, directAccessGrantsEnabled, implicitFlowEnabled, serviceAccountsEnabled, publicClient, rootUrl, adminUrl, clientAuthenticatorType}'",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"Invalid json representation for ClientRepresentation. Unrecognized field \\\"postLogoutRedirectUris\\\" at line 10 column 30.\"}PUT client: HTTP:400\n=== verify ===\n{\n  \"clientId\": \"strassennamen\",\n  \"redirectUris\": [],\n  \"webOrigins\": [],\n  \"postLogoutRedirectUris\": null,\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": false,\n  \"implicitFlowEnabled\": false,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"rootUrl\": null,\n  \"adminUrl\": null,\n  \"clientAuthenticatorType\": \"client-secret\"\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && CLIENT_ID=$(cat /tmp/client_id.txt) && curl -s -X PUT \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d '{\n  \"clientId\": \"strassennamen\",\n  \"enabled\": true,\n  \"publicClient\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"baseUrl\": \"http://localhost:4200/\",\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"redirectUris\": [\"http://localhost:4200/*\", \"http://localhost:5000/*\"],\n  \"webOrigins\": [\"http://localhost:4200/*\"],\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"frontchannelLogout\": true,\n  \"attributes\": {\n    \"post.logout.redirect_uris\": \"http://localhost:4200/*\"\n  }\n}' -w \"PUT client: HTTP:%{http_code}\\n\" && echo \"=== verify ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID\" -H \"Authorization: Bearer $TOKEN\" | jq '{clientId, redirectUris, webOrigins, postLogoutRedirectUris, standardFlowEnabled, directAccessGrantsEnabled, implicitFlowEnabled, serviceAccountsEnabled, publicClient, rootUrl, adminUrl, attributes}'",
+      "exit_code": 0,
+      "stdout": "PUT client: HTTP:204\n=== verify ===\n{\n  \"clientId\": \"strassennamen\",\n  \"redirectUris\": [\n    \"http://localhost:4200/*\",\n    \"http://localhost:5000/*\"\n  ],\n  \"webOrigins\": [\n    \"http://localhost:4200/*\"\n  ],\n  \"postLogoutRedirectUris\": null,\n  \"standardFlowEnabled\": true,\n  \"directAccessGrantsEnabled\": true,\n  \"implicitFlowEnabled\": true,\n  \"serviceAccountsEnabled\": false,\n  \"publicClient\": true,\n  \"rootUrl\": \"http://localhost:4200/\",\n  \"adminUrl\": \"http://localhost:4200/\",\n  \"attributes\": {\n    \"realm_client\": \"false\",\n    \"post.logout.redirect_uris\": \"http://localhost:4200/*\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"app-access\\|editor\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/ /workspace/src/Backend/Lecos.Strassennamen.Shared/ /workspace/src/Backend/Lecos.Strassennamen.Data/ --include=\"*.cs\" | grep -v \"//\" | head -20",
+      "exit_code": 0,
+      "stdout": "/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Authorization/ClientRoles.cs:5:    public const string AppAccess = \"app-access\";\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Authorization/ClientRoles.cs:6:    public const string Editor = \"editor\";\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Authorization/ClientRoles.cs; echo \"===\"; grep -rn \"ClientRoles\\.\" /workspace/src/Backend --include=\"*.cs\" | grep -v Test | head; echo \"===\"; ls /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Authorization/",
+      "exit_code": 0,
+      "stdout": "\ufeffnamespace Lecos.Strassennamen.RestAPI.Authorization;\n\npublic static class ClientRoles\n{\n    public const string AppAccess = \"app-access\";\n    public const string Editor = \"editor\";\n}===\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/VorgangController.cs:15:[Authorize(ClientRoles.AppAccess)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/VorgangController.cs:59:    [Authorize(ClientRoles.Editor)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/VorgangController.cs:83:    [Authorize(ClientRoles.Editor)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/VorgangController.cs:112:    [Authorize(ClientRoles.Editor)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/StadtbezirkController.cs:12:[Authorize(ClientRoles.AppAccess)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/ExportController.cs:10:[Authorize(ClientRoles.AppAccess)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/StrasseController.cs:15:[Authorize(ClientRoles.AppAccess)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/StrasseController.cs:58:    [Authorize(ClientRoles.Editor)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/BeschlussController.cs:16:[Authorize(ClientRoles.AppAccess)]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/BeschlussController.cs:49:    [Authorize(ClientRoles.Editor)]\n===\nAuthorizationBuilderExtensions.cs\nAuthorizationUtils.cs\nClientRoles.cs\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN=$(cat /tmp/kc-token.txt) && CLIENT_ID=$(cat /tmp/client_id.txt) && for role in app-access editor; do curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/clients/$CLIENT_ID/roles\" -H \"Authorization: Bearer $TOKEN\" -H \"Content-Type: application/json\" -d \"{\\\"name\\\":\\\"$role\\\",\\\"description\\\":\\\"$role\\\"}\" -w \"create role $role: HTTP:%{http_code}\\n\"; done && echo \"=== delete probe2 ===\" && PROBE_ID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | select(.clientId==\"probe2\") | .id') && curl -s -X DELETE \"http://localhost:8080/admin/realms/my-realm/clients/$PROBE_ID\" -w \"delete probe2: HTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "create role app-access: HTTP:201\ncreate role editor: HTTP:201\n=== delete probe2 ===\n{\"error\":\"HTTP 401 Unauthorized\"}delete probe2: HTTP:401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"client_id=admin-cli\" -d \"grant_type=password\" -d \"username=admin\" -d \"password=admin\" | jq -r .access_token > /tmp/kc-token.txt && TOKEN=$(cat /tmp/kc-token.txt) && PROBE_ID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[] | select(.clientId==\"probe2\") | .id') && curl -s -X DELETE \"http://localhost:8080/admin/realms/my-realm/clients/$PROBE_ID\" -w \"delete probe2: HTTP:%{http_code}\\n\"; curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOKEN\" | jq -r '.[].clientId'",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"HTTP 401 Unauthorized\"}delete probe2: HTTP:401\naccount\naccount-console\nadmin-cli\nbroker\nprobe\nprobe2\nrealm-management\nsecurity-admin-console\nstrassennamen\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"client_id=admin-cli\" -d \"grant_type=password\" -d \"username=admin\" -d \"password=admin\" | head -c 300",
+      "exit_code": 0,
+      "stdout": "{\"access_token\":\"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCNFhqdVNwQzFDQTcwYmlia1VyY2hVRWtOVUJVdFdoRnIwSHMxbkJ2UmhVIn0.eyJleHAiOjE3OTIxNDkzMDksImlhdCI6MTc5MjE0OTI0OSwianRpIjoib25sdHJvOjVhNGRkYjBhLWY0MDYtZTk2NS1lYzI0LWUyMjA0MzhhZjI4YyIsImlzcyI6Imh0dHA6Ly9sb2NhbGhvc3Q6ODA4MC9yZWFsbXMvbWFzdGV",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"client_id=admin-cli\" -d \"grant_type=password\" -d \"username=admin\" -d \"password=admin\" | jq -r .access_token) && echo $TOK > /tmp/kc-token.txt && echo \"$TOK\" | cut -d. -f2 | tr -d '\\n' | base64 -d 2>/dev/null | jq '{exp, iat}'; echo \"current epoch: $(date +%s)\"; PROBE_ID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients\" -H \"Authorization: Bearer $TOK\" | jq -r '.[] | select(.clientId==\"probe2\") | .id') && echo \"probe2 id: $PROBE_ID\" && curl -s -X DELETE \"http://localhost:8080/admin/realms/my-realm/clients/$PROBE_ID\" -H \"Authorization: Bearer $TOK\" -w \"\\nHTTP:%{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "{\n  \"exp\": 1792149313,\n  \"iat\": 1792149253\n}\ncurrent epoch: 1792149253\nprobe2 id: bb207a57-3d07-4142-89c8-e9b77a66b516\n\nHTTP:204\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/kc-token.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/users\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d '{\"username\":\"user1\",\"firstName\":\"Test\",\"lastName\":\"User\",\"email\":\"user1@example.com\",\"enabled\":true,\"emailVerified\":true}' -w \"create user: HTTP:%{http_code}\\n\" && UID1=$(curl -s \"http://localhost:8080/admin/realms/my-realm/users?username=user1\" -H \"Authorization: Bearer $TOK\" | jq -r '.[0].id') && echo \"user1 id: $UID1\" && for role in app-access editor; do curl -s -X PUT \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$(cat /tmp/client_id.txt)/$role\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d '[{\"name\":\"'$role'\",\"composite\":false,\"clientRole\":true,\"containerId\":\"'\"$(cat /tmp/client_id.txt)\"'\"}]' -w \"assign $role: HTTP:%{http_code}\\n\"; done",
+      "exit_code": 0,
+      "stdout": "create user: HTTP:201\nuser1 id: acf1a53a-9e6e-4c76-a983-2dac22d10526\n{\"error\":\"HTTP 405 Method Not Allowed\"}assign app-access: HTTP:405\n{\"error\":\"HTTP 405 Method Not Allowed\"}assign editor: HTTP:405\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/kc-token.txt) && UID1=acf1a53a-9e6e-4c76-a983-2dac22d10526 && CID=$(cat /tmp/client_id.txt) && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d '[{\"name\":\"app-access\",\"composite\":false,\"clientRole\":true,\"containerId\":\"'$CID'\"},{\"name\":\"editor\",\"composite\":false,\"clientRole\":true,\"containerId\":\"'$CID'\"}]' -w \"assign roles: HTTP:%{http_code}\\n\" && echo \"=== verify user roles ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" | jq -r '.[].name'",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"Role not found\"}assign roles: HTTP:404\n=== verify user roles ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/kc-token.txt) && CID=$(cat /tmp/client_id.txt) && echo \"=== client roles ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CID/roles\" -H \"Authorization: Bearer $TOK\" | jq -r '.[] | .name + \" id=\" + .id' && UID1=acf1a53a-9e6e-4c76-a983-2dac22d10526 && for role in app-access editor; do RID=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CID/roles/$role\" -H \"Authorization: Bearer $TOK\" | jq -r .id); curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d '[{\"id\":\"'$RID'\"}]' -w \"assign $role: HTTP:%{http_code}\\n\"; done && echo \"=== verify ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" | jq -r '.[].name'",
+      "exit_code": 0,
+      "stdout": "=== client roles ===\napp-access id=644a1a27-1a9d-4e89-9bcf-ed860be4aaea\neditor id=a63ade80-bee4-4df5-99b7-183fae9bfdd7\n{\"error\":\"Role not found\"}assign app-access: HTTP:404\n{\"error\":\"Role not found\"}assign editor: HTTP:404\n=== verify ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/kc-token.txt) && CID=$(cat /tmp/client_id.txt) && UID1=acf1a53a-9e6e-4c76-a983-2dac22d10526 && FULL=$(curl -s \"http://localhost:8080/admin/realms/my-realm/clients/$CID/roles\" -H \"Authorization: Bearer $TOK\") && echo \"$FULL\" | jq -c '.[]' && curl -s -X POST \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d \"$FULL\" -w \"assign all: HTTP:%{http_code}\\n\" && echo \"=== verify ===\" && curl -s \"http://localhost:8080/admin/realms/my-realm/users/$UID1/role-mappings/clients/$CID\" -H \"Authorization: Bearer $TOK\" | jq -r '.[].name'",
+      "exit_code": 0,
+      "stdout": "{\"id\":\"644a1a27-1a9d-4e89-9bcf-ed860be4aaea\",\"name\":\"app-access\",\"description\":\"app-access\",\"composite\":false,\"clientRole\":true,\"containerId\":\"fe46cc38-b90a-4bd4-ae89-c3075c2dc455\"}\n{\"id\":\"a63ade80-bee4-4df5-99b7-183fae9bfdd7\",\"name\":\"editor\",\"description\":\"editor\",\"composite\":false,\"clientRole\":true,\"containerId\":\"fe46cc38-b90a-4bd4-ae89-c3075c2dc455\"}\nassign all: HTTP:204\n=== verify ===\napp-access\neditor\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/kc-token.txt) && UID1=acf1a53a-9e6e-4c76-a983-2dac22d10526 && curl -s -X PUT \"http://localhost:8080/admin/realms/my-realm/users/$UID1/reset-password\" -H \"Authorization: Bearer $TOK\" -H \"Content-Type: application/json\" -d '{\"type\":\"password\",\"value\":\"user1pass\",\"temporary\":false}' -w \"set password: HTTP:%{http_code}\\n\" && curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"client_id=strassennamen\" -d \"grant_type=password\" -d \"username=user1\" -d \"password=user1pass\" -o /tmp/user-token.json -w \"user token: HTTP:%{http_code}\\n\" && jq -r .access_token /tmp/user-token.json > /tmp/user-token.txt && echo \"$(\"$jq\" -r .access_token /tmp/user-token.txt)\" | cut -d. -f2 | tr -d '\\n' | base64 -d 2>/dev/null | jq -r '.realm_access.roles[], (.resource_access.strassennamen.roles // [])[]'",
+      "exit_code": 0,
+      "stdout": "set password: HTTP:204\nuser token: HTTP:200\n",
+      "stderr": "/bin/bash: line 3: : command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/user-token.txt) && echo \"$TOK\" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{realm_roles: .realm_access.roles, client_roles: .resource_access.strassennamen.roles}'",
+      "exit_code": 1,
+      "stdout": "{\n  \"realm_roles\": [\n    \"offline_access\",\n    \"uma_authorization\",\n    \"default-roles-my-realm\"\n  ],\n  \"client_roles\": [\n    \"editor\",\n    \"app-access\"\n  ]\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run -d --name mssql -e \"ACCEPT_EULA=Y\" -e \"MSSQL_SA_PASSWORD=Strassen#2024\" -e \"MSSQL_PID=Developer\" -p 1433:1433 mcr.microsoft.com/mssql/server:2022-latest 2>&1 | tail -1",
+      "exit_code": 0,
+      "stdout": "ef16afb3d450678998922bf868c135af1d815f19877b97645fd0b431bdfee6ab\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -5 /tmp/npm-install.log; ls /workspace/src/Frontend/Strassennamen/node_modules 2>/dev/null | wc -l",
+      "exit_code": 0,
+      "stdout": "npm notice\nnpm notice New major version of npm available! 10.9.9 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n465\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"config.development\\|endPointUrl\\|authServerUrl\\|resource\" /workspace/src/Frontend/Strassennamen/src --include=\"*.ts\" | grep -v node_modules | head -30",
+      "exit_code": 141,
+      "stdout": "/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.spec.ts:36:    spyOnProperty(appSettingsService, 'config').and.returnValue({ endPointUrl: 'https://test.uri/' });\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:14:  private readonly endPointUrl: string = 'undefined';\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:17:    this.endPointUrl = (this.appSettingsService.config?.endPointUrl || 'undefined').appendPath(ApiRoute.Beschluss);\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:21:    return this.httpCrudService.get(this.endPointUrl, id, { useSpinner: true, useRedirect: useRedirect });\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:25:    return this.httpCrudService.getAll(this.endPointUrl);\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:29:    const url = this.endPointUrl.appendPath(ApiRoute.Strasse).appendPath(strasseId.toString());\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:35:    return this.httpCrudService.create(this.endPointUrl, prepareData, { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:40:    return this.httpCrudService.update(this.endPointUrl, prepareData, item.id, { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts:44:    return this.httpCrudService.delete(this.endPointUrl, id, { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel-history.service.ts:38:    const resource = this.translateService.instant(`${prefix}${propertyName}`);\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel-history.service.ts:39:    if (resource) {\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel-history.service.ts:40:      return resource;\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:14:  private endPointUrl: string = 'undefined';\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:17:    this.endPointUrl = (this.appSettingsService.config?.endPointUrl || 'undefined').appendPath(ApiRoute.Erlaeuterungstafel);\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:21:    return this.httpCrudService.get(this.endPointUrl, id, { useSpinner: true, useRedirect: useRedirect });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:25:    return this.httpCrudService.getAll(this.endPointUrl);\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:29:    return this.httpCrudService.create(this.endPointUrl, item, { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:33:    return this.httpCrudService.update(this.endPointUrl, item, '', { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts:37:    return this.httpCrudService.delete(this.endPointUrl, id, { useSpinner: true });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.spec.ts:31:    spyOnProperty(appSettingsService, 'config').and.returnValue({ endPointUrl: 'https://test.uri/' });\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel-history.service.spec.ts:65:    it('returns text resource when translateService.instant returns string', () => {\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:15:  private readonly endPointUrl: string = 'undefined';\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:20:    this.endPointUrl = (this.appSettingsService.config?.endPointUrl || 'undefined').appendPath(ApiRoute.Strasse);\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:24:    return this.httpCrudService.get(this.endPointUrl, id, { useSpinner: !withoutSpinner, useRedirect: useRedirect });\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:35:    return this.httpCrudService.getAll(this.endPointUrl)\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:40:    const url = this.endPointUrl.addQueryParam('namenskomplexId', namenskomplexId.toString());\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:45:    const url = this.endPointUrl.addQueryParam('erlaeuterungstafelId', erlaeuterungstafelId.toString());\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:52:      .create(this.endPointUrl, preparedItem, { useSpinner: true })\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:66:      .update(this.endPointUrl, preparedItem, '', { useSpinner: true })\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts:76:    return this.httpCrudService.delete(this.endPointUrl, id, { useSpinner: true });\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rln \"AppSettingsService\" /workspace/src/Frontend/Strassennamen/src --include=\"*.ts\" | grep -v spec | head -3; echo \"===\"; find /workspace/src/Frontend/Strassennamen/src -name \"*appsettings*\" -o -name \"*app-settings*\" | head; echo \"===\"; grep -rn \"new KeycloakInstance\\|KeycloakInstance(\" /workspace/src/Frontend/Strassennamen/src --include=\"*.ts\" | grep -v spec | head",
+      "exit_code": 1,
+      "stdout": "/workspace/src/Frontend/Strassennamen/src/app/beschluss/business/services/beschluss.service.ts\n/workspace/src/Frontend/Strassennamen/src/app/erlaeuterungstafel/business/services/erlaeuterungstafel.service.ts\n/workspace/src/Frontend/Strassennamen/src/app/strasse/business/services/strasse.service.ts\n===\n/workspace/src/Frontend/Strassennamen/src/app/shared/business/services/app-settings.service.spec.ts\n/workspace/src/Frontend/Strassennamen/src/app/shared/business/services/app-settings.service.ts\n/workspace/src/Frontend/Strassennamen/src/app/shared/data/types/app-settings.ts\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Frontend/Strassennamen/src/app/shared/business/services/app-settings.service.ts; echo \"===\"; cat /workspace/src/Frontend/Strassennamen/src/app/shared/data/types/app-settings.ts; echo \"===\"; grep -rln \"keycloak\" /workspace/src/Frontend/Strassennamen/src --include=\"*.ts\" | grep -iv spec | grep -i \"keycloak\\|auth\" | head",
+      "exit_code": 0,
+      "stdout": "import { Injectable, isDevMode } from '@angular/core';\nimport { catchError, Observable, of, tap } from 'rxjs';\nimport { AppSettings } from '../../data/types/app-settings';\nimport { HttpCrudService } from './http-crud.service';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class AppSettingsService {\n\n  private isDevMode = isDevMode;\n\n  private configInternal: AppSettings | null = null;\n\n  public get config(): AppSettings | null {\n    return this.configInternal;\n  }\n\n  constructor(private httpCrudService: HttpCrudService) {\n\n  }\n\n  public loadConfig(): Observable<AppSettings | null> {\n    if (this.configInternal) {\n      return of(this.configInternal);\n    }\n    return this.loadSettings().pipe(tap(x => this.configInternal = x));\n  }\n\n  private loadSettings(): Observable<AppSettings | null> {\n    const fileName = this.isDevMode() ? 'config.development.json' : 'config.production.json';\n    return this.httpCrudService.getJsonFile(`/configs/`.appendPath(fileName))\n      .pipe(catchError(() => of(null)));\n  }\n\n}\n===\nimport { KeycloakSettings } from './keycloak-settings';\n\nexport type AppSettings = {\n  endPointUrl?: string | null;\n  keycloak?: KeycloakSettings | null;\n};\n===\n/workspace/src/Frontend/Strassennamen/src/app/shared/business/interceptor/authentication.interceptor.ts\n/workspace/src/Frontend/Strassennamen/src/app/shared/business/guards/authorization-guard.ts\n/workspace/src/Frontend/Strassennamen/src/app/shared/business/services/keycloak.service.ts\n/workspace/src/Frontend/Strassennamen/src/app/configs/get-keycloak.config.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Frontend/Strassennamen/src/app/shared/data/types/keycloak-settings.ts; echo \"===\"; cat /workspace/src/Frontend/Strassennamen/src/app/configs/get-keycloak.config.ts; echo \"===\"; cat /workspace/src/Frontend/Strassennamen/src/app/shared/business/services/keycloak.service.ts | head -80",
+      "exit_code": 0,
+      "stdout": "export type KeycloakSettings = {\n  realm?: string | null;\n  authServerUrl?: string | null;\n  resource?: string | null;\n};\n===\nimport { inject } from '@angular/core';\nimport { AppSettingsService } from '../shared/business/services/app-settings.service';\nimport { lastValueFrom } from 'rxjs';\nimport { KeycloakService } from '../shared/business/services/keycloak.service';\nimport Keycloak from 'keycloak-js';\nimport { ConfigErrorHelper } from '../shared/business/helpers/config-error.helper';\nimport { StringHelper } from '../shared/business/helpers/string.helper';\n\nexport const getKeycloakConfig = async () => {\n  const appSettingsService = inject(AppSettingsService);\n  const keycloakService = inject(KeycloakService);\n\n  const appSettings = await lastValueFrom(appSettingsService.loadConfig());\n  const configError = ConfigErrorHelper.getErrorMessage(appSettings);\n  if (!StringHelper.isNullOrEmpty(configError)) {\n    return;\n  }\n  const keycloak = new Keycloak({\n    url: appSettings?.keycloak?.authServerUrl!,\n    realm: appSettings?.keycloak?.realm!,\n    clientId: appSettings?.keycloak?.resource!\n  });\n  await keycloak.init({\n\n    onLoad: 'login-required',\n    checkLoginIframe: false,\n    locale: 'de'\n  });\n  keycloakService.keycloak = keycloak;\n};\n===\nimport { Injectable } from '@angular/core';\nimport Keycloak from 'keycloak-js';\nimport { AppSettingsService } from './app-settings.service';\nimport { Role } from '../../data/enums/role';\n\n@Injectable({\n  providedIn: 'root'\n})\nexport class KeycloakService {\n\n  private keycloakInternal?: Keycloak;\n\n  public get keycloak(): Keycloak | null {\n    return this.keycloakInternal || null;\n  }\n\n  public set keycloak(keycloak: Keycloak) {\n    this.keycloakInternal = keycloak;\n  }\n\n  constructor(private appSettingsService: AppSettingsService) {\n\n  }\n\n  public hasRole(roles: Role[] | null | undefined): boolean {\n    if (!Array.isArray(roles) || roles.length === 0) {\n      return true;\n    }\n    if (!this.keycloak?.authenticated) {\n      return false;\n    }\n    const resource = this.appSettingsService.config?.keycloak?.resource;\n    const resourceAccess = this.keycloak?.tokenParsed?.resource_access;\n    if (resource && resourceAccess && resource in resourceAccess) {\n      const resourceRoles = resourceAccess[resource].roles || [];\n      return resourceRoles.some(x => (roles as any).includes(x));\n    }\n    return false;\n  }\n\n  public getUserName(): string | null {\n    if (!this.keycloak?.tokenParsed) {\n      return null;\n    }\n    const token: any = this.keycloak.tokenParsed!;\n    return `${token.given_name} ${token.family_name}`;\n  }\n\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"Route(\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/*.cs | head; echo \"===\"; grep -rn \"MapControllers\\|UsePathBase\\|api\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Program.cs | head; echo \"===\"; cat /workspace/src/Frontend/Strassennamen/proxy.config.json",
+      "exit_code": 0,
+      "stdout": "/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/BeschlussController.cs:15:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/ErlaeuterungstafelController.cs:13:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/ExportController.cs:9:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/NamenskomplexController.cs:11:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/OrtsteilController.cs:11:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/StadtbezirkController.cs:11:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/StrasseController.cs:14:[Route(\"api/[controller]\")]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Controllers/VorgangController.cs:14:[Route(\"api/[controller]\")]\n===\n132:        app.MapControllers();\n===\n{\n  \"/api\": {\n    \"target\": \"http://localhost:5000\",\n    \"secure\": false,\n    \"changeOrigin\": true\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat > /workspace/src/Frontend/Strassennamen/public/configs/config.development.json << 'EOF'\n{\n  \"endPointUrl\": \"http://localhost:5000/api\",\n  \"keycloak\": {\n    \"realm\": \"my-realm\",\n    \"authServerUrl\": \"http://localhost:8080/\",\n    \"resource\": \"strassennamen\"\n  }\n}\nEOF\ncat /workspace/src/Frontend/Strassennamen/public/configs/config.development.json",
+      "exit_code": 0,
+      "stdout": "{\n  \"endPointUrl\": \"http://localhost:5000/api\",\n  \"keycloak\": {\n    \"realm\": \"my-realm\",\n    \"authServerUrl\": \"http://localhost:8080/\",\n    \"resource\": \"strassennamen\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -3 /tmp/npm-install.log; ls /workspace/src/Frontend/Strassennamen/node_modules 2>/dev/null | wc -l; pgrep -f \"npm i\" | head -2",
+      "exit_code": 0,
+      "stdout": "npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n465\n3533\n3534\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Extensions/*.cs 2>/dev/null | head -100; ls /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Extensions/",
+      "exit_code": 0,
+      "stdout": "\ufeffusing Lecos.Strassennamen.RestAPI.DTOs;\nusing Lecos.Strassennamen.Shared.Models;\n\nnamespace Lecos.Strassennamen.RestAPI.Extensions;\n\ninternal static class BeschlussExtensions\n{\n    public static Beschluss ToDto(this BeschlussModel model)\n    {\n        return new(\n            Id: model.Id,\n            Beschlussnummer: model.Beschlussnummer,\n            Beschlussdatum: model.Beschlussdatum,\n            Erlaeuterungstext: model.Erlaeuterungstext,\n            Link: model.Link,\n            Vorgaenge: model.Vorgaenge.Select(x => x.ToFormDTO()).ToList(),\n            IsImported: model.IsImported\n        );\n    }\n\n    public static BeschlussModel ToModel(this Beschluss dto)\n    {\n        return new()\n        {\n            Id = dto.Id,\n            Beschlussnummer = dto.Beschlussnummer,\n            Beschlussdatum = dto.Beschlussdatum,\n            Erlaeuterungstext = dto.Erlaeuterungstext,\n            Link = dto.Link,\n            Vorgaenge = dto.Vorgaenge.Select(x => x.ToModel()).ToList()\n        };\n    }\n}\ufeffusing Lecos.Strassennamen.RestAPI.DTOs;\nusing Lecos.Strassennamen.Shared.Models;\n\nnamespace Lecos.Strassennamen.RestAPI.Extensions;\n\npublic static class ErlaeuterungstafelExtensions\n{\n    public static Erlaeuterungstafel ToDTO(this ErlaeuterungstafelModel model)\n    {\n        return new(\n            Id: model.Id,\n            Text: model.Text,\n            Standort: model.Standort,\n            Anbringungsdatum: model.Anbringungsdatum,\n            Spender: model.Spender,\n            Anmerkung: model.Anmerkung,\n            Strasse: model.Strasse?.ToDTO()\n        );\n    }\n\n    public static ErlaeuterungstafelModel ToModel(this Erlaeuterungstafel dto)\n    {\n        return new()\n        {\n            Id = dto.Id,\n            Text = dto.Text,\n            Standort = dto.Standort,\n            Anbringungsdatum = dto.Anbringungsdatum,\n            Spender = dto.Spender,\n            Anmerkung = dto.Anmerkung\n        };\n    }\n\n    public static void UpdateWith(this ErlaeuterungstafelModel model, Erlaeuterungstafel dto)\n    {\n        model.Text = dto.Text;\n        model.Standort = dto.Standort;\n        model.Anbringungsdatum = dto.Anbringungsdatum;\n        model.Spender = dto.Spender;\n        model.Anmerkung = dto.Anmerkung;\n    }\n}\ufeffusing Lecos.Strassennamen.RestAPI.DTOs;\nusing Lecos.Strassennamen.Shared.Models;\n\nnamespace Lecos.Strassennamen.RestAPI.Extensions;\n\ninternal static class NamenskomplexExtensions\n{\n    public static Namenskomplex ToDTO(this NamenskomplexModel model)\n    {\n        return new(\n            Id: model.Id,\n            Name: model.Name,\n            Nummer: model.Nummer,\n            Ortsteilliste: model.Ortsteilliste,\n            IsDeleted: model.IsDeleted,\n            Anmerkung: model.Anmerkung\n        );\n    }\n\n    public static NamenskomplexModel ToModel(this Namenskomplex dto)\n    {\n        return new()\n        {\n            Id = dto.Id,\n            Name = dto.Name,\n            Nummer = dto.Nummer,\n            Ortsteilliste = dto.Ortsteilliste,\nBeschlussExtensions.cs\nErlaeuterungstafelExtensions.cs\nHistory\nNamenskomplexExtensions.cs\nOrtsteilExtensions.cs\nStadtbezirkExtensions.cs\nStrasseExtensions.cs\nStrasseShortExtensions.cs\nStrassencharakterExtensions.cs\nVorgangAssignedStatusExtensions.cs\nVorgangExtension.cs\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mkdir -p /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Logs /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Export\ncat > /workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json << 'EOF'\n{\n  \"Serilog\": {\n    \"Using\":  [ \"Serilog.Sinks.File\" ],\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft.AspNetCore\": \"Information\",\n        \"Microsoft.EntityFrameworkCore\": \"Warning\",\n        \"System.Net.Http\": \"Warning\"\n      }\n    },\n    \"WriteTo\": [\n      {\n        \"Name\": \"File\",\n        \"Args\": {\n          \"path\": \"Logs/log-.txt\",\n          \"rollingInterval\": \"Day\",\n          \"retainedFileCountLimit\": \"15\"\n        }\n      }\n    ]\n  },\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"Microsoft.EntityFrameworkCore.Database.Command\": \"Warning\"\n    }\n  },\n  \"Keycloak\": {\n    \"Realm\": \"my-realm\",\n    \"AuthServerUrl\": \"http://localhost:8080/\",\n    \"SslRequired\": \"none\",\n    \"Resource\": \"strassennamen\",\n    \"PublicClient\": true,\n    \"VerifyTokenAudience\": false,\n    \"ConfidentialPort\": 0,\n    \"ClientName\": \"strassennamen\"\n  },\n  \"CorsOrigins\": [\n    \"http://localhost:4200\"\n  ],\n  \"ConnectionStrings\": {\n    \"DB\": \"Server=localhost,1433;Database=Strassennamen;User Id=sa;Password=Strassen#2024;TrustServerCertificate=True\"\n  },\n  \"Jobs\": {\n    \"Heartbeat\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0/5 * 1/1 * ? *\"\n    },\n    \"XmlExportStrassen\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0 1 1/1 * ? *\",\n      \"FilePath\": \"Export/strassen.xml\",\n      \"FilterStrassenStatus\": \"Aktiv\"\n    }\n  }\n}\nEOF\npython3 -c \"import json; json.load(open('/workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json')); print('JSON valid')\"",
+      "exit_code": 0,
+      "stdout": "JSON valid\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps --filter name=mssql --format \"{{.Status}}\"; docker logs mssql 2>&1 | tail -3",
+      "exit_code": 0,
+      "stdout": "Up 47 seconds\n\n2026-10-16 11:21:04.36 spid36s     The default language (LCID 0) has been set for engine and full-text services.\n\n2026-10-16 11:21:04.44 spid28s     Using 'dbghelp.dll' version '4.0.5'\n\n2026-10-16 11:21:05.60 spid36s     The tempdb database has 8 data file(s).\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt list --installed 2>/dev/null | grep -i sqlcmd; which sqlcmd",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for i in $(seq 1 20); do if docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -C -Q \"SELECT 1\" >/dev/null 2>&1; then echo \"SQL ready\"; break; fi; sleep 5; done; docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -C -Q \"IF DB_ID('Strassennamen') IS NULL CREATE DATABASE Strassennamen\" -Q \"SELECT name FROM sys.databases\" | head -10",
+      "exit_code": 0,
+      "stdout": "SQL ready\nname                                                                                                                            \n--------------------------------------------------------------------------------------------------------------------------------\nmaster                                                                                                                          \ntempdb                                                                                                                          \nmodel                                                                                                                           \nmsdb                                                                                                                            \n\n(4 rows affected)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -C -Q \"CREATE DATABASE Strassennamen\" && docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -C -Q \"SELECT name FROM sys.databases\"",
+      "exit_code": 0,
+      "stdout": "name                                                                                                                            \n--------------------------------------------------------------------------------------------------------------------------------\nmaster                                                                                                                          \ntempdb                                                                                                                          \nmodel                                                                                                                           \nmsdb                                                                                                                            \nStrassennamen                                                                                                                   \n\n(5 rows affected)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/src/Backend && dotnet build Lecos.Strassennamen.RestAPI/Lecos.Strassennamen.RestAPI.csproj -v q --nologo 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "Build succeeded.\n\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models/History/BaseHistoryModel.cs(7,19): warning CS8618: Non-nullable property 'Entity' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/src/Backend/Lecos.Strassennamen.Shared/Lecos.Strassennamen.Shared.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models/StrassencharakterModel.cs(11,31): warning CS8618: Non-nullable property 'Adressen' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/src/Backend/Lecos.Strassennamen.Shared/Lecos.Strassennamen.Shared.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models/StrassencharakterModel.cs(13,31): warning CS8618: Non-nullable property 'Einwohner' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/src/Backend/Lecos.Strassennamen.Shared/Lecos.Strassennamen.Shared.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models/StrassencharakterModel.cs(15,31): warning CS8618: Non-nullable property 'Firmen' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/src/Backend/Lecos.Strassennamen.Shared/Lecos.Strassennamen.Shared.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Shared/Models/StrassencharakterModel.cs(17,31): warning CS8618: Non-nullable property 'Gewerbe' must contain a non-null value when exiting constructor. Consider adding the 'required' modifier or declaring the property as nullable. [/workspace/src/Backend/Lecos.Strassennamen.Shared/Lecos.Strassennamen.Shared.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Data/Entities/History/HistoryEntityFrameworkEvent.cs(13,45): warning CS8602: Dereference of a possibly null reference. [/workspace/src/Backend/Lecos.Strassennamen.Data/Lecos.Strassennamen.Data.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Data/Repositories/ErlaeuterungstafelRepository.cs(65,34): warning CS0168: The variable 'e' is declared but never used [/workspace/src/Backend/Lecos.Strassennamen.Data/Lecos.Strassennamen.Data.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.Data/Repositories/StrasseRepository.cs(25,28): warning CS8602: Dereference of a possibly null reference. [/workspace/src/Backend/Lecos.Strassennamen.Data/Lecos.Strassennamen.Data.csproj]\n/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Services/BeschlussService.cs(11,21): warning CS9113: Parameter 'vorgangService' is unread. [/workspace/src/Backend/Lecos.Strassennamen.RestAPI/Lecos.Strassennamen.RestAPI.csproj]\n    9 Warning(s)\n    0 Error(s)\n\nTime Elapsed 00:00:51.24\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -3 /tmp/npm-install.log; ls /workspace/src/Frontend/Strassennamen/node_modules 2>/dev/null | wc -l",
+      "exit_code": 0,
+      "stdout": "npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n465\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pgrep -f \"npm i\" >/dev/null && echo \"STILL RUNNING\" || echo \"NPM DONE\"; grep -c \"up to date\\|added \" /tmp/npm-install.log; tail -1 /tmp/npm-install.log; ls /workspace/src/Frontend/Strassennamen/node_modules/.bin/ng 2>/dev/null && echo \"ng binary present\"",
+      "exit_code": 0,
+      "stdout": "STILL RUNNING\n1\nnpm notice\n/workspace/src/Frontend/Strassennamen/node_modules/.bin/ng\nng binary present\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/src/Backend/Lecos.Strassennamen.RestAPI && ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS=http://localhost:5000 nohup dotnet run --no-build > /tmp/backend.log 2>&1 & echo \"backend started, pid $!\"",
+      "exit_code": 0,
+      "stdout": "backend started, pid 3924\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 45; pgrep -f \"npm i\" >/dev/null && echo \"NPM STILL RUNNING\" || echo \"NPM DONE\"; tail -2 /tmp/npm-install.log",
+      "exit_code": 0,
+      "stdout": "NPM STILL RUNNING\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "wc -l /tmp/npm-install.log; head -30 /tmp/npm-install.log; echo \"===\"; ps aux | grep -E \"npm|node\" | grep -v grep | head",
+      "exit_code": 0,
+      "stdout": "25 /tmp/npm-install.log\nnpm warn deprecated rimraf@3.0.2: Rimraf versions prior to v4 are no longer supported\nnpm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\nnpm warn deprecated glob@7.2.3: Glob versions prior to v9 are no longer supported\nnpm warn deprecated @types/dompurify@3.2.0: This is a stub types definition. dompurify provides its own type definitions, so you do not need this installed.\nnpm warn deprecated @primeng/themes@21.0.4: Deprecated. This package is no longer maintained. Please migrate to @primeuix/themes: https://www.npmjs.com/package/@primeuix/themes\n\nadded 742 packages, and audited 743 packages in 2m\n\n155 packages are looking for funding\n  run `npm fund` for details\n\n51 vulnerabilities (2 low, 14 moderate, 32 high, 3 critical)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\nnpm notice\nnpm notice New major version of npm available! 10.9.9 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n===\nroot        3799 17.4  2.0 274979416 167328 ?    Sl   11:21   0:19 /usr/local/dotnet/dotnet /usr/local/dotnet/sdk/9.0.319/MSBuild.dll /noautoresponse /nologo /nodemode:1 /nodeReuse:true /low:false\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -30 /tmp/backend.log",
+      "exit_code": 0,
+      "stdout": "                  }, \n                  trackingQuery: False);\n              return entity;\n          }, \n          relatedDataLoaders: null, \n          relatedDataLoadersAsync: null, \n          contextType: Lecos.Strassennamen.Data.AppDbContext, \n          standAloneStateManager: False, \n          detailedErrorsEnabled: False, \n          threadSafetyChecksEnabled: True)'\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20000]\n      Opening connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20001]\n      Opened connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20002]\n      Closing connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20003]\n      Closed connection to database 'Strassennamen' on server 'localhost,1433' (0ms).\ndbug: Quartz.Core.JobRunShell[0]\n      Trigger instruction : DeleteTrigger\ndbug: Quartz.Simpl.RAMJobStore[0]\n      Deleting trigger\ndbug: Microsoft.EntityFrameworkCore.Infrastructure[10407]\n      'AppDbContext' disposed.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20007]\n      Disposing connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20008]\n      Disposed connection to database '' on server '' (0ms).\ndbug: Quartz.Core.QuartzSchedulerThread[0]\n      Batch acquisition of 0 triggers\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 5; grep -E \"Now listening|Application started|Migrat|error|Error|Exception|Unhandled\" /tmp/backend.log | head -30",
+      "exit_code": 141,
+      "stdout": "info: FluentMigrator.Runner.MigrationRunner[1000]\n      VersionMigration migrating\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\n      VersionMigration migrated\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\ninfo: FluentMigrator.Runner.MigrationRunner[1000]\n      VersionUniqueMigration migrating\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1004]\ninfo: FluentMigrator.Runner.Processors.SqlServer.SqlServer2016Processor[1003]\ninfo: FluentMigrator.Runner.MigrationRunner[1004]\n      VersionUniqueMigration migrated\ninfo: FluentMigrator.Runner.MigrationRunner[1002]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== Now listening ===\"; grep -E \"Now listening on|Application started|Hosting starting\" /tmp/backend.log; echo \"=== swagger ===\"; curl -s --max-time 10 -o /dev/null -w \"swagger: HTTP %{http_code}\\n\" http://localhost:5000/swagger/index.html; echo \"=== openapi json ===\"; curl -s --max-time 10 http://localhost:5000/openapi/v1.json -o /tmp/openapi.json -w \"openapi: HTTP %{http_code}\\n\"; head -c 200 /tmp/openapi.json",
+      "exit_code": 0,
+      "stdout": "=== Now listening ===\n      Hosting starting\n      Now listening on: http://localhost:5000\n      Application started. Press Ctrl+C to shut down.\n=== swagger ===\nswagger: HTTP 200\n=== openapi json ===\nopenapi: HTTP 404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "python3 -c \"import json; d=json.load(open('/tmp/openapi.json')); print(list(d.get('paths',{}).keys())[:15])\" 2>/dev/null || curl -s --max-time 10 http://localhost:5000/swagger/v1/swagger.json | python3 -c \"import json,sys; d=json.load(sys.stdin); print(list(d.get('paths',{}).keys())[:20])\"",
+      "exit_code": 0,
+      "stdout": "['/api/Beschluss', '/api/Beschluss/strasse/{strasseId}', '/api/Beschluss/{id}', '/api/Erlaeuterungstafel', '/api/Erlaeuterungstafel/{id}', '/api/Export', '/api/History', '/api/History/{entity}', '/api/History/{entity}/Id/{id}', '/api/History/{entity}/Key/{key}', '/api/History/Entry/{id}', '/api/Namenskomplex', '/api/Namenskomplex/{id}', '/api/Ortsteil', '/api/Stadtbezirk', '/api/Strasse', '/api/Strasse/{id}', '/api/Vorgang', '/api/Vorgang/{id}', '/api/Vorgang/status-list']\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== no token (expect 401) ===\"; curl -s --max-time 10 -o /dev/null -w \"HTTP %{http_code}\\n\" \"http://localhost:5000/api/Strasse?skip=0&take=1\"; echo \"=== with valid user token (expect 200) ===\"; UTOK=$(cat /tmp/user-token.txt); curl -s --max-time 10 -H \"Authorization: Bearer $UTOK\" \"http://localhost:5000/api/Strasse?skip=0&take=1\" -o /tmp/strasse-resp.json -w \"HTTP %{http_code}\\n\"; head -c 300 /tmp/strasse-resp.json",
+      "exit_code": 0,
+      "stdout": "=== no token (expect 401) ===\nHTTP 401\n=== with valid user token (expect 200) ===\nHTTP 401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -iE \"keycloak|token|invalid|audience|signature\" /tmp/backend.log | grep -iv \"Microsoft.EntityFrameworkCore\\|Microsoft.AspNetCore.Hosting\\|Quartz\" | tail -20",
+      "exit_code": 0,
+      "stdout": "dbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\ndbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -B5 -A15 \"ResourceAccessRequirementHandler\" /tmp/backend.log | head -60",
+      "exit_code": 0,
+      "stdout": "      Batch acquisition of 0 triggers\ndbug: Quartz.Core.QuartzSchedulerThread[0]\n      Batch acquisition of 0 triggers\nwarn: Microsoft.AspNetCore.HttpsPolicy.HttpsRedirectionMiddleware[3]\n      Failed to determine the https port for redirect.\ndbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\n      [ParameterizedProtectedResourceRequirementHandler] Has been skipped because of 'User is not Authenticated'\ndbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\n      [ParameterizedProtectedResourceRequirementHandler] Has been skipped because of 'User is not Authenticated'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -iE \"keycloakauth|keycloak.auth|jwks|keyset|openid\" /tmp/backend.log | head -10; echo \"===\"; grep -E \"info: Microsoft.AspNetCore.Authentication\" /tmp/backend.log | head -10",
+      "exit_code": 1,
+      "stdout": "dbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\ndbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOK=$(cat /tmp/user-token.txt); echo \"$TOK\" | cut -d. -f2 | base64 -d 2>/dev/null | jq '{iss, aud, azp, client_id}'; echo \"=== JWKS reachable ===\"; curl -s --max-time 10 http://localhost:8080/realms/my-realm/protocol/openid-connect/certs | jq -r '.keys[].kid'",
+      "exit_code": 0,
+      "stdout": "{\n  \"iss\": \"http://localhost:8080/realms/my-realm\",\n  \"aud\": \"account\",\n  \"azp\": \"strassennamen\",\n  \"client_id\": null\n}\n=== JWKS reachable ===\nYi-dzUJ0KpM2hkntkwIRyBIxL0eHpuX0eRETzNfVH00\n6RgrrOjtwbmz3eDfjZOJ79Iu2EssMGu_VZDT2RmrE7A\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Logs/ 2>/dev/null; echo \"===\"; grep -iE \"error|exception|invalid|failed to|invalidtoken|signature|audience|issuer\" /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Logs/*.txt 2>/dev/null | tail -20",
+      "exit_code": 0,
+      "stdout": "total 60\ndrwxr-xr-x  2 root root  4096 Oct 16 11:22 .\ndrwxr-xr-x 15 root root  4096 Oct 16 11:22 ..\n-rw-r--r--  1 root root 49608 Oct 16 11:24 log-20261016.txt\n===\n2026-10-16 11:23:51.400 +00:00 [WRN] Failed to determine the https port for redirect.\n2026-10-16 11:24:01.840 +00:00 [INF] Failed to validate the token.\nMicrosoft.IdentityModel.Tokens.SecurityTokenExpiredException: IDX10223: Lifetime validation failed. The token is expired. ValidTo (UTC): '10/16/2026 11:19:35', Current time (UTC): '10/16/2026 11:24:01'.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"client_id=strassennamen\" -d \"grant_type=password\" -d \"username=user1\" -d \"password=user1pass\" | jq -r .access_token > /tmp/user-token.txt\nUTOK=$(cat /tmp/user-token.txt)\necho \"=== no token (expect 401) ===\"\ncurl -s --max-time 10 -o /dev/null -w \"HTTP %{http_code}\\n\" \"http://localhost:5000/api/Strasse?skip=0&take=1\"\necho \"=== with fresh valid token (expect 200) ===\"\ncurl -s --max-time 10 -H \"Authorization: Bearer $UTOK\" \"http://localhost:5000/api/Strasse?skip=0&take=1\" -o /tmp/strasse-resp.json -w \"HTTP %{http_code}\\n\"\nhead -c 300 /tmp/strasse-resp.json",
+      "exit_code": 0,
+      "stdout": "=== no token (expect 401) ===\nHTTP 401\n=== with fresh valid token (expect 200) ===\nHTTP 200\n[]",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/src/Frontend/Strassennamen && nohup npm run start > /tmp/frontend.log 2>&1 & echo \"frontend started\"",
+      "exit_code": 0,
+      "stdout": "frontend started\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for i in $(seq 1 40); do\n  if grep -qi \"Application bundle\\|watch mode\\|Local:\\|Compiled in\\|successfully\\| - Local:\" /tmp/frontend.log 2>/dev/null; then\n    if curl -s --max-time 3 -o /dev/null -w \"%{http_code}\" http://localhost:4200 2>/dev/null | grep -q 200; then\n      echo \"FRONTEND READY after ~$((i*8))s\"; break\n    fi\n  fi\n  sleep 8\ndone\necho \"=== frontend log tail ===\"\ntail -25 /tmp/frontend.log",
+      "exit_code": 0,
+      "stdout": "FRONTEND READY after ~40s\n=== frontend log tail ===\nchunk-4SAHQPSI.js   | -                         |   1.10 MB | \nmain.js             | main                      | 962.10 kB | \npolyfills.js        | polyfills                 |  92.95 kB | \nstyles.css          | styles                    |  68.61 kB | \n\n                    | Initial total             |   3.84 MB\n\nLazy chunk files    | Names                     |  Raw size\nchunk-4WSODIMF.js   | -                         |   2.18 MB | \nchunk-4DPOCMAU.js   | -                         | 175.81 kB | \nchunk-N3XAFFCG.js   | -                         | 104.00 kB | \nchunk-4KAQ5RSC.js   | beschluss-module          | 103.08 kB | \nchunk-HFKIHUNJ.js   | namenskomplex-module      |  50.04 kB | \nchunk-35PGQTIM.js   | -                         |  40.81 kB | \nchunk-TQVKSHKO.js   | erlaeuterungstafel-module |  37.27 kB | \nchunk-IGFPUEQV.js   | vorgang-module            |  26.38 kB | \nchunk-T36BCVL7.js   | strasse-module            |  21.47 kB | \nchunk-RRBFX5SN.js   | -                         |  19.88 kB | \nchunk-RZOC3ZC7.js   | error-module              |   9.32 kB | \n\nApplication bundle generation complete. [31.234 seconds] - 2026-10-16T11:25:14.234Z\n\nWatch mode enabled. Watching for file changes...\nNOTE: Raw file sizes do not reflect development server per-request transformations.\n  \u279c  Local:   http://localhost:4200/\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== 1. Frontend HTML ===\"; curl -s --max-time 10 http://localhost:4200/ -o /tmp/index.html -w \"HTTP %{http_code}\\n\" && grep -o \"<title>[^<]*</title>\" /tmp/index.html\necho \"=== 2. Served dev config ===\"; curl -s --max-time 10 http://localhost:4200/configs/config.development.json\necho \"=== 3. CORS preflight from frontend origin ===\"; curl -s --max-time 10 -X OPTIONS \"http://localhost:5000/api/Strasse\" -H \"Origin: http://localhost:4200\" -H \"Access-Control-Request-Method: GET\" -D - -o /dev/null | grep -i \"access-control-allow\"\necho \"=== 4. CORS actual response ===\"; UTOK=$(curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"client_id=strassennamen\" -d \"grant_type=password\" -d \"username=user1\" -d \"password=user1pass\" | jq -r .access_token); curl -s --max-time 10 -H \"Authorization: Bearer $UTOK\" -H \"Origin: http://localhost:4200\" \"http://localhost:5000/api/Strasse?skip=0&take=1\" -D - -o /dev/null | grep -i \"HTTP/\\|access-control-allow-origin\"",
+      "exit_code": 0,
+      "stdout": "=== 1. Frontend HTML ===\nHTTP 200\n<title>Leipziger Strassennamen</title>\n=== 2. Served dev config ===\n{\n  \"endPointUrl\": \"http://localhost:5000/api\",\n  \"keycloak\": {\n    \"realm\": \"my-realm\",\n    \"authServerUrl\": \"http://localhost:8080/\",\n    \"resource\": \"strassennamen\"\n  }\n}\n=== 3. CORS preflight from frontend origin ===\nAccess-Control-Allow-Credentials: true\nAccess-Control-Allow-Methods: GET\nAccess-Control-Allow-Origin: http://localhost:4200\n=== 4. CORS actual response ===\nHTTP/1.1 200 OK\nAccess-Control-Allow-Origin: http://localhost:4200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== Containers ===\"; docker ps --format \"{{.Names}}\\t{{.Image}}\\t{{.Status}}\" | grep -E \"keycloak|mssql\"\necho \"=== Export file (generated at startup by XmlExportStrassen job) ===\"; ls -la /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Export/ 2>/dev/null\necho \"=== DB tables created by migrations ===\"; docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -C -d Strassennamen -Q \"SELECT name FROM sys.tables ORDER BY name\" 2>/dev/null\necho \"=== Processes listening ===\"; (ss -ltnp 2>/dev/null || netstat -ltnp 2>/dev/null) | grep -E \":4200|:5000|:8080|:1433\"",
+      "exit_code": 1,
+      "stdout": "=== Containers ===\nmssql\tmcr.microsoft.com/mssql/server:2022-latest\tUp 5 minutes\nkeycloak\tquay.io/keycloak/keycloak:26.4.6\tUp 14 minutes\n=== Export file (generated at startup by XmlExportStrassen job) ===\ntotal 12\ndrwxr-xr-x  2 root root 4096 Oct 16 11:22 .\ndrwxr-xr-x 15 root root 4096 Oct 16 11:22 ..\n-rw-r--r--  1 root root   82 Oct 16 11:22 strassen.xml\n=== DB tables created by migrations ===\nname                                                                                                                            \n--------------------------------------------------------------------------------------------------------------------------------\nBeschluesse                                                                                                                     \nErlaeuterungstafeln                                                                                                             \nHistory                                                                                                                         \nNamenskomplexe                                                                                                                  \nNamenskomplexeOrtsteile                                                                                                         \nOrtsteile                                                                                                                       \nStadtbezirke                                                                                                                    \nStrasseAnzahle                                                                                                                  \nStrassen                                                                                                                        \nStrassencharaktere                                                                                                              \nStrassenOrtsteile                                                                                                               \nStrassenStadtbezirke                                                                                                            \nVersionInfo                                                                                                                     \nVorgaenge                                                                                                                       \n\n(14 rows affected)\n=== Processes listening ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Export/strassen.xml; echo; echo \"=== port sweep ===\"; for p in \"8080/keycloak:8080\" \"5000/swagger:5000\" \"4200/:4200\"; do :; done; curl -s -o /dev/null -w \"keycloak 8080: %{http_code}\\n\" --max-time 5 http://localhost:8080/; curl -s -o /dev/null -w \"backend 5000 swagger: %{http_code}\\n\" --max-time 5 http://localhost:5000/swagger/index.html; curl -s -o /dev/null -w \"frontend 4200: %{http_code}\\n\" --max-time 5 http://localhost:4200/",
+      "exit_code": 0,
+      "stdout": "\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n<Strassenverzeichnis />\n=== port sweep ===\nkeycloak 8080: 302\nbackend 5000 swagger: 200\nfrontend 4200: 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Workspace ===\" && ls /workspace && echo \"=== Processes ===\" && ps aux | grep -E \"keycloak|dotnet|ng|node|npm|java\" | grep -v grep && echo \"=== Docker ===\" && docker ps -a",
+      "exit_code": 0,
+      "stdout": "=== Workspace ===\nREADME.md\nlogo.svg\npubliccode.yml\nsrc\n=== Processes ===\n1000        2240 20.0  9.3 10732904 745488 ?     Ssl  11:10   3:06 java -Dkc.config.built=true -Djava.util.concurrent.ForkJoinPool.common.threadFactory=io.quarkus.bootstrap.forkjoin.QuarkusForkJoinWorkerThreadFactory -XX:MetaspaceSize=96M -XX:MaxMetaspaceSize=256m -Dfile.encoding=UTF-8 -Dsun.stdout.encoding=UTF-8 -Dsun.err.encoding=UTF-8 -Dstdout.encoding=UTF-8 -Dstderr.encoding=UTF-8 -XX:+ExitOnOutOfMemoryError -Djava.security.egd=file:/dev/urandom -XX:+UseG1GC -XX:FlightRecorderOptions=stackdepth=512 -Djdk.tls.rejectClientInitiatedRenegotiation=true -XX:MaxRAMPercentage=70 -XX:MinRAMPercentage=70 -XX:InitialRAMPercentage=50 --add-opens=java.base/java.util=ALL-UNNAMED --add-opens=java.base/java.util.concurrent=ALL-UNNAMED --add-opens=java.base/java.security=ALL-UNNAMED -Duser.language=en -Duser.country=US -Dkc.home.dir=/opt/keycloak/bin/.. -Djboss.server.config.dir=/opt/keycloak/bin/../conf -Djava.util.logging.manager=org.jboss.logmanager.LogManager -Dpicocli.disable.closures=true -Dquarkus-log-max-startup-records=10000 -cp /opt/keycloak/bin/../lib/quarkus-run.jar io.quarkus.bootstrap.runner.QuarkusEntryPoint start-dev\nroot        3799  7.5  2.0 274979416 167328 ?    Sl   11:21   0:19 /usr/local/dotnet/dotnet /usr/local/dotnet/sdk/9.0.319/MSBuild.dll /noautoresponse /nologo /nodemode:1 /nodeReuse:true /low:false\nroot        3844 23.0  3.5 276029860 280092 ?    Sl   11:22   0:51 /usr/local/dotnet/dotnet exec /usr/local/dotnet/sdk/9.0.319/Roslyn/bincore/VBCSCompiler.dll -pipename:P4h5A6oUg6u1VfGsNIssMvSLfCPMw+O+ivprV3dF7tc\nroot        3924  0.0  0.0   4364  1680 ?        S    11:22   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 cd /workspace/src/Backend/Lecos.Strassennamen.RestAPI && ASPNETCORE_ENVIRONMENT=Development ASPNETCORE_URLS=http://localhost:5000 nohup dotnet run --no-build > /tmp/backend.log 2>&1 & echo \"backend started, pid $!\"\nroot        3925  3.7  1.6 274475248 128812 ?    Sl   11:22   0:07 dotnet run --no-build\nroot        4124  0.0  0.0   4364  1424 ?        S    11:24   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 cd /workspace/src/Frontend/Strassennamen && nohup npm run start > /tmp/frontend.log 2>&1 & echo \"frontend started\"\nroot        4125  0.8  0.8 1114508 63888 ?       Sl   11:24   0:00 npm run start\nroot        4136  0.0  0.0   2892  1664 ?        S    11:24   0:00 sh -c ng serve\nroot        4137  130 10.4 25502288 834784 ?     Sl   11:24   1:45 ng serve (Strassennamen)\nroot        4169 10.9  4.7 1573004 381568 ?      Sl   11:24   0:08 /workspace/src/Frontend/Strassennamen/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.27.3 --ping\n=== Docker ===\nCONTAINER ID   IMAGE                                        COMMAND                  CREATED          STATUS          PORTS                                                             NAMES\nef16afb3d450   mcr.microsoft.com/mssql/server:2022-latest   \"/opt/mssql/bin/laun\u2026\"   5 minutes ago    Up 5 minutes    0.0.0.0:1433->1433/tcp, [::]:1433->1433/tcp                       mssql\n5258beb72a2b   quay.io/keycloak/keycloak:26.4.6             \"/opt/keycloak/bin/k\u2026\"   15 minutes ago   Up 15 minutes   8443/tcp, 0.0.0.0:8080->8080/tcp, [::]:8080->8080/tcp, 9000/tcp   keycloak\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ss -tlnp 2>/dev/null | head -30",
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for u in \"http://localhost:8080/\" \"http://localhost:4200/\" \"http://localhost:5000/swagger/index.html\" \"http://localhost:5000/api/Strasse\"; do echo \"=== $u ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" --max-time 10 \"$u\"; done",
+      "exit_code": 0,
+      "stdout": "=== http://localhost:8080/ ===\nHTTP 302\n=== http://localhost:4200/ ===\nHTTP 200\n=== http://localhost:5000/swagger/index.html ===\nHTTP 200\n=== http://localhost:5000/api/Strasse ===\nHTTP 401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== backend log (tail) ===\" && tail -25 /tmp/backend.log && echo \"=== frontend log (tail) ===\" && tail -8 /tmp/frontend.log",
+      "exit_code": 0,
+      "stdout": "=== backend log (tail) ===\n      Closing connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20003]\n      Closed connection to database 'Strassennamen' on server 'localhost,1433' (0ms).\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20000]\n      Opening connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20001]\n      Opened connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20002]\n      Closing connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20003]\n      Closed connection to database 'Strassennamen' on server 'localhost,1433' (0ms).\ndbug: Microsoft.EntityFrameworkCore.Infrastructure[10407]\n      'AppDbContext' disposed.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20007]\n      Disposing connection to database 'Strassennamen' on server 'localhost,1433'.\ndbug: Microsoft.EntityFrameworkCore.Database.Connection[20008]\n      Disposed connection to database '' on server '' (0ms).\ndbug: Quartz.Core.QuartzSchedulerThread[0]\n      Batch acquisition of 0 triggers\ndbug: Quartz.Core.QuartzSchedulerThread[0]\n      Batch acquisition of 0 triggers\ndbug: Microsoft.Extensions.Http.DefaultHttpClientFactory[103]\n      HttpMessageHandler expired after 120000ms for client 'IAuthorizationServerClient'\ndbug: Keycloak.AuthServices.Authorization.Requirements.ResourceAccessRequirementHandler[101]\n      [ParameterizedProtectedResourceRequirementHandler] Has been skipped because of 'User is not Authenticated'\n=== frontend log (tail) ===\nchunk-RRBFX5SN.js   | -                         |  19.88 kB | \nchunk-RZOC3ZC7.js   | error-module              |   9.32 kB | \n\nApplication bundle generation complete. [31.234 seconds] - 2026-10-16T11:25:14.234Z\n\nWatch mode enabled. Watching for file changes...\nNOTE: Raw file sizes do not reflect development server per-request transformations.\n  \u279c  Local:   http://localhost:4200/\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"grant_type=password&client_id=strassennamen&username=user1&password=user1pass\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && echo \"Token obtained: ${TOKEN:0:30}...\" && echo \"=== Token roles ===\" && curl -s \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"grant_type=password&client_id=strassennamen&username=user1&password=user1pass\" | python3 -c \"import sys,json; t=json.load(sys.stdin)['access_token']; import base64; p=t.split('.')[1]; p+='='*(-len(p)%4); d=json.loads(base64.urlsafe_b64decode(p)); print('resource_access:', json.dumps(d.get('resource_access',{}).get('strassennamen',{})))\" && echo \"=== API with token ===\" && curl -s -w \"\\nHTTP %{http_code}\\n\" --max-time 15 -H \"Authorization: Bearer $TOKEN\" \"http://localhost:5000/api/Strasse\"",
+      "exit_code": 0,
+      "stdout": "Token obtained: eyJhbGciOiJSUzI1NiIsInR5cCIgOi...\n=== Token roles ===\nresource_access: {\"roles\": [\"editor\", \"app-access\"]}\n=== API with token ===\n[]\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ADMIN_TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=admin-realm&username=admin&password=admin\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients\" | python3 -c \"\nimport sys,json\nclients=json.load(sys.stdin)\nfor c in clients:\n    if c['clientId']=='strassennamen':\n        print('clientId:', c['clientId'])\n        print('enabled:', c['enabled'])\n        print('publicClient:', c['publicClient'])\n        print('standardFlowEnabled:', c['standardFlowEnabled'])\n        print('implicitFlowEnabled:', c['implicitFlowEnabled'])\n        print('directAccessGrantsEnabled:', c['directAccessGrantsEnabled'])\n        print('serviceAccountsEnabled:', c['serviceAccountsEnabled'])\n        print('rootUrl:', c.get('rootUrl'))\n        print('baseUrl:', c.get('baseUrl'))\n        print('adminUrl:', c.get('adminUrl'))\n        print('redirectUris:', c.get('redirectUris'))\n        print('webOrigins:', c.get('webOrigins'))\n        print('postLogout:', c.get('attributes',{}).get('post.logout.redirect_uris'))\n\" && echo \"=== Client roles ===\" && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients/$(curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients?clientIds=strassennamen\" | python3 -c \"import sys,json; print(json.load(sys.stdin)[0]['uuid'])\")/roles\" | python3 -c \"import sys,json; print([r['name'] for r in json.load(sys.stdin)])\"",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nKeyError: 'access_token'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=admin-realm&username=admin&password=admin\"",
+      "exit_code": 0,
+      "stdout": "{\"error\":\"invalid_client\",\"error_description\":\"Invalid client or Invalid client credentials\"}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for cid in security-admin-console admin-cli; do echo \"=== $cid ===\"; curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=$cid&username=admin&password=admin\" | head -c 200; echo; done",
+      "exit_code": 0,
+      "stdout": "=== security-admin-console ===\n{\"error\":\"unauthorized_client\",\"error_description\":\"Client not allowed for direct access grants\"}\n=== admin-cli ===\n{\"access_token\":\"eyJhbGciOiJSUzI1NiIsInR5cCIgOiAiSldUIiwia2lkIiA6ICJCNFhqdVNwQzFDQTcwYmlia1VyY2hVRWtOVUJVdFdoRnIwSHMxbkJ2UmhVIn0.eyJleHAiOjE3OTIxNTAwNDMsImlhdCI6MTc5MjE0OTk4MywianRpIjoib25sdHJvOjg4YWQ\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ADMIN_TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=admin-cli&username=admin&password=admin\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && UUID=$(curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients?clientIds=strassennamen\" | python3 -c \"import sys,json; print(json.load(sys.stdin)[0]['uuid'])\") && echo \"=== Client config ===\" && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients/$UUID\" | python3 -c \"\nimport sys,json\nc=json.load(sys.stdin)\nfor k in ['clientId','enabled','publicClient','standardFlowEnabled','implicitFlowEnabled','directAccessGrantsEnabled','serviceAccountsEnabled','rootUrl','baseUrl','adminUrl','redirectUris','webOrigins']:\n    print(k+':', c.get(k))\nprint('postLogout:', c.get('attributes',{}).get('post.logout.redirect_uris'))\n\" && echo \"=== Client roles ===\" && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients/$UUID/roles\" | python3 -c \"import sys,json; print([r['name'] for r in json.load(sys.stdin)])\" && echo \"=== user1 role mappings ===\" && UID2=$(curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/users?username=user1\" | python3 -c \"import sys,json; print(json.load(sys.stdin)[0]['id'])\") && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/users/$UID2/role-mappings/clients/$UUID\" | python3 -c \"import sys,json; print([r['name'] for r in json.load(sys.stdin)])\"",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 1, in <module>\nKeyError: 'uuid'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ADMIN_TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=admin-cli&username=admin&password=admin\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients?clientIds=strassennamen\"",
+      "exit_code": 0,
+      "stdout": "[{\"id\":\"5379f32a-0071-4d73-8f43-dfeafe937e7c\",\"clientId\":\"account\",\"name\":\"${client_account}\",\"rootUrl\":\"${authBaseUrl}\",\"baseUrl\":\"/realms/my-realm/account/\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[\"/realms/my-realm/account/*\"],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\",\"post.logout.redirect.uris\":\"+\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":false,\"nodeReRegistrationTimeout\":0,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"de0e1c60-6358-44ac-8807-f19764ff1935\",\"clientId\":\"account-console\",\"name\":\"${client_account-console}\",\"rootUrl\":\"${authBaseUrl}\",\"baseUrl\":\"/realms/my-realm/account/\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[\"/realms/my-realm/account/*\"],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\",\"post.logout.redirect.uris\":\"+\",\"pkce.code.challenge.method\":\"S256\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":false,\"nodeReRegistrationTimeout\":0,\"protocolMappers\":[{\"id\":\"2cd87c1d-497f-499f-89f8-cc82426cfb28\",\"name\":\"audience resolve\",\"protocol\":\"openid-connect\",\"protocolMapper\":\"oidc-audience-resolve-mapper\",\"consentRequired\":false,\"config\":{}}],\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"56cc6409-a342-4f78-8830-b8807969010c\",\"clientId\":\"admin-cli\",\"name\":\"${client_admin-cli}\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":false,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":true,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\",\"client.use.lightweight.access.token.enabled\":\"true\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":true,\"nodeReRegistrationTimeout\":0,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"a98f685c-1546-46c0-8837-795c1eab46ca\",\"clientId\":\"broker\",\"name\":\"${client_broker}\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":true,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":false,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"true\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":false,\"nodeReRegistrationTimeout\":0,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"2979a2e6-324e-4e94-bfc5-425ea08e876c\",\"clientId\":\"probe\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":true,\"nodeReRegistrationTimeout\":-1,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"76381e5f-091e-4a0c-ad6e-75addcd7e2ee\",\"clientId\":\"realm-management\",\"name\":\"${client_realm-management}\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[],\"webOrigins\":[],\"notBefore\":0,\"bearerOnly\":true,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":false,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"true\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":false,\"nodeReRegistrationTimeout\":0,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"d2d16527-13c0-419b-8cda-ee9173add9bd\",\"clientId\":\"security-admin-console\",\"name\":\"${client_security-admin-console}\",\"rootUrl\":\"${authAdminUrl}\",\"baseUrl\":\"/admin/my-realm/console/\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[\"/admin/my-realm/console/*\"],\"webOrigins\":[\"+\"],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":false,\"directAccessGrantsEnabled\":false,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":false,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\",\"client.use.lightweight.access.token.enabled\":\"true\",\"post.logout.redirect.uris\":\"+\",\"pkce.code.challenge.method\":\"S256\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":true,\"nodeReRegistrationTimeout\":0,\"protocolMappers\":[{\"id\":\"5b6e1fe8-2290-4917-9923-e725f151ad47\",\"name\":\"locale\",\"protocol\":\"openid-connect\",\"protocolMapper\":\"oidc-usermodel-attribute-mapper\",\"consentRequired\":false,\"config\":{\"introspection.token.claim\":\"true\",\"userinfo.token.claim\":\"true\",\"user.attribute\":\"locale\",\"id.token.claim\":\"true\",\"access.token.claim\":\"true\",\"claim.name\":\"locale\",\"jsonType.label\":\"String\"}}],\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}},{\"id\":\"fe46cc38-b90a-4bd4-ae89-c3075c2dc455\",\"clientId\":\"strassennamen\",\"rootUrl\":\"http://localhost:4200/\",\"adminUrl\":\"http://localhost:4200/\",\"baseUrl\":\"http://localhost:4200/\",\"surrogateAuthRequired\":false,\"enabled\":true,\"alwaysDisplayInConsole\":false,\"clientAuthenticatorType\":\"client-secret\",\"redirectUris\":[\"http://localhost:4200/*\",\"http://localhost:5000/*\"],\"webOrigins\":[\"http://localhost:4200/*\"],\"notBefore\":0,\"bearerOnly\":false,\"consentRequired\":false,\"standardFlowEnabled\":true,\"implicitFlowEnabled\":true,\"directAccessGrantsEnabled\":true,\"serviceAccountsEnabled\":false,\"publicClient\":true,\"frontchannelLogout\":true,\"protocol\":\"openid-connect\",\"attributes\":{\"realm_client\":\"false\",\"post.logout.redirect_uris\":\"http://localhost:4200/*\"},\"authenticationFlowBindingOverrides\":{},\"fullScopeAllowed\":true,\"nodeReRegistrationTimeout\":-1,\"defaultClientScopes\":[\"web-origins\",\"acr\",\"profile\",\"roles\",\"basic\",\"email\"],\"optionalClientScopes\":[\"address\",\"phone\",\"organization\",\"offline_access\",\"microprofile-jwt\"],\"access\":{\"view\":true,\"configure\":true,\"manage\":true}}]",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ADMIN_TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/master/protocol/openid-connect/token\" -d \"grant_type=password&client_id=admin-cli&username=admin&password=admin\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && UUID=\"fe46cc38-b90a-4bd4-ae89-c3075c2dc455\" && echo \"=== Client roles ===\" && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/clients/$UUID/roles\" | python3 -c \"import sys,json; print([r['name'] for r in json.load(sys.stdin)])\" && echo \"=== user1 client role mappings ===\" && UID2=$(curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/users?username=user1\" | python3 -c \"import sys,json; print(json.load(sys.stdin)[0]['id'])\") && curl -s -H \"Authorization: Bearer $ADMIN_TOKEN\" \"http://localhost:8080/admin/realms/my-realm/users/$UID2/role-mappings/clients/$UUID\" | python3 -c \"import sys,json; print([r['name'] for r in json.load(sys.stdin)])\"",
+      "exit_code": 0,
+      "stdout": "=== Client roles ===\n['app-access', 'editor']\n=== user1 client role mappings ===\n['app-access', 'editor']\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Frontend served config ===\" && curl -s http://localhost:4200/configs/config.development.json && echo && echo \"=== CORS preflight from 4200 origin ===\" && curl -s -i -X OPTIONS \"http://localhost:5000/api/Strasse\" -H \"Origin: http://localhost:4200\" -H \"Access-Control-Request-Method: GET\" | grep -i \"access-control\\|HTTP/\" && echo \"=== CORS on real request ===\" && TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"grant_type=password&client_id=strassennamen&username=user1&password=user1pass\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && curl -s -i -H \"Authorization: Bearer $TOKEN\" -H \"Origin: http://localhost:4200\" \"http://localhost:5000/api/Strasse\" | grep -i \"access-control\\|HTTP/\"",
+      "exit_code": 0,
+      "stdout": "=== Frontend served config ===\n{\n  \"endPointUrl\": \"http://localhost:5000/api\",\n  \"keycloak\": {\n    \"realm\": \"my-realm\",\n    \"authServerUrl\": \"http://localhost:8080/\",\n    \"resource\": \"strassennamen\"\n  }\n}\n\n=== CORS preflight from 4200 origin ===\nHTTP/1.1 204 No Content\nAccess-Control-Allow-Credentials: true\nAccess-Control-Allow-Methods: GET\nAccess-Control-Allow-Origin: http://localhost:4200\n=== CORS on real request ===\nHTTP/1.1 200 OK\nAccess-Control-Allow-Credentials: true\nAccess-Control-Allow-Origin: http://localhost:4200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec mssql /opt/mssql-tools18/bin/sqlcmd -S localhost -U sa -P 'Strassen#2024' -d Strassennamen -C -Q \"SELECT name FROM sys.tables ORDER BY name\" 2>&1 | head -25",
+      "exit_code": 0,
+      "stdout": "name                                                                                                                            \n--------------------------------------------------------------------------------------------------------------------------------\nBeschluesse                                                                                                                     \nErlaeuterungstafeln                                                                                                             \nHistory                                                                                                                         \nNamenskomplexe                                                                                                                  \nNamenskomplexeOrtsteile                                                                                                         \nOrtsteile                                                                                                                       \nStadtbezirke                                                                                                                    \nStrasseAnzahle                                                                                                                  \nStrassen                                                                                                                        \nStrassencharaktere                                                                                                              \nStrassenOrtsteile                                                                                                               \nStrassenStadtbezirke                                                                                                            \nVersionInfo                                                                                                                     \nVorgaenge                                                                                                                       \n\n(14 rows affected)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Frontend HTML ===\" && curl -s http://localhost:4200/ | grep -o \"<title>[^<]*</title>\" && echo \"=== appsettings.Development.json ===\" && cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/appsettings.Development.json && echo \"=== XML export file ===\" && ls -la /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Export/ 2>/dev/null && cat /workspace/src/Backend/Lecos.Strassennamen.RestAPI/Export/strassen.xml 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "=== Frontend HTML ===\n<title>Leipziger Strassennamen</title>\n=== appsettings.Development.json ===\n{\n  \"Serilog\": {\n    \"Using\":  [ \"Serilog.Sinks.File\" ],\n    \"MinimumLevel\": {\n      \"Default\": \"Debug\",\n      \"Override\": {\n        \"Microsoft.AspNetCore\": \"Information\",\n        \"Microsoft.EntityFrameworkCore\": \"Warning\",\n        \"System.Net.Http\": \"Warning\"\n      }\n    },\n    \"WriteTo\": [\n      {\n        \"Name\": \"File\",\n        \"Args\": {\n          \"path\": \"Logs/log-.txt\",\n          \"rollingInterval\": \"Day\",\n          \"retainedFileCountLimit\": \"15\"\n        }\n      }\n    ]\n  },\n  \"Logging\": {\n    \"LogLevel\": {\n      \"Default\": \"Debug\",\n      \"Microsoft.EntityFrameworkCore.Database.Command\": \"Warning\"\n    }\n  },\n  \"Keycloak\": {\n    \"Realm\": \"my-realm\",\n    \"AuthServerUrl\": \"http://localhost:8080/\",\n    \"SslRequired\": \"none\",\n    \"Resource\": \"strassennamen\",\n    \"PublicClient\": true,\n    \"VerifyTokenAudience\": false,\n    \"ConfidentialPort\": 0,\n    \"ClientName\": \"strassennamen\"\n  },\n  \"CorsOrigins\": [\n    \"http://localhost:4200\"\n  ],\n  \"ConnectionStrings\": {\n    \"DB\": \"Server=localhost,1433;Database=Strassennamen;User Id=sa;Password=Strassen#2024;TrustServerCertificate=True\"\n  },\n  \"Jobs\": {\n    \"Heartbeat\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0/5 * 1/1 * ? *\"\n    },\n    \"XmlExportStrassen\": {\n      \"Active\": true,\n      \"CronSchedule\": \"0 0 1 1/1 * ? *\",\n      \"FilePath\": \"Export/strassen.xml\",\n      \"FilterStrassenStatus\": \"Aktiv\"\n    }\n  }\n}\n=== XML export file ===\ntotal 12\ndrwxr-xr-x  2 root root 4096 Oct 16 11:22 .\ndrwxr-xr-x 15 root root 4096 Oct 16 11:22 ..\n-rw-r--r--  1 root root   82 Oct 16 11:22 strassen.xml\n\ufeff<?xml version=\"1.0\" encoding=\"utf-8\" standalone=\"yes\"?>\n<Strassenverzeichnis />",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Backend log: startup & job evidence ===\" && grep -E \"Now listening|Application started|XmlExport|Heartbeat|Fired|Export\" /tmp/backend.log | head -20 && echo \"=== Another API endpoint with token ===\" && TOKEN=$(curl -s -X POST \"http://localhost:8080/realms/my-realm/protocol/openid-connect/token\" -d \"grant_type=password&client_id=strassennamen&username=user1&password=user1pass\" | python3 -c \"import sys,json; print(json.load(sys.stdin)['access_token'])\") && curl -s -w \"\\nHTTP %{http_code}\\n\" --max-time 15 -H \"Authorization: Bearer $TOKEN\" \"http://localhost:5000/api/Ortsteil\" && curl -s -w \"\\nHTTP %{http_code}\\n\" --max-time 15 -H \"Authorization: Bearer $TOKEN\" \"http://localhost:5000/api/Stadtbezirk\"",
+      "exit_code": 0,
+      "stdout": "=== Backend log: startup & job evidence ===\n      Now listening on: http://localhost:5000\n      Application started. Press Ctrl+C to shut down.\n      Calling Execute on job StrassennamenJobs.XmlExportStrassenJob\n      Calling Execute on job StrassennamenJobs.HeartbeatJob\ninfo: Lecos.Strassennamen.RestAPI.Jobs.HeartbeatJob[0]\n      Heartbeat at 10/16/2026 11:25:00\n=== Another API endpoint with token ===\n[]\nHTTP 200\n[]\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

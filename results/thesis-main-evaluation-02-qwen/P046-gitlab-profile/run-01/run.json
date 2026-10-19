@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P046-gitlab-profile__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T18:55:35.835057+02:00",
+    "finished_at": "2026-10-18T19:03:29.746002+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P046",
+    "project": {
+      "opencode_id": "7927",
+      "name": "gitlab-profile",
+      "description": "Web-based application for the collection, management and evaluation of energy data from public properties.",
+      "catalogue_url": "https://opencode.de/de/software/gitlab-profile-7927",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/kommunalenergie/gitlab-profile",
+      "commit_sha": "6f9c4eae322987ca1d99e53931d3663eedc5208c",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/kommunalenergie/gitlab-profile/-/blob/6f9c4eae322987ca1d99e53931d3663eedc5208c/SETUP.md",
+      "language": "German",
+      "word_count": 357
+    },
+    "task_id": "P046-gitlab-profile"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 473.92200000000594,
+    "repository_setup_duration_seconds": 50.26499999999942,
+    "installation_duration_seconds": 323.6100000000006,
+    "validation_duration_seconds": 87.43700000000536,
+    "command_count": 51,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 19,
+    "validation_command_count": 28
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P046-gitlab-profile/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

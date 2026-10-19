@@ -1,0 +1,14 @@
+Successfully installed open_taki as a drop-in replacement for Apache Tika, following the guide's container-image method.
+
+What was done (in /workspace, Ubuntu 22.04, docker 29.7.2):
+1. Pulled the published image `codeberg.org/kosmos-eu/open_taki:latest` (digest sha256:c40b34fa00383e6d7e5d5f25279b0bbc8a7f16c86acf754b28c4e8c577dfc599).
+2. Created /workspace/taki-config.yaml exactly per the guide (listen :9998, LLM, Collabora, pdf, fallback, routing sections).
+3. Created /workspace/tika.yml mirroring the guide's AFTER state (service name `tika`, same image, volume `./taki-config.yaml:/etc/open_taki/config.yaml:ro`, network `opencloud-net`), started with `docker compose -f tika.yml up -d tika` (docker used in place of podman, which was not available).
+
+Verification results:
+- `docker ps`: container `workspace-tika-1` Up, image codeberg.org/kosmos-eu/open_taki:latest, port 9998 published.
+- Startup log: `open_taki 0.9.0 starting on :9998` with LLM/Collabora/DocMeta config loaded.
+- Guide step 4: `curl http://localhost:9998/` → `{"name":"open_taki","status":"ok","version":"0.9.0","features":{"office":true,"pdf":true,...}}` (exit 0). `/version` → `open_taki 0.9.0`.
+- Functional API tests (both exit 0): v1 Tika-compatible `PUT /rmeta/text` returned `X-TIKA:content` for text/plain (passthrough) and message/rfc822 (email parser); v2 protocol (`X-Taki-Protocol: v2`) returned content plus `X-TAKI:routing` (meta/embedding enrichment fields absent only because no live LLM backend exists in this environment).
+
+Notes: The guide's verification against the OpenCloud host (log line "open_taki detected (version: 0.7.0)", `opencloud search index` reindex) could not be executed because there is no OpenCloud stack in this environment; the open_taki service itself is installed, running, and verified on the documented port/protocol. The actual image version is 0.9.0 vs 0.7.0 quoted in the guide. The container was left running as the installed state.

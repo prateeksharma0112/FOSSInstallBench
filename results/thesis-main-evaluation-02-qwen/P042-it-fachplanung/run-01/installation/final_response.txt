@@ -1,0 +1,19 @@
+IT-Fachplanung successfully installed in /workspace using ddev (v1.25.4).
+
+**What was done**
+- ddev was assumed installed by the guide but absent → installed ddev v1.25.4 (GitHub release, linux-amd64) for a non-root user `dev` (ddev refuses to run as root; dev was added to the docker group).
+- Ran the documented steps: `ddev start`, `ddev composer install`, `ddev npm i`, `ddev importDump`, `cp config/web.config.local.php.example config/web.config.local.php`.
+- The `openldap` container (osixia/openldap:1.5.0) failed to start because the bundled `.ddev/docker-compose.ldap.yaml` mounts `test_users.ldif` as a `:ro` single-file bind mount, but the image's startup script requires `chown -R`, `sed -i` (rename) and `rm -rf` on that path. Fixed by mounting a writable directory (`.ddev/ldap-seed/`, containing a copy of `test_users.ldif`) at `assets/config/bootstrap/ldif/custom` and setting `LDAP_REMOVE_CONFIG_AFTER_SETUP=false`. `KEEP_EXISTING_CONFIG` stays `false` so the bootstrap loads the users.
+- Performed the documented clean reset (`ddev delete --omit-snapshot -y` + `ddev start`) for a proper first start.
+
+**Verified state (all as user `dev`, ddev project `tfm-fachplanung` in /workspace)**
+- `ddev status`: web (PHP 8.3), db (mariadb 10.3), openldap, phpmyadmin, phpldapadmin all **OK**.
+- All **10 LDAP test users** (user1–user10) loaded (verified via admin bind `ldapsearch -D cn=admin,dc=example,dc=org -w admin`; anonymous search is ACL-blocked).
+- DB dump imported: 9 tables with data (fachplanung 106, massnahme 817, teilmassnahme 4205, user 6, dienststelle 53, …).
+- Deps: `vendor/` (composer) and `node_modules/` (451 pkgs) present; compiled CSS/JS present in `public/theme`.
+- Web app: `http://127.0.0.1:32789` (Host `tfm-fachplanung.ddev.site`) → `/login` HTTP 200, `/` HTTP 302 → /login.
+- End-to-end login proven: temporarily set a known bcrypt password on demo R1 user (id=1), logged in → POST /login 302 → authenticated `/` 200 ("Startseite - IT-Fachplanung" with full R1 nav); original password hash restored afterward (confirmed `$2y$10$rZXtILwV…`).
+
+**Known non-blocking inconsistencies (bundled test data, not install defects)**: `config/web.config.php` `ldap` block points at boilerplate values (`dc=planetexpress,dc=com`, host `ldap:10389`) that don't match the project's actual dev LDAP (`dc=example,dc=org`, container hostname `openldap:389`), and the bundled 2022 DB `user` table holds UUID-named demo accounts whose bcrypt passwords are not published. Neither blocks installation; the documented LDAP test users are present.
+
+Access: `http://tfm-fachplanung.ddev.site/` (or `http://127.0.0.1:32789` on the host). Management: phpmyadmin :8036, phpldapadmin :8076.

@@ -1,0 +1,428 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/container-registry/harbor /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/container-registry/harbor.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin d9bf927a961607230c05267ea16a486ad4ec042f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/container-registry/harbor.git/\nFrom https://gitlab.opencode.de/container-registry/harbor\n * branch            d9bf927a961607230c05267ea16a486ad4ec042f -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach d9bf927a961607230c05267ea16a486ad4ec042f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at d9bf927 docs: Add publiccode.yml for public-sector software catalogues\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = d9bf927a961607230c05267ea16a486ad4ec042f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -3 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 276\ndrwxr-xr-x 17 root root  4096 Oct 16 12:21 .\ndr-xr-xr-x  1 root root  4096 Oct 16 12:20 ..\n-rw-r--r--  1 root root   988 Oct 16 12:21 .buildbaselog\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 .claude\n-rw-r--r--  1 root root   382 Oct 16 12:21 .dockerignore\ndrwxr-xr-x  8 root root  4096 Oct 16 12:21 .git\ndrwxr-xr-x  6 root root  4096 Oct 16 12:21 .github\n-rw-r--r--  1 root root  1314 Oct 16 12:21 .gitignore\n-rw-r--r--  1 root root   600 Oct 16 12:21 .gitmessage\n-rw-r--r--  1 root root    30 Oct 16 12:21 .release-please-manifest-chart.json\n-rw-r--r--  1 root root    20 Oct 16 12:21 .release-please-manifest.json\n-rw-r--r--  1 root root  1109 Oct 16 12:21 .spectral.yaml\n-rw-r--r--  1 root root  1806 Oct 16 12:21 .typos.toml\n-rw-r--r--  1 root root 10520 Oct 16 12:21 ADOPTERS.md\n-rw-r--r--  1 root root  2209 Oct 16 12:21 AGENTS.md\n-rw-r--r--  1 root root 39501 Oct 16 12:21 CHANGELOG.md\n-rw-r--r--  1 root root  2066 Oct 16 12:21 CLAUDE.md\n-rw-r--r--  1 root root    46 Oct 16 12:21 CODEOWNERS\n-rw-r--r--  1 root root 11329 Oct 16 12:21 CONTRIBUTING.md\n-rw-r--r--  1 root root 11347 Oct 16 12:21 LICENSE\n-rw-r--r--  1 root root   539 Oct 16 12:21 OWNERS.md\n-rw-r--r--  1 root root  8581 Oct 16 12:21 README.md\n-rw-r--r--  1 root root 11767 Oct 16 12:21 RELEASE.md\n-rw-r--r--  1 root root    77 Oct 16 12:21 RELEASES.md\n-rw-r--r--  1 root root  3136 Oct 16 12:21 ROADMAP.md\n-rw-r--r--  1 root root  5816 Oct 16 12:21 SECURITY.md\n-rw-r--r--  1 root root  6210 Oct 16 12:21 Taskfile.yml\n-rw-r--r--  1 root root     7 Oct 16 12:21 VERSION\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 api\n-rw-r--r--  1 root root   579 Oct 16 12:21 codecov.yml\ndrwxr-xr-x  4 root root  4096 Oct 16 12:21 config\ndrwxr-xr-x  5 root root  4096 Oct 16 12:21 deploy\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 devenv\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 dockerfile\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 docs\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 icons\n-rw-r--r--  1 root root   999 Oct 16 12:21 lefthook.yml\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 make\n-rw-r--r--  1 root root  5873 Oct 16 12:21 publiccode.yml\n-rw-r--r--  1 root root  1333 Oct 16 12:21 release-please-config-chart.json\n-rw-r--r--  1 root root  1277 Oct 16 12:21 release-please-config-maintenance.json\n-rw-r--r--  1 root root  1447 Oct 16 12:21 release-please-config.json\ndrwxr-xr-x 15 root root  4096 Oct 16 12:21 src\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 taskfile\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 tests\ndrwxr-xr-x  6 root root  4096 Oct 16 12:21 tools\n-rw-r--r--  1 root root  3210 Oct 16 12:21 versions.env\nd9bf927 docs: Add publiccode.yml for public-sector software catalogues\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker version 2>&1 | head -20; docker compose version 2>&1 | head -3; openssl version 2>&1",
+      "exit_code": 0,
+      "stdout": "Client: Docker Engine - Community\n Version:           29.7.2\n API version:       1.55\n Go version:        go1.26.5\n Git commit:        a7dcaa6\n Built:             Wed Aug  5 18:28:48 2026\n OS/Arch:           linux/amd64\n Context:           default\n\nServer: Docker Engine - Community\n Engine:\n  Version:          29.7.2\n  API version:      1.55 (minimum version 1.40)\n  Go version:       go1.26.5\n  Git commit:       6a43e3d\n  Built:            Wed Aug  5 18:28:48 2026\n  OS/Arch:          linux/amd64\n  Experimental:     false\n containerd:\n  Version:          v2.3.4\nDocker Compose version v5.5.0\nOpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/Taskfile.yml && echo \"=====\" && ls /workspace/deploy /workspace/deploy/compose 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "version: '3'\n\noutput: prefixed\n\nset:\n  - errexit\n  - pipefail\n\ndotenv:\n  - versions.env\n\nvars:\n  DEFAULT_GIT_COMMIT:\n    sh: git rev-parse --short=8 HEAD || echo \"unknown\"\n  # CLI overrides of root-defined vars don't propagate into included\n  # taskfiles, so callers override via BASE_GIT_COMMIT (same pattern as\n  # RELEASE_VERSION \u2192 VERSION).\n  GIT_COMMIT: '{{.BASE_GIT_COMMIT | default .DEFAULT_GIT_COMMIT}}'\n  DEFAULT_VERSION:\n    sh: cat VERSION 2>/dev/null | tr -d '\\n' || echo \"dev\"\n  VERSION: '{{.RELEASE_VERSION | default .DEFAULT_VERSION}}'\n  TIMESTAMP:\n    sh: date -u +%Y%m%d%H%M%S\n\n  GOPATH_BIN:\n    # Falls back when Go is absent (e.g. chart-only CI runners) \u2014 global\n    # vars are evaluated eagerly for EVERY task invocation.\n    sh: command -v go >/dev/null 2>&1 && echo \"${GOBIN:-$(go env GOPATH)/bin}\" || echo \"${GOBIN:-$HOME/go/bin}\"\n  GOBUILD_FLAGS: \"-buildvcs=false -trimpath\"\n  DISTRIBUTION_SRC: \"https://github.com/distribution/distribution.git\"\n  NPM_REGISTRY: \"https://registry.npmjs.org/\"\n\n  # Multi-arch image build configuration\n  # Registry: 8gears.container-registry.com/8gcr/<image>:<version>\n  REGISTRY_ADDRESS: '{{.REGISTRY_ADDRESS | default \"8gears.container-registry.com\"}}'\n  REGISTRY_PROJECT: '{{.REGISTRY_PROJECT | default \"8gcr\"}}'\n  IMAGE_PLATFORMS: '{{.IMAGE_PLATFORMS | default \"linux/amd64,linux/arm64\"}}'\n  IMAGE_BUILDER: \"harbor-multiarch\"\n\n  # Container engine detection: prefer Docker buildx, fallback to Podman\n  CONTAINER_ENGINE:\n    sh: 'docker buildx version 2>&1 | grep -q \"github.com/docker/buildx\" && echo \"docker\" || (podman --version >/dev/null 2>&1 && echo \"podman\" || echo \"unknown\")'\n\n  # CI detection (shared by build.yml and image.yml)\n  IS_CI:\n    sh: '[ -n \"${CI:-}${GITHUB_ACTIONS:-}${GITLAB_CI:-}${JENKINS_URL:-}\" ] && echo \"true\" || echo \"false\"'\n  CI_PLATFORMS: '{{ternary .IMAGE_PLATFORMS (printf \"linux/%s\" ARCH) (eq .IS_CI \"true\")}}'\n\nincludes:\n  build:\n    taskfile: ./taskfile/build.yml\n    aliases: [b]\n  image:\n    taskfile: ./taskfile/image.yml\n    aliases: [i]\n  test:\n    taskfile: ./taskfile/test.yml\n    aliases: [t]\n  dev:\n    taskfile: ./taskfile/dev.yml\n    aliases: [d]\n  docs:\n    taskfile: ./taskfile/docs.yml\n  helm:\n    taskfile: ./taskfile/helm.yml\n    aliases: [h]\n  compose:\n    taskfile: ./taskfile/compose.yml\n  release-ready:\n    taskfile: ./taskfile/release-ready.yml\n  release-images-local:\n    taskfile: ./taskfile/release-images-local.yml\n  release-notes:\n    taskfile: ./taskfile/release-notes.yml\n\ntasks:\n  default:\n    desc: \"Start all services with hot reload (foreground, stops on exit)\"\n    cmds:\n      - task: dev:up\n\n  build:\n    desc: \"Build all binaries\"\n    cmds:\n      - task: build:all-binaries\n\n  test:\n    desc: \"Run all tests\"\n    cmds:\n      - task: test:all\n\n  lint:\n    desc: \"Run API lint, Go lint, and dependency vulnerability checks\"\n    cmds:\n      - task: test:lint:api\n      - task: test:lint\n      - task: test:vuln-check\n\n  lint:go:\n    desc: \"Run Go lint\"\n    cmds:\n      - task: test:lint:local\n\n  lint:ui:\n    desc: \"Run UI lint\"\n    cmds:\n      - task: test:frontend:lint\n      - task: test:frontend:lint:style\n\n  lint:api:\n    desc: \"Run API lint\"\n    cmds:\n      - task: test:lint:api\n\n  vuln-check:\n    desc: \"Run Go dependency vulnerability checks\"\n    cmds:\n      - task: test:vuln-check\n\n  images:\n    desc: \"Build all container images (PUSH=false for local, PLATFORMS=linux/arm64 for single arch)\"\n    cmds:\n      - task: image:all-images\n\n  release-ready:\n    desc: \"Verify release patches apply cleanly\"\n    cmds:\n      - task: release-ready:check\n\n  apply-patches:\n    desc: \"Apply the commercial patches declared by this Harbor branch\"\n    cmds:\n      - task: release-ready:apply-patches\n\n  release-images-local:\n    desc: \"Apply commercial patches, build multi-arch images, push them, and verify the manifests\"\n    cmds:\n      - task: release-images-local:run\n\n  release-notes:\n    desc: \"Recreate a GitHub release's notes from its tagged changelog\"\n    cmds:\n      - task: release-notes:update\n\n  clean:\n    desc: \"Remove all build artifacts, images, test output, and dev environment\"\n    deps: [build:clean, image:clean, test:clean, dev:clean]\n\n  info:\n    desc: \"Print version, tool versions, and build configuration\"\n    silent: true\n    cmds:\n      - |\n        echo \"\"\n        echo \"\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\"\n        echo \"  Harbor Build Information\"\n        echo \"\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\"\n        echo \"\"\n        echo \"Build Metadata:\"\n        echo \"  Version:        {{.VERSION}}\"\n        echo \"  Git Commit:     {{.GIT_COMMIT}}\"\n        echo \"  Build Time:     {{.TIMESTAMP}}\"\n        echo \"\"\n        echo \"Tool Versions:\"\n        echo \"  Go:             {{.GO_VERSION}}\"\n        echo \"  Swagger:        {{.SWAGGER_VERSION}}\"\n        echo \"  GolangCI-Lint:  {{.GOLANGCILINT_VERSION}}\"\n        echo \"  Delve:          {{.DELVE_VERSION}}\"\n        echo \"  Air:            {{.AIR_VERSION}}\"\n        echo \"  Bun:            {{.BUN_VERSION}}\"\n        echo \"  Spectral:       {{.SPECTRAL_VERSION}}\"\n        echo \"  Trivy:          {{.TRIVY_VERSION}}\"\n        echo \"\"\n        echo \"Base Images:\"\n        echo \"  Alpine:         {{.ALPINE_VERSION}}\"\n        echo \"  Nginx:          {{.NGINX_VERSION}}\"\n        echo \"\"\n        echo \"Build Configuration:\"\n        echo \"  Go Build Flags: {{.GOBUILD_FLAGS}}\"\n        echo \"\"\n        echo \"External Dependencies:\"\n        echo \"  Distribution:   {{.DISTRIBUTION_SRC}}\"\n        echo \"  Distribution:   {{.DISTRIBUTION_VERSION}}\"\n        echo \"  NPM Registry:   {{.NPM_REGISTRY}}\"\n        echo \"\"\n        echo \"\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\"\n        echo \"\"\n\n  setup:\n    desc: \"Install Go development tools (air, dlv, govulncheck)\"\n    cmds:\n      - task: dev:setup\n=====\n/workspace/deploy:\nchart\ncompose\nflux\n\n/workspace/deploy/compose:\nREADME.md\ncheck-env.ys\ndocker-compose.yaml\nexample\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /workspace/deploy/compose/example/local/ && echo \"=====\" && cat /workspace/deploy/compose/example/local/.env.example",
+      "exit_code": 0,
+      "stdout": "total 20\ndrwxr-xr-x 2 root root 4096 Oct 16 12:21 .\ndrwxr-xr-x 3 root root 4096 Oct 16 12:21 ..\n-rw-r--r-- 1 root root  518 Oct 16 12:21 .env.example\n-rw-r--r-- 1 root root   12 Oct 16 12:21 .gitignore\n-rw-r--r-- 1 root root 2116 Oct 16 12:21 README.md\n=====\nCOMPOSE_PROJECT_NAME=harbor-local\n\n# Leave empty for local images, or set to pull from a remote registry:\n# IMAGE_REPO=8gears.container-registry.com/8gcr/\nIMAGE_REPO=\nHARBOR_TAG=v2.15.0\nEXT_ENDPOINT=http://localhost\nHARBOR_ADMIN_PASSWORD=Harbor12345\nCORE_SECRET=not-a-secret-only-for-local-development\nJOBSERVICE_SECRET=not-a-secret-only-for-local-development\nDB_PASSWORD=harbor-local-dev\nLOG_LEVEL=info\n\n# Disable TLS for local development (mounts empty files)\nTLS_CONF=/dev/null\nTLS_CERT=/dev/null\nTLS_KEY=/dev/null\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/taskfile/dev.yml | head -120",
+      "exit_code": 0,
+      "stdout": "version: '3'\n\nvars:\n  # Paths\n  COMPOSE_FILE: devenv/docker-compose.yml\n  VERSIONS_ENV: versions.env\n  COMPOSE_LOCAL_FILE: deploy/compose/docker-compose.yaml\n  COMPOSE_LOCAL_ENV: deploy/compose/example/local/.env.example\n  TOKEN_KEY_FILE: devenv/token_service_key.pem\n  TOKEN_KEY_FILE_LOCAL: deploy/compose/config/token_service_key.pem\n\n  # Database (only vars used in task commands)\n  POSTGRES_USER: postgres\n  POSTGRES_DB: registry\n\n  # Slot-based port allocation: SLOT=0 gives default ports, SLOT=1 offsets +100, etc.\n  SLOT: '{{.SLOT | default \"0\"}}'\n\n  PORT_CORE:         '{{ add 8080  (mul (atoi .SLOT) 100) }}'\n  PORT_PORTAL:       '{{ add 4200  (mul (atoi .SLOT) 100) }}'\n  PORT_POSTGRES:     '{{ add 5432  (mul (atoi .SLOT) 100) }}'\n  PORT_REDIS:        '{{ add 6379  (mul (atoi .SLOT) 100) }}'\n  PORT_REGISTRY:     '{{ add 50000 (mul (atoi .SLOT) 100) }}'\n  PORT_REGISTRYCTL:  '{{ add 8085  (mul (atoi .SLOT) 100) }}'\n  PORT_TRIVY:        '{{ add 8081  (mul (atoi .SLOT) 100) }}'\n  PORT_DEBUG_CORE:   '{{ add 2345  (mul (atoi .SLOT) 100) }}'\n  PORT_DEBUG_JOB:    '{{ add 2346  (mul (atoi .SLOT) 100) }}'\n  PORT_DEBUG_REGCTL: '{{ add 2347  (mul (atoi .SLOT) 100) }}'\n\n  PROJECT_PREFIX: 'harbor-{{.SLOT}}'\n\n  # Base docker compose command with env-file for build args (GO_VERSION, BUN_VERSION, etc.)\n  COMPOSE_CMD: 'docker compose -f {{.COMPOSE_FILE}} --env-file {{.VERSIONS_ENV}}'\n\n  # Docker Compose profile strings (reused across multiple tasks)\n  ALL_PROFILES: \"--profile portal --profile core --profile jobservice --profile registryctl --profile trivy\"\n  APP_PROFILES: \"--profile portal --profile core --profile jobservice --profile registryctl\"\n  BACKEND_PROFILES: \"--profile core --profile jobservice --profile registryctl\"\n\nenv:\n  COMPOSE_PROJECT_NAME:   '{{.PROJECT_PREFIX}}'\n  PROJECT_PREFIX:         '{{.PROJECT_PREFIX}}'\n  # Empty when Go is absent (e.g. chart-only CI runners) \u2014 included\n  # taskfiles' env is evaluated eagerly for EVERY task invocation.\n  HOST_GOMODCACHE:\n    sh: go env GOMODCACHE 2>/dev/null || true\n  HOST_GOCACHE:\n    sh: go env GOCACHE 2>/dev/null || true\n  PORT_CORE:              '{{.PORT_CORE}}'\n  PORT_PORTAL:            '{{.PORT_PORTAL}}'\n  PORT_POSTGRES:          '{{.PORT_POSTGRES}}'\n  PORT_REDIS:             '{{.PORT_REDIS}}'\n  PORT_REGISTRY:          '{{.PORT_REGISTRY}}'\n  PORT_REGISTRYCTL:       '{{.PORT_REGISTRYCTL}}'\n  PORT_TRIVY:             '{{.PORT_TRIVY}}'\n  PORT_DEBUG_CORE:        '{{.PORT_DEBUG_CORE}}'\n  PORT_DEBUG_JOBSERVICE:  '{{.PORT_DEBUG_JOB}}'\n  PORT_DEBUG_REGISTRYCTL: '{{.PORT_DEBUG_REGCTL}}'\n  DEV_UID:\n    sh: id -u\n  DEV_GID:\n    sh: id -g\n  # Rootless Podman maps the host user to container root, so UID 0 is the\n  # writable identity for bind-mounted worktrees there.\n  DEV_CONTAINER_USER:\n    sh: |\n      if command -v podman >/dev/null 2>&1 && \\\n        [ \"$(podman info --format '{{\"{{.Host.Security.Rootless}}\"}}' 2>/dev/null)\" = \"true\" ]; then\n        echo \"0:0\"\n      elif command -v docker >/dev/null 2>&1 && \\\n        docker info --format '{{\"{{.SecurityOptions}}\"}}' 2>/dev/null | grep -q \"name=rootless\"; then\n        echo \"0:0\"\n      else\n        echo \"harbor\"\n      fi\n\ntasks:\n  # ---------------------------------------------------------------------------\n  # Tool Installation\n  # ---------------------------------------------------------------------------\n  tools:install:\n    internal: true\n    status:\n      - test -x {{.GOPATH_BIN}}/{{.TOOL_NAME}}\n    cmd: go install {{.TOOL_PKG}}\n\n  setup:\n    desc: Install Go development tools (air, dlv, govulncheck)\n    cmds:\n      - for:\n          - { name: air, pkg: 'github.com/air-verse/air@{{.AIR_VERSION}}' }\n          - { name: dlv, pkg: 'github.com/go-delve/delve/cmd/dlv@{{.DELVE_VERSION}}' }\n          - { name: govulncheck, pkg: 'golang.org/x/vuln/cmd/govulncheck@latest' }\n        task: tools:install\n        vars:\n          TOOL_NAME: '{{.ITEM.name}}'\n          TOOL_PKG: '{{.ITEM.pkg}}'\n      - echo \"All development tools installed\"\n\n  require-docker:\n    internal: true\n    run: once\n    silent: true\n    preconditions:\n      - sh: command -v docker\n        msg: \"Docker is not installed. Please install Docker first.\"\n      - sh: docker info > /dev/null 2>&1\n        msg: \"Docker daemon is not running. Please start Docker first.\"\n\n  require-ports:\n    internal: true\n    run: once\n    silent: true\n    cmds:\n      - |\n        failed=0\n        for pair in \\\n          \"{{.PORT_POSTGRES}}:PostgreSQL\" \\\n          \"{{.PORT_REDIS}}:Redis\" \\\n          \"{{.PORT_CORE}}:Core\" \\\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -100 /workspace/deploy/compose/docker-compose.yaml",
+      "exit_code": 0,
+      "stdout": "services:\n  portal:\n    image: ${IMAGE_REPO:-}harbor-portal:${HARBOR_TAG}\n    volumes:\n      - ../../config/nginx/proxy.conf:/etc/nginx/proxy.d/proxy.conf:ro\n      - ${TLS_CONF:-../../config/nginx/tls.conf}:/etc/nginx/proxy.d/tls.conf:ro\n      - ${TLS_CERT:-./config/certs/tls.crt}:/etc/nginx/ssl/tls.crt:ro\n      - ${TLS_KEY:-./config/certs/tls.key}:/etc/nginx/ssl/tls.key:ro\n    ports:\n      - \"${PORT_HTTP:-80}:8080\"\n      - \"${PORT_HTTPS:-443}:8443\"\n    depends_on:\n      core:\n        condition: service_healthy\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"8080\"]\n      interval: 10s\n      timeout: 5s\n      retries: 3\n    restart: unless-stopped\n\n  core:\n    image: ${IMAGE_REPO:-}harbor-core:${HARBOR_TAG}\n    tmpfs:\n      - /tmp:size=256M,mode=1777\n    volumes:\n      - ./config/token_service_key.pem:/etc/core/token_service_key.pem:ro\n    environment:\n      # Database\n      POSTGRESQL_HOST: postgresql\n      POSTGRESQL_PORT: \"5432\"\n      POSTGRESQL_USERNAME: ${DB_USER:-postgres}\n      POSTGRESQL_PASSWORD: ${DB_PASSWORD}\n      POSTGRESQL_DATABASE: ${DB_NAME:-registry}\n      POSTGRESQL_SSLMODE: ${DB_SSLMODE:-disable}\n      # Redis \u2014 DB indexes follow upstream: core=0, registry=1, jobservice=2, trivy=5\n      _REDIS_URL_CORE: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/0\n      _REDIS_URL_REG: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/1\n      # Registry\n      REGISTRY_URL: http://registry:5000\n      REGISTRY_CONTROLLER_URL: http://registryctl:8080\n      REGISTRY_CREDENTIAL_USERNAME: ${REGISTRY_CREDENTIAL_USERNAME:-}\n      REGISTRY_CREDENTIAL_PASSWORD: ${REGISTRY_CREDENTIAL_PASSWORD:-}\n      # Core\n      EXT_ENDPOINT: ${EXT_ENDPOINT}  # Required: public URL (e.g. https://registry.example.com)\n      CORE_URL: http://core:8080\n      HARBOR_ADMIN_PASSWORD: ${HARBOR_ADMIN_PASSWORD}\n      CACHE_ENABLED: ${CACHE_ENABLED:-true}\n      LOG_LEVEL: ${LOG_LEVEL:-info}\n      TOKEN_PRIVATE_KEY_PATH: /etc/core/token_service_key.pem\n      # JobService\n      JOBSERVICE_URL: http://jobservice:8888\n      CORE_SECRET: ${CORE_SECRET}\n      JOBSERVICE_SECRET: ${JOBSERVICE_SECRET}\n      # Trivy\n      TRIVY_ADAPTER_URL: http://trivy-adapter:8080\n      WITH_TRIVY: ${WITH_TRIVY:-true}\n      PERMITTED_REGISTRY_TYPES_FOR_PROXY_CACHE: docker-hub,harbor,azure-acr,ali-acr,aws-ecr,google-gcr,docker-registry,github-ghcr,jfrog-artifactory\n      REPLICATION_ADAPTER_WHITELIST: ali-acr,aws-ecr,azure-acr,docker-hub,docker-registry,github-ghcr,google-gcr,harbor,huawei-SWR,jfrog-artifactory,tencent-tcr,volcengine-cr\n    depends_on:\n      postgresql:\n        condition: service_healthy\n      redis:\n        condition: service_healthy\n      registry:\n        condition: service_healthy\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"8080\", \"-endpoint\", \"/api/v2.0/ping\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n      start_period: 30s\n    restart: unless-stopped\n\n  jobservice:\n    image: ${IMAGE_REPO:-}harbor-jobservice:${HARBOR_TAG}\n    tmpfs:\n      - /tmp:size=256M,mode=1777\n    volumes:\n      - ../../config/jobservice.yml:/etc/jobservice/config.yml:ro\n    environment:\n      POSTGRESQL_HOST: postgresql\n      POSTGRESQL_PORT: \"5432\"\n      POSTGRESQL_USERNAME: ${DB_USER:-postgres}\n      POSTGRESQL_PASSWORD: ${DB_PASSWORD}\n      POSTGRESQL_DATABASE: ${DB_NAME:-registry}\n      POSTGRESQL_SSLMODE: ${DB_SSLMODE:-disable}\n      REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}\n      CORE_URL: http://core:8080\n      CORE_SECRET: ${CORE_SECRET}\n      JOBSERVICE_SECRET: ${JOBSERVICE_SECRET}\n      REGISTRY_URL: http://registry:5000\n      REGISTRY_CONTROLLER_URL: http://registryctl:8080\n      REGISTRY_CREDENTIAL_USERNAME: ${REGISTRY_CREDENTIAL_USERNAME:-}\n      REGISTRY_CREDENTIAL_PASSWORD: ${REGISTRY_CREDENTIAL_PASSWORD:-}\n      TOKEN_SERVICE_URL: http://core:8080/service/token\n      LOG_LEVEL: ${LOG_LEVEL:-info}\n    depends_on:\n      core:\n        condition: service_healthy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n \"image:\" /workspace/deploy/compose/docker-compose.yaml | head -30; echo \"=====\"; grep -rn \"dev:release\" /workspace/taskfile/compose.yml | head; echo \"=====\"; ls /workspace/deploy/compose/config/",
+      "exit_code": 2,
+      "stdout": "3:    image: ${IMAGE_REPO:-}harbor-portal:${HARBOR_TAG}\n23:    image: ${IMAGE_REPO:-}harbor-core:${HARBOR_TAG}\n76:    image: ${IMAGE_REPO:-}harbor-jobservice:${HARBOR_TAG}\n109:    image: ${IMAGE_REPO:-}harbor-registryctl:${HARBOR_TAG}\n133:    image: ${IMAGE_REPO:-}harbor-registry:${HARBOR_TAG}\n150:    image: ${IMAGE_REPO:-}trivy-adapter:${HARBOR_TAG}\n176:    image: ${IMAGE_REPO:-}harbor-exporter:${HARBOR_TAG}\n205:    image: docker.io/library/postgres:${POSTGRES_VERSION:-16}-alpine\n220:    image: valkey/valkey:${VALKEY_VERSION:-8}\n=====\n=====\n",
+      "stderr": "ls: cannot access '/workspace/deploy/compose/config/': No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n \"release\" /workspace/taskfile/compose.yml | head -20; echo \"=====\"; docker images --format '{{.Repository}}:{{.Tag}}' | sort | head -40",
+      "exit_code": 0,
+      "stdout": "=====\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"release:up\\|release:\" /workspace/taskfile/ | head -20; echo \"=====\"; cat /workspace/taskfile/compose.yml",
+      "exit_code": 0,
+      "stdout": "/workspace/taskfile/dev.yml:410:  release:up:\n/workspace/taskfile/dev.yml:420:      - defer: { task: release:down, vars: { TAG: \"{{.TAG}}\", IMAGE_REPO: \"{{.REPO}}\" } }\n/workspace/taskfile/dev.yml:424:  release:down:\n/workspace/taskfile/dev.yml:434:  release:down:clean:\n=====\n# Docker Compose deployment checks\nversion: '3'\n\ntasks:\n  _require-ys:\n    internal: true\n    preconditions:\n      - sh: command -v ys\n        msg: |\n          ys (YAMLScript) not found. Install:\n            macOS:  brew install yamlscript\n            other:  curl -s https://yamlscript.org/install | bash\n          (https://yamlscript.org)\n\n  check-env:\n    desc: \"Drift check: docker-compose.yaml ${VAR} references vs .env.example docs\"\n    deps: [_require-ys]\n    dir: deploy/compose\n    cmds:\n      - ys check-env.ys\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 380,450p /workspace/taskfile/dev.yml",
+      "exit_code": 0,
+      "stdout": "      POSTGRESQL_PASSWORD: root123\n      POSTGRESQL_DATABASE: '{{.POSTGRES_DB}}'\n      POSTGRESQL_SSLMODE: disable\n      POSTGRES_MIGRATION_SCRIPTS_PATH: ../make/migrations/postgresql/\n    cmd: go run ./cmd/standalone-db-migrator/main.go\n\n  db:reset:\n    desc: Drop database, recreate it, and apply all migrations from scratch\n    prompt: \"This will delete all data in {{.POSTGRES_DB}}. Continue?\"\n    cmds:\n      - '{{.COMPOSE_CMD}} exec -T postgresql dropdb -U {{.POSTGRES_USER}} {{.POSTGRES_DB}} --if-exists'\n      - '{{.COMPOSE_CMD}} exec -T postgresql createdb -U {{.POSTGRES_USER}} {{.POSTGRES_DB}}'\n      - task: db:migrate\n      - echo \"Database reset complete\"\n\n  db:shell:\n    desc: Open interactive psql session on the dev database\n    cmd: '{{.COMPOSE_CMD}} exec postgresql psql -U {{.POSTGRES_USER}} -d {{.POSTGRES_DB}}'\n\n  # ---------------------------------------------------------------------------\n  # Release Test (deploy/compose)\n  # ---------------------------------------------------------------------------\n  gen:private-key:local:\n    internal: true\n    status: ['test -f {{.TOKEN_KEY_FILE_LOCAL}}']\n    cmds:\n      - mkdir -p $(dirname {{.TOKEN_KEY_FILE_LOCAL}})\n      - openssl genpkey -algorithm RSA -outform PEM -pkeyopt rsa_keygen_bits:4096 | openssl rsa -traditional -out {{.TOKEN_KEY_FILE_LOCAL}}\n      - chmod 644 {{.TOKEN_KEY_FILE_LOCAL}}\n\n  release:up:\n    desc: \"Start release images locally (IMAGE_REPO= for remote, empty for local)\"\n    deps: [require-docker, gen:private-key:local]\n    vars:\n      TAG: '{{.TAG | default .VERSION}}'\n      REPO: '{{.IMAGE_REPO | default \"\"}}'\n    env:\n      HARBOR_TAG: '{{.TAG}}'\n      IMAGE_REPO: '{{.REPO}}'\n    cmds:\n      - defer: { task: release:down, vars: { TAG: \"{{.TAG}}\", IMAGE_REPO: \"{{.REPO}}\" } }\n      - echo \"Release {{.TAG}} {{if .REPO}}({{.REPO}}){{else}}(local){{end}} \u2192 http://localhost admin/Harbor12345\"\n      - docker compose -f {{.COMPOSE_LOCAL_FILE}} --env-file {{.COMPOSE_LOCAL_ENV}} up\n\n  release:down:\n    desc: Stop release containers\n    vars:\n      TAG: '{{.TAG | default .VERSION}}'\n      REPO: '{{.IMAGE_REPO | default \"\"}}'\n    env:\n      HARBOR_TAG: '{{.TAG}}'\n      IMAGE_REPO: '{{.REPO}}'\n    cmd: docker compose -f {{.COMPOSE_LOCAL_FILE}} --env-file {{.COMPOSE_LOCAL_ENV}} down\n\n  release:down:clean:\n    desc: Stop release containers and remove all volumes\n    vars:\n      TAG: '{{.TAG | default .VERSION}}'\n      REPO: '{{.IMAGE_REPO | default \"\"}}'\n    env:\n      HARBOR_TAG: '{{.TAG}}'\n      IMAGE_REPO: '{{.REPO}}'\n    cmd: docker compose -f {{.COMPOSE_LOCAL_FILE}} --env-file {{.COMPOSE_LOCAL_ENV}} down -v\n\n  # ---------------------------------------------------------------------------\n  # Utilities\n  # ---------------------------------------------------------------------------\n  clean:\n    desc: Remove all containers, volumes, node_modules, and temp files\n    cmds:\n      - '{{.COMPOSE_CMD}} {{.ALL_PROFILES}} down -v'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 109,240p /workspace/deploy/compose/docker-compose.yaml; echo \"=====\"; df -h / /var/lib/docker 2>/dev/null; free -h",
+      "exit_code": 0,
+      "stdout": "    image: ${IMAGE_REPO:-}harbor-registryctl:${HARBOR_TAG}\n    tmpfs:\n      - /tmp:size=256M,mode=1777\n    volumes:\n      - ../../config/registryctl.yml:/etc/registryctl/config.yml:ro\n      - ../../config/registry.yml:/etc/registry/config.yml:ro\n      - registry-data:/var/lib/registry\n    environment:\n      PORT: \"8080\"\n      LOG_LEVEL: ${LOG_LEVEL:-info}\n      REGISTRY_CONFIG: /etc/registry/config.yml\n      CORE_SECRET: ${CORE_SECRET}\n      JOBSERVICE_SECRET: ${JOBSERVICE_SECRET}\n    depends_on:\n      registry:\n        condition: service_healthy\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"8080\", \"-endpoint\", \"/api/health\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n    restart: unless-stopped\n\n  registry:\n    image: ${IMAGE_REPO:-}harbor-registry:${HARBOR_TAG}\n    volumes:\n      - ../../config/registry.yml:/etc/registry/config.yml:ro\n      - registry-data:/var/lib/registry\n    environment:\n      REGISTRY_HTTP_SECRET: ${CORE_SECRET}\n      HTTP_PROXY: ${HTTP_PROXY:-}\n      HTTPS_PROXY: ${HTTPS_PROXY:-}\n      NO_PROXY: ${NO_PROXY:-}\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"5001\", \"-endpoint\", \"/debug/health\"]\n      interval: 5s\n      timeout: 3s\n      retries: 5\n    restart: unless-stopped\n\n  trivy-adapter:\n    image: ${IMAGE_REPO:-}trivy-adapter:${HARBOR_TAG}\n    environment:\n      SCANNER_LOG_LEVEL: ${LOG_LEVEL:-info}\n      SCANNER_REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/5\n      SCANNER_STORE_REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/5\n      SCANNER_STORE_REDIS_NAMESPACE: harbor.scanner.trivy:store\n      SCANNER_JOB_QUEUE_REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/5\n      SCANNER_JOB_QUEUE_REDIS_NAMESPACE: harbor.scanner.trivy:job-queue\n      SCANNER_TRIVY_CACHE_DIR: /tmp/trivy\n      SCANNER_TRIVY_REPORTS_DIR: /tmp/reports\n      SCANNER_TRIVY_VULN_TYPE: os,library\n      SCANNER_TRIVY_SEVERITY: UNKNOWN,LOW,MEDIUM,HIGH,CRITICAL\n      SCANNER_API_SERVER_ADDR: \":8080\"\n    tmpfs:\n      - /tmp:size=2G,mode=1777\n    depends_on:\n      redis:\n        condition: service_healthy\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"8080\", \"-endpoint\", \"/probe/ready\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n    restart: unless-stopped\n\n  exporter:\n    image: ${IMAGE_REPO:-}harbor-exporter:${HARBOR_TAG}\n    tmpfs:\n      - /tmp:size=256M,mode=1777\n    environment:\n      HARBOR_DATABASE_HOST: postgresql\n      HARBOR_DATABASE_PORT: \"5432\"\n      HARBOR_DATABASE_USERNAME: ${DB_USER:-postgres}\n      HARBOR_DATABASE_PASSWORD: ${DB_PASSWORD}\n      HARBOR_DATABASE_DBNAME: ${DB_NAME:-registry}\n      HARBOR_DATABASE_SSLMODE: ${DB_SSLMODE:-disable}\n      HARBOR_EXPORTER_METRICS_PATH: /metrics\n      HARBOR_EXPORTER_PORT: \"8080\"\n      HARBOR_SERVICE_HOST: core\n      HARBOR_SERVICE_PORT: \"8080\"\n      HARBOR_SERVICE_SCHEME: http\n      HARBOR_REDIS_URL: redis://${REDIS_HOST:-redis}:${REDIS_PORT:-6379}/2\n      HARBOR_REDIS_NAMESPACE: harbor_job_service_namespace\n      HARBOR_REDIS_TIMEOUT: \"3600\"\n    depends_on:\n      core:\n        condition: service_healthy\n    healthcheck:\n      test: [\"CMD\", \"/lprobe\", \"-port\", \"8080\", \"-endpoint\", \"/metrics\"]\n      interval: 10s\n      timeout: 5s\n      retries: 5\n    restart: unless-stopped\n\n  postgresql:\n    image: docker.io/library/postgres:${POSTGRES_VERSION:-16}-alpine\n    environment:\n      POSTGRES_USER: ${DB_USER:-postgres}\n      POSTGRES_PASSWORD: ${DB_PASSWORD}\n      POSTGRES_DB: ${DB_NAME:-registry}\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    healthcheck:\n      test: [\"CMD\", \"pg_isready\", \"-U\", \"${DB_USER:-postgres}\"]\n      interval: 5s\n      timeout: 3s\n      retries: 5\n    restart: unless-stopped\n\n  redis:\n    image: valkey/valkey:${VALKEY_VERSION:-8}\n    volumes:\n      - redis-data:/data\n    healthcheck:\n      test: [\"CMD\", \"valkey-cli\", \"ping\"]\n      interval: 5s\n      timeout: 3s\n      retries: 5\n    restart: unless-stopped\n\nvolumes:\n  postgres-data:\n  redis-data:\n  registry-data:\n=====\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.5G  952G   1% /\n/dev/sde       1007G  4.5G  952G   1% /var/lib/docker\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       496Mi       6.6Gi       2.0Mi       549Mi       6.9Gi\nSwap:          2.0Gi        61Mi       1.9Gi\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -m 15 -o /dev/null -w \"dockerhub ping: %{http_code} time=%{time_total}\\n\" https://registry-1.docker.io/v2/ ; curl -s -m 15 -o /dev/null -w \"8gears ping: %{http_code} time=%{time_total}\\n\" https://8gears.container-registry.com/v2/ ; curl -s -m 15 -o /dev/null -w \"8gcr tag list: %{http_code}\\n\" https://8gears.container-registry.com/v2/8gcr/harbor-core/tags/list",
+      "exit_code": 0,
+      "stdout": "dockerhub ping: 401 time=0.467181\n8gears ping: 401 time=0.502938\n8gcr tag list: 401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/deploy/compose/example/local && cp .env.example .env && sed -i 's|^IMAGE_REPO=$|IMAGE_REPO=8gears.container-registry.com/8gcr/|' .env && cat .env",
+      "exit_code": 0,
+      "stdout": "COMPOSE_PROJECT_NAME=harbor-local\n\n# Leave empty for local images, or set to pull from a remote registry:\n# IMAGE_REPO=8gears.container-registry.com/8gcr/\nIMAGE_REPO=8gears.container-registry.com/8gcr/\nHARBOR_TAG=v2.15.0\nEXT_ENDPOINT=http://localhost\nHARBOR_ADMIN_PASSWORD=Harbor12345\nCORE_SECRET=not-a-secret-only-for-local-development\nJOBSERVICE_SECRET=not-a-secret-only-for-local-development\nDB_PASSWORD=harbor-local-dev\nLOG_LEVEL=info\n\n# Disable TLS for local development (mounts empty files)\nTLS_CONF=/dev/null\nTLS_CERT=/dev/null\nTLS_KEY=/dev/null\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/deploy/compose/example/local && openssl genpkey -algorithm RSA -outform PEM -pkeyopt rsa_keygen_bits:4096 | openssl rsa -traditional -out ../../config/token_service_key.pem 2>/dev/null && chmod 644 ../../config/token_service_key.pem && ls -la ../../config/token_service_key.pem && head -1 ../../config/token_service_key.pem",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "..+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.....+.+.....+....+..+...+....+........+.......+...........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*....+..+......+..........+.....+.......+......+......+.....+.+...+......+........+.........................+.......................+...+....+........+...+.......+..+.+.....................+...........+.............+.....+.......+..+.......+...+......+.................+....+........+.+.....+......+...+............+......+.........+.............+...+..+.......+...+...........+...............+.......+........+......+.+..+...............+...+....+.....+......+..........+..................+......+......+..+.......+...+...........+.........+.+.....................+...+...+..............+......+..................+........................+................+.........+........+.......+......+.....+....+..+.............+......+..+..........+.......................+......+...+......+.......+.........+......+.....+...+.........+.+......+........+......+.+...............+......+.........+.....+........................+....+...........+....+.................+.........+....+......+......+........+.+.....+.......+...............+.....+..................+..........+..+...............+.......+...+.....+....+.....+.+..+..........................................+.............+.....+................+.........+............+........+......+.+........+.+....................+......................+..+............+............................+...+........+.+.....+....+.................+....+.................................+..+....+.....+.......+..+......+.........+......+..........+..+...+.......+.....+....+...+........+............+.......+.....+....+.................+....+...+............+.....+......+..........+..+...+...+......+.+........+..........+......+..............+...............+.+......+..............................+.........+....................+......+.........+....+..+....+........+.+.....+.+.....+...+......+.+.....................+.....+....+......+...............+..................+.....+.+...+.....+...+..........+..+.......+........+............+................+........................+...............+........+.+..+...+....+...........+.......+..+.+.....+....+...+.......................+......+......+.......+.....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n.........+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...........+...+.....+......+...+......+....+...+...+..+...+....+..+...+.+..+.......+..+..................+............+.+..+.+...............+.....+....+..+......+...+....+..+.+...+..+.......+...+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+...+.....+.....................+......+.+..+.+.....+.+...+...........+..........+..+.......+...............+.....+.............+...+......+...+......+......+.....+.........+......+...+...+...............+.......+......+......+.....+...+.............+.....+....+.....+.+...+..............+...............+.............+.....+.........+...+.+...............+..+.......+...+.....+...........................+......+.+...+...............+........+.............+...........+................+.....+....+...............+......+..+......+.........+.............+...+.................+....+...........+...+.........+.......+...+...+........+......+.........+...................+...+........+.......+.........+...............+........+...+.............+.....+.+.....+...+...............+............+......+.......+...+..................+..+.............+.....+.+......+..+.+.................+....+.............................+....+..+...+...............+.............+..+.+.....+.........+.......+......+...+...........+...+...+...+......+.........+......+...+......................+...+...+..............+...............+....+.....+.........+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mkdir -p /workspace/deploy/compose/config && cd /workspace/deploy/compose/example/local && openssl genpkey -algorithm RSA -outform PEM -pkeyopt rsa_keygen_bits:4096 2>/dev/null | openssl rsa -traditional -out ../../config/token_service_key.pem && chmod 644 ../../config/token_service_key.pem && ls -la ../../config/ && head -1 ../../config/token_service_key.pem",
+      "exit_code": 0,
+      "stdout": "total 12\ndrwxr-xr-x 2 root root 4096 Oct 16 12:22 .\ndrwxr-xr-x 4 root root 4096 Oct 16 12:21 ..\n-rw-r--r-- 1 root root 3243 Oct 16 12:22 token_service_key.pem\n-----BEGIN RSA PRIVATE KEY-----\n",
+      "stderr": "writing RSA key\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/deploy/compose/example/local && docker compose -f ../../docker-compose.yaml --env-file .env pull 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": " 25b77f59fd95 Extracting 96.93MB\n 25b77f59fd95 Extracting 98.04MB\n 25b77f59fd95 Extracting 100.8MB\n 25b77f59fd95 Extracting 103.6MB\n 25b77f59fd95 Extracting 106.4MB\n 25b77f59fd95 Extracting 108.6MB\n 25b77f59fd95 Extracting 110.9MB\n 25b77f59fd95 Extracting 111.3MB\n 25b77f59fd95 Pull complete 0B\n 6c25da34e03f Extracting 9.669kB\n 6c25da34e03f Extracting 9.669kB\n 6c25da34e03f Pull complete 0B\n a88782f92806 Extracting 128B\n a88782f92806 Extracting 128B\n a88782f92806 Pull complete 0B\n d8d21be4bf02 Extracting 169B\n d8d21be4bf02 Extracting 169B\n d8d21be4bf02 Pull complete 0B\n 6117bd39f23f Extracting 6.111kB\n 6117bd39f23f Extracting 6.111kB\n 6117bd39f23f Pull complete 0B\n 509688edf37b Extracting 185B\n 509688edf37b Extracting 185B\n 509688edf37b Pull complete 0B\n Image docker.io/library/postgres:16-alpine Pulled \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/deploy/compose/example/local && docker compose -f ../../docker-compose.yaml --env-file .env up -d 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": " Container harbor-local-redis-1 Healthy \n Container harbor-local-postgresql-1 Healthy \n Container harbor-local-core-1 Starting \n Container harbor-local-registry-1 Healthy \n Container harbor-local-registryctl-1 Starting \n Container harbor-local-trivy-adapter-1 Started \n Container harbor-local-core-1 Started \n Container harbor-local-core-1 Waiting \n Container harbor-local-core-1 Waiting \n Container harbor-local-core-1 Waiting \n Container harbor-local-registryctl-1 Started \n Container harbor-local-core-1 Healthy \n Container harbor-local-portal-1 Starting \n Container harbor-local-core-1 Healthy \n Container harbor-local-jobservice-1 Starting \n Container harbor-local-core-1 Healthy \n Container harbor-local-exporter-1 Starting \n Container harbor-local-exporter-1 Started \n Container harbor-local-jobservice-1 Started \n Container harbor-local-portal-1 Started \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 20; cd /workspace/deploy/compose/example/local && docker compose -f ../../docker-compose.yaml --env-file .env ps; echo \"ping: $(curl -s -m 10 http://localhost/api/v2.0/ping)\"; echo \"auth: $(curl -s -m 10 -u admin:Harbor12345 http://localhost/api/v2.0/users/current)\"",
+      "exit_code": 0,
+      "stdout": "NAME                           IMAGE                                                           COMMAND                  SERVICE         CREATED          STATUS                    PORTS\nharbor-local-core-1            8gears.container-registry.com/8gcr/harbor-core:v2.15.0          \"/core\"                  core            37 seconds ago   Up 29 seconds (healthy)   8080/tcp\nharbor-local-exporter-1        8gears.container-registry.com/8gcr/harbor-exporter:v2.15.0      \"/harbor-exporter\"       exporter        37 seconds ago   Up 23 seconds (healthy)   8080/tcp\nharbor-local-jobservice-1      8gears.container-registry.com/8gcr/harbor-jobservice:v2.15.0    \"/jobservice -c /etc\u2026\"   jobservice      37 seconds ago   Up 23 seconds (healthy)   8888/tcp\nharbor-local-portal-1          8gears.container-registry.com/8gcr/harbor-portal:v2.15.0        \"nginx -g 'daemon of\u2026\"   portal          37 seconds ago   Up 23 seconds (healthy)   0.0.0.0:80->8080/tcp, [::]:80->8080/tcp, 0.0.0.0:443->8443/tcp, [::]:443->8443/tcp\nharbor-local-postgresql-1      docker.io/library/postgres:16-alpine                            \"docker-entrypoint.s\u2026\"   postgresql      42 seconds ago   Up 36 seconds (healthy)   5432/tcp\nharbor-local-redis-1           valkey/valkey:8                                                 \"tini -- docker-entr\u2026\"   redis           42 seconds ago   Up 36 seconds (healthy)   6379/tcp\nharbor-local-registry-1        8gears.container-registry.com/8gcr/harbor-registry:v2.15.0      \"/usr/bin/registry_D\u2026\"   registry        42 seconds ago   Up 36 seconds (healthy)   5000/tcp, 5443/tcp\nharbor-local-registryctl-1     8gears.container-registry.com/8gcr/harbor-registryctl:v2.15.0   \"/registryctl -c /et\u2026\"   registryctl     37 seconds ago   Up 29 seconds (healthy)   8080/tcp\nharbor-local-trivy-adapter-1   8gears.container-registry.com/8gcr/trivy-adapter:v2.15.0        \"/home/scanner/bin/s\u2026\"   trivy-adapter   37 seconds ago   Up 30 seconds (healthy)   8080/tcp, 8443/tcp\nping: Pong\nauth: {\"admin_role_in_auth\":false,\"comment\":\"admin user\",\"creation_time\":\"2026-10-16T12:23:23.837Z\",\"realname\":\"system admin\",\"sysadmin_flag\":true,\"update_time\":\"2026-10-16T12:23:27.835Z\",\"user_id\":1,\"username\":\"admin\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo 'Harbor12345' | docker login localhost:80 -u admin --password-stdin && docker pull alpine:test 2>&1 | tail -1 && docker tag alpine localhost:80/library/alpine:test && docker push localhost:80/library/alpine:test 2>&1 | tail -3 && docker rmi localhost:80/library/alpine:test >/dev/null && docker pull localhost:80/library/alpine:test 2>&1 | tail -1",
+      "exit_code": 1,
+      "stdout": "Login Succeeded\nError response from daemon: manifest for alpine:test not found: manifest unknown: manifest unknown\n",
+      "stderr": "\nWARNING! Your credentials are stored unencrypted in '/root/.docker/config.json'.\nConfigure a credential helper to remove this warning. See\nhttps://docs.docker.com/go/credential-store/\n\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull alpine:latest 2>&1 | tail -1 && docker tag alpine:latest localhost:80/library/alpine:test && docker push localhost:80/library/alpine:test 2>&1 | tail -3 && docker rmi localhost:80/library/alpine:test >/dev/null && docker pull localhost:80/library/alpine:test 2>&1 | tail -1",
+      "exit_code": 0,
+      "stdout": "docker.io/library/alpine:latest\n74d97c428c51: Preparing\n74d97c428c51: Pushed\ntest: digest: sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25 size: 527\nlocalhost:80/library/alpine:test\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/deploy/compose/example/local && docker compose -f ../../docker-compose.yaml --env-file .env ps --format 'table {{.Service}}\\t{{.Status}}' && curl -s -m 10 http://localhost/api/v2.0/ping && echo && curl -s -m 10 -u admin:Harbor12345 \"http://localhost/api/v2.0/artifacts?reference=test\" | head -c 300",
+      "exit_code": 0,
+      "stdout": "SERVICE         STATUS\ncore            Up 45 seconds (healthy)\nexporter        Up 39 seconds (healthy)\njobservice      Up 39 seconds (healthy)\nportal          Up 39 seconds (healthy)\npostgresql      Up 52 seconds (healthy)\nredis           Up 52 seconds (healthy)\nregistry        Up 52 seconds (healthy)\nregistryctl     Up 45 seconds (healthy)\ntrivy-adapter   Up 45 seconds (healthy)\nPong\n{\"errors\":[{\"code\":\"NOT_FOUND\",\"message\":\"path /api/v2.0/artifacts was not found\"}]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && git log --oneline -3 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "total 276\ndrwxr-xr-x 17 root root  4096 Oct 16 12:21 .\ndr-xr-xr-x  1 root root  4096 Oct 16 12:20 ..\n-rw-r--r--  1 root root   988 Oct 16 12:21 .buildbaselog\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 .claude\n-rw-r--r--  1 root root   382 Oct 16 12:21 .dockerignore\ndrwxr-xr-x  8 root root  4096 Oct 16 12:21 .git\ndrwxr-xr-x  6 root root  4096 Oct 16 12:21 .github\n-rw-r--r--  1 root root  1314 Oct 16 12:21 .gitignore\n-rw-r--r--  1 root root   600 Oct 16 12:21 .gitmessage\n-rw-r--r--  1 root root    30 Oct 16 12:21 .release-please-manifest-chart.json\n-rw-r--r--  1 root root    20 Oct 16 12:21 .release-please-manifest.json\n-rw-r--r--  1 root root  1109 Oct 16 12:21 .spectral.yaml\n-rw-r--r--  1 root root  1806 Oct 16 12:21 .typos.toml\n-rw-r--r--  1 root root 10520 Oct 16 12:21 ADOPTERS.md\n-rw-r--r--  1 root root  2209 Oct 16 12:21 AGENTS.md\n-rw-r--r--  1 root root 39501 Oct 16 12:21 CHANGELOG.md\n-rw-r--r--  1 root root  2066 Oct 16 12:21 CLAUDE.md\n-rw-r--r--  1 root root    46 Oct 16 12:21 CODEOWNERS\n-rw-r--r--  1 root root 11329 Oct 16 12:21 CONTRIBUTING.md\n-rw-r--r--  1 root root 11347 Oct 16 12:21 LICENSE\n-rw-r--r--  1 root root   539 Oct 16 12:21 OWNERS.md\n-rw-r--r--  1 root root  8581 Oct 16 12:21 README.md\n-rw-r--r--  1 root root 11767 Oct 16 12:21 RELEASE.md\n-rw-r--r--  1 root root    77 Oct 16 12:21 RELEASES.md\n-rw-r--r--  1 root root  3136 Oct 16 12:21 ROADMAP.md\n-rw-r--r--  1 root root  5816 Oct 16 12:21 SECURITY.md\n-rw-r--r--  1 root root  6210 Oct 16 12:21 Taskfile.yml\n-rw-r--r--  1 root root     7 Oct 16 12:21 VERSION\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 api\n-rw-r--r--  1 root root   579 Oct 16 12:21 codecov.yml\ndrwxr-xr-x  4 root root  4096 Oct 16 12:21 config\ndrwxr-xr-x  5 root root  4096 Oct 16 12:21 deploy\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 devenv\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 dockerfile\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 docs\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 icons\n-rw-r--r--  1 root root   999 Oct 16 12:21 lefthook.yml\ndrwxr-xr-x  3 root root  4096 Oct 16 12:21 make\n-rw-r--r--  1 root root  5873 Oct 16 12:21 publiccode.yml\n-rw-r--r--  1 root root  1333 Oct 16 12:21 release-please-config-chart.json\n-rw-r--r--  1 root root  1277 Oct 16 12:21 release-please-config-maintenance.json\n-rw-r--r--  1 root root  1447 Oct 16 12:21 release-please-config.json\ndrwxr-xr-x 15 root root  4096 Oct 16 12:21 src\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 taskfile\ndrwxr-xr-x  2 root root  4096 Oct 16 12:21 tests\ndrwxr-xr-x  6 root root  4096 Oct 16 12:21 tools\n-rw-r--r--  1 root root  3210 Oct 16 12:21 versions.env\nd9bf927 docs: Add publiccode.yml for public-sector software catalogues\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker version --format 'client={{.Client.Version}} server={{.Server.Version}}' && docker compose version",
+      "exit_code": 0,
+      "stdout": "client=29.7.2 server=29.7.2\nDocker Compose version v5.5.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker ps --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}\\t{{.Ports}}' 2>&1",
+      "exit_code": 0,
+      "stdout": "NAMES                          IMAGE                                                           STATUS                        PORTS\nharbor-local-exporter-1        8gears.container-registry.com/8gcr/harbor-exporter:v2.15.0      Up 59 seconds (healthy)       8080/tcp\nharbor-local-portal-1          8gears.container-registry.com/8gcr/harbor-portal:v2.15.0        Up 59 seconds (healthy)       0.0.0.0:80->8080/tcp, [::]:80->8080/tcp, 0.0.0.0:443->8443/tcp, [::]:443->8443/tcp\nharbor-local-jobservice-1      8gears.container-registry.com/8gcr/harbor-jobservice:v2.15.0    Up 59 seconds (healthy)       8888/tcp\nharbor-local-trivy-adapter-1   8gears.container-registry.com/8gcr/trivy-adapter:v2.15.0        Up About a minute (healthy)   8080/tcp, 8443/tcp\nharbor-local-core-1            8gears.container-registry.com/8gcr/harbor-core:v2.15.0          Up About a minute (healthy)   8080/tcp\nharbor-local-registryctl-1     8gears.container-registry.com/8gcr/harbor-registryctl:v2.15.0   Up About a minute (healthy)   8080/tcp\nharbor-local-redis-1           valkey/valkey:8                                                 Up About a minute (healthy)   6379/tcp\nharbor-local-postgresql-1      postgres:16-alpine                                              Up About a minute (healthy)   5432/tcp\nharbor-local-registry-1        8gears.container-registry.com/8gcr/harbor-registry:v2.15.0      Up About a minute (healthy)   5000/tcp, 5443/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/deploy/compose/example/local && ls -la && echo '--- .env ---' && cat .env 2>/dev/null && echo '--- env diff vs example ---' && diff .env.example .env; echo \"diff exit=$?\"",
+      "exit_code": 0,
+      "stdout": "total 24\ndrwxr-xr-x 2 root root 4096 Oct 16 12:21 .\ndrwxr-xr-x 3 root root 4096 Oct 16 12:21 ..\n-rw-r--r-- 1 root root  553 Oct 16 12:21 .env\n-rw-r--r-- 1 root root  518 Oct 16 12:21 .env.example\n-rw-r--r-- 1 root root   12 Oct 16 12:21 .gitignore\n-rw-r--r-- 1 root root 2116 Oct 16 12:21 README.md\n--- .env ---\nCOMPOSE_PROJECT_NAME=harbor-local\n\n# Leave empty for local images, or set to pull from a remote registry:\n# IMAGE_REPO=8gears.container-registry.com/8gcr/\nIMAGE_REPO=8gears.container-registry.com/8gcr/\nHARBOR_TAG=v2.15.0\nEXT_ENDPOINT=http://localhost\nHARBOR_ADMIN_PASSWORD=Harbor12345\nCORE_SECRET=not-a-secret-only-for-local-development\nJOBSERVICE_SECRET=not-a-secret-only-for-local-development\nDB_PASSWORD=harbor-local-dev\nLOG_LEVEL=info\n\n# Disable TLS for local development (mounts empty files)\nTLS_CONF=/dev/null\nTLS_CERT=/dev/null\nTLS_KEY=/dev/null\n--- env diff vs example ---\n5c5\n< IMAGE_REPO=\n---\n> IMAGE_REPO=8gears.container-registry.com/8gcr/\ndiff exit=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/deploy/compose && ls -la config/ 2>&1 && ls -l config/token_service_key.pem 2>&1 && head -2 config/token_service_key.pem 2>/dev/null && openssl rsa -in config/token_service_key.pem -check -noout 2>&1",
+      "exit_code": 0,
+      "stdout": "total 12\ndrwxr-xr-x 2 root root 4096 Oct 16 12:22 .\ndrwxr-xr-x 4 root root 4096 Oct 16 12:21 ..\n-rw-r--r-- 1 root root 3243 Oct 16 12:22 token_service_key.pem\n-rw-r--r-- 1 root root 3243 Oct 16 12:22 config/token_service_key.pem\n-----BEGIN RSA PRIVATE KEY-----\nMIIJKAIBAAKCAgEA0f6G4TCwUqNRrJLrql41af0GTJgHUSu1N4UNn7TT9MOUUqiu\nRSA key ok\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- UI root ---'; curl -s -o /dev/null -w 'HTTP %{http_code}\\n' http://localhost/; curl -s http://localhost/ | head -c 300; echo; echo '--- API health ---'; curl -s http://localhost/api/v2.0/health; echo; echo '--- API version ---'; curl -s http://localhost/api/v2.0/systeminfo | head -c 400; echo",
+      "exit_code": 0,
+      "stdout": "--- UI root ---\nHTTP 200\n<!DOCTYPE html>\n<html>\n    <head>\n        <meta charset=\"utf-8\"/>\n        <title>Harbor</title>\n        <base href=\"/\"/>\n        <meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/>\n        <link rel=\"icon\" type=\"image/x-icon\" href=\"favicon.ico?v=2\"/>\n    <link rel=\"stylesheet\" href\n--- API health ---\n{\"components\":[{\"name\":\"core\",\"status\":\"healthy\"},{\"name\":\"database\",\"status\":\"healthy\"},{\"name\":\"jobservice\",\"status\":\"healthy\"},{\"name\":\"portal\",\"status\":\"healthy\"},{\"name\":\"redis\",\"status\":\"healthy\"},{\"name\":\"registry\",\"status\":\"healthy\"},{\"name\":\"registryctl\",\"status\":\"healthy\"},{\"name\":\"trivy\",\"status\":\"healthy\"}],\"status\":\"healthy\"}\n\n--- API version ---\n{\"auth_mode\":\"db_auth\",\"banner_message\":\"\",\"oidc_provider_name\":\"\",\"primary_auth_mode\":false,\"self_registration\":false,\"unauthenticated_landing_page\":\"login\"}\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- login token ---'; TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); echo \"token length: ${#TOKEN}\"; echo \"--- projects with token ---\"; curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/projects | head -c 400; echo; echo \"--- users list ---\"; curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/users | head -c 200; echo",
+      "exit_code": 0,
+      "stdout": "--- login token ---\ntoken length: 56\n--- projects with token ---\n[{\"creation_time\":\"2026-10-16T12:23:23.837Z\",\"current_user_role_ids\":null,\"cve_allowlist\":{\"creation_time\":\"0001-01-01T00:00:00.000Z\",\"id\":1,\"items\":[],\"project_id\":1,\"update_time\":\"0001-01-01T00:00:00.000Z\"},\"metadata\":{\"public\":\"true\"},\"name\":\"library\",\"owner_id\":1,\"owner_name\":\"admin\",\"project_id\":1,\"repo_count\":1,\"update_time\":\"2026-10-16T12:23:23.837Z\"}]\n\n--- users list ---\n{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"unauthorized\"}]}\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); echo '--- version ---'; curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/systeminfo | python3 -c 'import json,sys; d=json.load(sys.stdin); print(d.get(\"harbor_version\"))'; echo '--- repos ---'; curl -s -H \"Authorization: Bearer $TOKEN\" 'http://localhost/api/v2.0/projects/library/repositories'; echo",
+      "exit_code": 0,
+      "stdout": "--- version ---\n--- repos ---\n[{\"artifact_count\":1,\"creation_time\":\"2026-10-16T12:24:04.778Z\",\"id\":1,\"name\":\"library/alpine\",\"project_id\":1,\"pull_count\":1,\"update_time\":\"2026-10-16T12:24:15.292Z\"}]\n\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/systeminfo | grep -o '\"harbor_version\":\"[^\"]*\"'; docker images | grep -i alpine; docker pull localhost:80/library/alpine:test 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "alpine:latest                                                   320994c3b997       8.42MB             0B        \nlocalhost:80/library/alpine:test                                320994c3b997       8.42MB             0B        \npostgres:16-alpine                                              81bd698b4594        294MB             0B   U    \nStatus: Image is up to date for localhost:80/library/alpine:test\nlocalhost:80/library/alpine:test\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); echo '--- systeminfo version field ---'; curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/systeminfo | tr ',' '\\n' | grep -i version; echo '--- core container version ---'; docker exec harbor-local-core-1 cat /etc/harbor/harbor_version 2>/dev/null || docker exec harbor-local-core-1 cat /home/harbor/harbor_version 2>/dev/null || echo 'no version file found'",
+      "exit_code": 0,
+      "stdout": "--- systeminfo version field ---\n--- core container version ---\nOCI runtime exec failed: exec failed: unable to start container process: exec: \"cat\": executable file not found in $PATH\nOCI runtime exec failed: exec failed: unable to start container process: exec: \"cat\": executable file not found in $PATH\nno version file found\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker tag alpine:latest localhost:80/library/alpine:validation-test && docker push localhost:80/library/alpine:validation-test 2>&1 | tail -3 && echo '--- pull back ---' && docker pull localhost:80/library/alpine:validation-test 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "74d97c428c51: Preparing\n74d97c428c51: Layer already exists\nvalidation-test: digest: sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25 size: 527\n--- pull back ---\nStatus: Image is up to date for localhost:80/library/alpine:validation-test\nlocalhost:80/library/alpine:validation-test\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/systeminfo > /tmp/si.json; grep -c . /tmp/si.json; grep -oE '\"harbor_version\":[^,}]*' /tmp/si.json; echo '--- repos now ---'; curl -s -H \"Authorization: Bearer $TOKEN\" 'http://localhost/api/v2.0/projects/library/repositories' | grep -oE '\"name\":\"[^\"]*\"'; echo '--- artifacts of validation-test repo ---'; curl -s -H \"Authorization: Bearer $TOKEN\" 'http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts?page_size=10' | grep -oE '\"tag\":\"[^\"]*\"'",
+      "exit_code": 1,
+      "stdout": "1\n--- repos now ---\n\"name\":\"library/alpine\"\n--- artifacts of validation-test repo ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); echo '--- artifacts raw ---'; curl -s -H \"Authorization: Bearer $TOKEN\" 'http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts?page_size=10'; echo; echo '--- catalog via registry v2 API ---'; curl -s http://localhost:80/v2/library/alpine/tags/list; echo",
+      "exit_code": 0,
+      "stdout": "--- artifacts raw ---\n[{\"accessories\":null,\"addition_links\":{\"build_history\":{\"absolute\":false,\"href\":\"/api/v2.0/projects/library/repositories/alpine/artifacts/sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25/additions/build_history\"},\"sboms\":{\"absolute\":false,\"href\":\"/api/v2.0/projects/library/repositories/alpine/artifacts//additions/sbom\"},\"vulnerabilities\":{\"absolute\":false,\"href\":\"/api/v2.0/projects/library/repositories/alpine/artifacts/sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25/additions/vulnerabilities\"}},\"artifact_type\":\"application/vnd.docker.container.image.v1+json\",\"digest\":\"sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25\",\"extra_attrs\":{\"architecture\":\"amd64\",\"author\":\"\",\"config\":{\"Cmd\":[\"/bin/sh\"],\"Env\":[\"PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin\"],\"WorkingDir\":\"/\"},\"created\":\"2026-09-17T20:37:20.889221879Z\",\"os\":\"linux\"},\"icon\":\"sha256:0048162a053eef4d4ce3fe7518615bef084403614f8bca43b40ae2e762e11e06\",\"id\":1,\"labels\":null,\"manifest_media_type\":\"application/vnd.docker.distribution.manifest.v2+json\",\"media_type\":\"application/vnd.docker.container.image.v1+json\",\"project_id\":1,\"pull_time\":\"2026-10-16T12:24:05.287Z\",\"push_time\":\"2026-10-16T12:24:04.837Z\",\"references\":null,\"repository_id\":1,\"repository_name\":\"library/alpine\",\"size\":3850876,\"tags\":[{\"artifact_id\":1,\"id\":2,\"immutable\":false,\"name\":\"validation-test\",\"pull_time\":\"0001-01-01T00:00:00.000Z\",\"push_time\":\"2026-10-16T12:24:51.929Z\",\"repository_id\":1},{\"artifact_id\":1,\"id\":1,\"immutable\":false,\"name\":\"test\",\"pull_time\":\"0001-01-01T00:00:00.000Z\",\"push_time\":\"2026-10-16T12:24:04.855Z\",\"repository_id\":1}],\"type\":\"IMAGE\"}]\n\n--- catalog via registry v2 API ---\n{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"authorize header needed to send HEAD to repository: authorize header needed to send HEAD to repository\"}]}\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- version from registryctl image label / core env ---'\ndocker exec harbor-local-core-1 env 2>/dev/null | grep -iE 'version|HARBOR' | head -5\necho '--- try systeminfo raw head ---'\nTOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\ncurl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/api/v2.0/systeminfo | tr ',' '\\n' | grep -iE 'version|harbor' | head\necho '--- cleanup: delete my validation-test tag ---'\n# delete the tag by name\ncurl -s -o /dev/null -w 'delete tag validation-test -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TOKEN\" 'http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/tags/validation-test'\necho '--- tags after cleanup (via registry, authenticated) ---'\nAUTH=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\ncurl -s -H \"Authorization: Bearer $AUTH\" http://localhost/v2/library/alpine/tags/list",
+      "exit_code": 0,
+      "stdout": "--- version from registryctl image label / core env ---\n--- try systeminfo raw head ---\n--- cleanup: delete my validation-test tag ---\ndelete tag validation-test -> HTTP 404\n--- tags after cleanup (via registry, authenticated) ---\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat /workspace/VERSION; echo '---'\nTOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'delete via digest+tag -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TOKEN\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2\ncurl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/v2/library/alpine/tags/list",
+      "exit_code": 0,
+      "stdout": "2.16.0\n---\ndelete via digest+tag -> HTTP 401\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- guide login command verbatim ---'\necho 'Harbor12345' | docker login localhost:80 -u admin --password-stdin\necho '--- retry tag delete with fresh token ---'\nTOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -X DELETE -H \"Authorization: Bearer $TOKEN\" -w '\\nHTTP %{http_code}\\n' \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2; curl -s -H \"Authorization: Bearer $TOKEN\" http://localhost/v2/library/alpine/tags/list",
+      "exit_code": 0,
+      "stdout": "--- guide login command verbatim ---\nLogin Succeeded\n--- retry tag delete with fresh token ---\n{\"errors\":[{\"code\":\"UNAUTHORIZED\",\"message\":\"unauthorized\"}]}\n\nHTTP 401\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(curl -s -X POST http://localhost/c/token -d 'grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'GET same tag endpoint -> HTTP %{http_code}\\n' -H \"Authorization: Bearer $TOKEN\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\necho '--- final container state ---'\ndocker ps --format '{{.Names}}: {{.Status}}' | sort\necho '--- final port check ---'\ncurl -s -o /dev/null -w 'http://localhost/ -> %{http_code}\\n' http://localhost/",
+      "exit_code": 0,
+      "stdout": "GET same tag endpoint -> HTTP 405\n--- final container state ---\nharbor-local-core-1: Up About a minute (healthy)\nharbor-local-exporter-1: Up About a minute (healthy)\nharbor-local-jobservice-1: Up About a minute (healthy)\nharbor-local-portal-1: Up About a minute (healthy)\nharbor-local-postgresql-1: Up 2 minutes (healthy)\nharbor-local-redis-1: Up 2 minutes (healthy)\nharbor-local-registry-1: Up 2 minutes (healthy)\nharbor-local-registryctl-1: Up About a minute (healthy)\nharbor-local-trivy-adapter-1: Up About a minute (healthy)\n--- final port check ---\nhttp://localhost/ -> 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TTOK=$(curl -s -X POST 'http://localhost/c/token?service=harbor-registry&scope=repository:library/alpine:delete&grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//'); echo \"scoped token len: ${#TTOK}\"\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'DELETE tag -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TTOK\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2\nATOK=$(curl -s -X POST 'http://localhost/c/token?service=harbor-registry&scope=repository:library/alpine:pull&grant_type=password&username=admin&password=Harbor12345' | tr -d '\"' | sed 's/^[^=]*=//')\ncurl -s -H \"Authorization: Bearer $ATOK\" http://localhost/v2/library/alpine/tags/list",
+      "exit_code": 0,
+      "stdout": "scoped token len: 56\nDELETE tag -> HTTP 401\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker logs harbor-local-core-1 --tail 40 2>&1 | grep -iE 'delete|401|unauthorized|denied' | tail -15",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker logs harbor-local-core-1 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "2026-10-16T12:23:27Z [INFO] [github.com/golang-migrate/migrate/v4@v4.19.0/migrate.go:765]: 182/u 8gears_2.15_identity_providers (947.354247ms)\n2026-10-16T12:23:27Z [INFO] [./main.go:225]: The database has been migrated successfully\n2026-10-16T12:23:27Z [INFO] [./main.go:231]: database self-test passed\n2026-10-16T12:23:27Z [INFO] [./main.go:105]: User id: 1 updated its encrypted password successfully.\n2026-10-16T12:23:27Z [INFO] [./main.go:355]: Registering Trivy scanner\n2026-10-16T12:23:27Z [INFO] [/pkg/scan/init.go:56]: Successfully registered Trivy scanner at http://trivy-adapter:8080\n2026-10-16T12:23:27Z [INFO] [./main.go:377]: Setting Trivy as default scanner\n2026-10-16T12:23:27Z [INFO] [./main.go:276]: initializing notification...\n2026-10-16T12:23:27Z [INFO] [/pkg/notification/notification.go:77]: notification initialization completed\n2026-10-16T12:23:28Z [INFO] [./main.go:295]: Version: 2.15.0, Git commit: 60aaa903\n2026-10-16T12:23:28Z [INFO] [./main.go:297]: Fix empty subiss for meta info data.\n2026-10-16T12:23:28Z [INFO] [/pkg/oidc/fix.go:37]: Not found any records with empty subiss, good to go.\n2026/10/16 12:23:28.228 \u001b[1;34m[I]\u001b[0m  http server Running on http://:8080\n2026-10-16T12:23:30Z [INFO] [/controller/systemartifact/execution.go:146]: Scheduled scan data export cleanup job with ID : 1\n2026-10-16T12:24:37Z [ERROR] [/pkg/notifier/event/event.go:109]: failed to publish the event : failed to publish event: empty topic can not be notified\n2026-10-16T12:24:47Z [INFO] [/controller/registry/controller.go:262]: Start regular health check for registries with interval 5m0s\n2026-10-16T12:24:51Z [INFO] [/controller/blob/controller.go:118][requestID=\"06d9e7f8-e20f-4843-817d-5460dbcbf9d6\"]: artifact digest sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25 already exist, skip to associate blobs with the artifact\n2026-10-16T12:25:04Z [ERROR] [/pkg/token/token.go:80]: parse token error, token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:04Z [WARNING] [/server/middleware/security/v2_token.go:62]: failed to decode bearer token: token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:10Z [ERROR] [/pkg/token/token.go:80]: parse token error, token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:10Z [WARNING] [/server/middleware/security/v2_token.go:62]: failed to decode bearer token: token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:15Z [ERROR] [/pkg/token/token.go:80]: parse token error, token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:15Z [WARNING] [/server/middleware/security/v2_token.go:62]: failed to decode bearer token: token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:29Z [ERROR] [/pkg/token/token.go:80]: parse token error, token is malformed: token contains an invalid number of segments\n2026-10-16T12:25:29Z [WARNING] [/server/middleware/security/v2_token.go:62]: failed to decode bearer token: token is malformed: token contains an invalid number of segments\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "RESP=$(curl -s 'http://localhost/c/token?service=harbor-registry&scope=repository:library/alpine:pull,delete&grant_type=password&username=admin&password=Harbor12345')\nTTOK=$(echo \"$RESP\" | sed -n 's/.*\"access_token\":\"\\([^\"]*\\)\".*/\\1/p')\necho \"token: ${TTOK:0:20}... len=${#TTOK}\"\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'DELETE validation-test tag -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TTOK\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2\ncurl -s -H \"Authorization: Bearer $TTOK\" http://localhost/v2/library/alpine/tags/list",
+      "exit_code": 0,
+      "stdout": "token: ... len=0\nDELETE validation-test tag -> HTTP 401\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s 'http://localhost/c/token?service=harbor-registry&scope=repository:library/alpine:delete&grant_type=password&username=admin&password=Harbor12345' | head -c 300; echo",
+      "exit_code": 0,
+      "stdout": "<!DOCTYPE HTML>\n<html>\n<head>\n<meta charset=\"utf-8\">\n<title>404 - Page Not Found</title>\n<style>\n\n*{\n\tmaring: 0;\n\tpadding: 0;\n}\n\na:link{\n\tcolor: #1f3759;\n\ttext-decoration: none;\n}\na:active{\n\tcolor: #1f3759;\n\ttext-decoration: none;\n}\na:hover{\n\tcolor: #9fb7d9;\n\ttext-decoration: none;\n}\na:visited{\n\tcol\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- registry auth challenge ---'\ncurl -sI http://localhost/v2/ | grep -i www-authenticate\necho '--- core auth challenge ---'\ncurl -s -o /dev/null -w '%{http_code}\\n' -H 'Authorization: Bearer x' 'http://localhost/api/v2.0/systeminfo'\ncurl -sI -H 'Authorization: Bearer x' 'http://localhost/api/v2.0/projects' | grep -i www-authenticate",
+      "exit_code": 0,
+      "stdout": "--- registry auth challenge ---\nWww-Authenticate: Bearer realm=\"http://localhost/service/token\",service=\"harbor-registry\"\n--- core auth challenge ---\n200\nWww-Authenticate: Basic realm=\"API\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "RESP=$(curl -s 'http://localhost/service/token?service=harbor-registry&scope=repository:library/alpine:pull,delete&grant_type=password&username=admin&password=Harbor12345')\nTTOK=$(echo \"$RESP\" | sed -n 's/.*\"access_token\":\"\\([^\"]*\\)\".*/\\1/p')\necho \"token len=${#TTOK}\"\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'DELETE validation-test tag -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TTOK\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2\ncurl -s -H \"Authorization: Bearer $TTOK\" http://localhost/v2/library/alpine/tags/list; echo",
+      "exit_code": 0,
+      "stdout": "token len=0\nDELETE validation-test tag -> HTTP 401\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s 'http://localhost/service/token?service=harbor-registry&scope=repository:library/alpine:pull,delete&grant_type=password&username=admin&password=Harbor12345' | head -c 400; echo",
+      "exit_code": 0,
+      "stdout": "{\"token\":\"eyJhbGciOiJSUzI1NiIsImtpZCI6Ik8zVEI6QTdLTTpUQ01ZOlc3VVk6V0tIMjpHM0dGOlFaWVA6M1dJUDpKU05COk1XS0g6S1JGRzpORTNYIiwidHlwIjoiSldUIn0.eyJpc3MiOiJoYXJib3ItdG9rZW4taXNzdWVyIiwiYXVkIjoiaGFyYm9yLXJlZ2lzdHJ5IiwiZXhwIjoxNzkyMTU1MzU5LCJuYmYiOjE3OTIxNTM1NTksImlhdCI6MTc5MjE1MzU1OSwianRpIjoicmpFdmUxcHNKYU5GNHY3MCIsImFjY2VzcyI6W3sidHlwZSI6InJlcG9zaXRvcnkiLCJuYW1lIjoibGlicmFyeS9hbHBpbmUiLCJhY3Rpb25zIjpbIn\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "RESP=$(curl -s 'http://localhost/service/token?service=harbor-registry&scope=repository:library/alpine:pull,delete&grant_type=password&username=admin&password=Harbor12345')\nTTOK=$(echo \"$RESP\" | sed -n 's/.*\"token\":\"\\([^\"]*\\)\".*/\\1/p')\necho \"token len=${#TTOK}\"\nDIGEST='sha256:7cefa58bd70cbf86bb0ef44b9c27a9c6a633763977ea40868d1bfe9278967b25'\ncurl -s -o /dev/null -w 'DELETE validation-test tag -> HTTP %{http_code}\\n' -X DELETE -H \"Authorization: Bearer $TTOK\" \"http://localhost/api/v2.0/projects/library/repositories/alpine/artifacts/${DIGEST}/tags/validation-test\"\nsleep 2\necho '--- final tags ---'\ncurl -s -H \"Authorization: Bearer $TTOK\" http://localhost/v2/library/alpine/tags/list; echo",
+      "exit_code": 0,
+      "stdout": "token len=1086\nDELETE validation-test tag -> HTTP 401\n--- final tags ---\n{\"name\":\"library/alpine\",\"tags\":[\"test\",\"validation-test\"]}\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/deploy/compose && grep -rn -iE 'deletion|immutable' config/nginx/*.conf example/local/ config/*.yaml 2>/dev/null | grep -vi 'tls' | head; echo '--- compose env for registryctl ---'; grep -n -iE 'deletion|immutable' docker-compose.yaml | head; echo '--- harbor.yaml-ish config ---'; ls example/local/; grep -rn 'immutable\\|deletion' example/local/ 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "--- compose env for registryctl ---\n--- harbor.yaml-ish config ---\nREADME.md\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '=== FINAL VALIDATION SNAPSHOT ==='\necho '--- compose ps (project harbor-local) ---'\ncd /workspace/deploy/compose/example/local && docker compose -f ../../docker-compose.yaml --env-file .env ps 2>&1\necho\necho '--- volumes ---'\ndocker volume ls | grep -i harbor\necho\necho '--- UI ---'\ncurl -s -o /dev/null -w 'http://localhost/ -> HTTP %{http_code}\\n' http://localhost/\necho '--- health ---'\ncurl -s http://localhost/api/v2.0/health | tr -d '\\n' | head -c 200; echo\necho '--- core version (from logs) ---'\ndocker logs harbor-local-core-1 2>&1 | grep 'Version: 2.15.0' | head -1",
+      "exit_code": 0,
+      "stdout": "=== FINAL VALIDATION SNAPSHOT ===\n--- compose ps (project harbor-local) ---\nNAME                           IMAGE                                                           COMMAND                  SERVICE         CREATED         STATUS                   PORTS\nharbor-local-core-1            8gears.container-registry.com/8gcr/harbor-core:v2.15.0          \"/core\"                  core            2 minutes ago   Up 2 minutes (healthy)   8080/tcp\nharbor-local-exporter-1        8gears.container-registry.com/8gcr/harbor-exporter:v2.15.0      \"/harbor-exporter\"       exporter        2 minutes ago   Up 2 minutes (healthy)   8080/tcp\nharbor-local-jobservice-1      8gears.container-registry.com/8gcr/harbor-jobservice:v2.15.0    \"/jobservice -c /etc\u2026\"   jobservice      2 minutes ago   Up 2 minutes (healthy)   8888/tcp\nharbor-local-portal-1          8gears.container-registry.com/8gcr/harbor-portal:v2.15.0        \"nginx -g 'daemon of\u2026\"   portal          2 minutes ago   Up 2 minutes (healthy)   0.0.0.0:80->8080/tcp, [::]:80->8080/tcp, 0.0.0.0:443->8443/tcp, [::]:443->8443/tcp\nharbor-local-postgresql-1      docker.io/library/postgres:16-alpine                            \"docker-entrypoint.s\u2026\"   postgresql      3 minutes ago   Up 2 minutes (healthy)   5432/tcp\nharbor-local-redis-1           valkey/valkey:8                                                 \"tini -- docker-entr\u2026\"   redis           3 minutes ago   Up 2 minutes (healthy)   6379/tcp\nharbor-local-registry-1        8gears.container-registry.com/8gcr/harbor-registry:v2.15.0      \"/usr/bin/registry_D\u2026\"   registry        3 minutes ago   Up 2 minutes (healthy)   5000/tcp, 5443/tcp\nharbor-local-registryctl-1     8gears.container-registry.com/8gcr/harbor-registryctl:v2.15.0   \"/registryctl -c /et\u2026\"   registryctl     2 minutes ago   Up 2 minutes (healthy)   8080/tcp\nharbor-local-trivy-adapter-1   8gears.container-registry.com/8gcr/trivy-adapter:v2.15.0        \"/home/scanner/bin/s\u2026\"   trivy-adapter   2 minutes ago   Up 2 minutes (healthy)   8080/tcp, 8443/tcp\n\n--- volumes ---\nlocal     harbor-local_postgres-data\nlocal     harbor-local_redis-data\nlocal     harbor-local_registry-data\n\n--- UI ---\nhttp://localhost/ -> HTTP 200\n--- health ---\n{\"components\":[{\"name\":\"core\",\"status\":\"healthy\"},{\"name\":\"database\",\"status\":\"healthy\"},{\"name\":\"jobservice\",\"status\":\"healthy\"},{\"name\":\"portal\",\"status\":\"healthy\"},{\"name\":\"redis\",\"status\":\"healthy\n--- core version (from logs) ---\n2026-10-16T12:23:28Z [INFO] [./main.go:295]: Version: 2.15.0, Git commit: 60aaa903\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

@@ -1,0 +1,748 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin c2a2b2e2414297e90c41ce011b22ac51425279c0",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine.git/\nFrom https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine\n * branch            c2a2b2e2414297e90c41ce011b22ac51425279c0 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach c2a2b2e2414297e90c41ce011b22ac51425279c0",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at c2a2b2e feat: upgrade api dependencies including Laravel 13 upgrade, refs #244 (#245)\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = c2a2b2e2414297e90c41ce011b22ac51425279c0",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 108\ndrwxr-xr-x  8 root root  4096 Oct 18 16:29 .\ndr-xr-xr-x  1 root root  4096 Oct 18 16:28 ..\n-rw-r--r--  1 root root   473 Oct 18 16:29 .dockerignore\n-rw-r--r--  1 root root   302 Oct 18 16:29 .editorconfig\ndrwxr-xr-x  8 root root  4096 Oct 18 16:29 .git\ndrwxr-xr-x  3 root root  4096 Oct 18 16:29 .github\n-rw-r--r--  1 root root   305 Oct 18 16:29 .gitignore\ndrwxr-xr-x  3 root root  4096 Oct 18 16:29 .opencode\n-rw-r--r--  1 root root  4033 Oct 18 16:29 CHANGELOG.md\n-rw-r--r--  1 root root  1099 Oct 18 16:29 LICENSE\n-rw-r--r--  1 root root  8394 Oct 18 16:29 README.md\n-rw-r--r--  1 root root   544 Oct 18 16:29 RELEASE.md\ndrwxr-xr-x 12 root root  4096 Oct 18 16:29 api\n-rw-r--r--  1 root root  4404 Oct 18 16:29 cliff.toml\ndrwxr-xr-x  5 root root  4096 Oct 18 16:29 docker\n-rw-r--r--  1 root root  1867 Oct 18 16:29 docker-compose.yml\n-rw-r--r--  1 root root 17539 Oct 18 16:29 logo.png\n-rw-r--r--  1 root root    83 Oct 18 16:29 package-lock.json\n-rw-r--r--  1 root root  3567 Oct 18 16:29 publiccode.yml\ndrwxr-xr-x  5 root root  4096 Oct 18 16:29 web_application\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker --version && docker compose version 2>&1 | head -5",
+      "exit_code": 0,
+      "stdout": "Docker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "# Attention:\n# This compose file is designed to be used in a development environment.\n# It includes services for the database, API, API documentation, web application, and tooling.\nname: vereinfacht\n\nnetworks:\n  stack:\n    external: false\n\nvolumes:\n  mariadb:\n\nservices:\n  database:\n    image: mariadb:11.8\n    volumes:\n      - mariadb:/var/lib/mysql:cached\n    networks:\n      - stack\n    restart: always\n    ports:\n      - 3306:3306\n    environment:\n      - MARIADB_RANDOM_ROOT_PASSWORD=true\n      - MARIADB_DATABASE=verein\n      - MARIADB_USER=verein\n      - MARIADB_PASSWORD=verein\n\n  api:\n    build:\n      context: .\n      dockerfile: ./docker/api/api.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    depends_on:\n      - database\n    environment:\n      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1\n    networks:\n      - stack\n    working_dir: /var/www/html\n    volumes:\n      - ./api:/var/www/html\n    ports:\n      - 3001:80\n    restart: always\n\n  api-docs:\n    image: docker.swagger.io/swaggerapi/swagger-ui\n    depends_on:\n      - api\n    networks:\n      - stack\n    environment:\n      - SWAGGER_JSON_URL=http://localhost:3001/v1_openapi.json\n      - BASE_URL=/\n    ports:\n      - 3002:8080\n    restart: always\n\n  web_application:\n    build:\n      context: .\n      dockerfile: ./docker/web_application/web_application.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    depends_on:\n      - api\n      - database\n    networks:\n      - stack\n    ports:\n      - 3003:3000\n    restart: always\n\n  tooling:\n    build:\n      context: .\n      dockerfile: ./docker/tooling/tooling.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    networks:\n      - stack\n    tty: true\n    working_dir: /var/www/html\n    volumes:\n      - ./:/var/www/html\n    ports:\n      - 3000:3000\n    restart: always\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /workspace/docker -type f | head -50 && echo --- && ls /workspace/api /workspace/web_application",
+      "exit_code": 0,
+      "stdout": "/workspace/docker/tooling/tooling.Dockerfile\n/workspace/docker/web_application/web_application.Dockerfile\n/workspace/docker/api/php-fpm-www.conf\n/workspace/docker/api/startup.sh\n/workspace/docker/api/api.Dockerfile\n/workspace/docker/api/php.ini\n/workspace/docker/api/nginx.conf\n/workspace/docker/api/entrypoint.sh\n---\n/workspace/api:\napp\nartisan\nbootstrap\ncomposer.json\ncomposer.lock\nconfig\ndatabase\nlang\npackage-lock.json\npackage.json\nphpunit.xml\npint.json\npublic\nresources\nroutes\nstorage\ntests\nvite.config.js\n\n/workspace/web_application:\ncomponents.json\ni18n.json\nlocales\nnext-auth.d.ts\nnext.config.js\npackage-lock.json\npackage.json\npostcss.config.js\npublic\nsrc\nsvgr.d.ts\ntsconfig.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/docker/tooling/tooling.Dockerfile /workspace/docker/api/api.Dockerfile /workspace/docker/web_application/web_application.Dockerfile",
+      "exit_code": 0,
+      "stdout": "# use to copy alpine node binaries later\nFROM node:20-alpine3.23 AS node\n\n# Define base image\nFROM php:8.3-cli-alpine3.23\n\n# Define build arguments\nARG USER_ID\nARG GROUP_ID\n\n# Define environment variables\nENV USER_NAME=verein\nENV GROUP_NAME=verein\nENV USER_ID=$USER_ID\nENV GROUP_ID=$GROUP_ID\nENV USER_ID=${USER_ID:-1001}\nENV GROUP_ID=${GROUP_ID:-1001}\nENV PS1='\\u@\\h \\W \\[\\033[1;33m\\]\\$ \\[\\033[0m\\]'\n\n# Add group and user based on build arguments\nRUN addgroup --gid ${GROUP_ID} ${GROUP_NAME}\nRUN adduser --disabled-password --gecos '' --uid ${USER_ID} --ingroup ${GROUP_NAME} ${USER_NAME}\n\n# Set user and group of working directory\nRUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www/html\n\n# Update and install packages\nRUN apk update && apk add \\\n    bash \\\n    git \\\n    gnupg \\\n    libzip-dev \\\n    unzip \\\n    libstdc++ \\\n    icu-dev \\\n    pkgconfig \\\n    libpng-dev \\\n    libjpeg-turbo-dev \\\n    libpng \\\n    libjpeg-turbo \\\n    freetype-dev \\\n    freetype \\\n    zip \\\n    imagemagick \\\n    imagemagick-dev \\\n    ghostscript \\\n    autoconf \\\n    g++ \\\n    make\n\n# Copy files from node image\nCOPY --from=node /usr/lib /usr/lib\nCOPY --from=node /usr/local/share /usr/local/share\nCOPY --from=node /usr/local/lib /usr/local/lib\nCOPY --from=node /usr/local/include /usr/local/include\nCOPY --from=node /usr/local/bin /usr/local/bin\n\n# Install Composer manually\nCOPY --from=composer/composer:latest-bin /composer /usr/bin/composer\n\n# Show some usefull versions\nRUN php -v && \\\n    composer --version && \\\n    node --version && \\\n    npm --version && \\\n    cat /etc/os-release | grep PRETTY_NAME\n\n# Configure GD (Required for media processing)\nRUN docker-php-ext-configure gd --with-freetype --with-jpeg\n\n# Install PHP extensions\nRUN docker-php-ext-install gd zip pdo_mysql bcmath exif\n\n# Install intl extension\nRUN docker-php-ext-configure intl && docker-php-ext-install intl\n\n# Install Imagick (Required for media PDF preview generation)\nRUN pecl install imagick \\\n    && docker-php-ext-enable imagick\n# Define base image\nFROM php:8.3-fpm-alpine3.23\n\n# Define build arguments\nARG USER_ID\nARG GROUP_ID\n\n# Define environment variables\nENV DOCUMENT_ROOT=/var/www/html/public\nENV USER_NAME=verein\nENV GROUP_NAME=verein\nENV USER_ID=$USER_ID\nENV GROUP_ID=$GROUP_ID\nENV USER_ID=${USER_ID:-1001}\nENV GROUP_ID=${GROUP_ID:-1001}\nENV PS1='\\u@\\h \\W \\[\\033[1;33m\\]\\$ \\[\\033[0m\\]'\nENV PHP_OPCACHE_VALIDATE_TIMESTAMPS=\"0\"\n\n# Add group and user based on build arguments\nRUN addgroup --gid ${GROUP_ID} ${GROUP_NAME}\nRUN adduser --disabled-password --gecos '' --uid ${USER_ID} --ingroup ${GROUP_NAME} ${USER_NAME}\n\n# Set user and group of working directory\nRUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www/html\n\n# Set nginx document root\nRUN mkdir ${DOCUMENT_ROOT}\n\n# Update and install packages\nRUN apk update && apk add \\\n    bash \\\n    icu-dev \\\n    nginx \\\n    libzip-dev \\\n    zip \\\n    libpng-dev \\\n    libjpeg-turbo-dev \\\n    freetype-dev \\\n    pkgconfig \\\n    libpng \\\n    libjpeg-turbo \\\n    freetype \\\n    imagemagick \\\n    imagemagick-dev \\\n    ghostscript \\\n    autoconf \\\n    g++ \\\n    make\n\n# Install PHP extensions\nRUN docker-php-ext-install pdo_mysql\nRUN docker-php-ext-configure intl && docker-php-ext-install intl zip\nRUN docker-php-ext-install opcache zip\n\n# Configure and install GD extension for image processing\nRUN docker-php-ext-configure gd --with-freetype --with-jpeg \\\n    && docker-php-ext-install gd\n\n# Install additional extensions for media processing\nRUN docker-php-ext-install bcmath exif\n\n# Install Imagick (Required for media PDF preview generation)\nRUN pecl install imagick \\\n    && docker-php-ext-enable imagick\n\n# Set nginx and PHP-FPM user\nRUN sed -ri -e \"s!user nginx!user ${USER_NAME}!g\" /etc/nginx/nginx.conf\nRUN sed -ri -e \"s!user = www-data!user = ${USER_NAME}!g\" /usr/local/etc/php-fpm.d/www.conf\nRUN sed -ri -e \"s!group = www-data!group = ${GROUP_NAME}!g\" /usr/local/etc/php-fpm.d/www.conf\n\n# Manualy expose port 80 for outside access to nginx\nEXPOSE 80\n\n# Copy configuration to application container\nCOPY docker/api/nginx.conf /etc/nginx/http.d/default.conf\n\n# Use the default production configuration\nRUN mv \"$PHP_INI_DIR/php.ini-production\" \"$PHP_INI_DIR/php.ini\"\n# zzz-custom-php.ini is loaded last (because of the zzz) and can override any setting.\nCOPY docker/api/php.ini \"$PHP_INI_DIR/conf.d/zzz-custom-php.ini\"\n# Copy php-fpm configuration\nCOPY docker/api/php-fpm-www.conf /usr/local/etc/php-fpm.d/zzz-www.conf\n\n# Copy app content\nCOPY --chown=${USER_NAME}:${GROUP_NAME} api/ /var/www/html\nCOPY --chown=${USER_NAME}:${GROUP_NAME} docker/api/entrypoint.sh /var/www/docker/entrypoint.sh\nCOPY --chown=${USER_NAME}:${GROUP_NAME} docker/api/startup.sh /var/www/docker/startup.sh\n\n# Make scripts executeable\nRUN chmod +x /var/www/docker/entrypoint.sh\nRUN chmod +x /var/www/docker/startup.sh\n\n# Start app\nENTRYPOINT [\"bash\", \"/var/www/docker/entrypoint.sh\"]\nCMD [\"bash\", \"/var/www/docker/startup.sh\"]\nFROM node:20-alpine AS base\n\n# Install dependencies only when needed\nFROM base AS deps\n# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.\nRUN apk add --no-cache \\\n  libc6-compat\nWORKDIR /app\n\n# Install dependencies based on the preferred package manager\nCOPY web_application/package.json \\\n     web_application/yarn.lock* \\\n     web_application/package-lock.json* \\\n     web_application/pnpm-lock.yaml* \\\n     ./\n\nRUN \\\n  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \\\n  elif [ -f package-lock.json ]; then npm ci; \\\n  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \\\n  else echo \"Lockfile not found.\" && exit 1; \\\n  fi\n\n\n# Rebuild the source code only when needed\nFROM base AS builder\nWORKDIR /app\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY web_application/ .\n\n# Next.js collects completely anonymous telemetry data about general usage.\n# Learn more here: https://nextjs.org/telemetry\n# Uncomment the following line in case you want to disable telemetry during the build.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN npm run build\n\n# Production image, copy all the files and run next\nFROM base AS runner\nWORKDIR /app\n\nENV NODE_ENV production\n# Uncomment the following line in case you want to disable telemetry during runtime.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN addgroup --system --gid 1001 nodejs\nRUN adduser --system --uid 1001 nextjs\n\nCOPY --from=builder /app/public ./public\n\n# Automatically leverage output traces to reduce image size\n# https://nextjs.org/docs/advanced-features/output-file-tracing\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static\n# next 13.3.0 introduced a image component bug, this is the workaround, remove when fixed\n# https://github.com/vercel/next.js/issues/48077#issuecomment-1504501461\nCOPY --from=builder /app/node_modules/next/dist/compiled/jest-worker ./node_modules/next/dist/compiled/jest-worker\n\nUSER nextjs\n\nEXPOSE 3000\n\nENV PORT=3000\n\n# server.js is created by next build from the standalone output\n# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output\nENV HOSTNAME=\"0.0.0.0\"\nCMD [\"node\", \"server.js\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/api/.env.example 2>/dev/null; echo ---; ls /workspace/api -la; echo ---; ls /workspace/web_application -la; echo ---; git -C /workspace log -1 --oneline",
+      "exit_code": 0,
+      "stdout": "APP_NAME=verein\nAPP_ENV=local\nAPP_KEY=\nAPP_DEBUG=true\nAPP_URL=http://localhost:3001\n\nLOG_CHANNEL=stack\nLOG_DEPRECATIONS_CHANNEL=null\nLOG_LEVEL=debug\nLOG_SLACK_WEBHOOK_URL=\n\nOH_DEAR_HEALTH_CHECK_SECRET=\n\nDB_CONNECTION=mysql\nDB_HOST=database\nDB_PORT=3306\nDB_DATABASE=verein\nDB_USERNAME=verein\nDB_PASSWORD=verein\n\nBROADCAST_DRIVER=log\nCACHE_DRIVER=file\nFILESYSTEM_DISK=local\nFILAMENT_FILESYSTEM_DISK=local\nQUEUE_CONNECTION=sync\nSESSION_DRIVER=file\nSESSION_LIFETIME=120\n\nMEMCACHED_HOST=127.0.0.1\n\nREDIS_HOST=127.0.0.1\nREDIS_PASSWORD=null\nREDIS_PORT=6379\n\nMAIL_MAILER=smtp\nMAIL_HOST=mailpit\nMAIL_PORT=1025\nMAIL_USERNAME=null\nMAIL_PASSWORD=null\nMAIL_ENCRYPTION=null\nMAIL_FROM_ADDRESS=\"hello@example.com\"\nMAIL_FROM_NAME=\"${APP_NAME}\"\n\nWEB_APPLICATION_URL=http://localhost:3000\nCLUB_ADMIN_LOGIN_PATH=/admin/login\n\nAWS_ACCESS_KEY_ID=\nAWS_SECRET_ACCESS_KEY=\nAWS_DEFAULT_REGION=us-east-1\nAWS_BUCKET=\nAWS_USE_PATH_STYLE_ENDPOINT=false\n\nPUSHER_APP_ID=\nPUSHER_APP_KEY=\nPUSHER_APP_SECRET=\nPUSHER_HOST=\nPUSHER_PORT=443\nPUSHER_SCHEME=https\nPUSHER_APP_CLUSTER=mt1\n\nVITE_PUSHER_APP_KEY=\"${PUSHER_APP_KEY}\"\nVITE_PUSHER_HOST=\"${PUSHER_HOST}\"\nVITE_PUSHER_PORT=\"${PUSHER_PORT}\"\nVITE_PUSHER_SCHEME=\"${PUSHER_SCHEME}\"\nVITE_PUSHER_APP_CLUSTER=\"${PUSHER_APP_CLUSTER}\"\n---\ntotal 772\ndrwxr-xr-x 12 root root   4096 Oct 18 16:29 .\ndrwxr-xr-x  8 root root   4096 Oct 18 16:29 ..\n-rw-r--r--  1 root root   1241 Oct 18 16:29 .env.example\n-rw-r--r--  1 root root    194 Oct 18 16:29 .env.testing\n-rw-r--r--  1 root root    560 Oct 18 16:29 .eslintrc.json\n-rw-r--r--  1 root root    421 Oct 18 16:29 .gitignore\n-rw-r--r--  1 root root   6297 Oct 18 16:29 .stylelintrc.json\ndrwxr-xr-x 24 root root   4096 Oct 18 16:29 app\n-rwxr-xr-x  1 root root   1686 Oct 18 16:29 artisan\ndrwxr-xr-x  3 root root   4096 Oct 18 16:29 bootstrap\n-rw-r--r--  1 root root   2734 Oct 18 16:29 composer.json\n-rw-r--r--  1 root root 626579 Oct 18 16:29 composer.lock\ndrwxr-xr-x  2 root root   4096 Oct 18 16:29 config\ndrwxr-xr-x  5 root root   4096 Oct 18 16:29 database\ndrwxr-xr-x  4 root root   4096 Oct 18 16:29 lang\n-rw-r--r--  1 root root  65282 Oct 18 16:29 package-lock.json\n-rw-r--r--  1 root root    320 Oct 18 16:29 package.json\n-rw-r--r--  1 root root    966 Oct 18 16:29 phpunit.xml\n-rw-r--r--  1 root root     28 Oct 18 16:29 pint.json\ndrwxr-xr-x  4 root root   4096 Oct 18 16:29 public\ndrwxr-xr-x  5 root root   4096 Oct 18 16:29 resources\ndrwxr-xr-x  2 root root   4096 Oct 18 16:29 routes\ndrwxr-xr-x  5 root root   4096 Oct 18 16:29 storage\ndrwxr-xr-x  4 root root   4096 Oct 18 16:29 tests\n-rw-r--r--  1 root root    373 Oct 18 16:29 vite.config.js\n---\ntotal 544\ndrwxr-xr-x  5 root root   4096 Oct 18 16:29 .\ndrwxr-xr-x  8 root root   4096 Oct 18 16:29 ..\n-rw-r--r--  1 root root     72 Oct 18 16:29 .dockerignore\n-rw-r--r--  1 root root    380 Oct 18 16:29 .env.local.example\n-rw-r--r--  1 root root    287 Oct 18 16:29 .eslintrc.json\n-rw-r--r--  1 root root    394 Oct 18 16:29 .gitignore\n-rw-r--r--  1 root root     24 Oct 18 16:29 .prettierignore\n-rw-r--r--  1 root root     76 Oct 18 16:29 .prettierrc\n-rw-r--r--  1 root root    387 Oct 18 16:29 components.json\n-rw-r--r--  1 root root    939 Oct 18 16:29 i18n.json\ndrwxr-xr-x  4 root root   4096 Oct 18 16:29 locales\n-rw-r--r--  1 root root    625 Oct 18 16:29 next-auth.d.ts\n-rw-r--r--  1 root root   1624 Oct 18 16:29 next.config.js\n-rw-r--r--  1 root root 477629 Oct 18 16:29 package-lock.json\n-rw-r--r--  1 root root   2490 Oct 18 16:29 package.json\n-rw-r--r--  1 root root     80 Oct 18 16:29 postcss.config.js\ndrwxr-xr-x  4 root root   4096 Oct 18 16:29 public\ndrwxr-xr-x 12 root root   4096 Oct 18 16:29 src\n-rw-r--r--  1 root root    226 Oct 18 16:29 svgr.d.ts\n-rw-r--r--  1 root root    907 Oct 18 16:29 tsconfig.json\n---\nc2a2b2e feat: upgrade api dependencies including Laravel 13 upgrade, refs #244 (#245)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/web_application/.env.local.example; echo ---; ls /workspace/e2e 2>/dev/null || echo \"no e2e dir\"; echo ---; cat /workspace/web_application/next.config.js; echo ---; cat /workspace/web_application/package.json",
+      "exit_code": 0,
+      "stdout": "WEB_APPLICATION_URL=http://localhost:3000\nWEBSITE_URL=http://vereinfacht.digital\n\nAPI_DOMAIN=http://api\nAPI_PATH=/api/v1\nAPI_BEARER_TOKEN=\n\nNEXTAUTH_SECRET=non-production-secret\nNEXTAUTH_URL=http://localhost:3000\n\nADMIN_LOGIN_PATHNAME=\"/admin/auth/login\"\n\nSIGNAL_INVITE_URL=https://google.de\nSUPPORT_EMAIL_ADDRESS=\"hello@vereinfacht.digital\"\nSUPPORT_PHONE_NUMBER=\"0461 150653625\"\n---\nno e2e dir\n---\n// @ts-check\nconst nextTranslate = require('next-translate-plugin');\n\n/** @type {import('next').NextConfig} */\n// @ts-expect-error: typing issue with next-translate package\nconst nextConfig = nextTranslate({\n    output: 'standalone',\n    webpack: (config) => {\n        const fileLoaderRule = config.module.rules.find((rule) =>\n            rule.test?.test?.('.svg'),\n        );\n\n        config.module.rules.push(\n            {\n                ...fileLoaderRule,\n                test: /\\.svg$/i,\n                resourceQuery: /url/,\n            },\n            {\n                test: /\\.svg$/i,\n                issuer: fileLoaderRule.issuer,\n                resourceQuery: {\n                    not: [...fileLoaderRule.resourceQuery.not, /url/],\n                },\n                use: ['@svgr/webpack'],\n            },\n        );\n\n        fileLoaderRule.exclude = /\\.svg$/i;\n\n        return config;\n    },\n    redirects: async () => {\n        return [\n            {\n                source: '/',\n                destination:\n                    process.env.ADMIN_LOGIN_PATHNAME ?? '/admin/auth/login',\n                permanent: true,\n            },\n            {\n                source: '/login',\n                destination:\n                    process.env.ADMIN_LOGIN_PATHNAME ?? '/admin/auth/login',\n                permanent: true,\n            },\n        ];\n    },\n});\n\n// we have to unset the i18n options \u2013 see: https://github.com/aralroca/next-translate/issues/1142\n// the mentioned 3.0.0-canary.2 version doesn't seem to fix this issue\nObject.assign(nextConfig, { i18n: undefined });\n\nmodule.exports = nextConfig;\n---\n{\n    \"name\": \"web_application\",\n    \"version\": \"0.1.0\",\n    \"private\": true,\n    \"scripts\": {\n        \"generate-schema\": \"npx openapi-typescript http://api/v1_openapi.json -o ./src/types/schema_v1.d.ts\",\n        \"dev\": \"npm run generate-schema && next dev\",\n        \"build\": \"next build\",\n        \"start\": \"next start\",\n        \"lint\": \"next lint\",\n        \"js-lint:check\": \"next lint\",\n        \"js-lint:fix\": \"next lint --fix\",\n        \"format:check\": \"prettier --check .\",\n        \"format:fix\": \"prettier --write .\"\n    },\n    \"dependencies\": {\n        \"@formatjs/intl-localematcher\": \"^0.5.4\",\n        \"@headlessui/react\": \"^2.2.0\",\n        \"@radix-ui/react-accordion\": \"^1.2.12\",\n        \"@radix-ui/react-collapsible\": \"^1.1.10\",\n        \"@radix-ui/react-dialog\": \"^1.1.15\",\n        \"@radix-ui/react-dropdown-menu\": \"^2.0.6\",\n        \"@radix-ui/react-popover\": \"^1.1.15\",\n        \"@radix-ui/react-progress\": \"^1.1.7\",\n        \"@radix-ui/react-separator\": \"^1.1.7\",\n        \"@radix-ui/react-slot\": \"^1.2.3\",\n        \"@radix-ui/react-switch\": \"^1.2.6\",\n        \"@radix-ui/react-toast\": \"^1.2.6\",\n        \"@radix-ui/react-tooltip\": \"^1.2.8\",\n        \"@tanstack/react-table\": \"^8.16.0\",\n        \"@types/node\": \"^20.6.3\",\n        \"@types/react\": \"^18.0.31\",\n        \"@types/react-dom\": \"^18.2.7\",\n        \"class-variance-authority\": \"^0.7.1\",\n        \"clsx\": \"^2.1.0\",\n        \"cmdk\": \"^1.1.1\",\n        \"date-fns\": \"^3.6.0\",\n        \"eslint\": \"^8.37.0\",\n        \"eslint-config-next\": \"^15.5.6\",\n        \"jsonapi-fractal\": \"^2.3.1\",\n        \"lucide-react\": \"^0.400.0\",\n        \"negotiator\": \"^0.6.3\",\n        \"next\": \"^14.2.2\",\n        \"next-auth\": \"^4.23.2\",\n        \"next-translate\": \"^2.6.2\",\n        \"nuqs\": \"^2.4.3\",\n        \"openapi-fetch\": \"^0.14.0\",\n        \"react\": \"^18.2.0\",\n        \"react-day-picker\": \"^9.11.2\",\n        \"react-dom\": \"^18.2.0\",\n        \"server-only\": \"^0.0.1\",\n        \"sharp\": \"^0.33.4\",\n        \"swiper\": \"^9.1.0\",\n        \"tailwind-merge\": \"^2.2.2\",\n        \"tw-animate-css\": \"^1.4.0\",\n        \"typescript\": \"^5.2.2\",\n        \"zod\": \"^4.1.8\",\n        \"zod-form-data\": \"^3.0.1\"\n    },\n    \"devDependencies\": {\n        \"@svgr/webpack\": \"^8.1.0\",\n        \"@tailwindcss/postcss\": \"^4.1.18\",\n        \"@types/negotiator\": \"^0.6.1\",\n        \"next-translate-plugin\": \"^2.6.2\",\n        \"openapi-typescript\": \"^7.8.0\",\n        \"postcss\": \"^8.4.21\",\n        \"prettier\": \"^3.4.2\",\n        \"prettier-plugin-tailwindcss\": \"^0.7.2\",\n        \"tailwindcss\": \"^4.1.18\"\n    }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/docker/api/entrypoint.sh /workspace/docker/api/startup.sh /workspace/docker/api/nginx.conf",
+      "exit_code": 0,
+      "stdout": "#!/bin/bash\n\nmkdir -p /var/www/html/storage/framework/{sessions,views,cache}\nphp /var/www/html/artisan storage:link\nphp /var/www/html/artisan optimize:clear\nphp /var/www/html/artisan filament:clear\nphp -r 'opcache_reset();'\nphp /var/www/html/artisan config:cache\nphp /var/www/html/artisan route:cache\nphp /var/www/html/artisan view:cache\nphp /var/www/html/artisan event:cache\n# Wait until db is online\necho \"Wait for DB to be ready\"\nwhile ! nc -z database 3306; do\n    sleep 0.5\n    echo \"Wait 0.5 seconds\"\ndone\necho \"DB is ready\"\nsleep 1\nphp /var/www/html/artisan migrate --force\n\nexec \"$@\"\n#!/bin/bash\n\necho \"Starting the app\"\nnginx && docker-php-entrypoint php-fpm\nserver {\n    listen 80 default_server;\n    server_name _;\n    server_tokens off;\n    root /var/www/html/public;\n\n    add_header X-Frame-Options \"SAMEORIGIN\";\n    add_header X-XSS-Protection \"1; mode=block\";\n    add_header X-Content-Type-Options \"nosniff\";\n    client_max_body_size 3M;\n    client_body_temp_path /tmp;\n\n    index index.html index.htm index.php;\n\n    charset utf-8;\n\n    location / {\n        try_files $uri $uri/ /index.php?$query_string;\n    }\n\n    location = /favicon.ico { access_log off; log_not_found off; }\n    location = /robots.txt  { access_log off; log_not_found off; }\n\n    error_page 404 /index.php;\n\n    location ~ \\.php$ {\n        fastcgi_split_path_info ^(.+\\.php)(/.+)$;\n        fastcgi_pass 127.0.0.1:9000;\n        fastcgi_index index.php;\n        include fastcgi.conf;\n    }\n\n    location ~ /\\.(?!well-known).* {\n        deny all;\n    }\n\n    # fix cors for local development with swagger ui\n    # http://localhost:3001/v1_openapi.json\n    location = /v1_openapi.json {\n        add_header Access-Control-Allow-Origin *;\n        add_header Access-Control-Allow-Methods \"GET, OPTIONS\";\n        add_header Access-Control-Allow-Headers \"DNT,User-Agent,X-Requested-With,If-Modified-Since,Cache-Control,Content-Type,Range\";\n        add_header Access-Control-Expose-Headers \"Content-Length,Content-Range\";\n    }\n\n    location ~* \\.(ico|pdf|flv|jpg|jpeg|png|gif|js|css|swf)$ {\n        expires 1h;\n        add_header Cache-Control \"public, no-transform\";\n    }\n\n    gzip on;\n    gzip_disable \"msie6\";\n    gzip_vary on;\n    gzip_proxied any;\n    gzip_comp_level 6;\n    gzip_buffers 16 8k;\n    gzip_http_version 1.1;\n    gzip_min_length 256;\n    gzip_types\n    application/atom+xml\n    application/geo+json\n    application/javascript\n    application/x-javascript\n    application/json\n    application/ld+json\n    application/manifest+json\n    application/rdf+xml\n    application/rss+xml\n    application/xhtml+xml\n    application/xml\n    font/eot\n    font/otf\n    font/ttf\n    image/svg+xml\n    text/css\n    text/javascript\n    text/plain\n    text/xml;\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.dockerignore; echo ---; cat /workspace/web_application/.dockerignore; echo ---; cat /workspace/api/package.json; echo ---; ls /workspace/api/database/seeders/ | head; echo ---; grep -n '\"php\"' /workspace/api/composer.json; grep -n 'laravel/framework' /workspace/api/composer.json",
+      "exit_code": 0,
+      "stdout": "Dockerfile\n.dockerignore\nnode_modules\nnpm-debug.log\nREADME.md\n.next\nansible\ndocker-compose.yml\ndocker-compose.live.yml\npublic/storage\nserver.php\nstorage/app/public/*\nstorage/framework/cache/*\nstorage/framework/sessions/*\nstorage/framework/testing/*\nstorage/framework/views/*\ntests\n.editorconfig\n.env.example\n.env.testing\n.eslintr.json\n.git\n.gitignore\n.php-cs-fixer.php\n.stylelintrc.json\nphpunit.xml\nvite.config.js\npackage-lock.json\npackage.json\ndocker-compose.override.yml\n---\nDockerfile\n.dockerignore\nnode_modules\nnpm-debug.log\nREADME.md\n.next\n.git---\n{\n    \"private\": true,\n    \"type\": \"module\",\n    \"scripts\": {\n        \"dev\": \"vite\",\n        \"build\": \"vite build\"\n    },\n    \"devDependencies\": {\n        \"@tailwindcss/vite\": \"^4.1.18\",\n        \"axios\": \"^1.7.9\",\n        \"laravel-vite-plugin\": \"^3.0\",\n        \"tailwindcss\": \"^4.1.18\",\n        \"vite\": \"^8.0.0\"\n    }\n}\n---\nDatabaseSeeder.php\nDemoClubSeeder.php\nFakeClubsSeeder.php\nFakeDatabaseSeeder.php\nFakeFinanceAccountSeeder.php\nFakeFinanceContactSeeder.php\nFakeReceiptSeeder.php\nFakeStatementSeeder.php\nFakeTaxAccountSeeder.php\nTaxAccountChartSeeder.php\n---\n5:        \"php\": \"^8.3\",\n13:        \"laravel/framework\": \"^13.0\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker info 2>&1 | grep -E 'Server Version|Storage Driver|Cgroup|Operating System|Architecture|CPUs|Total Memory' ; ls /workspace/.github/workflows/ 2>/dev/null && cat /workspace/.github/workflows/*.yml 2>/dev/null | head -80",
+      "exit_code": 0,
+      "stdout": " Server Version: 29.7.2\n Storage Driver: overlay2\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Operating System: Ubuntu 22.04.5 LTS\n Architecture: x86_64\n CPUs: 8\n Total Memory: 7.602GiB\npublish.yml\nrelease.yml\nname: Publish Release\n\non:\n  pull_request:\n    types:\n      - closed\n    branches:\n      - main\n\npermissions:\n  contents: write\n\njobs:\n  publish-release:\n    if: github.event.pull_request.merged == true && startsWith(github.event.pull_request.head.ref, 'release/')\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout\n        uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n\n      - name: Extract version from branch name\n        run: |\n          BRANCH=\"${{ github.event.pull_request.head.ref }}\"\n          VERSION=\"${BRANCH#release/}\"\n          echo \"VERSION=$VERSION\" >> $GITHUB_ENV\n\n      - name: Create tag and GitHub release\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n        run: |\n          git config user.name \"github-actions[bot]\"\n          git config user.email \"github-actions[bot]@users.noreply.github.com\"\n          git tag -a \"${{ env.VERSION }}\" -m \"Release version ${{ env.VERSION }}\"\n          git push origin tag \"${{ env.VERSION }}\"\n\n          gh release create \"${{ env.VERSION }}\" \\\n            --title \"Release ${{ env.VERSION }}\" \\\n            --notes \"$(awk '/## \\[/{flag=1;next}/## \\[/{flag=0}flag' CHANGELOG.md)\"\nname: Prepare Release\n\non:\n  workflow_dispatch:\n\npermissions:\n  contents: write\n  pull-requests: write\n\njobs:\n  prepare-release:\n    runs-on: ubuntu-latest\n    steps:\n      - name: Checkout\n        uses: actions/checkout@v4\n        with:\n          fetch-depth: 0\n\n      - name: Generate changelog and determine version\n        uses: orhun/git-cliff-action@v4\n        id: git-cliff\n        with:\n          config: cliff.toml\n          args: --verbose --bump --prepend CHANGELOG.md --latest\n        env:\n          OUTPUT: CHANGELOG.md\n          GITHUB_REPO: ${{ github.repository }}\n\n      - name: Update publiccode software version\n        run: |\n          VERSION=\"${{ steps.git-cliff.outputs.version }}\"\n          sed -i \"s/softwareVersion: .*/softwareVersion: \\\"$VERSION\\\"/\" publiccode.yml\n\n      - name: Create release branch and PR\n        env:\n          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}\n        run: |\n          VERSION=\"${{ steps.git-cliff.outputs.version }}\"\n          BRANCH=\"release/$VERSION\"\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/api/public/ && grep -n 'hello@vereinfacht\\|super' /workspace/api/database/seeders/FakeDatabaseSeeder.php | head -20",
+      "exit_code": 1,
+      "stdout": "favicon.ico\nimages\nindex.php\nrobots.txt\nv1_openapi.json\nvendor\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'API_BEARER_TOKEN' /workspace/web_application/src --include=*.ts --include=*.tsx -l | head; echo ---; grep -rn 'API_DOMAIN' /workspace/web_application/src -l | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace/web_application/src/services/club-api.ts\n---\n/workspace/web_application/src/lib/api/server-client.ts\n/workspace/web_application/src/actions/statements/import.ts\n/workspace/web_application/src/app/api/media/[id]/preview/route.ts\n/workspace/web_application/src/app/api/media/[id]/download/route.ts\n/workspace/web_application/src/app/api/export/table/route.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -60 /workspace/api/database/seeders/FakeDatabaseSeeder.php; echo ===; grep -rn 'hello@vereinfacht' /workspace/api/database/ | head",
+      "exit_code": 0,
+      "stdout": "<?php\n\nnamespace Database\\Seeders;\n\nuse Illuminate\\Database\\Seeder;\n\nclass FakeDatabaseSeeder extends Seeder\n{\n    /**\n     * Seed the application's database.\n     */\n    public function run(): void\n    {\n        $this->call([\n            DatabaseSeeder::class,\n            DemoClubSeeder::class,\n            FakeClubsSeeder::class,\n            FakeFinanceAccountSeeder::class,\n            FakeStatementSeeder::class,\n            FakeFinanceContactSeeder::class,\n            FakeTaxAccountSeeder::class,\n            FakeReceiptSeeder::class,\n        ]);\n    }\n}\n===\n/workspace/api/database/seeders/FakeClubsSeeder.php:123:        User::where('email', 'hello@vereinfacht.digital')->first()->assignRole('super admin');\n/workspace/api/database/seeders/UsersTableSeeder.php:13:            'email' => 'hello@vereinfacht.digital',\n/workspace/api/database/migrations/2024_03_20_092746_create_roles_and_permissions.php:44:        $superAdminUser = DB::table('users')->where('email', 'hello@vereinfacht.digital')->first();\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose up -d --build > /tmp/compose_up.log 2>&1 &\necho \"started pid $!\"",
+      "exit_code": 0,
+      "stdout": "started pid 454\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -20 /tmp/compose_up.log; echo ===; docker images | head",
+      "exit_code": 0,
+      "stdout": "#17 sha256:d572c13a7bba7210819294fd9b7c129cb93f7b95384cb24e96ff680db2286a86 17.58MB / 17.58MB 14.0s done\n#17 extracting sha256:6020c66d05aaa03894e89a8f0b689da804732c437b3ff60468ed76b96ef89532 0.1s done\n#17 sha256:2f932556b3432a34117f3d642986e3c653bc07b9e24c7ae43495143199922415 22.36kB / 22.36kB 10.0s done\n#17 extracting sha256:1dee0117463e7125007c20fda3970ae670fb38def3519479c43095446ed08cfa 0.2s done\n#17 sha256:115c4297fd6e4ac90d5a90c4a0a47fb0329f325edacc1563ea4ed9c2863805be 22.38kB / 22.38kB 10.4s done\n#17 extracting sha256:9e72ad026260245c9728bda29dfd2e03c46efe06bb9cdfcf84ea8c08b6abece3 0.4s done\n#17 extracting sha256:6c52827396b714b43ea363747b06045ed627462999c4e961562fb758228747b2 0.1s done\n#17 extracting sha256:d572c13a7bba7210819294fd9b7c129cb93f7b95384cb24e96ff680db2286a86 3.7s done\n#17 extracting sha256:71fe792767dd857a28433c240a774fedd539f41dc5913a42ad9f75aded870ebe 0.0s done\n#17 extracting sha256:2f932556b3432a34117f3d642986e3c653bc07b9e24c7ae43495143199922415 0.1s done\n#17 extracting sha256:115c4297fd6e4ac90d5a90c4a0a47fb0329f325edacc1563ea4ed9c2863805be 0.1s done\n#17 DONE 20.2s\n\n#16 [api  1/24] FROM docker.io/library/php:8.3-fpm-alpine3.23@sha256:1ea39a587abe12a0ef4b02c3b2d26e718780dde34de2a7f296fb599cdb845597\n#16 ...\n\n#18 [tooling stage-1  2/16] RUN addgroup --gid 1001 verein\n#18 DONE 5.0s\n\n#19 [tooling stage-1  3/16] RUN adduser --disabled-password --gecos '' --uid 1001 --ingroup verein verein\n===\nIMAGE                                            ID             DISK USAGE   CONTENT SIZE   EXTRA\ndocker.swagger.io/swaggerapi/swagger-ui:latest   fc3d93ab080e        141MB             0B        \nmariadb:11.8                                     c1d04d5c27cf        329MB             0B        \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; tail -8 /tmp/compose_up.log; echo ===; docker ps -a --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "#41 1.176 Run the \"diagnose\" command to get more detailed diagnostics output.\n#41 1.176 Composer version 2.10.3 2026-08-27 13:34:23\n#41 1.201 v20.20.2\n#41 1.506 10.8.2\n#41 1.525 PRETTY_NAME=\"Alpine Linux v3.23\"\n#41 DONE 2.3s\n\n#42 [tooling stage-1 13/16] RUN docker-php-ext-configure gd --with-freetype --with-jpeg\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; tail -5 /tmp/compose_up.log; echo ===; docker ps -a --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "\n--------------------\n\ntarget tooling: failed to solve: process \"/bin/sh -c docker-php-ext-configure gd --with-freetype --with-jpeg\" did not complete successfully: exit code: 127\n\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n -B5 -A15 'did not complete successfully' /tmp/compose_up.log | head -60",
+      "exit_code": 0,
+      "stdout": "1429-\n1430-#42 [tooling stage-1 13/16] RUN docker-php-ext-configure gd --with-freetype --with-jpeg\n1431-#42 5.575 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1432-#42 5.578 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1433-#42 5.581 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1434:#42 ERROR: process \"/bin/sh -c docker-php-ext-configure gd --with-freetype --with-jpeg\" did not complete successfully: exit code: 127\n1435-\n1436-#30 [web_application deps 4/4] RUN   if [ -f yarn.lock ]; then yarn --frozen-lockfile;   elif [ -f package-lock.json ]; then npm ci;   elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile;   else echo \"Lockfile not found.\" && exit 1;   fi\n1437-#30 ...\n1438-\n1439-#34 [api  7/24] RUN docker-php-ext-install pdo_mysql\n1440-#34 CANCELED\n1441-\n1442-#30 [web_application deps 4/4] RUN   if [ -f yarn.lock ]; then yarn --frozen-lockfile;   elif [ -f package-lock.json ]; then npm ci;   elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile;   else echo \"Lockfile not found.\" && exit 1;   fi\n1443-#30 CANCELED\n1444-------\n1445- > [tooling stage-1 13/16] RUN docker-php-ext-configure gd --with-freetype --with-jpeg:\n1446-5.575 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1447-5.578 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1448-5.581 Error relocating /sbin/apk: apk_fs_is_malicious_filename: symbol not found\n1449-------\n--\n1461-\n1462-  71 |     # Install PHP extensions\n1463-\n1464---------------------\n1465-\n1466:target tooling: failed to solve: process \"/bin/sh -c docker-php-ext-configure gd --with-freetype --with-jpeg\" did not complete successfully: exit code: 127\n1467-\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run --rm php:8.3-cli-alpine3.23 sh -c 'apk info -v apk-tools; ls /usr/lib | grep -i apk' 2>&1 | head",
+      "exit_code": 141,
+      "stdout": "Unable to find image 'php:8.3-cli-alpine3.23' locally\n8.3-cli-alpine3.23: Pulling from library/php\nd0c1d894c237: Already exists\nfce932fa2cb0: Already exists\n6020c66d05aa: Already exists\n1dee0117463e: Already exists\n9e72ad026260: Already exists\n6c52827396b7: Already exists\nd572c13a7bba: Already exists\n71fe792767dd: Already exists\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run --rm node:20-alpine3.23 sh -c 'apk info -v apk-tools; ls /usr/lib | grep -i apk' 2>&1 | head",
+      "exit_code": 141,
+      "stdout": "Unable to find image 'node:20-alpine3.23' locally\n20-alpine3.23: Pulling from library/node\n6a0ac1617861: Already exists\n4feea04c1543: Already exists\nb2cbbfe903b0: Already exists\nfff4e2c1b189: Already exists\nDigest: sha256:fb4cd12c85ee03686f6af5362a0b0d56d50c58a04632e6c0fb8363f609372293\nStatus: Downloaded newer image for node:20-alpine3.23\napk-tools: Alpine Package Keeper - package manager for alpine\nWARNING: opening from cache https://dl-cdn.alpinelinux.org/alpine/v3.23/main/x86_64/APKINDEX.tar.gz: No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run --rm php:8.3-cli-alpine3.23 apk info -v apk-tools 2>&1; echo \"rc=$?\"",
+      "exit_code": 0,
+      "stdout": "Unable to find image 'php:8.3-cli-alpine3.23' locally\n8.3-cli-alpine3.23: Pulling from library/php\nDigest: sha256:c6037616873fb46e8d04665105fe64722781fedea82ff47235f39c4f252b0d6b\nStatus: Downloaded newer image for php:8.3-cli-alpine3.23\napk-tools: Alpine Package Keeper - package manager for alpine\napk-tools: https://gitlab.alpinelinux.org/alpine/apk-tools\napk-tools: 112 KiB\nrc=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run --rm php:8.3-cli-alpine3.23 sh -c 'apk info apk-tools 2>/dev/null; ls -la /usr/lib/libapk* 2>/dev/null'",
+      "exit_code": 0,
+      "stdout": "apk-tools-3.0.8-r0 description:\nAlpine Package Keeper - package manager for alpine\n\napk-tools-3.0.8-r0 webpage:\nhttps://gitlab.alpinelinux.org/alpine/apk-tools\n\napk-tools-3.0.8-r0 installed size:\n112 KiB\n\n-rwxr-xr-x    1 root     root        277184 Sep  1 06:26 /usr/lib/libapk.so.3.0.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker run --rm node:20-alpine3.23 sh -c 'apk info apk-tools 2>/dev/null; ls -la /usr/lib/libapk* 2>/dev/null'",
+      "exit_code": 0,
+      "stdout": "apk-tools-3.0.6-r0 description:\nAlpine Package Keeper - package manager for alpine\n\napk-tools-3.0.6-r0 webpage:\nhttps://gitlab.alpinelinux.org/alpine/apk-tools\n\napk-tools-3.0.6-r0 installed size:\n112 KiB\n\n-rwxr-xr-x    1 root     root        277184 Apr 14  2026 /usr/lib/libapk.so.3.0.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cp docker/tooling/tooling.Dockerfile /tmp/tooling.Dockerfile.bak && python3 - <<'EOF'\nimport re\np = 'docker/tooling/tooling.Dockerfile'\ns = open(p).read()\nold = \"\"\"# Copy files from node image\nCOPY --from=node /usr/lib /usr/lib\"\"\"\nnew = \"\"\"# Back up the base image's libapk (the node image below ships an older\n# libapk with the same SONAME and would break the apk binary when copied over)\nRUN cp /usr/lib/libapk.so.3.0.0 /usr/local/lib/libapk.so.3.0.0.base\n\n# Copy files from node image\nCOPY --from=node /usr/lib /usr/lib\n# Restore the base image's libapk so apk keeps working\nRUN cp /usr/local/lib/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0\"\"\"\nassert old in s\ns = s.replace(old, new)\nopen(p, 'w').write(s)\nprint(\"patched\")\nEOF\ngrep -n -A3 -B1 'libapk' docker/tooling/tooling.Dockerfile",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cp docker/tooling/tooling.Dockerfile /tmp/tooling.Dockerfile.bak && sed -i 's|^# Copy files from node image$|# Back up the base image libapk before overwriting (node image ships an older\\n# libapk with the same SONAME, which would break the apk binary)\\nRUN cp /usr/lib/libapk.so.3.0.0 /usr/local/lib/libapk.so.3.0.0.base\\n\\n# Copy files from node image|' docker/tooling/tooling.Dockerfile && sed -i 's|^COPY --from=node /usr/lib /usr/lib$|COPY --from=node /usr/lib /usr/lib\\n# Restore the base image libapk so apk keeps working\\nRUN cp /usr/local/lib/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0|' docker/tooling/tooling.Dockerfile && sed -n '20,40p' docker/tooling/tooling.Dockerfile",
+      "exit_code": 0,
+      "stdout": "# Add group and user based on build arguments\nRUN addgroup --gid ${GROUP_ID} ${GROUP_NAME}\nRUN adduser --disabled-password --gecos '' --uid ${USER_ID} --ingroup ${GROUP_NAME} ${USER_NAME}\n\n# Set user and group of working directory\nRUN chown -R ${USER_NAME}:${GROUP_NAME} /var/www/html\n\n# Update and install packages\nRUN apk update && apk add \\\n    bash \\\n    git \\\n    gnupg \\\n    libzip-dev \\\n    unzip \\\n    libstdc++ \\\n    icu-dev \\\n    pkgconfig \\\n    libpng-dev \\\n    libjpeg-turbo-dev \\\n    libpng \\\n    libjpeg-turbo \\\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -n 'libapk\\|Copy files from node' docker/tooling/tooling.Dockerfile",
+      "exit_code": 0,
+      "stdout": "51:# Back up the base image libapk before overwriting (node image ships an older\n52:# libapk with the same SONAME, which would break the apk binary)\n53:RUN cp /usr/lib/libapk.so.3.0.0 /usr/local/lib/libapk.so.3.0.0.base\n55:# Copy files from node image\n57:# Restore the base image libapk so apk keeps working\n58:RUN cp /usr/local/lib/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '45,70p' docker/tooling/tooling.Dockerfile",
+      "exit_code": 0,
+      "stdout": "    imagemagick-dev \\\n    ghostscript \\\n    autoconf \\\n    g++ \\\n    make\n\n# Back up the base image libapk before overwriting (node image ships an older\n# libapk with the same SONAME, which would break the apk binary)\nRUN cp /usr/lib/libapk.so.3.0.0 /usr/local/lib/libapk.so.3.0.0.base\n\n# Copy files from node image\nCOPY --from=node /usr/lib /usr/lib\n# Restore the base image libapk so apk keeps working\nRUN cp /usr/local/lib/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0\nCOPY --from=node /usr/local/share /usr/local/share\nCOPY --from=node /usr/local/lib /usr/local/lib\nCOPY --from=node /usr/local/include /usr/local/include\nCOPY --from=node /usr/local/bin /usr/local/bin\n\n# Install Composer manually\nCOPY --from=composer/composer:latest-bin /composer /usr/bin/composer\n\n# Show some usefull versions\nRUN php -v && \\\n    composer --version && \\\n    node --version && \\\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -i 's|/usr/local/lib/libapk.so.3.0.0.base|/usr/local/etc/libapk.so.3.0.0.base|g' docker/tooling/tooling.Dockerfile && grep -n 'libapk' docker/tooling/tooling.Dockerfile",
+      "exit_code": 0,
+      "stdout": "51:# Back up the base image libapk before overwriting (node image ships an older\n52:# libapk with the same SONAME, which would break the apk binary)\n53:RUN cp /usr/lib/libapk.so.3.0.0 /usr/local/etc/libapk.so.3.0.0.base\n57:# Restore the base image libapk so apk keeps working\n58:RUN cp /usr/local/etc/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose up -d --build > /tmp/compose_up2.log 2>&1 &\necho started",
+      "exit_code": 0,
+      "stdout": "started\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -40 /workspace/web_application/src/services/club-api.ts; echo ===; grep -rn 'API_BEARER_TOKEN' /workspace/web_application/src/services/club-api.ts /workspace/web_application/src/lib/api/server-client.ts | head",
+      "exit_code": 0,
+      "stdout": "import { ApiEndpoints } from './api-endpoints';\n\nclass ClubApi extends ApiEndpoints {\n    constructor() {\n        super(process.env.API_BEARER_TOKEN ?? '');\n    }\n\n    async findClubBySlug<T>(slug: string): Promise<T> {\n        return await this.get(\n            `clubs?filter[slug]=${slug}&include=divisions,membershipTypes.divisionMembershipTypes.division,paymentPeriods`,\n            ['clubs'],\n        );\n    }\n\n    async applyMembership<T>(data: { id: string }) {\n        const serializedData = this.serialize('memberships', data);\n        return await this.post<T>(\n            `memberships/${data.id}/-actions/apply`,\n            serializedData,\n        );\n    }\n}\n\nexport const clubApi = new ClubApi();\n===\n/workspace/web_application/src/services/club-api.ts:5:        super(process.env.API_BEARER_TOKEN ?? '');\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; tail -6 /tmp/compose_up2.log; echo ===; docker ps -a --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "#46 75.03 /bin/sh /usr/src/php/ext/bcmath/libtool --tag=CC --mode=compile cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE   -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/output.c -o libbcmath/src/output.lo  -MMD -MF libbcmath/src/output.dep -MT libbcmath/src/output.lo\n#46 75.15  cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/output.c -MMD -MF libbcmath/src/output.dep -MT libbcmath/src/output.lo  -fPIC -DPIC -o libbcmath/src/.libs/output.o\n#46 75.51 /bin/sh /usr/src/php/ext/bcmath/libtool --tag=CC --mode=compile cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE   -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/recmul.c -o libbcmath/src/recmul.lo  -MMD -MF libbcmath/src/recmul.dep -MT libbcmath/src/recmul.lo\n#46 75.63  cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/recmul.c -MMD -MF libbcmath/src/recmul.dep -MT libbcmath/src/recmul.lo  -fPIC -DPIC -o libbcmath/src/.libs/recmul.o\n#46 76.09 /bin/sh /usr/src/php/ext/bcmath/libtool --tag=CC --mode=compile cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H  -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE   -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/sqrt.c -o libbcmath/src/sqrt.lo  -MMD -MF libbcmath/src/sqrt.dep -MT libbcmath/src/sqrt.lo\n#46 76.20  cc -I. -I/usr/src/php/ext/bcmath -I/usr/src/php/ext/bcmath/include -I/usr/src/php/ext/bcmath/main -I/usr/src/php/ext/bcmath -I/usr/local/include/php -I/usr/local/include/php/main -I/usr/local/include/php/TSRM -I/usr/local/include/php/Zend -I/usr/local/include/php/ext -I/usr/local/include/php/ext/date/lib -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -DHAVE_CONFIG_H -fstack-protector-strong -fpic -fpie -O2 -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -D_GNU_SOURCE -I/usr/src/php/ext/bcmath/libbcmath/src -DZEND_ENABLE_STATIC_TSRMLS_CACHE=1 -DZEND_COMPILE_DL_EXT=1 -c /usr/src/php/ext/bcmath/libbcmath/src/sqrt.c -MMD -MF libbcmath/src/sqrt.dep -MT libbcmath/src/sqrt.lo  -fPIC -DPIC -o libbcmath/src/.libs/sqrt.o\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/api/database/seeders/UsersTableSeeder.php",
+      "exit_code": 0,
+      "stdout": "<?php\n\nnamespace Database\\Seeders;\n\nuse App\\Models\\User;\nuse Illuminate\\Database\\Seeder;\n\nclass UsersTableSeeder extends Seeder\n{\n    public function run(): void\n    {\n        User::factory()->create([\n            'email' => 'hello@vereinfacht.digital',\n        ]);\n    }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 150; tail -3 /tmp/compose_up2.log; echo ===; docker ps -a --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "#49 148.9 43:62  Warning: Unexpected any. Specify a different type.  @typescript-eslint/no-explicit-any\n#49 148.9 \n#49 148.9 info  - Need to disable some ESLint rules? Learn more here: https://nextjs.org/docs/basic-features/eslint#disabling-rules\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 180; tail -3 /tmp/compose_up2.log; echo ===; docker ps -a --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": " Container vereinfacht-api-docs-1 Starting \n Container vereinfacht-api-docs-1 Started \n Container vereinfacht-web_application-1 Started \n===\nvereinfacht-api-docs-1\tUp 8 seconds\nvereinfacht-web_application-1\tUp 8 seconds\nvereinfacht-api-1\tUp 9 seconds\nvereinfacht-database-1\tUp 9 seconds\nvereinfacht-tooling-1\tUp 9 seconds\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker compose -f /workspace/docker-compose.yml ps api; docker logs vereinfacht-api-1 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "NAME                IMAGE             COMMAND                  SERVICE   CREATED          STATUS          PORTS\nvereinfacht-api-1   vereinfacht-api   \"bash /var/www/docke\u2026\"   api       14 seconds ago   Up 13 seconds   9000/tcp, 0.0.0.0:3001->80/tcp, [::]:3001->80/tcp\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nWait 0.5 seconds\nDB is ready\n",
+      "stderr": "time=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:40Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd api && composer install --no-interaction 2>&1 | tail -40'",
+      "exit_code": 0,
+      "stdout": "  \u21c2 public/js/filament/forms/components/tags-input.js  \n  \u21c2 public/js/filament/forms/components/textarea.js  \n  \u21c2 public/js/filament/schemas/components/actions.js  \n  \u21c2 public/js/filament/schemas/components/tabs.js  \n  \u21c2 public/js/filament/schemas/components/wizard.js  \n  \u21c2 public/js/filament/tables/components/columns/checkbox.js  \n  \u21c2 public/js/filament/tables/components/columns/select.js  \n  \u21c2 public/js/filament/tables/components/columns/text-input.js  \n  \u21c2 public/js/filament/tables/components/columns/toggle.js  \n  \u21c2 public/js/filament/widgets/components/chart.js  \n  \u21c2 public/js/filament/widgets/components/stats-overview/stat/chart.js  \n  \u21c2 public/fonts/filament/filament/inter/index.css  \n  \u21c2 public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2  \n  \u21c2 public/js/filament/actions/actions.js  \n  \u21c2 public/js/filament/filament/app.js  \n  \u21c2 public/js/filament/filament/echo.js  \n  \u21c2 public/js/filament/notifications/notifications.js  \n  \u21c2 public/js/filament/schemas/schemas.js  \n  \u21c2 public/js/filament/support/support.js  \n  \u21c2 public/js/filament/tables/tables.js  \n  \u21c2 public/css/filament/filament/app.css  \n\n   INFO  Successfully published assets!  \n\n   INFO  Configuration cache cleared successfully.  \n\n   INFO  Route cache cleared successfully.  \n\n   INFO  Compiled views cleared successfully.  \n\n   INFO  Successfully upgraded!  \n\n154 packages you are using are looking for funding.\nUse the `composer fund` command to find out more!\n",
+      "stderr": "time=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:43:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd api && cp .env.example .env && php artisan key:generate --no-interaction && php artisan migrate:fresh --force --seeder=FakeDatabaseSeeder 2>&1 | tail -25'",
+      "exit_code": 0,
+      "stdout": "\n   INFO  Application key set successfully.  \n\n  Database\\Seeders\\TaxAccountSeeder ............................ 8,653 ms DONE  \n\n  Database\\Seeders\\DatabaseSeeder .............................. 8,828 ms DONE  \n\n  Database\\Seeders\\DemoClubSeeder .................................... RUNNING  \n  Database\\Seeders\\DemoClubSeeder ................................ 933 ms DONE  \n\n  Database\\Seeders\\FakeClubsSeeder ................................... RUNNING  \n  Database\\Seeders\\FakeClubsSeeder ............................. 5,560 ms DONE  \n\n  Database\\Seeders\\FakeFinanceAccountSeeder .......................... RUNNING  \n  Database\\Seeders\\FakeFinanceAccountSeeder ....................... 71 ms DONE  \n\n  Database\\Seeders\\FakeStatementSeeder ............................... RUNNING  \n  Database\\Seeders\\FakeStatementSeeder ......................... 5,675 ms DONE  \n\n  Database\\Seeders\\FakeFinanceContactSeeder .......................... RUNNING  \n  Database\\Seeders\\FakeFinanceContactSeeder .................... 1,740 ms DONE  \n\n  Database\\Seeders\\FakeTaxAccountSeeder .............................. RUNNING  \n  Database\\Seeders\\FakeTaxAccountSeeder .......................... 172 ms DONE  \n\n  Database\\Seeders\\FakeReceiptSeeder ................................. RUNNING  \n  Database\\Seeders\\FakeReceiptSeeder ......................... 115,368 ms DONE  \n\n",
+      "stderr": "time=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:44:30Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd api && php artisan filament:assets && npm ci 2>&1 | tail -5 && npm run build 2>&1 | tail -10'",
+      "exit_code": 0,
+      "stdout": "  \u21c2 public/js/filament/forms/components/checkbox-list.js  \n  \u21c2 public/js/filament/forms/components/code-editor.js  \n  \u21c2 public/js/filament/forms/components/color-picker.js  \n  \u21c2 public/js/filament/forms/components/date-time-picker.js  \n  \u21c2 public/js/filament/forms/components/file-upload.js  \n  \u21c2 public/js/filament/forms/components/key-value.js  \n  \u21c2 public/js/filament/forms/components/markdown-editor.js  \n  \u21c2 public/js/filament/forms/components/rich-editor.js  \n  \u21c2 public/js/filament/forms/components/select.js  \n  \u21c2 public/js/filament/forms/components/slider.js  \n  \u21c2 public/js/filament/forms/components/tags-input.js  \n  \u21c2 public/js/filament/forms/components/textarea.js  \n  \u21c2 public/js/filament/schemas/components/actions.js  \n  \u21c2 public/js/filament/schemas/components/tabs.js  \n  \u21c2 public/js/filament/schemas/components/wizard.js  \n  \u21c2 public/js/filament/tables/components/columns/checkbox.js  \n  \u21c2 public/js/filament/tables/components/columns/select.js  \n  \u21c2 public/js/filament/tables/components/columns/text-input.js  \n  \u21c2 public/js/filament/tables/components/columns/toggle.js  \n  \u21c2 public/js/filament/widgets/components/chart.js  \n  \u21c2 public/js/filament/widgets/components/stats-overview/stat/chart.js  \n  \u21c2 public/fonts/filament/filament/inter/index.css  \n  \u21c2 public/fonts/filament/filament/inter/inter-cyrillic-ext-wght-normal-IYF56FF6.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-cyrillic-wght-normal-JEOLYBOO.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-greek-ext-wght-normal-EOVOK2B5.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-greek-wght-normal-IRE366VL.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-latin-ext-wght-normal-HA22NDSG.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-latin-wght-normal-NRMW37G5.woff2  \n  \u21c2 public/fonts/filament/filament/inter/inter-vietnamese-wght-normal-CE5GGD3W.woff2  \n  \u21c2 public/js/filament/actions/actions.js  \n  \u21c2 public/js/filament/filament/app.js  \n  \u21c2 public/js/filament/filament/echo.js  \n  \u21c2 public/js/filament/notifications/notifications.js  \n  \u21c2 public/js/filament/schemas/schemas.js  \n  \u21c2 public/js/filament/support/support.js  \n  \u21c2 public/js/filament/tables/tables.js  \n  \u21c2 public/css/filament/filament/app.css  \n\n   INFO  Successfully published assets!  \n\nnpm notice\nnpm notice New major version of npm available! 10.8.2 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\nvite v8.1.4 building client environment for production...\n\u001b[2K\ntransforming...\u2713 57 modules transformed.\nrendering chunks...\ncomputing gzip size...\npublic/build/manifest.json                0.55 kB \u2502 gzip:  0.21 kB\npublic/build/assets/app-x1XGuNl0.css      0.00 kB \u2502 gzip:  0.02 kB\npublic/build/assets/theme-CM1TZWbR.css  612.89 kB \u2502 gzip: 64.31 kB\npublic/build/assets/app-Bt3kCvlU.js      44.89 kB \u2502 gzip: 17.06 kB\n\n\u2713 built in 2.91s\n",
+      "stderr": "time=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:01Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd api && php artisan tinker --execute=\"echo User::find(1)->createToken(\\\"Super Admin Token\\\")->plainTextToken;\" 2>&1'",
+      "exit_code": 0,
+      "stdout": "[!] Aliasing 'User' to 'App\\Models\\User' for this Tinker session.\n1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2\n",
+      "stderr": "time=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:17Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w 'API root: %{http_code}\\n' http://localhost:3001/; curl -s -o /dev/null -w 'openapi: %{http_code}\\n' http://localhost:3001/v1_openapi.json; curl -s -o /dev/null -w 'swagger: %{http_code}\\n' http://localhost:3002/; TOKEN='1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2'; curl -s -w '\\nAPI auth: %{http_code}\\n' -H \"Authorization: Bearer $TOKEN\" http://localhost:3001/api/v1/clubs?include= | head -c 300",
+      "exit_code": 23,
+      "stdout": "API root: 500\nopenapi: 200\nswagger: 200\n<!DOCTYPE html>\n<html lang=\"en\" class=\"auto\">\n<!--\nUnexpectedValueException: The stream or file &quot;/var/www/html/storage/logs/laravel.log&quot; could not be opened in append mode: Failed to open stream: Permission denied\nThe exception occurred while attempting to log: The stream or file &quot;/va",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /workspace/api/storage/ 2>&1; echo '--- logs ---'; ls -la /workspace/api/storage/logs/ 2>&1; echo '--- api dir owner ---'; ls -ld /workspace/api /workspace/api/storage/framework 2>&1",
+      "exit_code": 0,
+      "stdout": "total 24\ndrwxr-xr-x  6 root root 4096 Oct 18 16:45 .\ndrwxr-xr-x 14 root root 4096 Oct 18 16:47 ..\ndrwxr-xr-x  4 root root 4096 Oct 18 16:29 app\ndrwxr-xr-x  6 root root 4096 Oct 18 16:29 framework\ndrwxr-xr-x  2 root root 4096 Oct 18 16:29 logs\ndrwxrwxrwx  3 root root 4096 Oct 18 16:45 media-library\n--- logs ---\ntotal 12\ndrwxr-xr-x 2 root root 4096 Oct 18 16:29 .\ndrwxr-xr-x 6 root root 4096 Oct 18 16:45 ..\n-rw-r--r-- 1 root root   14 Oct 18 16:29 .gitignore\n--- api dir owner ---\ndrwxr-xr-x 14 root root 4096 Oct 18 16:47 /workspace/api\ndrwxr-xr-x  6 root root 4096 Oct 18 16:29 /workspace/api/storage/framework\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker exec -u root vereinfacht-tooling-1 chown -R verein:verein /var/www/html/api /var/www/html/web_application && echo chowned; ls -ld /workspace/api /workspace/api/storage/logs; docker exec vereinfacht-tooling-1 whoami",
+      "exit_code": 0,
+      "stdout": "chowned\ndrwxr-xr-x 14 1001 1001 4096 Oct 18 16:47 /workspace/api\ndrwxr-xr-x  2 1001 1001 4096 Oct 18 16:29 /workspace/api/storage/logs\nroot\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "TOKEN='1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2'; curl -s -w '\\nAUTH_CODE: %{http_code}\\n' -H \"Authorization: Bearer $TOKEN\" -H 'Accept: application/vnd.api+json' 'http://localhost:3001/api/v1/clubs' | head -c 500",
+      "exit_code": 23,
+      "stdout": "{\"jsonapi\":{\"version\":\"1.0\"},\"data\":[{\"type\":\"clubs\",\"id\":\"1\",\"attributes\":{\"slug\":\"tsv-muster\",\"title\":\"TSV Muster\",\"extendedTitle\":\"Turn- und Sportverein Muster e. V.\",\"applyTitle\":null,\"applyUrl\":\"http:\\/\\/localhost:3000\\/de\\/tsv-muster\\/apply\",\"address\":\"Musterstra\\u00dfe 70\",\"zipCode\":\"12345\",\"city\":\"Musterstadt\",\"country\":\"Germany\",\"preferredLocale\":\"de\",\"email\":\"ukub@example.com\",\"websiteUrl\":\"https:\\/\\/vereinfacht.digital\",\"primaryColor\":\"#00b0ff\",\"logoUrl\":\"https:\\/\\/vereinfacht.digital",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd web_application && cp .env.local.example .env.local && sed -i \"s|^API_BEARER_TOKEN=.*|API_BEARER_TOKEN=1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2|\" .env.local && cat .env.local'",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "time=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:38Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\nsed: bad option in substitution expression\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker exec -u root vereinfacht-tooling-1 bash -c 'cd /var/www/html/web_application && { cat .env.local.example | sed \"s#^API_BEARER_TOKEN=.*#API_BEARER_TOKEN=1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2#\"; } > .env.local && cat .env.local && chown verein:verein .env.local'",
+      "exit_code": 0,
+      "stdout": "WEB_APPLICATION_URL=http://localhost:3000\nWEBSITE_URL=http://vereinfacht.digital\n\nAPI_DOMAIN=http://api\nAPI_PATH=/api/v1\nAPI_BEARER_TOKEN=1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2\n\nNEXTAUTH_SECRET=non-production-secret\nNEXTAUTH_URL=http://localhost:3000\n\nADMIN_LOGIN_PATHNAME=\"/admin/auth/login\"\n\nSIGNAL_INVITE_URL=https://google.de\nSUPPORT_EMAIL_ADDRESS=\"hello@vereinfacht.digital\"\nSUPPORT_PHONE_NUMBER=\"0461 150653625\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T tooling bash -c 'cd web_application && npm ci 2>&1 | tail -8'",
+      "exit_code": 0,
+      "stdout": "\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\n",
+      "stderr": "time=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:47:43Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker exec vereinfacht-tooling-1 sh -c 'ls /var/www/html/web_application/node_modules | wc -l; ls /var/www/html/web_application/node_modules/.bin/next 2>/dev/null && echo next-bin-ok'",
+      "exit_code": 0,
+      "stdout": "430\n/var/www/html/web_application/node_modules/.bin/next\nnext-bin-ok\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose exec -T -d tooling bash -c 'cd /var/www/html/web_application && exec npm run dev > /tmp/next_dev.log 2>&1' && echo started; sleep 45; tail -20 /workspace/web_application/../ 2>/dev/null; docker exec vereinfacht-tooling-1 tail -25 /tmp/next_dev.log",
+      "exit_code": 0,
+      "stdout": "started\n\n> web_application@0.1.0 dev\n> npm run generate-schema && next dev\n\n\n> web_application@0.1.0 generate-schema\n> npx openapi-typescript http://api/v1_openapi.json -o ./src/types/schema_v1.d.ts\n\n\u2728 openapi-typescript 7.13.0\n\ud83d\ude80 http://api/v1_openapi.json \u2192 ./src/types/schema_v1.d.ts [850ms]\n  \u25b2 Next.js 14.2.35\n  - Local:        http://localhost:3000\n  - Environments: .env.local\n\n \u2713 Starting...\nAttention: Next.js now collects completely anonymous telemetry regarding usage.\nThis information is used to shape Next.js' roadmap and prioritize features.\nYou can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:\nhttps://nextjs.org/telemetry\n\n \u2713 Ready in 4s\n",
+      "stderr": "time=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"USER_ID\\\" variable is not set. Defaulting to a blank string.\"\ntime=\"2026-10-18T16:49:06Z\" level=warning msg=\"The \\\"GROUP_ID\\\" variable is not set. Defaulting to a blank string.\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"--- web dev (3000) ---\"; curl -s -o /dev/null -w 'root: %{http_code} -> %{redirect_url}\\n' http://localhost:3000/; curl -s -o /dev/null -w 'login page: %{http_code}\\n' http://localhost:3000/admin/auth/login; echo \"--- web prod build (3003) ---\"; curl -s -o /dev/null -w 'root: %{http_code}\\n' http://localhost:3003/; echo \"--- api (3001) ---\"; curl -s -o /dev/null -w 'root: %{http_code}\\n' http://localhost:3001/; echo \"--- swagger (3002) ---\"; curl -s -o /dev/null -w 'docs: %{http_code}\\n' http://localhost:3002/",
+      "exit_code": 0,
+      "stdout": "--- web dev (3000) ---\nroot: 308 -> http://localhost:3000/admin/auth/login\nlogin page: 307\n--- web prod build (3003) ---\nroot: 308\n--- api (3001) ---\nroot: 302\n--- swagger (3002) ---\ndocs: 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w 'login final: %{http_code} -> %{url_effective}\\n' -L http://localhost:3000/admin/auth/login; curl -s -L http://localhost:3000/admin/auth/login | grep -oiE '<title>[^<]*</title>|type=\"password\"' | head -3; echo ---; curl -s -o /dev/null -w 'api root -> %{redirect_url}\\n' http://localhost:3001/; curl -s -o /dev/null -w 'api docs path: %{http_code}\\n' http://localhost:3001/docs",
+      "exit_code": 0,
+      "stdout": "login final: 200 -> http://localhost:3000/en/admin/auth/login\n<title>vereinfacht \u2013 digitale Vereinsverwaltung</title>\ntype=\"password\"\n---\napi root -> http://localhost:3001/admin/login\napi docs path: 404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"--- swagger page refs spec? ---\"; curl -s http://localhost:3002/ | grep -oiE 'swagger[._-]?ui[^\" ]*|/v1_openapi\\.json' | head; echo; echo \"--- spec served by api (3001) ---\"; curl -s http://localhost:3001/v1_openapi.json | head -c 120; echo; echo \"--- authenticated request returns clubs ---\"; TOKEN='1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2'; curl -s -o /dev/null -w 'GET /api/v1/clubs -> %{http_code}\\n' -H \"Authorization: Bearer $TOKEN\" -H 'Accept: application/vnd.api+json' 'http://localhost:3001/api/v1/clubs'; echo \"--- unauthenticated request ---\"; curl -s -o /dev/null -w 'no token -> %{http_code}\\n' -H 'Accept: application/vnd.api+json' 'http://localhost:3001/api/v1/clubs'",
+      "exit_code": 0,
+      "stdout": "--- swagger page refs spec? ---\nswagger-ui.css\nswagger-ui\nswagger-ui-bundle.js\nswagger-ui-standalone-preset.js\n\n--- spec served by api (3001) ---\n{\n    \"openapi\": \"3.0.2\",\n    \"info\": {\n        \"title\": \"vereinfacht.digital JSON:API\",\n        \"description\": \"JSON:AP\n--- authenticated request returns clubs ---\nGET /api/v1/clubs -> 200\n--- unauthenticated request ---\nno token -> 401\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w 'filament login: %{http_code}\\n' -L http://localhost:3001/admin/login; docker ps --format '{{.Names}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "filament login: 200\nvereinfacht-api-docs-1\tUp 7 minutes\nvereinfacht-web_application-1\tUp 7 minutes\nvereinfacht-api-1\tUp 7 minutes\nvereinfacht-database-1\tUp 7 minutes\nvereinfacht-tooling-1\tUp 7 minutes\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /workspace/ 2>&1 | head -30",
+      "exit_code": 0,
+      "stdout": "total 108\ndrwxr-xr-x  8 root root  4096 Oct 18 16:29 .\ndr-xr-xr-x  1 root root  4096 Oct 18 16:28 ..\n-rw-r--r--  1 root root   473 Oct 18 16:29 .dockerignore\n-rw-r--r--  1 root root   302 Oct 18 16:29 .editorconfig\ndrwxr-xr-x  8 root root  4096 Oct 18 16:29 .git\ndrwxr-xr-x  3 root root  4096 Oct 18 16:29 .github\n-rw-r--r--  1 root root   305 Oct 18 16:29 .gitignore\ndrwxr-xr-x  3 root root  4096 Oct 18 16:29 .opencode\n-rw-r--r--  1 root root  4033 Oct 18 16:29 CHANGELOG.md\n-rw-r--r--  1 root root  1099 Oct 18 16:29 LICENSE\n-rw-r--r--  1 root root  8394 Oct 18 16:29 README.md\n-rw-r--r--  1 root root   544 Oct 18 16:29 RELEASE.md\ndrwxr-xr-x 14 1001 1001  4096 Oct 18 16:47 api\n-rw-r--r--  1 root root  4404 Oct 18 16:29 cliff.toml\ndrwxr-xr-x  5 root root  4096 Oct 18 16:29 docker\n-rw-r--r--  1 root root  1867 Oct 18 16:29 docker-compose.yml\n-rw-r--r--  1 root root 17539 Oct 18 16:29 logo.png\n-rw-r--r--  1 root root    83 Oct 18 16:29 package-lock.json\n-rw-r--r--  1 root root  3567 Oct 18 16:29 publiccode.yml\ndrwxr-xr-x  7 1001 1001  4096 Oct 18 16:49 web_application\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker ps -a 2>&1",
+      "exit_code": 0,
+      "stdout": "CONTAINER ID   IMAGE                                     COMMAND                  CREATED         STATUS         PORTS                                                 NAMES\n8195c29b02e2   docker.swagger.io/swaggerapi/swagger-ui   \"/docker-entrypoint.\u2026\"   7 minutes ago   Up 7 minutes   80/tcp, 0.0.0.0:3002->8080/tcp, [::]:3002->8080/tcp   vereinfacht-api-docs-1\n98266aeb8e4c   vereinfacht-web_application               \"docker-entrypoint.s\u2026\"   7 minutes ago   Up 7 minutes   0.0.0.0:3003->3000/tcp, [::]:3003->3000/tcp           vereinfacht-web_application-1\ne7a4f714bb80   vereinfacht-api                           \"bash /var/www/docke\u2026\"   7 minutes ago   Up 7 minutes   9000/tcp, 0.0.0.0:3001->80/tcp, [::]:3001->80/tcp     vereinfacht-api-1\n9d0232e49bb4   mariadb:11.8                              \"docker-entrypoint.s\u2026\"   7 minutes ago   Up 7 minutes   0.0.0.0:3306->3306/tcp, [::]:3306->3306/tcp           vereinfacht-database-1\n321b98a18324   vereinfacht-tooling                       \"docker-php-entrypoi\u2026\"   7 minutes ago   Up 7 minutes   0.0.0.0:3000->3000/tcp, [::]:3000->3000/tcp           vereinfacht-tooling-1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat /workspace/docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "# Attention:\n# This compose file is designed to be used in a development environment.\n# It includes services for the database, API, API documentation, web application, and tooling.\nname: vereinfacht\n\nnetworks:\n  stack:\n    external: false\n\nvolumes:\n  mariadb:\n\nservices:\n  database:\n    image: mariadb:11.8\n    volumes:\n      - mariadb:/var/lib/mysql:cached\n    networks:\n      - stack\n    restart: always\n    ports:\n      - 3306:3306\n    environment:\n      - MARIADB_RANDOM_ROOT_PASSWORD=true\n      - MARIADB_DATABASE=verein\n      - MARIADB_USER=verein\n      - MARIADB_PASSWORD=verein\n\n  api:\n    build:\n      context: .\n      dockerfile: ./docker/api/api.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    depends_on:\n      - database\n    environment:\n      - PHP_OPCACHE_VALIDATE_TIMESTAMPS=1\n    networks:\n      - stack\n    working_dir: /var/www/html\n    volumes:\n      - ./api:/var/www/html\n    ports:\n      - 3001:80\n    restart: always\n\n  api-docs:\n    image: docker.swagger.io/swaggerapi/swagger-ui\n    depends_on:\n      - api\n    networks:\n      - stack\n    environment:\n      - SWAGGER_JSON_URL=http://localhost:3001/v1_openapi.json\n      - BASE_URL=/\n    ports:\n      - 3002:8080\n    restart: always\n\n  web_application:\n    build:\n      context: .\n      dockerfile: ./docker/web_application/web_application.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    depends_on:\n      - api\n      - database\n    networks:\n      - stack\n    ports:\n      - 3003:3000\n    restart: always\n\n  tooling:\n    build:\n      context: .\n      dockerfile: ./docker/tooling/tooling.Dockerfile\n      args:\n        USER_ID: $USER_ID\n        GROUP_ID: $GROUP_ID\n    networks:\n      - stack\n    tty: true\n    working_dir: /var/www/html\n    volumes:\n      - ./:/var/www/html\n    ports:\n      - 3000:3000\n    restart: always\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for port in 3000 3001 3002 3003; do echo \"=== Port $port ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}, time: %{time_total}s\\n\" --max-time 15 http://localhost:$port/ ; done 2>&1",
+      "exit_code": 0,
+      "stdout": "=== Port 3000 ===\nHTTP 308, time: 0.006735s\n=== Port 3001 ===\nHTTP 302, time: 0.044268s\n=== Port 3002 ===\nHTTP 200, time: 0.002220s\n=== Port 3003 ===\nHTTP 308, time: 0.006217s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Port 3000 (web dev) - follow redirect ===\"; curl -s -L --max-time 30 http://localhost:3000/ -o /tmp/web3000.html -w \"Final URL: %{url_effective}, HTTP %{http_code}\\n\"; head -c 500 /tmp/web3000.html; echo; echo \"=== Port 3003 (web prod) - follow redirect ===\"; curl -s -L --max-time 30 http://localhost:3003/ -o /tmp/web3003.html -w \"Final URL: %{url_effective}, HTTP %{http_code}\\n\"; head -c 500 /tmp/web3003.html",
+      "exit_code": 0,
+      "stdout": "=== Port 3000 (web dev) - follow redirect ===\nFinal URL: http://localhost:3000/en/admin/auth/login, HTTP 200\n<!DOCTYPE html><html lang=\"en\" class=\"__variable_39480f\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1792342250152\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/%5Blang%5D/admin/auth/login/page.css?v=1792342250152\" data-precedence=\"next_static/css/app/[lang]/admin/auth/login/page.css\"/><link rel=\"preload\" as=\"script\" fetchPr\n=== Port 3003 (web prod) - follow redirect ===\nFinal URL: http://localhost:3003/api/auth/error?error=Configuration, HTTP 500\n<!DOCTYPE html><html lang=\"en\"><head><meta charset=\"UTF-8\"><meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\"><meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\"><style>:root{--border-width:1px;--border-radius:0.5rem;--color-error:#c94b4b;--color-info:#157efb;--color-info-hover:#0f6ddb;--color-info-text:#fff}.__next-auth-theme-auto,.__next-auth-theme-light{--color-background:#ececec;--color-background-hover:hsla(0,0%,93%,.8);--color-background-card:#fff;--color-text:#000;--co",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Port 3001 (API) /admin/login ===\"; curl -s -L --max-time 15 http://localhost:3001/admin/login -o /tmp/api_admin.html -w \"Final URL: %{url_effective}, HTTP %{http_code}\\n\"; grep -o -i 'login' /tmp/api_admin.html | head -3; echo \"=== Port 3001 (API) /v1_openapi.json ===\"; curl -s --max-time 15 http://localhost:3001/v1_openapi.json -o /tmp/openapi.json -w \"HTTP %{http_code}, size: %{size_download}\\n\"; head -c 300 /tmp/openapi.json",
+      "exit_code": 0,
+      "stdout": "=== Port 3001 (API) /admin/login ===\nFinal URL: http://localhost:3001/admin/login, HTTP 200\nLogin\nLogin\nlogin\n=== Port 3001 (API) /v1_openapi.json ===\nHTTP 200, size: 648047\n{\n    \"openapi\": \"3.0.2\",\n    \"info\": {\n        \"title\": \"vereinfacht.digital JSON:API\",\n        \"description\": \"JSON:API implementation for vereinfacht.digital\",\n        \"version\": \"0.0.1\"\n    },\n    \"servers\": [\n        {\n            \"url\": \"{serverUrl}\",\n            \"variables\": {\n               ",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== web_application (3003) env vars ===\"; docker exec vereinfacht-web_application-1 env 2>&1 | grep -iE 'AUTH|NEXT|SECRET|TOKEN|API' | sort; echo; echo \"=== web_application (3003) container logs (tail) ===\"; docker logs --tail 40 vereinfacht-web_application-1 2>&1",
+      "exit_code": 0,
+      "stdout": "=== web_application (3003) env vars ===\nHOME=/home/nextjs\nNEXT_TELEMETRY_DISABLED=1\n\n=== web_application (3003) container logs (tail) ===\n  \u25b2 Next.js 14.2.35\n  - Local:        http://localhost:3000\n  - Network:      http://0.0.0.0:3000\n\n \u2713 Starting...\n \u2713 Ready in 217ms\n[next-auth][error][NO_SECRET] \nhttps://next-auth.js.org/errors#no_secret\n[next-auth][error][NO_SECRET] \nhttps://next-auth.js.org/errors#no_secret Please define a `secret` in production. t [MissingSecretError]: Please define a `secret` in production.\n    at t.assertConfig (/app/.next/server/chunks/7139.js:1:109206)\n    at _ (/app/.next/server/chunks/7139.js:1:102456)\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\n    at async a (/app/.next/server/chunks/7139.js:25:20126)\n    at async e.length.t (/app/.next/server/chunks/7139.js:25:21616)\n    at async /app/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:38411\n    at async e_.execute (/app/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:27880)\n    at async e_.handle (/app/node_modules/next/dist/compiled/next-server/app-route.runtime.prod.js:6:39943)\n    at async doRender (/app/node_modules/next/dist/server/base-server.js:1366:42)\n    at async cacheEntry.responseCache.get.routeKind (/app/node_modules/next/dist/server/base-server.js:1588:28) {\n  code: 'NO_SECRET'\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== web_application .env.local (redacted) ===\"; cat /workspace/web_application/.env.local 2>&1 | sed -E 's/(TOKEN=).*/\\1[REDACTED]/; s/(SECRET=).*/\\1[REDACTED]/'; echo; echo \"=== .env.local.example ===\"; cat /workspace/web_application/.env.local.example 2>&1",
+      "exit_code": 0,
+      "stdout": "=== web_application .env.local (redacted) ===\nWEB_APPLICATION_URL=http://localhost:3000\nWEBSITE_URL=http://vereinfacht.digital\n\nAPI_DOMAIN=http://api\nAPI_PATH=/api/v1\nAPI_BEARER_TOKEN=[REDACTED]\n\nNEXTAUTH_SECRET=[REDACTED]\nNEXTAUTH_URL=http://localhost:3000\n\nADMIN_LOGIN_PATHNAME=\"/admin/auth/login\"\n\nSIGNAL_INVITE_URL=https://google.de\nSUPPORT_EMAIL_ADDRESS=\"hello@vereinfacht.digital\"\nSUPPORT_PHONE_NUMBER=\"0461 150653625\"\n\n=== .env.local.example ===\nWEB_APPLICATION_URL=http://localhost:3000\nWEBSITE_URL=http://vereinfacht.digital\n\nAPI_DOMAIN=http://api\nAPI_PATH=/api/v1\nAPI_BEARER_TOKEN=\n\nNEXTAUTH_SECRET=non-production-secret\nNEXTAUTH_URL=http://localhost:3000\n\nADMIN_LOGIN_PATHNAME=\"/admin/auth/login\"\n\nSIGNAL_INVITE_URL=https://google.de\nSUPPORT_EMAIL_ADDRESS=\"hello@vereinfacht.digital\"\nSUPPORT_PHONE_NUMBER=\"0461 150653625\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== web_application.Dockerfile ===\"; cat /workspace/docker/web_application/web_application.Dockerfile 2>&1; echo; echo \"=== Does the 3003 image carry NEXTAUTH_SECRET? ===\"; docker exec vereinfacht-web_application-1 sh -c 'env | grep -i secret' 2>&1 || echo \"(no secret env)\"",
+      "exit_code": 0,
+      "stdout": "=== web_application.Dockerfile ===\nFROM node:20-alpine AS base\n\n# Install dependencies only when needed\nFROM base AS deps\n# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.\nRUN apk add --no-cache \\\n  libc6-compat\nWORKDIR /app\n\n# Install dependencies based on the preferred package manager\nCOPY web_application/package.json \\\n     web_application/yarn.lock* \\\n     web_application/package-lock.json* \\\n     web_application/pnpm-lock.yaml* \\\n     ./\n\nRUN \\\n  if [ -f yarn.lock ]; then yarn --frozen-lockfile; \\\n  elif [ -f package-lock.json ]; then npm ci; \\\n  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile; \\\n  else echo \"Lockfile not found.\" && exit 1; \\\n  fi\n\n\n# Rebuild the source code only when needed\nFROM base AS builder\nWORKDIR /app\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY web_application/ .\n\n# Next.js collects completely anonymous telemetry data about general usage.\n# Learn more here: https://nextjs.org/telemetry\n# Uncomment the following line in case you want to disable telemetry during the build.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN npm run build\n\n# Production image, copy all the files and run next\nFROM base AS runner\nWORKDIR /app\n\nENV NODE_ENV production\n# Uncomment the following line in case you want to disable telemetry during runtime.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN addgroup --system --gid 1001 nodejs\nRUN adduser --system --uid 1001 nextjs\n\nCOPY --from=builder /app/public ./public\n\n# Automatically leverage output traces to reduce image size\n# https://nextjs.org/docs/advanced-features/output-file-tracing\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static\n# next 13.3.0 introduced a image component bug, this is the workaround, remove when fixed\n# https://github.com/vercel/next.js/issues/48077#issuecomment-1504501461\nCOPY --from=builder /app/node_modules/next/dist/compiled/jest-worker ./node_modules/next/dist/compiled/jest-worker\n\nUSER nextjs\n\nEXPOSE 3000\n\nENV PORT=3000\n\n# server.js is created by next build from the standalone output\n# https://nextjs.org/docs/pages/api-reference/config/next-config-js/output\nENV HOSTNAME=\"0.0.0.0\"\nCMD [\"node\", \"server.js\"]\n\n=== Does the 3003 image carry NEXTAUTH_SECRET? ===\n(no secret env)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/api 2>&1\necho \"=== .env (redacted DB) ===\"; grep -iE 'DB_|APP_ENV|APP_URL' .env 2>&1 | sed -E 's/(PASSWORD=).*/\\1[REDACTED]/'\necho; echo \"=== API ping / health (v1 endpoints) ===\"\nfor p in \"api/v1/users\" \"api/v1/organizations\"; do\n  echo \"--- GET http://localhost:3001/$p (with token) ---\"\n  TOKEN=$(grep -E 'API_BEARER_TOKEN=' /workspace/web_application/.env.local | cut -d= -f2- | tr -d '\"')\n  curl -s --max-time 15 -H \"Authorization: Bearer $TOKEN\" -H \"Accept: application/vnd.api+json\" \"http://localhost:3001/$p\" -o /tmp/api_resp.json -w \"HTTP %{http_code}\\n\"\n  head -c 400 /tmp/api_resp.json; echo\ndone",
+      "exit_code": 0,
+      "stdout": "=== .env (redacted DB) ===\nAPP_ENV=local\nAPP_URL=http://localhost:3001\nDB_CONNECTION=mysql\nDB_HOST=database\nDB_PORT=3306\nDB_DATABASE=verein\nDB_USERNAME=verein\nDB_PASSWORD=[REDACTED]\n\n=== API ping / health (v1 endpoints) ===\n--- GET http://localhost:3001/api/v1/users (with token) ---\nHTTP 200\n{\"jsonapi\":{\"version\":\"1.0\"},\"data\":[{\"type\":\"users\",\"id\":\"2\",\"attributes\":{\"name\":\"Jane Doe\",\"email\":\"club-admin-1@example.org\",\"preferredLocale\":\"en\",\"createdAt\":\"2026-10-18T16:44:50.000000Z\",\"updatedAt\":\"2026-10-18T16:44:50.000000Z\"},\"relationships\":{\"roles\":{\"links\":{\"related\":\"http:\\/\\/localhost:3001\\/api\\/v1\\/users\\/2\\/roles\",\"self\":\"http:\\/\\/localhost:3001\\/api\\/v1\\/users\\/2\\/relationships\\\n--- GET http://localhost:3001/api/v1/organizations (with token) ---\nHTTP 404\n{\"jsonapi\":{\"version\":\"1.0\"},\"errors\":[{\"detail\":\"The route api\\/v1\\/organizations could not be found.\",\"status\":\"404\",\"title\":\"Not Found\"}]}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== MariaDB direct check ===\"; docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT COUNT(*) AS users FROM users; SELECT id, email FROM users LIMIT 5; SHOW TABLES;\" 2>&1 | head -50",
+      "exit_code": 0,
+      "stdout": "=== MariaDB direct check ===\nusers\n19\nid\temail\n15\talexandre59@example.com\n7\tbessie.marvin@example.com\n2\tclub-admin-1@example.org\n5\tclub-admin-2@example.org\n8\tclub-admin-3@example.org\nTables_in_verein\nclub_payment_period\nclubs\ndivision_member\ndivision_membership_type\ndivisions\nfailed_jobs\nfinance_accounts\nfinance_contacts\njobs\nmedia\nmembers\nmembership_types\nmemberships\nmigrations\nmodel_has_permissions\nmodel_has_roles\npassword_reset_tokens\npayment_periods\npermissions\npersonal_access_tokens\nreceipts\nrole_has_permissions\nroles\nstatements\ntax_account_charts\ntax_accounts\ntransactions\nusers\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Swagger UI (3002) content ===\"; curl -s --max-time 15 http://localhost:3002/ | grep -oiE 'swagger|<title>[^<]*</title>' | head -5; echo; echo \"=== e2e folder exists? ===\"; ls /workspace/e2e 2>&1; echo; echo \"=== Filament assets built? ===\"; ls /workspace/api/public/filament-assets 2>/dev/null | head -5; echo; echo \"=== next dev process in tooling ===\"; docker exec vereinfacht-tooling-1 ps aux 2>&1 | grep -E 'next|node' | grep -v grep | head -10",
+      "exit_code": 0,
+      "stdout": "=== Swagger UI (3002) content ===\n<title>Swagger UI</title>\nswagger\nswagger\nswagger\nswagger\n\n=== e2e folder exists? ===\nls: cannot access '/workspace/e2e': No such file or directory\n\n=== Filament assets built? ===\n\n=== next dev process in tooling ===\n  906 root      0:01 node /var/www/html/web_application/node_modules/.bin/next dev\n  950 root      1:21 next-server (v14.2.35)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Super admin user (id 1) ===\"; docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT id, name, email, is_super_admin FROM users WHERE id=1;\" 2>&1\necho; echo \"=== personal_access_tokens (super admin token present?) ===\"; docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT id, tokenable_type, tokenable_id, name, LEFT(token,18) AS token_prefix FROM personal_access_tokens;\" 2>&1\necho; echo \"=== Filament assets location ===\"; find /workspace/api -path '*filament*asset*' -prune 2>/dev/null | head; find /workspace/api -name '*.css' -path '*filament*' 2>/dev/null | head -5\necho; echo \"=== api node_modules + vendor present ===\"; ls -d /workspace/api/vendor /workspace/api/node_modules /workspace/web_application/node_modules 2>&1",
+      "exit_code": 0,
+      "stdout": "=== Super admin user (id 1) ===\n--------------\nSELECT id, name, email, is_super_admin FROM users WHERE id=1\n--------------\n\nERROR 1054 (42S22) at line 1: Unknown column 'is_super_admin' in 'SELECT'\n\n=== personal_access_tokens (super admin token present?) ===\nid\ttokenable_type\ttokenable_id\tname\ttoken_prefix\n1\tApp\\\\Models\\\\User\t1\tSuper Admin Token\t8ab51b8061e545ca38\n\n=== Filament assets location ===\n/workspace/api/vendor/filament/support/resources/views/assets.blade.php\n/workspace/api/resources/css/filament/admin/theme.css\n/workspace/api/vendor/filament/actions/resources/css/index.css\n/workspace/api/vendor/filament/actions/resources/css/actions.css\n/workspace/api/vendor/filament/support/dist/index.css\n/workspace/api/vendor/filament/support/resources/css/sortable.css\n\n=== api node_modules + vendor present ===\n/workspace/api/node_modules\n/workspace/api/vendor\n/workspace/web_application/node_modules\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(grep -E 'API_BEARER_TOKEN=' /workspace/web_application/.env.local | cut -d= -f2- | tr -d '\"')\necho \"Plaintext token (from .env.local) prefix: ${TOKEN:0:15}...\"\nHASH=$(echo -n \"$TOKEN\" | sha256sum | cut -d' ' -f1)\necho \"sha256(plaintext) = $HASH\"\necho; echo \"=== DB stored hash (user 1 token) ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT token FROM personal_access_tokens WHERE tokenable_id=1;\" 2>&1\necho; echo \"MATCH: \"\nif [ \"$(docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \"SELECT token FROM personal_access_tokens WHERE tokenable_id=1;\" 2>/dev/null)\" = \"$HASH\" ]; then echo \"YES - token in .env.local is the valid DB token\"; else echo \"NO\"; fi\necho; echo \"=== Super admin role for user 1 ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT r.id, r.name FROM roles r JOIN model_has_roles mhr ON mhr.role_id=r.id JOIN model_has_permissions mhp ON mhp.role_id=r.id WHERE mhr.model_id=1;\" 2>&1 | head",
+      "exit_code": 1,
+      "stdout": "Plaintext token (from .env.local) prefix: 1|BTSJGaZ2zLITV...\nsha256(plaintext) = 6a6ac0ed2c20eaba2b3a760f266b4b81a8e4b795eeff16794d9face3f90e01c5\n\n=== DB stored hash (user 1 token) ===\ntoken\n8ab51b8061e545ca38e163cc050d131f1343b640cfcce0b952c8ef8b83a84d6d\n\nMATCH: \nNO\n\n=== Super admin role for user 1 ===\n--------------\nSELECT r.id, r.name FROM roles r JOIN model_has_roles mhr ON mhr.role_id=r.id JOIN model_has_permissions mhp ON mhp.role_id=r.id WHERE mhr.model_id=1\n--------------\n\nERROR 1054 (42S22) at line 1: Unknown column 'mhp.role_id' in 'ON'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Web frontend login page renders (port 3000) - look for form fields ===\"\ncurl -s -L --max-time 30 http://localhost:3000/en/admin/auth/login 2>&1 | grep -oiE 'password|email|signin|login|<form' | sort | uniq -c | head\necho; echo \"=== API /admin/login (Filament) renders login form ===\"\ncurl -s --max-time 15 http://localhost:3001/admin/login 2>&1 | grep -oiE 'Filament|password|<form' | sort | uniq -c | head",
+      "exit_code": 0,
+      "stdout": "=== Web frontend login page renders (port 3000) - look for form fields ===\n      1 <form\n      9 Email\n      5 Login\n      7 Password\n     22 email\n     20 login\n     16 password\n\n=== API /admin/login (Filament) renders login form ===\n      1 <form\n      6 Filament\n      7 Password\n     24 filament\n     13 password\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "TOKEN=$(grep -E 'API_BEARER_TOKEN=' /workspace/web_application/.env.local | cut -d= -f2- | tr -d '\"')\nprintf 'Full token: %s\\n' \"$TOKEN\"\nprintf 'Length: %s\\n' \"${#TOKEN}\"\nprintf 'sha256: %s\\n' \"$(printf '%s' \"$TOKEN\" | sha256sum | cut -d' ' -f1)\"\nprintf 'DB hash : %s\\n' \"$(docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \"SELECT token FROM personal_access_tokens WHERE tokenable_id=1;\" 2>/dev/null)\"\necho\necho \"=== Live re-auth with the .env.local token (decisive) ===\"\ncurl -s --max-time 15 -H \"Authorization: Bearer $TOKEN\" -H \"Accept: application/vnd.api+json\" \"http://localhost:3001/api/v1/users\" -o /tmp/reauth.json -w \"HTTP %{http_code}\\n\"\nhead -c 200 /tmp/reauth.json; echo\necho\necho \"=== Roles assigned to user 1 ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \"SELECT r.name FROM roles r JOIN model_has_roles mhr ON mhr.role_id=r.id AND mhr.model_id=1;\" 2>&1",
+      "exit_code": 0,
+      "stdout": "Full token: 1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2\nLength: 50\nsha256: 6a6ac0ed2c20eaba2b3a760f266b4b81a8e4b795eeff16794d9face3f90e01c5\nDB hash : 8ab51b8061e545ca38e163cc050d131f1343b640cfcce0b952c8ef8b83a84d6d\n\n=== Live re-auth with the .env.local token (decisive) ===\nHTTP 200\n{\"jsonapi\":{\"version\":\"1.0\"},\"data\":[{\"type\":\"users\",\"id\":\"2\",\"attributes\":{\"name\":\"Jane Doe\",\"email\":\"club-admin-1@example.org\",\"preferredLocale\":\"en\",\"createdAt\":\"2026-10-18T16:44:50.000000Z\",\"updat\n\n=== Roles assigned to user 1 ===\nsuper admin\nsuper admin\nsuper admin\nsuper admin\nsuper admin\nsuper admin\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== GET /api/v1/users WITHOUT any auth header ===\"\ncurl -s --max-time 15 -H \"Accept: application/vnd.api+json\" \"http://localhost:3001/api/v1/users\" -o /tmp/noauth.json -w \"HTTP %{http_code}\\n\"\nhead -c 300 /tmp/noauth.json; echo\necho\necho \"=== GET /api/v1/users WITH an INVALID token ===\"\ncurl -s --max-time 15 -H \"Authorization: Bearer 1|totallyinvalidtoken0000000000000000000000000000\" -H \"Accept: application/vnd.api+json\" \"http://localhost:3001/api/v1/users\" -o /tmp/badauth.json -w \"HTTP %{http_code}\\n\"\nhead -c 300 /tmp/badauth.json; echo\necho\necho \"=== ALL tokens in DB ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -e \"SELECT id, name, LEFT(token,16) AS prefix, created_at FROM personal_access_tokens;\" 2>&1",
+      "exit_code": 0,
+      "stdout": "=== GET /api/v1/users WITHOUT any auth header ===\nHTTP 401\n{\"jsonapi\":{\"version\":\"1.0\"},\"errors\":[{\"detail\":\"Unauthenticated.\",\"status\":\"401\",\"title\":\"Unauthorized\"}]}\n\n=== GET /api/v1/users WITH an INVALID token ===\nHTTP 401\n{\"jsonapi\":{\"version\":\"1.0\"},\"errors\":[{\"detail\":\"Unauthenticated.\",\"status\":\"401\",\"title\":\"Unauthorized\"}]}\n\n=== ALL tokens in DB ===\nid\tname\tprefix\tcreated_at\n1\tSuper Admin Token\t8ab51b8061e545ca\t2026-10-18 16:47:18\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Full DB stored hash for user 1 token ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \"SELECT token FROM personal_access_tokens WHERE tokenable_id=1;\" 2>/dev/null\necho\necho \"=== Verify token auth via PHP bcrypt in tooling container (definitive) ===\"\ndocker exec vereinfacht-tooling-1 php -r '\n$token = \"1|BTSJGaZ2zLITV0ZTpEdSNiterXyhlma7hH8TYtLXaec176d2\";\n$hash = trim(shell_exec(\"docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \\\"SELECT token FROM personal_access_tokens WHERE tokenable_id=1;\\\" 2>/dev/null\"));\necho \"DB hash length: \".strlen($hash).\"\\n\";\necho \"DB hash: $hash\\n\";\n' 2>&1\necho\necho \"=== Simpler: confirm no-token and bad-token vs good-token once more, clearly ===\"\nGOOD=$(grep -E 'API_BEARER_TOKEN=' /workspace/web_application/.env.local | cut -d= -f2- | tr -d '\"')\necho -n \"no auth  -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" -H \"Accept: application/vnd.api+json\" http://localhost:3001/api/v1/users\necho -n \"bad auth -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" -H \"Authorization: Bearer 1|invalidinvalidinvalidinvalidinvalidinvalid\" -H \"Accept: application/vnd.api+json\" http://localhost:3001/api/v1/users\necho -n \"good auth-> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" -H \"Authorization: Bearer $GOOD\" -H \"Accept: application/vnd.api+json\" http://localhost:3001/api/v1/users",
+      "exit_code": 0,
+      "stdout": "=== Full DB stored hash for user 1 token ===\n8ab51b8061e545ca38e163cc050d131f1343b640cfcce0b952c8ef8b83a84d6d\n\n=== Verify token auth via PHP bcrypt in tooling container (definitive) ===\n\nDeprecated: trim(): Passing null to parameter #1 ($string) of type string is deprecated in Command line code on line 3\nDB hash length: 0\nDB hash: \n\n=== Simpler: confirm no-token and bad-token vs good-token once more, clearly ===\nno auth  -> 401\nbad auth -> 401\ngood auth-> 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Filament admin panel login test (hello@vereinfacht.digital) ===\"\ncd /tmp && rm -f cj.txt\n# Get CSRF token\nCSRF=$(curl -s -c cj.txt --max-time 15 http://localhost:3001/admin/login | grep -oP 'name=\"_token\" value=\"\\K[^\"]+' | head -1)\necho \"CSRF obtained: ${CSRF:+yes}\"\n# Submit login\ncurl -s -b cj.txt -c cj.txt --max-time 20 -o /tmp/login_resp.html -w \"Login POST: HTTP %{http_code} -> %{redirect_url}\\n\" \\\n  -X POST http://localhost:3001/admin/login \\\n  -H \"X-CSRF-TOKEN: $CSRF\" \\\n  --data-urlencode \"_token=$CSRF\" \\\n  --data-urlencode \"email=hello@vereinfacht.digital\" \\\n  --data-urlencode \"password=password\"\n# Check we can now access authenticated page\ncurl -s -b cj.txt --max-time 20 http://localhost:3001/admin -o /tmp/admin_dash.html -w \"GET /admin (authed): HTTP %{http_code} -> %{redirect_url}\\n\"\ngrep -oiE 'Filament|dashboard|<title>[^<]*' /tmp/admin_dash.html | sort -u | head -8",
+      "exit_code": 0,
+      "stdout": "=== Filament admin panel login test (hello@vereinfacht.digital) ===\nCSRF obtained: \nLogin POST: HTTP 405 -> \nGET /admin (authed): HTTP 302 -> http://localhost:3001/admin/login\n<title>Redirecting to http://localhost:3001/admin/login\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Inspect Filament login form fields ===\"\ncurl -s --max-time 15 http://localhost:3001/admin/login -o /tmp/fl_login.html -w \"HTTP %{http_code}\\n\"\ngrep -oE '<form[^>]*>' /tmp/fl_login.html\necho \"--- input fields ---\"\ngrep -oE '<input[^>]*(name|type)=\"[^\"]*\"[^>]*>' /tmp/fl_login.html | grep -oE '(name|value|type)=\"[^\"]*\"' | head -20\necho \"--- check for wire:snapshot / livewire ---\"\ngrep -oE 'wire:snapshot' /tmp/fl_login.html | head -2\necho\necho \"=== Full login page title & key markers ===\"\ngrep -oiE '<title>[^<]*</title>' /tmp/fl_login.html",
+      "exit_code": 1,
+      "stdout": "=== Inspect Filament login form fields ===\nHTTP 200\n--- input fields ---\ntype=\"checkbox\"\n--- check for wire:snapshot / livewire ---\nwire:snapshot\nwire:snapshot\n\n=== Full login page title & key markers ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Password hashes for super admin (id 1) and club-admin-1 (id 2) ===\"\ndocker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \"SELECT id,email,password FROM users WHERE id IN (1,2);\" 2>/dev/null\necho\necho \"=== Verify 'password' matches via PHP password_verify ===\"\ndocker exec vereinfacht-tooling-1 php -r '\n$hashes = [\n  \"user1(super admin)\" => trim(shell_exec(\"docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \\\"SELECT password FROM users WHERE id=1;\\\" 2>/dev/null\")),\n  \"user2(club-admin-1)\" => trim(shell_exec(\"docker exec vereinfacht-database-1 mariadb -uverein -pverein verein -N -e \\\"SELECT password FROM users WHERE id=2;\\\" 2>/dev/null\")),\n];\nforeach ($hashes as $label => $hash) {\n  $ok = password_verify(\"password\", $hash) ? \"VALID\" : \"invalid\";\n  echo \"$label => $ok\\n\";\n}\n' 2>&1 | grep -v Deprecated",
+      "exit_code": 0,
+      "stdout": "=== Password hashes for super admin (id 1) and club-admin-1 (id 2) ===\n1\thello@vereinfacht.digital\t$2y$10$NccEAc3htLQMfurPHQH6R.zXnOZ1XwdYeWJ1EkAt6.1aHFiNoQHr2\n2\tclub-admin-1@example.org\t$2y$10$fItPb8w1kLFnfML.SS7sRuA7Wwe8ZMw18ppDjEsNeF1M1lwN69JkG\n\n=== Verify 'password' matches via PHP password_verify ===\n\n\nuser1(super admin) => invalid\nuser2(club-admin-1) => invalid\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Does the dev server (3000, tooling) see NEXTAUTH_SECRET? Check .env.local loaded by next dev ===\"\ndocker exec vereinfacht-tooling-1 grep -E 'NEXTAUTH_SECRET|API_BEARER_TOKEN' /var/www/html/web_application/.env.local | sed -E 's/=(.).*/=\\1[REDACTED]/'\necho\necho \"=== next dev log tail (check for NO_SECRET / errors) ===\"\ndocker exec vereinfacht-tooling-1 tail -20 /tmp/next_dev.log 2>&1 | grep -iE 'secret|error|ready|compiled' | head",
+      "exit_code": 141,
+      "stdout": "=== Does the dev server (3000, tooling) see NEXTAUTH_SECRET? Check .env.local loaded by next dev ===\nAPI_BEARER_TOKEN=1[REDACTED]\nNEXTAUTH_SECRET=n[REDACTED]\n\n=== next dev log tail (check for NO_SECRET / errors) ===\n \u2713 Ready in 4s\n \u2713 Compiled /src/middleware in 1993ms (210 modules)\n \u2713 Compiled /[lang]/admin/auth/login in 15.2s (1324 modules)\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period\u001b[0m - used loader: \u001b[36mserver /layout\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period\u001b[0m - used loader: \u001b[36mserver /loading\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/[lang]/admin/auth/login\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period, admin, auth, club, general, contact, division, resource, notification, membership_type, payment_period, finance, finance_account, financial_statement, statement, transaction, receipt, user, tax_account, role, permission\u001b[0m - used loader: \u001b[36mserver /page\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/[lang]/admin/auth\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period, admin, auth, club, general, contact, division, resource, notification, membership_type, payment_period, finance, finance_account, financial_statement, statement, transaction, receipt, user, tax_account, role, permission\u001b[0m - used loader: \u001b[36mserver /layout\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/[lang]/admin/auth/login\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period, admin, auth, club, general, contact, division, resource, notification, membership_type, payment_period, finance, finance_account, financial_statement, statement, transaction, receipt, user, tax_account, role, permission\u001b[0m - used loader: \u001b[36mserver /page\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/[lang]/admin/auth\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period, admin, auth, club, general, contact, division, resource, notification, membership_type, payment_period, finance, finance_account, financial_statement, statement, transaction, receipt, user, tax_account, role, permission\u001b[0m - used loader: \u001b[36mserver /layout\u001b[0m\n\u001b[36mnext-translate\u001b[0m - compiled page: \u001b[36m/[lang]/admin/auth/login\u001b[0m - locale: \u001b[36men\u001b[0m - namespaces: \u001b[36mcontact, general, member, membership, resource, application, error, membership_type, payment_period, admin, auth, club, general, contact, division, resource, notification, membership_type, payment_period, finance, finance_account, financial_statement, statement, transaction, receipt, user, tax_account, role, permission\u001b[0m - used loader: \u001b[36mserver /page\u001b[0m\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Can tooling container run docker? ===\"; docker exec vereinfacht-tooling-1 sh -c 'which docker; docker ps 2>&1 | head -2' 2>&1\necho\necho \"=== Laravel Auth::attempt for seeded super admin ===\"\ndocker exec -w /var/www/html/api vereinfacht-tooling-1 php artisan tinker --execute=\"var_dump(\\Illuminate\\Support\\Facades\\Auth::attempt(['email'=>'hello@vereinfacht.digital','password'=>'password']));\" 2>&1 | tail -3\necho\necho \"=== Laravel Auth::attempt for seeded club admin (web frontend user) ===\"\ndocker exec -w /var/www/html/api vereinfacht-tooling-1 php artisan tinker --execute=\"var_dump(\\Illuminate\\Support\\Facades\\Auth::attempt(['email'=>'club-admin-1@example.org','password'=>'password']));\" 2>&1 | tail -3",
+      "exit_code": 0,
+      "stdout": "=== Can tooling container run docker? ===\nsh: docker: not found\n\n=== Laravel Auth::attempt for seeded super admin ===\nbool(true)\n\n=== Laravel Auth::attempt for seeded club admin (web frontend user) ===\nbool(true)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/web_application\necho \"=== NextAuth config ===\"; find src app -iname '*auth*' -name '*.ts' 2>/dev/null | grep -iE 'nextauth|auth\\.ts|auth\\.config|route' | head\ngrep -rl 'CredentialsProvider\\|next-auth' src --include='*.ts' 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "=== NextAuth config ===\nsrc/utils/auth.ts\nsrc/middlewares/auth.ts\nsrc/lib/permissions.ts\nsrc/app/api/auth/[...nextauth]/route.ts\nsrc/utils/auth.ts\nsrc/middleware.ts\nsrc/services/admin-api.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== .dockerignore (does it exclude .env.local?) ===\"; cat /workspace/.dockerignore 2>&1\necho\necho \"=== Is .env.local present inside the 3003 image? ===\"; docker exec vereinfacht-web_application-1 sh -c 'ls -la /app/.env* 2>&1; echo \"---\"; cat /app/.env.local 2>/dev/null | sed -E \"s/(SECRET=|TOKEN=).*/\\1[REDACTED]/\"'\necho\necho \"=== .env.local gitignored? ===\"; git -C /workspace check-ignore web_application/.env.local 2>&1",
+      "exit_code": 0,
+      "stdout": "=== .dockerignore (does it exclude .env.local?) ===\nDockerfile\n.dockerignore\nnode_modules\nnpm-debug.log\nREADME.md\n.next\nansible\ndocker-compose.yml\ndocker-compose.live.yml\npublic/storage\nserver.php\nstorage/app/public/*\nstorage/framework/cache/*\nstorage/framework/sessions/*\nstorage/framework/testing/*\nstorage/framework/views/*\ntests\n.editorconfig\n.env.example\n.env.testing\n.eslintr.json\n.git\n.gitignore\n.php-cs-fixer.php\n.stylelintrc.json\nphpunit.xml\nvite.config.js\npackage-lock.json\npackage.json\ndocker-compose.override.yml\n\n=== Is .env.local present inside the 3003 image? ===\nls: /app/.env*: No such file or directory\n---\n\n=== .env.local gitignored? ===\nweb_application/.env.local\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== NextAuth route config (providers) ===\"; sed -n '1,60p' /workspace/web_application/src/app/api/auth/\\[...nextauth\\]/route.ts 2>&1\necho\necho \"=== CredentialsProvider details in auth config ===\"; grep -n 'CredentialsProvider\\|authorize\\|username\\|email\\|password\\|provider' /workspace/web_application/src/utils/auth.ts 2>&1 | head -25",
+      "exit_code": 0,
+      "stdout": "=== NextAuth route config (providers) ===\nimport { authOptions } from '@/utils/auth';\nimport NextAuth from 'next-auth';\n\nconst handler = NextAuth(authOptions);\n\nexport { handler as GET, handler as POST };\n\n=== CredentialsProvider details in auth config ===\n1:import CredentialsProvider from 'next-auth/providers/credentials';\n14:    providers: [\n15:        CredentialsProvider({\n18:                email: {\n19:                    type: 'email',\n21:                password: { type: 'password' },\n24:            async authorize(credentials) {\n26:                    email: credentials?.email,\n27:                    password: credentials?.password,\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && rm -f wj.txt\necho \"=== 1. GET /api/auth/csrf ===\"\nCSRF=$(curl -s -c wj.txt --max-time 20 http://localhost:3000/api/auth/csrf | sed -E 's/.*\"csrfToken\":\"([^\"]+)\".*/\\1/')\necho \"csrfToken: ${CSRF:0:16}... (len ${#CSRF})\"\necho \"cookies after csrf:\"; grep -c '' wj.txt\necho\necho \"=== 2. POST /api/auth/callback/credentials (club-admin-1@example.org / password) ===\"\ncurl -s -b wj.txt -c wj.txt --max-time 60 -o /tmp/cb_resp.txt -w \"callback: HTTP %{http_code} -> %{redirect_url}\\n\" \\\n  -X POST http://localhost:3000/api/auth/callback/credentials \\\n  --data-urlencode \"csrfToken=$CSRF\" \\\n  --data-urlencode \"email=club-admin-1@example.org\" \\\n  --data-urlencode \"password=password\" \\\n  --data-urlencode \"json=true\"\nhead -c 300 /tmp/cb_resp.txt; echo\necho\necho \"=== 3. Session cookie set? ===\"\ngrep -oE 'next-auth\\.session-token|__Secure-next-auth\\.session-token' wj.txt | head -2\necho\necho \"=== 4. GET /api/auth/session (authed?) ===\"\ncurl -s -b wj.txt --max-time 30 http://localhost:3000/api/auth/session -o /tmp/session.json -w \"session: HTTP %{http_code}\\n\"\nhead -c 400 /tmp/session.json; echo",
+      "exit_code": 0,
+      "stdout": "=== 1. GET /api/auth/csrf ===\ncsrfToken: 6bd13844c316a47d... (len 64)\ncookies after csrf:\n6\n\n=== 2. POST /api/auth/callback/credentials (club-admin-1@example.org / password) ===\ncallback: HTTP 200 -> \n{\"url\":\"http://localhost:3000\"}\n\n=== 3. Session cookie set? ===\nnext-auth.session-token\n\n=== 4. GET /api/auth/session (authed?) ===\nsession: HTTP 200\n{\"user\":{\"type\":\"users\",\"id\":\"2\",\"attributes\":{\"name\":\"Jane Doe\",\"email\":\"club-admin-1@example.org\",\"preferredLocale\":\"en\",\"createdAt\":\"2026-10-18T16:44:50.000000Z\",\"updatedAt\":\"2026-10-18T16:44:50.000000Z\"},\"relationships\":{\"roles\":{\"links\":{\"related\":\"http://api/api/v1/users/2/roles\",\"self\":\"http://api/api/v1/users/2/relationships/roles\"}},\"clubs\":{\"links\":{\"related\":\"http://api/api/v1/users/2/c\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Swagger UI spec URL reference ===\"; curl -s --max-time 15 http://localhost:3002/ | grep -oE 'url[^,]{0,120}' | head -3\necho\necho \"=== OpenAPI spec is valid JSON ===\"; python3 -c \"import json;d=json.load(open('/tmp/openapi.json'));print('openapi', d['openapi'], '| version', d['info']['version'], '| paths:', len(d.get('paths',{})))\"\necho\necho \"=== phpunit config / test count ===\"; docker exec -w /var/www/html/api vereinfacht-tooling-1 php artisan test --list-tests 2>/dev/null | tail -3; docker exec -w /var/www/html/api vereinfacht-tooling-1 php artisan test --list-tests 2>/dev/null | grep -c 'Tests:' || true",
+      "exit_code": 0,
+      "stdout": "=== Swagger UI spec URL reference ===\n\n=== OpenAPI spec is valid JSON ===\n\n=== phpunit config / test count ===\n - Tests\\Feature\\UserTest::test_club_can_only_get_own_users\n - Tests\\Feature\\UserTest::test_admin_can_create_new_user_with_roles\n - Tests\\Feature\\UserTest::test_admin_can_update_user_with_roles\n0\n",
+      "stderr": "/bin/bash: line 5: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec vereinfacht-tooling-1 node -e \"const d=require('fs').readFileSync('/var/www/html/api/public/v1_openapi.json');const j=JSON.parse(d);console.log('openapi:',j.openapi,'| version:',j.info.version,'| paths:',Object.keys(j.paths).length)\" 2>&1",
+      "exit_code": 0,
+      "stdout": "openapi: 3.0.2 | version: 0.0.1 | paths: 50\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/api && docker exec -w /var/www/html/api vereinfacht-tooling-1 php artisan test 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mclub can only get own statements\u001b[39m\u001b[90m                                    \u001b[39m \u001b[90m0.37s\u001b[39m  \n\n  \u001b[30;42;1m PASS \u001b[39;49;22m\u001b[39m Tests\\Feature\\TaxAccountTest\u001b[39m\n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mclub can only get related tax accounts\u001b[39m\u001b[90m                              \u001b[39m \u001b[90m0.38s\u001b[39m  \n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mclub can get custom tax accounts with null chart relation\u001b[39m\u001b[90m           \u001b[39m \u001b[90m0.24s\u001b[39m  \n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mclub without chart can only get custom tax accounts\u001b[39m\u001b[90m                 \u001b[39m \u001b[90m0.25s\u001b[39m  \n\n  \u001b[30;42;1m PASS \u001b[39;49;22m\u001b[39m Tests\\Feature\\UserTest\u001b[39m\n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90mclub can only get own users\u001b[39m\u001b[90m                                         \u001b[39m \u001b[90m0.26s\u001b[39m  \n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90madmin can create new user with roles\u001b[39m\u001b[90m                                \u001b[39m \u001b[90m0.24s\u001b[39m  \n  \u001b[32;1m\u2713\u001b[39;22m\u001b[90m \u001b[39m\u001b[90madmin can update user with roles\u001b[39m\u001b[90m                                    \u001b[39m \u001b[90m0.28s\u001b[39m  \n\n  \u001b[90mTests:\u001b[39m    \u001b[32;1m83 passed\u001b[39;22m\u001b[90m (323 assertions)\u001b[39m\n  \u001b[90mDuration:\u001b[39m \u001b[39m26.94s\u001b[39m\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp\necho \"=== Authenticated web app page load (with session cookie from earlier login) ===\"\ncurl -s -b wj.txt --max-time 60 http://localhost:3000/en/admin -o /tmp/afterlogin.html -w \"GET /en/admin (authed): HTTP %{http_code} -> %{redirect_url}\\n\"\ngrep -oiE '<title>[^<]*</title>' /tmp/afterlogin.html | head -2\necho \"content-size: $(wc -c < /tmp/afterlogin.html)\"\necho\necho \"=== Filament asset serving on API ===\"\nASSET_URL=$(curl -s --max-time 15 http://localhost:3001/admin/login -o /tmp/fl2.html; grep -oE '(href|src)=\"[^\"]*filament[^\"]*\\.(css|js)\"' /tmp/fl2.html | head -2)\necho \"$ASSET_URL\"\nfor a in $(echo \"$ASSET_URL\" | grep -oE '\"[^\"]+\"' | tr -d '\"' | head -2); do\n  FULL=\"http://localhost:3001${a#/}\"\n  [ \"${a:0:4}\" = \"http\" ] && FULL=\"$a\"\n  curl -s -o /dev/null --max-time 15 \"$FULL\" -w \"asset $a -> HTTP %{http_code}\\n\"\ndone",
+      "exit_code": 0,
+      "stdout": "=== Authenticated web app page load (with session cookie from earlier login) ===\nGET /en/admin (authed): HTTP 404 -> \n<title>vereinfacht \u2013 digitale Vereinsverwaltung</title>\ncontent-size: 10712\n\n=== Filament asset serving on API ===\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/web_application\necho \"=== Admin page routes ===\"; find src/app -maxdepth 4 -name 'page.tsx' -path '*admin*' 2>/dev/null | head -15\necho\necho \"=== where login redirects to ===\"; grep -rn 'callbackUrl\\|redirect\\|dashboard' src/app/api/auth/\\[...nextauth\\]/route.ts src/utils/auth.ts 2>/dev/null | head -5",
+      "exit_code": 1,
+      "stdout": "=== Admin page routes ===\n\n=== where login redirects to ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/web_application\nls src/app 2>/dev/null || ls app 2>/dev/null\nfind . -maxdepth 6 -name 'page.tsx' 2>/dev/null | grep -v node_modules | grep -iE 'admin|dashboard' | head -15",
+      "exit_code": 1,
+      "stdout": "[lang]\napi\ncomponents\nerror.tsx\nhooks\nlayout.tsx\nloading.tsx\nnot-found.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/web_application\nfind 'src/app/[lang]' -maxdepth 4 -name 'page.tsx' 2>/dev/null | head -20\necho \"=== dashboard-ish route ===\"\nfind 'src/app/[lang]/admin' -maxdepth 2 -type d 2>/dev/null | head -15",
+      "exit_code": 0,
+      "stdout": "src/app/[lang]/[slug]/success/page.tsx\nsrc/app/[lang]/[slug]/apply/page.tsx\nsrc/app/[lang]/admin/auth/login/page.tsx\nsrc/app/[lang]/admin/(secure)/users/page.tsx\nsrc/app/[lang]/admin/(secure)/club/page.tsx\nsrc/app/[lang]/admin/(secure)/tax-accounts/page.tsx\nsrc/app/[lang]/admin/(secure)/memberships/page.tsx\nsrc/app/[lang]/admin/(secure)/divisions/page.tsx\nsrc/app/[lang]/admin/(secure)/dashboard/page.tsx\nsrc/app/[lang]/admin/(secure)/membership-types/page.tsx\nsrc/app/[lang]/admin/(secure)/members/page.tsx\n=== dashboard-ish route ===\nsrc/app/[lang]/admin\nsrc/app/[lang]/admin/auth\nsrc/app/[lang]/admin/auth/login\nsrc/app/[lang]/admin/(secure)\nsrc/app/[lang]/admin/(secure)/users\nsrc/app/[lang]/admin/(secure)/finances\nsrc/app/[lang]/admin/(secure)/club\nsrc/app/[lang]/admin/(secure)/tax-accounts\nsrc/app/[lang]/admin/(secure)/memberships\nsrc/app/[lang]/admin/(secure)/divisions\nsrc/app/[lang]/admin/(secure)/components\nsrc/app/[lang]/admin/(secure)/dashboard\nsrc/app/[lang]/admin/(secure)/membership-types\nsrc/app/[lang]/admin/(secure)/members\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp\necho \"=== Authenticated dashboard page (session from login) ===\"\ncurl -s -b wj.txt --max-time 90 http://localhost:3000/en/admin/dashboard -o /tmp/dash.html -w \"GET /en/admin/dashboard (authed): HTTP %{http_code}\\n\"\necho \"size: $(wc -c < /tmp/dash.html)\"\ngrep -oiE 'dashboard|club|<h1[^>]*>[^<]*' /tmp/dash.html | sort -u | head -8\necho\necho \"=== Unauthenticated access to dashboard (should redirect to login) ===\"\ncurl -s -o /dev/null --max-time 30 http://localhost:3000/en/admin/dashboard -w \"no session -> HTTP %{http_code} -> %{redirect_url}\\n\"",
+      "exit_code": 0,
+      "stdout": "=== Authenticated dashboard page (session from login) ===\nGET /en/admin/dashboard (authed): HTTP 200\nsize: 160698\n<h1 class=\" text-base font-bold tracking-[0.005em] md:text-2xl md:flex-1\">Dashboard\nClub\nDashboard\nclub\ndashboard\n\n=== Unauthenticated access to dashboard (should redirect to login) ===\nno session -> HTTP 307 -> http://localhost:3000/admin/auth/login\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --short 2>&1 | head -10; echo \"---\"; git --no-pager diff docker/tooling/tooling.Dockerfile 2>&1 | head -40",
+      "exit_code": 0,
+      "stdout": " M docker/tooling/tooling.Dockerfile\n---\ndiff --git a/docker/tooling/tooling.Dockerfile b/docker/tooling/tooling.Dockerfile\nindex c299e12..a496cba 100644\n--- a/docker/tooling/tooling.Dockerfile\n+++ b/docker/tooling/tooling.Dockerfile\n@@ -48,8 +48,14 @@ RUN apk update && apk add \\\n     g++ \\\n     make\n \n+# Back up the base image libapk before overwriting (node image ships an older\n+# libapk with the same SONAME, which would break the apk binary)\n+RUN cp /usr/lib/libapk.so.3.0.0 /usr/local/etc/libapk.so.3.0.0.base\n+\n # Copy files from node image\n COPY --from=node /usr/lib /usr/lib\n+# Restore the base image libapk so apk keeps working\n+RUN cp /usr/local/etc/libapk.so.3.0.0.base /usr/lib/libapk.so.3.0.0\n COPY --from=node /usr/local/share /usr/local/share\n COPY --from=node /usr/local/lib /usr/local/lib\n COPY --from=node /usr/local/include /usr/local/include\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"===== FINAL VERIFICATION SNAPSHOT =====\"\necho \"--- containers ---\"\ndocker ps --format '{{.Names}}: {{.Status}}' 2>&1\necho\necho \"--- endpoints ---\"\necho -n \"3000 /en/admin/auth/login      -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" -L --max-time 20 http://localhost:3000/\necho -n \"3001 /admin/login               -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" --max-time 10 http://localhost:3001/admin/login\necho -n \"3001 /v1_openapi.json           -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" --max-time 10 http://localhost:3001/v1_openapi.json\necho -n \"3002 swagger                    -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" --max-time 10 http://localhost:3002/\necho -n \"3003 (docker build)             -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" -L --max-time 10 http://localhost:3003/\nTOKEN=$(grep -E 'API_BEARER_TOKEN=' /workspace/web_application/.env.local | cut -d= -f2- | tr -d '\"')\necho -n \"3001 /api/v1/users (super admin token) -> \"; curl -s -o /dev/null -w \"%{http_code}\\n\" --max-time 10 -H \"Authorization: Bearer $TOKEN\" -H \"Accept: application/vnd.api+json\" http://localhost:3001/api/v1/users",
+      "exit_code": 0,
+      "stdout": "===== FINAL VERIFICATION SNAPSHOT =====\n--- containers ---\nvereinfacht-api-docs-1: Up 10 minutes\nvereinfacht-web_application-1: Up 10 minutes\nvereinfacht-api-1: Up 10 minutes\nvereinfacht-database-1: Up 10 minutes\nvereinfacht-tooling-1: Up 10 minutes\n\n--- endpoints ---\n3000 /en/admin/auth/login      -> 200\n3001 /admin/login               -> 200\n3001 /v1_openapi.json           -> 200\n3002 swagger                    -> 200\n3003 (docker build)             -> 500\n3001 /api/v1/users (super admin token) -> 200\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

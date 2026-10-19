@@ -1,0 +1,134 @@
+# ROLE
+
+You are an autonomous software agent responsible for carrying out a software installation task.
+
+# TASK
+
+Install the assigned software and report the outcome based on objective evidence.
+
+# INPUTS
+
+**Project name:** QuattroMap
+
+**Project description:** Browser tool for the synchronous display of up to four different map windows.
+
+**Installation guide:**
+
+## Guide: Installation.md
+
+## Konfiguration
+
+Sie können einige Standardeinstellungen von [QuattroMap](https://kreis-viersen.usercontent.opencode.de/quattromap) festlegen, indem Sie diese in der [config.json](./src/config.json) bearbeiten:
+
+
+|Parameter|Erklärung|Beispiel|
+|:---|:---|:---|
+|"center"|Gibt die Zentrumskoordinate des Kartenfensters beim Starten an. Angabe geographisch mit Längen- und Breitenangabe in EPSG 4326.|"center": [6.391263, 51.258812]|
+|"zoom"|Definiert die Zoomstufe beim Start. Wertebereich: 0 (fern) - 22 (nah)|"zoom": 16|
+|"maps"|Optionale Angabe über die Anzahl der Kartenfenster. Mögliche Werte: 1, 2, 3, 4; Standardwert: 4| "maps": 2|
+|"crosshair"| Optionale Definition der Fadenkreuzfarbe. Mögliche Werte: black, red, orange, yellow, green, blue, pink; Standardwert: black|"crosshair": "red"|
+|"map_x": {"layer": `layername`} *Optional*: "overlay": `layername`, "overlay_opacity": `opacity-value`, }|Voreinstellung der dargestellten Dienste des Kartenfensters x (1-4) beim Starten der QuattroMap. `layer` enthält einen Namen eines Dienstes, die unter "layer" definiert sind. `overlay` enthält einen Namen eines Dienstes, der als Abdeckungslayer dient und muss nur angegeben werden, wenn ein Abdeckungslayer verwendet werden soll. `overlay_opacity` definiert die Deckkraft des Abdeckungslayers. Mögliche Werte: 0 (transparent) - 1 (opak); Standardwert: 0.5| "map_1": {"layer": "NRW Luftbild Farbe", "overlay": "NRW Schummerung", "overlay_opacity": 0.4}|
+|"layer": [ .. ]|Enthält die Definitionen der wählbaren Dienste im Dropdown Menü||
+|"name"|Name des Dienstes, der im Dropdown Menü und beim Klick auf den Info-Button erscheint.|"name": "NRW Alkis TN"|
+|"attribution"|Attribution zur Beschreibung der verwendeten Dienste, die über den Info-Button dargestellt wird. HTML-Tags können verwendet werden.|"attribution": "Land NRW (2021) Deutschland ? Zero ? Version 2.0 (`<a target='_blank' rel='noopener noreferrer' href='https://www.govdata.de/dl-de/zero-2-0'>www.govdata.de/dl-de/zero-2-0</a>`)"|
+|"url"|URL des WMS 1.3.0 Dienstes oder OpenStreetMap XYZ-Tiles|"url": "`https://www.wms.nrw.de/geobasis/wms_nw_alkis`"|
+|"layer"|Darzustellende Layer des Dienstes. Mehrere Layer werden mit Komma getrennt.|"layer": "nutzungsarten,flurstuecke"|
+|"format"| Abzurufendes Rasterformat (`png` oder `jpeg`) der Kacheln. Da png Transparenz ermöglicht, ist png zu empfehlen. Jedoch können nicht alle Dienste png liefern.|"format": "png"|
+|"category"|Begriff zur Kategorisierung der Dienste im Dropdown-Menü.|"category": "GeoBasis NRW"|
+|"onlyOverlay"|Mit diesem optionalen Parameter lässt sich der entsprechende Dienst nur als Overlay verwenden.|"onlyOverlay": true|
+|"style"|Optionaler Parameter zur Auswahl eines bestimmten Stils. Stile können von Diensten angeboten werden.|"style": "Farbe"|
+|"compactAttribution"|Mit diesem optionalen Parameter lässt sich festlegen, ob die Attribution mit dem Layernamen bei Auswahl des Layers ausgeklappt (`false`) oder eingeklappt ist (`true` = Standardwert).|"compactAttribution": "false"|
+
+## Develop
+
+```bash
+# clone the repository
+git clone https://github.com/kreis-viersen/quattromap/
+cd quattromap
+```
+Install the deps, start the dev server and open the web browser on `http://localhost:8080/`.
+
+```bash
+# install dependencies
+npm install
+# start dev server
+npm start
+```
+
+The build process will watch for changes to the filesystem, rebuild and autoreload QuattroMap. However note this from the [webpack-dev-server docs](https://webpack.js.org/configuration/dev-server/):
+
+> webpack uses the file system to get notified of file changes. In some cases this does not work. For example, when using Network File System (NFS). Vagrant also has a lot of problems with this. In these cases, use polling. ([snippet source](https://webpack.js.org/configuration/dev-server/#devserverwatchoptions-))
+
+```bash
+# build the app
+npm run build
+```
+Once the build is finished, you'll find it at `dist/`.
+
+```bash
+# publish files to a gh-pages branch on GitHub
+npm run deploy
+```
+
+# ENVIRONMENT
+The project repository has already been checked out at the predefined commit SHA in the current working directory. This directory is the shared installation workspace; keep additional project repositories and project-local artifacts within it.
+
+# RULES
+* Treat the supplied installation guide as the primary source of installation instructions.
+* You may perform actions that are reasonably necessary to carry out the installation using the available tools.
+* You may install prerequisites or dependencies when required for the installation.
+* Strictly use non-interactive command options whenever available. Never issue commands that wait for user input.
+* If the supplied guide provides multiple documented installation methods, do not declare the installation failed solely because one method fails.
+* When feasible, attempt another documented installation method before concluding that the installation cannot be completed.
+* When a command times out, inspect the resulting state and continue from any partial progress before declaring failure.
+* Do not treat an encountered error as an installation failure if you are able to recover from it and subsequently complete and verify the installation.
+* Base the reported outcome on evidence obtained during this installation attempt.
+* The absence of a preinstalled tool or package is not an infrastructure failure unless observable evidence demonstrates that it cannot reasonably be installed or used in the environment.
+* For a decisive failed command, include its command, exit code, and relevant error output in `reported_outcome_evidence`.
+
+
+# OUTCOME & REPORTING DEFINITIONS
+
+## Installation Success
+
+Classify the installation as `SUCCESS` only when the installation has been completed and objective evidence demonstrates that the software is installed correctly.
+
+## Installation Failure
+
+Classify the installation as `FAILURE` when the installation cannot be completed or when sufficient objective evidence of successful installation cannot be obtained.
+
+For a failed attempt, report both:
+
+**Failure mode:** A concise, evidence-based description of what happened and how the installation failed.
+
+**Failure attribution:** What was the primary cause/source of the failure?
+
+Select exactly one primary attribution from the following categories:
+
+* `DOCUMENTATION` — The supplied installation documentation is incomplete, incorrect, ambiguous, inconsistent, or outdated in a way that materially contributes to the failure.
+* `AGENT` — Sufficient and correct information was available, but the agent's interpretation, decision, or action materially contributed to the failure.
+* `INFRASTRUCTURE` — The failure is caused by a limitation or incompatibility of the available execution environment that cannot reasonably be changed as part of the installation task, such as unavailable required hardware, unsupported system capabilities, or absence of required infrastructure.
+* `EXTERNAL_RESOURCE` — The failure is caused by a required resource outside the available execution environment that is unavailable or inaccessible, such as a private package registry, unavailable external service, inaccessible download endpoint, or required credentials.
+* `INDETERMINATE` — The available evidence is insufficient to reliably attribute the failure to one of the categories above.
+
+Select an attribution based on observed evidence rather than speculation.
+
+## Installation summary
+
+Describe in Markdown what was done during installation and the resulting state: the method used, relevant absolute paths and working directories, actions performed, known startup commands or access points, and any incomplete work or unknown state. Include the execution context needed to interpret paths and commands, such as an application container or virtual environment. Distinguish the final method from abandoned attempts where applicable.
+
+Provide factual context for independent inspection, without outcome judgments or recommendations.
+
+# FINAL OUTPUT
+
+Return the final installation report using the required structured output fields.
+
+- `reported_outcome`: Report `success` or `failure` according to the criteria defined above.
+- `installation_summary`: Describe complete summary of the installation attempt as defined above.
+- `additional_actions`: List installation or configuration actions performed that were not explicitly stated in the supplied installation guide. Return an empty list if none were performed.
+- `verification`: Report the verification method used and the observed result. Include the command and exit code where applicable. If verification was not performed, state this and provide the reason.
+- `reported_outcome_evidence`: Record the observable command results or execution evidence that directly support the reported outcome.
+- `failure_mode`: For a failed attempt, provide a concise, evidence-based description of how the installation failed. For a successful attempt, return `null`.
+- `failure_attribution`: For a failed attempt, select exactly one predefined failure-attribution category. For a successful attempt, return `null`.
+
+Base the reported outcome only on evidence observed during the installation attempt.

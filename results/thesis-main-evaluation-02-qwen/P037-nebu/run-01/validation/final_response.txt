@@ -1,0 +1,1 @@
+Validation complete. The Nebu installation is assessed as SUCCESS — all guide steps are verifiably in effect and the software is operational.

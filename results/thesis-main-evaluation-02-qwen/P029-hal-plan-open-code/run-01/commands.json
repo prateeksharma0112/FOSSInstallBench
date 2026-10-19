@@ -1,0 +1,652 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 28ec2910c6636ad9767cb9a3a07ad44590018b85",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan.git/\nFrom https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan\n * branch            28ec2910c6636ad9767cb9a3a07ad44590018b85 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 28ec2910c6636ad9767cb9a3a07ad44590018b85",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 28ec291 docs: :memo: add doc page to readme\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 28ec2910c6636ad9767cb9a3a07ad44590018b85",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 2468\ndrwxr-xr-x 12 root root    4096 Oct 17 15:50 .\ndr-xr-xr-x  1 root root    4096 Oct 17 15:48 ..\ndrwxr-xr-x  2 root root    4096 Oct 17 15:50 .devcontainer\n-rw-r--r--  1 root root     128 Oct 17 15:50 .dockerignore\n-rw-r--r--  1 root root    3580 Oct 17 15:50 .env.defaults\ndrwxr-xr-x  8 root root    4096 Oct 17 15:50 .git\n-rw-r--r--  1 root root     140 Oct 17 15:50 .gitattributes\n-rw-r--r--  1 root root    1179 Oct 17 15:50 .gitignore\n-rw-r--r--  1 root root     190 Oct 17 15:50 .gitlab-ci.yml\ndrwxr-xr-x  2 root root    4096 Oct 17 15:50 .husky\n-rw-r--r--  1 root root      41 Oct 17 15:50 .npmrc\n-rw-r--r--  1 root root    1217 Oct 17 15:50 CONTRIBUTORS.md\n-rw-r--r--  1 root root   34521 Oct 17 15:50 LICENSE\n-rw-r--r--  1 root root    4805 Oct 17 15:50 README.md\ndrwxr-xr-x 13 root root    4096 Oct 17 15:50 _docs\ndrwxr-xr-x  7 root root    4096 Oct 17 15:50 api\n-rw-r--r--  1 root root    1979 Oct 17 15:50 biome.json\n-rw-r--r--  1 root root 1555604 Oct 17 15:50 licenses.txt\n-rw-r--r--  1 root root   10886 Oct 17 15:50 package.json\ndrwxr-xr-x  2 root root    4096 Oct 17 15:50 patches\n-rw-r--r--  1 root root  801703 Oct 17 15:50 pnpm-lock.yaml\n-rw-r--r--  1 root root     459 Oct 17 15:50 pnpm-workspace.yaml\ndrwxr-xr-x  3 root root    4096 Oct 17 15:50 prisma\n-rw-r--r--  1 root root    2054 Oct 17 15:50 publiccode.yml\ndrwxr-xr-x  4 root root    4096 Oct 17 15:50 scripts\ndrwxr-xr-x 28 root root    4096 Oct 17 15:50 shared\n-rw-r--r--  1 root root     649 Oct 17 15:50 tsconfig.json\n-rw-r--r--  1 root root    1134 Oct 17 15:50 tsup.config.ts\n-rw-r--r--  1 root root    3869 Oct 17 15:50 vite.config.js\n-rw-r--r--  1 root root    5405 Oct 17 15:50 vitest.config.ts\ndrwxr-xr-x  6 root root    4096 Oct 17 15:50 web\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version 2>&1; pnpm --version 2>&1; docker --version 2>&1; git --version 2>&1",
+      "exit_code": 0,
+      "stdout": "/bin/bash: line 3: node: command not found\n/bin/bash: line 3: pnpm: command not found\nDocker version 29.7.2, build a7dcaa6\ngit version 2.34.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release; echo ---; docker info 2>&1 | head -30; echo ---; ls /workspace/.devcontainer",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\n---\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n  Backing Filesystem: extfs\n  Supports d_type: true\n  Using metacopy: false\n  Native Overlay Diff: true\n  userxattr: true\n Logging Driver: json-file\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Plugins:\n  Volume: local\n---\nDockerfile\ndevcontainer-lock.json\ndevcontainer.json\ndocker-compose.yml\nsetup.sh\nvalkey-persistent.Dockerfile\nvalkey.Dockerfile\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.env.defaults",
+      "exit_code": 0,
+      "stdout": "# These variables can be copied to .env for local development\n# Copy this file to .env and adjust values for your local setup: cp .env.defaults .env\n\n# Core application environment\nNODE_ENV=production # We want to simulate production as close as possible\nAPP_ENV=production # Application environment (development/production)\nLOG_LEVEL=info # Logging level (debug/info/warn/error)\nCOOKIE_NAME=app-cookie # Name of the session cookie\nBASE_URL=http://localhost:3000 # Base URL for local development\nWEBAPP_APP_TITLE=buildplace.io # Application title\n\n# Database configuration - REQUIRED for local development\nDATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev # Main database connection\nMIGRATION_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev # Database URL for migrations\nTEST_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test # Test database connection\nBYPASS_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev # Database URL for bypassing RLS\nSHADOW_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_shadow # Shadow database for migrations\nTEST_DIRECT_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test # Direct test database URL\nRATE_LIMIT_MAX=10000000000 # Maximum rate limit for API requests\n\n# Redis configuration - REQUIRED\nVALKEY_SERVER=localhost # Redis server hostname\nVALKEY_PORT=6379 # Redis server port\nBULL_PREFIX=local # Prefix for Bull queue jobs\n\n# Web application configuration\nWEBAPP_DOMAIN=http://localhost:3000 # Domain for the web application\nWEBAPP_SELFSERVING_TILESERVER=https://example.com # URL for tile server\nWEBAPP_OGRE_API=https://ogre.example.com # URL for OGRE API\nWEBAPP_MAP_MAPTILER_KEY=your_maptiler_key_here # API key for MapTiler\nWEBAPP_MAP_GEOAPIFY_KEY=your_geoapify_key_here # API key for Geoapify\nWEBAPP_PUBLIC_URL=\"\" # Public URL for the webapp\nWEBAPP_SELFSERVING_DGM_TILES=https://example.com/tiles # URL for DGM tiles\nWEBAPP_TILESERVER_KEY=your_tileserver_key_here # API key for tile server\nWEBAPP_DEV_USER_PW=your_dev_password_here # Development user password\n\n# Security keys - GENERATE RANDOM STRINGS FOR PRODUCTION\nSESSION_KEY=your_session_key_here # Random string for session encryption (generate with crypto.randomBytes(32).toString('hex'))\nSTORAGE_KEY=your_storage_key_here # API key for storage service\nSTORAGE_SECRET=your_storage_secret_here # Secret for storage service\nCRYPTO_SECRET=your_crypto_secret_here # Secret for symmetric encryption - REQUIRED for tests\n\n# Storage configuration\nSTORAGE_BUCKET=dev # Storage bucket name\nSTORAGE_URL=storage.example.com # Storage service URL\n\n# Mail configuration\nMAIL_SMTP=mail.example.com # SMTP server for sending emails\nMAIL_NOREPLY_USER=noreply@example.com # Email address for no-reply emails\nMAIL_NOREPLY_PW=your_mail_password # Password for no-reply email account\n\n# Self-serving API\nSELFSERVING_API=https://selfservice.example.com # URL for self-serving API\nSELFSERVING_KEY=your_selfserving_key_here # API key for self-serving service\n\n# Monitoring and observability\nOTEL_SERVICE_NAME=buildplace # OpenTelemetry service name (used by NodeSDK)\nOTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318 # OpenTelemetry collector OTLP HTTP endpoint\n\n# XPlanBox configuration\nXPLANBOX_URL=https://xplanbox.example.com # XPlanBox service URL\nXPLANBOX_USER=your_xplanbox_user # XPlanBox username\nXPLANBOX_PASSWORD=your_xplanbox_password # XPlanBox password\n\n# Ladybug API URL\n# TO-DO: Update this URL for production deployments\nWEBAPP_COMFORT_ANALYSIS_SERVER=http://localhost:3100 # URL for Ladybug API",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n '\"scripts\"' -A 40 /workspace/package.json",
+      "exit_code": 0,
+      "stdout": "9:  \"scripts\": {\n10-    \"dev\": \"tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\",\n11-    \"dev:host\": \"tsx watch --tsconfig ./api/tsconfig.json ./api/src/server.ts --dev --host\",\n12-    \"dev:init\": \"pnpm install && pnpm prisma generate && pnpm codegen && pnpm prisma migrate reset && pnpm dev\",\n13-    \"test\": \"vitest\",\n14-    \"test:linux\": \"xvfb-run vitest\",\n15-    \"test:run\": \"vitest run\",\n16-    \"test:coverage\": \"vitest run --coverage --browser.headless\",\n17-    \"start\": \"pnpm prisma migrate deploy && node --import ./dist/instrumentation/index.js dist/server.js\",\n18-    \"build\": \"pnpm run build:api && pnpm run build:web\",\n19-    \"build:api\": \"pnpm prisma generate && tsup\",\n20-    \"build:web\": \"vite build\",\n21-    \"lint\": \"biome check api test && biome check web test && biome check shared test\",\n22-    \"lint:fix\": \"biome check api test --write && biome check web test --write && biome check shared test --write\",\n23-    \"codegen\": \"tsx --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts && pnpm gql-tada generate output\",\n24-    \"codegen:watch\": \"tsx watch --clear-screen=false --exclude '*' --include './dist/server.js' --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts\",\n25-    \"generate\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/generate/index.tsx\",\n26-    \"codeMod\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/codeMod/index.tsx\",\n27-    \"dataMigration\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/dataMigration/index.tsx\",\n28-    \"setupDb\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/setupDb.ts\",\n29-    \"prepare\": \"husky\"\n30-  },\n31-  \"engines\": {\n32-    \"node\": \"24.15.0\"\n33-  },\n34-  \"devEngines\": {\n35-    \"runtime\": {\n36-      \"name\": \"node\",\n37-      \"version\": \"24.15.0\",\n38-      \"onFail\": \"download\"\n39-    }\n40-  },\n41-  \"prisma\": {\n42-    \"seed\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/seeding/seed.ts\"\n43-  },\n44-  \"keywords\": [],\n45-  \"author\": \"form follows you\",\n46-  \"private\": true,\n47-  \"dependencies\": {\n48-    \"@apollo/client\": \"4.1.6\",\n49-    \"@ark-ui/react\": \"5.35.0\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.devcontainer/docker-compose.yml; echo ===; cat /workspace/.devcontainer/setup.sh; echo ===; cat /workspace/.devcontainer/devcontainer.json",
+      "exit_code": 0,
+      "stdout": "version: '3.8'\nservices:\n  # Update this to the name of the service you want to work with in your docker-compose.yml file\n  app:\n    # Uncomment if you want to override the service's Dockerfile to one in the .devcontainer\n    # folder. Note that the path of the Dockerfile and context is relative to the *primary*\n    # docker-compose.yml file (the first in the devcontainer.json \"dockerComposeFile\"\n    # array). The sample below assumes your primary file is in the root of your project.\n    #\n    build:\n      context: .\n      dockerfile: Dockerfile\n\n    volumes:\n      #add commandhistory volume to have persistant bash history\n      - dev-bashhistory:/commandhistory\n      # Update this to wherever you want VS Code to mount the folder of your project\n      - ..:/home/node/app\n      #https://code.visualstudio.com/remote/advancedcontainers/improve-performance\n      - workspace-node_modules:/home/node/app/node_modules\n\n    # Overrides default command so things don't shut down after the process ends.\n    command: /bin/sh -c \"while sleep 1000; do :; done\"\n    network_mode: host\n    ports:\n      - \"3000:3000\"\n  postgis:\n    image: postgis/postgis:17-3.5\n    volumes:\n      - postgres-data:/var/lib/postgresql/data\n    restart: unless-stopped\n    environment:\n      POSTGRES_USER: postgres\n      POSTGRES_PASSWORD: postgrespw\n      POSTGRES_DB: ffy_dev\n    network_mode: host\n  pgbouncer:\n    image: edoburu/pgbouncer\n    restart: always\n    depends_on:\n      - postgis\n    ports:\n      - \"6432:6432\"\n    environment:\n      DATABASE_URL: postgres://postgres:postgrespw@localhost:5432/ffy_dev\n      POOL_MODE: transaction\n      MAX_CLIENT_CONN: 90\n      LISTEN_PORT: 6432\n    healthcheck:\n      test: ['CMD', 'pg_isready', '-h', 'localhost']\n    network_mode: host\n  valkey:\n    build:\n      context: .\n      dockerfile: valkey.Dockerfile\n    network_mode: host\n    restart: unless-stopped\n    environment:\n      VALKEY_PASSWORD: ${VALKEY_PASSWORD:-}\n  valkey-persistent:\n    build:\n      context: .\n      dockerfile: valkey-persistent.Dockerfile\n    network_mode: host\n    restart: unless-stopped\n    environment:\n      VALKEY_PERSISTENT_PASSWORD: ${VALKEY_PERSISTENT_PASSWORD:-}\n    ports:\n      - \"6380:6380\"\nvolumes:\n  postgres-data:\n  workspace-node_modules:\n  dev-bashhistory:\n===\n#!/bin/bash\n\n#####\n#\n# PNPM INSTALL\n#\n#####\n\necho \"1\ufe0f\u20e3 Install Dependencies\"\ngit config pull.rebase false\n# ignore scripts because of yarn\npnpm install --ignore-scripts\n# postinstall is skipped due to --ignore-scripts, copy wasm files manually\ncp node_modules/web-ifc/web-ifc.wasm web/public/web-ifc/web-ifc.wasm\ncp node_modules/web-ifc/web-ifc-mt.wasm web/public/web-ifc/web-ifc-mt.wasm\ncp node_modules/web-ifc/web-ifc-node.wasm web/public/web-ifc/web-ifc-node.wasm\necho \"2\ufe0f\u20e3 Setup DB\"\n# first time use of prisma needs dlx\npnpm prisma generate\npnpm setupDb\necho \"Happy coding...\"===\n{\n  \"name\": \"Buildplace App\",\n  \"dockerComposeFile\": \"docker-compose.yml\",\n  \"service\": \"app\",\n  \"workspaceFolder\": \"/home/node/app\",\n  \"mounts\": [\n    \"source=${localWorkspaceFolderBasename}-node_modules,target=${containerWorkspaceFolder}/node_modules,type=volume\"\n  ],\n  \"features\": {\n    \"ghcr.io/devcontainers/features/node:1\": {\n      \"version\": \"latest\",\n      \"pnpmVersion\": \"latest\",\n      \"nvmVersion\": \"latest\"\n    },\n    \"ghcr.io/devcontainers/features/common-utils\": {\n      \"username\": \"node\"\n    }\n  },\n  // Configure tool-specific properties.\n  \"customizations\": {\n    // Configure properties specific to VS Code.\n    \"vscode\": {\n      // Add the IDs of extensions you want installed when the container is created.\n      \"extensions\": [\n        \"biomejs.biome\",\n        \"prisma.prisma\",\n        \"graphql.vscode-graphql\",\n        \"vitest.explorer\"\n      ]\n    }\n  },\n\n  // Use 'postCreateCommand' to run commands after the container is created.\n  \"postCreateCommand\": \"echo $PWD && bash .devcontainer/setup.sh\",\n\n  // Use node user instead of root - VS Code will automatically match UID/GID to local user on Linux\n  // it avoids user rights problem on *nix systems when switching between dev-containers and non-devcontainer environment\n  \"remoteUser\": \"node\",\n\n  \"shutdownAction\": \"stopCompose\"\n  // Add init property for DevPod compatibility\n  // \"init\": true\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.npmrc; echo ===; cat /workspace/pnpm-workspace.yaml; echo ===; head -50 /workspace/package.json",
+      "exit_code": 0,
+      "stdout": "shamefully-hoist=true\nignore-scripts=true===\npatchedDependencies:\n  '@dnd-kit/accessibility': patches/@dnd-kit__accessibility.patch\n  pagedjs: patches/pagedjs.patch\n  '@loaders.gl/tiles@4.4.1': patches/@loaders.gl__tiles@4.4.1.patch\n  openid-client: patches/openid-client.patch\nshamefullyHoist: true\nignoreScripts: true\nallowBuilds:\n  '@prisma/client': false\n  '@prisma/engines': false\n  msw: false\n  prisma: false\n  puppeteer: false\n  rolldown: false\n  sharp: false\n  'weighted-straight-skeleton': true\n===\n{\n  \"type\": \"module\",\n  \"name\": \"Buildplace\",\n  \"description\": \"Buildplace Repository.\",\n  \"main\": \"app.ts\",\n  \"directories\": {\n    \"test\": \"test\"\n  },\n  \"scripts\": {\n    \"dev\": \"tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\",\n    \"dev:host\": \"tsx watch --tsconfig ./api/tsconfig.json ./api/src/server.ts --dev --host\",\n    \"dev:init\": \"pnpm install && pnpm prisma generate && pnpm codegen && pnpm prisma migrate reset && pnpm dev\",\n    \"test\": \"vitest\",\n    \"test:linux\": \"xvfb-run vitest\",\n    \"test:run\": \"vitest run\",\n    \"test:coverage\": \"vitest run --coverage --browser.headless\",\n    \"start\": \"pnpm prisma migrate deploy && node --import ./dist/instrumentation/index.js dist/server.js\",\n    \"build\": \"pnpm run build:api && pnpm run build:web\",\n    \"build:api\": \"pnpm prisma generate && tsup\",\n    \"build:web\": \"vite build\",\n    \"lint\": \"biome check api test && biome check web test && biome check shared test\",\n    \"lint:fix\": \"biome check api test --write && biome check web test --write && biome check shared test --write\",\n    \"codegen\": \"tsx --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts && pnpm gql-tada generate output\",\n    \"codegen:watch\": \"tsx watch --clear-screen=false --exclude '*' --include './dist/server.js' --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts\",\n    \"generate\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/generate/index.tsx\",\n    \"codeMod\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/codeMod/index.tsx\",\n    \"dataMigration\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/dataMigration/index.tsx\",\n    \"setupDb\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/setupDb.ts\",\n    \"prepare\": \"husky\"\n  },\n  \"engines\": {\n    \"node\": \"24.15.0\"\n  },\n  \"devEngines\": {\n    \"runtime\": {\n      \"name\": \"node\",\n      \"version\": \"24.15.0\",\n      \"onFail\": \"download\"\n    }\n  },\n  \"prisma\": {\n    \"seed\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/seeding/seed.ts\"\n  },\n  \"keywords\": [],\n  \"author\": \"form follows you\",\n  \"private\": true,\n  \"dependencies\": {\n    \"@apollo/client\": \"4.1.6\",\n    \"@ark-ui/react\": \"5.35.0\",\n    \"@aws-sdk/client-s3\": \"3.1020.0\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.devcontainer/Dockerfile; echo ===; cat /workspace/.devcontainer/valkey.Dockerfile; echo ===; cat /workspace/.devcontainer/valkey-persistent.Dockerfile",
+      "exit_code": 0,
+      "stdout": "# we use apt (debian) here instead of apk (alpine)\nARG VARIANT=24-bookworm\n# install javascript nodejs container\nFROM mcr.microsoft.com/vscode/devcontainers/javascript-node:${VARIANT}\n\n# Install required system dependencies\n# RUN apt add --no-cache python3 py3-pip bash && \\\n  # pip install 'cjio' --break-system-packages\n\n# Install Puppeteer dependencies\nENV PUPPETEER_SKIP_CHROMIUM_DOWNLOAD=true\nENV PUPPETEER_EXECUTABLE_PATH=/usr/bin/chromium\n\n# add ibm plex font\n# Download the .deb package and extract fonts\nRUN mkdir -p /tmp/fonts && \\\n    wget -O /tmp/fonts/fonts-ibm-plex_6.1.1-1_all.deb \"http://ftp.debian.org/debian/pool/contrib/f/fonts-ibm-plex/fonts-ibm-plex_6.1.1-1_all.deb\" && \\\n    apt install -f /tmp/fonts/fonts-ibm-plex_6.1.1-1_all.deb && \\\n    rm -rf /tmp/fonts\n\nRUN apt-get update && \\\n  apt-get install -y --no-install-recommends \\\n  # this is for playwright\n  xvfb xauth \\\n  fonts-ipafont-gothic fonts-wqy-zenhei fonts-thai-tlwg fonts-khmeros \\\n  fonts-kacst fonts-freefont-ttf \\\n  fonts-noto-core fonts-noto-color-emoji fonts-ibm-plex \\\n  chromium\n\n# install gdal from Debian packages (GDAL 3.6.2 with PROJ)\nRUN apt-get update && \\\n  apt-get install -y gdal-bin libgdal-dev && \\\n  apt-get clean && \\\n  rm -rf /var/lib/apt/lists/*\n\nRUN apt-get clean\nRUN npx playwright install --with-deps\n# keep bash history persistent\nRUN SNIPPET=\"export PROMPT_COMMAND='history -a' && export HISTFILE=/commandhistory/.bash_history\" \\\n    && mkdir -p /commandhistory \\\n    && chown -R node:node /commandhistory \\\n    && echo \"$SNIPPET\" >> \"/home/node/.bashrc\"===\nFROM valkey/valkey:8.1.4\n\n# Valkey instance for PubSub (GraphQL Subscriptions) and Caching\n# Uses allkeys-lru eviction policy to automatically remove least recently used keys\n# Port: 6379 (default)\nRUN mkdir -p /usr/local/etc/valkey && \\\n    echo \"maxmemory-policy allkeys-lru\" > /usr/local/etc/valkey/valkey.conf && \\\n    echo \"port 6379\" >> /usr/local/etc/valkey/valkey.conf && \\\n    echo 'logfile \"\"' >> /usr/local/etc/valkey/valkey.conf\n\n# Create entrypoint script for optional password configuration at runtime\nRUN echo '#!/bin/sh' > /entrypoint.sh && \\\n    echo 'if [ -n \"$VALKEY_PASSWORD\" ]; then' >> /entrypoint.sh && \\\n    echo '  echo \"requirepass $VALKEY_PASSWORD\" >> /usr/local/etc/valkey/valkey.conf' >> /entrypoint.sh && \\\n    echo 'fi' >> /entrypoint.sh && \\\n    echo 'exec valkey-server /usr/local/etc/valkey/valkey.conf' >> /entrypoint.sh && \\\n    chmod +x /entrypoint.sh\n\nENTRYPOINT [\"/entrypoint.sh\"]\n===\nFROM valkey/valkey:8.1.4\n\n# Valkey instance for BullMQ job queue system\n# Uses noeviction policy to prevent job loss when memory is full\n# Port: 6380\nRUN mkdir -p /usr/local/etc/valkey && \\\n    echo \"maxmemory-policy noeviction\" > /usr/local/etc/valkey/valkey.conf && \\\n    echo \"port 6380\" >> /usr/local/etc/valkey/valkey.conf && \\\n    echo \"appendonly yes\" >> /usr/local/etc/valkey/valkey.conf && \\\n    echo 'logfile \"\"' >> /usr/local/etc/valkey/valkey.conf\n\n# Create entrypoint script for optional password configuration at runtime\nRUN echo '#!/bin/sh' > /entrypoint.sh && \\\n    echo 'if [ -n \"$VALKEY_PERSISTENT_PASSWORD\" ]; then' >> /entrypoint.sh && \\\n    echo '  echo \"requirepass $VALKEY_PERSISTENT_PASSWORD\" >> /usr/local/etc/valkey/valkey.conf' >> /entrypoint.sh && \\\n    echo 'fi' >> /entrypoint.sh && \\\n    echo 'exec valkey-server /usr/local/etc/valkey/valkey.conf' >> /entrypoint.sh && \\\n    chmod +x /entrypoint.sh\n\nENTRYPOINT [\"/entrypoint.sh\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "free -h; df -h /workspace /; nproc; uname -m",
+      "exit_code": 0,
+      "stdout": "               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       642Mi       6.0Gi       1.0Mi       1.0Gi       6.8Gi\nSwap:          2.0Gi        73Mi       1.9Gi\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.9G  951G   1% /\noverlay        1007G  4.9G  951G   1% /\n8\nx86_64\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n -i 'prisma' /workspace/package.json | head -20; echo ===; grep -rn 'VALKEY_PERSISTENT' /workspace/api/src --include='*.ts' -l | head; echo ===; cat /workspace/scripts/setupDb.ts | head -80",
+      "exit_code": 0,
+      "stdout": "12:    \"dev:init\": \"pnpm install && pnpm prisma generate && pnpm codegen && pnpm prisma migrate reset && pnpm dev\",\n17:    \"start\": \"pnpm prisma migrate deploy && node --import ./dist/instrumentation/index.js dist/server.js\",\n19:    \"build:api\": \"pnpm prisma generate && tsup\",\n41:  \"prisma\": {\n61:    \"@casl/prisma\": \"1.6.1\",\n118:    \"@pothos/plugin-prisma\": \"4.10.0\",\n119:    \"@pothos/plugin-prisma-utils\": \"1.3.3\",\n125:    \"@prisma/client\": \"6.12.0\",\n229:    \"prisma\": \"6.12.0\",\n230:    \"prisma-extension-casl\": \"1.3.7\",\n===\n/workspace/api/src/plugins/external/env.ts\n===\n\n\nimport { PrismaClient } from '@prisma/client'\nimport 'dotenv/config'\n\nasync function setupDb() {\n  \n  \n  const dbUrl = process.env.DATABASE_URL ?? 'postgres://postgres:postgrespw@localhost:5432/ffy_dev'\n\n  \n  const url = new URL(dbUrl)\n  url.pathname = '/postgres' \n  url.port = '5432' \n  const postgresUrl = url.toString()\n\n  const db = new PrismaClient({\n    datasources: {\n      db: {\n        url: postgresUrl,\n      },\n    },\n  })\n\n  async function checkAndCreateDatabase(dbName: string) {\n    try {\n      \n      const result: Array<{ datname: string }> = await db.$queryRaw`\n        SELECT datname FROM pg_database WHERE datname = ${dbName}\n      `\n\n      \n      if (result.length === 0) {\n        await db.$executeRawUnsafe(`CREATE DATABASE ${dbName}`)\n        console.log(`Database ${dbName} created successfully.`)\n      }\n    } catch (e) {\n      if (!e.message.includes(`database \"${dbName}\" already exists`)) {\n        console.log(`Error with database ${dbName}:`, e)\n      }\n    }\n  }\n\n  \n  console.log('Checking existence of Postgres databases for development.')\n  await checkAndCreateDatabase('ffy_dev')\n  await checkAndCreateDatabase('ffy_shadow')\n  await checkAndCreateDatabase('ffy_test')\n\n  console.log(\n    'For development, if you haven\u00b4t done it already, please add the following entries to your .env file and edit them properly:',\n  )\n  console.log('')\n  console.log('DATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_dev')\n  console.log('TEST_DATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_test')\n  console.log('SHADOW_DATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_shadow')\n  console.log('VALKEY_PERSISTENT_SERVER=localhost  # Valkey for BullMQ (noeviction)')\n  console.log('VALKEY_PERSISTENT_PORT=6380')\n  console.log('VALKEY_SERVER=localhost             # Valkey for PubSub/Caching (LRU)')\n  console.log('VALKEY_PORT=6379')\n  console.log('\u2705 DB successfully set up!')\n  await db.$disconnect()\n}\n\nsetupDb()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -sI --max-time 15 https://registry.npmjs.org/ | head -3; echo ---; curl -sI --max-time 15 https://nodejs.org/dist/ | head -3; echo ---; curl -sI --max-time 15 https://registry-1.docker.io/v2/ | head -3",
+      "exit_code": 0,
+      "stdout": "HTTP/2 200 \ndate: Sat, 17 Oct 2026 15:50:43 GMT\ncontent-type: application/json\n---\nHTTP/2 200 \ndate: Sat, 17 Oct 2026 15:50:45 GMT\ncontent-type: text/html\n---\nHTTP/2 401 \ndate: Sat, 17 Oct 2026 15:50:45 GMT\ncontent-type: application/json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -sSL -o node24.tar.xz https://nodejs.org/dist/v24.15.0/node-v24.15.0-linux-x64.tar.xz && ls -la node24.tar.xz && tar -xf node24.tar.xz -C /usr/local --strip-components=1 && node --version",
+      "exit_code": 0,
+      "stdout": "-rw-r--r-- 1 root root 31164460 Oct 17 15:51 node24.tar.xz\nv24.15.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker pull postgis/postgis 2>&1 | tail -2; docker pull valkey/valkey 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "Status: Downloaded newer image for postgis/postgis:latest\ndocker.io/postgis/postgis:latest\nStatus: Downloaded newer image for valkey/valkey:latest\ndocker.io/valkey/valkey:latest\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "npm install -g pnpm 2>&1 | tail -2 && pnpm --version",
+      "exit_code": 127,
+      "stdout": "npm notice To update run: npm install -g npm@12.2.0\nnpm notice\n",
+      "stderr": "/root/.local/share/pnpm/package-manager-store/v11/links/@pnpm/exe/11.2.2/e55b02f2b11eea688cd975d8beeb3e92a9b7e6d8f6293e5253ada0fb1cbe3fbf/node_modules/@pnpm/exe/pnpm: error while loading shared libraries: libatomic.so.1: cannot open shared object file: No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker rm -f postgis valkey-cache valkey-queue 2>/dev/null; docker run --name postgis -d -p 5432:5432 -e POSTGRES_PASSWORD=postgrespw postgis/postgis 2>&1 && docker run --name valkey-cache -d -p 6379:6379 valkey/valkey 2>&1 && docker run --name valkey-queue -d -p 6380:6379 valkey/valkey 2>&1 && sleep 3 && docker ps --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}'",
+      "exit_code": 0,
+      "stdout": "802a91030bab9632c40827d9a8f72d646cd8dbe04f2f8d9d09541e2c83a06649\n62e7929d6528b2caa8575a627d4b549c30362e09dd638756d0ce2cf9aff4de90\n39016f698bc24a877c2f5388eff061ff49cc84422044d771c6db92c0ea10251a\nNAMES          IMAGE             STATUS\nvalkey-queue   valkey/valkey     Up 3 seconds\nvalkey-cache   valkey/valkey     Up 3 seconds\npostgis        postgis/postgis   Up 4 seconds\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y libatomic1 2>&1 | tail -5; echo \"---retry---\"; pnpm --version 2>&1",
+      "exit_code": 127,
+      "stdout": "Reading package lists...\nBuilding dependency tree...\nReading state information...\nE: Unable to locate package libatomic1\n---retry---\n/root/.local/share/pnpm/package-manager-store/v11/links/@pnpm/exe/11.2.2/e55b02f2b11eea688cd975d8beeb3e92a9b7e6d8f6293e5253ada0fb1cbe3fbf/node_modules/@pnpm/exe/pnpm: error while loading shared libraries: libatomic.so.1: cannot open shared object file: No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update 2>&1 | tail -2 && apt-get install -y libatomic1 2>&1 | tail -3; echo \"---retry---\"; pnpm --version 2>&1",
+      "exit_code": 0,
+      "stdout": "Fetched 49.2 MB in 29s (1681 kB/s)\nReading package lists...\nUnpacking libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...\nSetting up libatomic1:amd64 (12.3.0-1ubuntu1~22.04.3) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\n---retry---\n11.2.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n 'packageManager' /workspace/package.json; echo ---; for i in $(seq 1 30); do docker exec postgis pg_isready -h localhost -U postgres 2>/dev/null && break; sleep 2; done; docker exec postgis psql -U postgres -c 'SELECT version();' 2>&1 | head -3",
+      "exit_code": 0,
+      "stdout": "312:  \"packageManager\": \"pnpm@11.2.2\",\n---\nlocalhost:5432 - accepting connections\n                                                           version                                                           \n-----------------------------------------------------------------------------------------------------------------------------\n PostgreSQL 17.5 (Debian 17.5-1.pgdg110+1) on x86_64-pc-linux-gnu, compiled by gcc (Debian 10.2.1-6) 10.2.1 20210110, 64-bit\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && pnpm install 2>&1 | tail -25",
+      "exit_code": 1,
+      "stdout": "Progress: resolved 1998, reused 0, downloaded 1961, added 1961\nProgress: resolved 1998, reused 0, downloaded 1974, added 1974\nProgress: resolved 1998, reused 0, downloaded 1981, added 1981\n[WARN] Tarball download average speed 24 KiB/s (size 856 KiB) is below 50 KiB/s: https://registry.npmjs.org/playwright/-/playwright-1.60.0.tgz (GET)\nProgress: resolved 1998, reused 0, downloaded 1982, added 1981\nProgress: resolved 1998, reused 0, downloaded 1984, added 1984\nProgress: resolved 1998, reused 0, downloaded 1985, added 1984\nProgress: resolved 1998, reused 0, downloaded 1985, added 1985\n[WARN] GET https://registry.npmjs.org/@graphql-yoga/render-graphiql/-/render-graphiql-5.18.1.tgz error (23). Will retry in 10 seconds. 2 retries left.\nProgress: resolved 1998, reused 0, downloaded 1986, added 1985\nProgress: resolved 1998, reused 0, downloaded 1986, added 1986\nProgress: resolved 1998, reused 0, downloaded 1987, added 1986\nProgress: resolved 1998, reused 0, downloaded 1988, added 1986\nProgress: resolved 1998, reused 0, downloaded 1988, added 1988\nProgress: resolved 1998, reused 0, downloaded 1989, added 1988\nProgress: resolved 1998, reused 0, downloaded 1989, added 1989\nProgress: resolved 1998, reused 0, downloaded 1990, added 1989\nProgress: resolved 1998, reused 0, downloaded 1991, added 1989\n[23] The operation was aborted due to timeout\n\nTimeoutError: The operation was aborted due to timeout\n    at new DOMException (node:internal/per_context/domexception:79:18)\n    at Timeout._onTimeout (node:internal/abort_controller:154:9)\n    at listOnTimeout (node:internal/timers:605:17)\n    at process.processTimers (node:internal/timers:541:7)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && npm_config_fetch_timeout=600000 npm_config_fetch_retries=10 pnpm install 2>&1 | tail -25",
+      "exit_code": 0,
+      "stdout": "+ @vitest/coverage-v8 4.1.8\n+ @vitest/ui 4.1.8\n+ commander 14.0.3\n+ error-stack-parser-es 1.0.5\n+ eta 4.5.1\n+ husky 9.1.7\n+ ink 6.8.0\n+ ink-select-input 6.2.0\n+ ink-spinner 5.0.0\n+ ink-testing-library 4.0.0\n+ ink-text-input 6.0.0\n+ lint-staged 16.4.0\n+ msw 2.12.14\n+ node 24.15.0\n+ pluralize-esm 9.0.5\n+ tsconfig-paths 4.2.0\n+ tsup 8.5.1\n+ tsx 4.21.0\n+ typescript 6.0.2\n+ vconsole 3.15.1\n+ vite 8.0.16\n+ vitest 4.1.5\n+ vitest-browser-react 2.1.0\n\nDone in 1m 50s using pnpm v11.2.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls web/public/ && cp node_modules/web-ifc/web-ifc.wasm web/public/web-ifc/web-ifc.wasm && cp node_modules/web-ifc/web-ifc-mt.wasm web/public/web-ifc/web-ifc-mt.wasm && cp node_modules/web-ifc/web-ifc-node.wasm web/public/web-ifc/web-ifc-node.wasm && ls -la web/public/web-ifc/",
+      "exit_code": 0,
+      "stdout": "assimpjs\nassimps\nbrowserconfig.xml\ndraco-gltf\nfonts\ngdal\nimg\nktx2\nmaterials\nmockServiceWorker.js\nmodels\nrobots.txt\nsite.webmanifest\nstyles\ntextures\nusdz\nweb-ifc\ntotal 3832\ndrwxr-xr-x  2 root root    4096 Oct 17 15:50 .\ndrwxr-xr-x 15 root root    4096 Oct 17 15:50 ..\n-rwxr-xr-x  1 root root 1314227 Oct 17 16:03 web-ifc-mt.wasm\n-rw-r--r--  1 root root    2239 Oct 17 15:50 web-ifc-mt.worker.js\n-rwxr-xr-x  1 root root 1288859 Oct 17 16:03 web-ifc-node.wasm\n-rwxr-xr-x  1 root root 1303940 Oct 17 16:03 web-ifc.wasm\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && SESS=$(openssl rand -hex 32) && CRYPTO=$(openssl rand -hex 32) && SKEY=$(openssl rand -hex 16) && SSEC=$(openssl rand -hex 16) && cat > .env <<EOF\nNODE_ENV=production\nAPP_ENV=production\nLOG_LEVEL=info\nCOOKIE_NAME=app-cookie\nBASE_URL=http://localhost:3000\nWEBAPP_APP_TITLE=buildplace.io\n\nDATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nMIGRATION_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nTEST_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test\nBYPASS_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nSHADOW_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_shadow\nTEST_DIRECT_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test\nRATE_LIMIT_MAX=10000000000\n\nVALKEY_SERVER=localhost\nVALKEY_PORT=6379\nVALKEY_PERSISTENT_SERVER=localhost\nVALKEY_PERSISTENT_PORT=6380\nBULL_PREFIX=local\n\nWEBAPP_DOMAIN=http://localhost:3000\nWEBAPP_SELFSERVING_TILESERVER=https://example.com\nWEBAPP_OGRE_API=https://ogre.example.com\nWEBAPP_MAP_MAPTILER_KEY=your_maptiler_key_here\nWEBAPP_MAP_GEOAPIFY_KEY=your_geoapify_key_here\nWEBAPP_PUBLIC_URL=\"\"\nWEBAPP_SELFSERVING_DGM_TILES=https://example.com/tiles\nWEBAPP_TILESERVER_KEY=your_tileserver_key_here\nWEBAPP_DEV_USER_PW=devpassword123\n\nSESSION_KEY=$SESS\nSTORAGE_KEY=$SKEY\nSTORAGE_SECRET=$SSEC\nCRYPTO_SECRET=$CRYPTO\n\nSTORAGE_BUCKET=dev\nSTORAGE_URL=storage.example.com\n\nMAIL_SMTP=mail.example.com\nMAIL_NOREPLY_USER=noreply@example.com\nMAIL_NOREPLY_PW=your_mail_password\n\nSELFSERVING_API=https://selfservice.example.com\nSELFSERVING_KEY=your_selfserving_key_here\n\nOTEL_SERVICE_NAME=buildplace\nOTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318\n\nXPLANBOX_URL=https://xplanbox.example.com\nXPLANBOX_USER=your_xplanbox_user\nXPLANBOX_PASSWORD=your_xplanbox_password\n\nWEBAPP_COMFORT_ANALYSIS_SERVER=http://localhost:3100\nEOF\necho \"created .env\" && grep -c . .env",
+      "exit_code": 0,
+      "stdout": "created .env\n44\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && pnpm prisma generate 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "Already up to date\nDone in 144ms using pnpm v11.2.2\nAlready up to date\nDone in 155ms using pnpm v11.2.2\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\n\n\u2714 Generated Prisma Client (v6.12.0) to ./node_modules/.prisma/client in 1.23s\n\n\u2714 Generated Pothos integration to ./node_modules/.pnpm/@pothos+plugin-prisma@4.10.0_@pothos+core@4.12.0_graphql@16.13.2__@prisma+client@6.12.0_28cb8785e5f1c2f3c34da34b35e058b3/node_modules/@pothos/plugin-prisma/generated.d.ts in 739ms\n\nStart by importing your Prisma Client (See: https://pris.ly/d/importing-client)\n\nTip: Want to turn off tips and other hints? https://pris.ly/tip-4-nohints\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && pnpm setupDb 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "$ tsx --tsconfig ./scripts/tsconfig.json ./scripts/setupDb.ts\nChecking existence of Postgres databases for development.\nDatabase ffy_dev created successfully.\nDatabase ffy_shadow created successfully.\nDatabase ffy_test created successfully.\nFor development, if you haven\u00b4t done it already, please add the following entries to your .env file and edit them properly:\n\nDATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_dev\nTEST_DATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_test\nSHADOW_DATABASE_URL=postgres://postgres:posgrespw@localhost:5432/ffy_shadow\nVALKEY_PERSISTENT_SERVER=localhost  # Valkey for BullMQ (noeviction)\nVALKEY_PERSISTENT_PORT=6380\nVALKEY_SERVER=localhost             # Valkey for PubSub/Caching (LRU)\nVALKEY_PORT=6379\n\u2705 DB successfully set up!\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 550 pnpm prisma migrate reset --force 2>&1 | tail -30",
+      "exit_code": 0,
+      "stdout": ":::: Project admin: Seeding usage types ::\n:::::: Update Scenario adminPublic-Scenario with new project usageTypes and itemTypes ::\n:::::: Update Scenario adminPrivate-Scenario with new project usageTypes and itemTypes ::\n:::: Project admin: Seeding parcels ::\n:: Seeding geodata ::\n:: Seeding filter profiles ::\n:: Seeding mediations ::\n:: Seeding enquiries ::\n:: Seeding weather data ::\n:: Executing script with args ::\n:: Cleanup existing weather data ::\n:: Unzip new weather data ::\n:: Write weather data to db ::\n:: Finished writing weather data to db ::\n:: Seeding EPSG projections ::\n:: Write EPSG projections to db ::\n:: Finished writing EPSG projections db ::\n\n\ud83c\udf31  The seed command has been executed.\n\u250c\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2510\n\u2502  Update available 6.12.0 -> 8.0.0-rc.23                 \u2502\n\u2502                                                         \u2502\n\u2502  This is a major update - please follow the guide at    \u2502\n\u2502  https://pris.ly/d/major-version-upgrade                \u2502\n\u2502                                                         \u2502\n\u2502  Run the following to update                            \u2502\n\u2502    npm i --save-dev prisma@latest                       \u2502\n\u2502    npm i @prisma/client@latest                          \u2502\n\u2514\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2518\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && timeout 550 pnpm codegen 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "[STARTED] Generate outputs\n[STARTED] Generate to ./shared/graphql/types.ts\n[STARTED] Generate to ./api/lib/graphql/schema.graphql\n[STARTED] Load GraphQL schemas\n[STARTED] Load GraphQL schemas\n[COMPLETED] Load GraphQL schemas\n[COMPLETED] Load GraphQL schemas\n[STARTED] Load GraphQL documents\n[STARTED] Load GraphQL documents\n[COMPLETED] Load GraphQL documents\n[COMPLETED] Load GraphQL documents\n[STARTED] Generate\n[STARTED] Generate\n[COMPLETED] Generate\n[COMPLETED] Generate\n[COMPLETED] Generate to ./shared/graphql/types.ts\n[COMPLETED] Generate to ./api/lib/graphql/schema.graphql\n[COMPLETED] Generate outputs\n\u2713 Introspection output was generated successfully\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup pnpm dev > /tmp/dev.log 2>&1 &\necho \"started, pid $!\"",
+      "exit_code": 0,
+      "stdout": "started, pid 1993\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 25 && tail -30 /tmp/dev.log",
+      "exit_code": 0,
+      "stdout": "Already up to date\nDone in 171ms using pnpm v11.2.2\n$ tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\nDebugger listening on ws://127.0.0.1:9229/2ac67bc2-f315-490c-9ff7-203843968863\nFor help, see: https://nodejs.org/en/docs/inspector\n{\"level\":30,\"time\":1792253193180,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Loading Plugins\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 30 && tail -25 /tmp/dev.log; echo ===; ss -ltnp 2>/dev/null | grep -E ':3000|:5432|:6379|:6380' || netstat -ltnp 2>/dev/null | grep -E ':3000|:5432|:6379|:6380'",
+      "exit_code": 1,
+      "stdout": "Already up to date\nDone in 171ms using pnpm v11.2.2\n$ tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\nDebugger listening on ws://127.0.0.1:9229/2ac67bc2-f315-490c-9ff7-203843968863\nFor help, see: https://nodejs.org/en/docs/inspector\n{\"level\":30,\"time\":1792253193180,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Loading Plugins\"}\n{\"level\":30,\"time\":1792253210605,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Creating Audit Log Triggers\"}\n{\"level\":30,\"time\":1792253210895,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished creating Audit Log Triggers\"}\n{\"level\":30,\"time\":1792253210897,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init GeoDataIntersection Jobs Manager Nightly jobs\"}\n{\"level\":30,\"time\":1792253210938,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init Periodic Key Rotation Jobs Manager\"}\n{\"level\":30,\"time\":1792253210941,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253210975,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init GeoDataIntersection Jobs Manager\"}\n{\"level\":30,\"time\":1792253210976,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253210977,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253211142,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Loading Routes\"}\n{\"level\":40,\"time\":1792253213498,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"@fastify/reply-from might not behave as expected when used with @fastify/multipart\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://127.0.0.1:3000\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://192.168.127.2:3000\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://172.17.0.1:3000\"}\n4:06:54 PM [vite] (client) [optimizer] scanning dependencies...\n4:06:58 PM [vite] (client) warning: Module \"module\" has been externalized for browser compatibility, imported by \"/workspace/shared/geom/clipper/clipper2Wasm/clipper2z.js\". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.\n4:07:01 PM [vite] (client) [optimizer] bundling dependencies...\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /tmp/index.html -w \"HTTP %{http_code}, %{size_download} bytes\\n\" http://localhost:3000/ && head -c 400 /tmp/index.html; echo; echo ===; curl -s -w \"\\nHTTP %{http_code}\\n\" http://localhost:3000/api/graphql -X POST -H 'Content-Type: application/json' -d '{\"query\":\"{ __typename }\"}'",
+      "exit_code": 0,
+      "stdout": "HTTP 200, 1180 bytes\n<!DOCTYPE html>\n<html lang=\"de\">\n  <head>\n    <script type=\"module\" src=\"/@vite/client\" nonce=\"464e9f6a9d49e10930490cd55d10c80e\"></script>\n\n  <meta charset=\"UTF-8\" />\n  <meta name=\"description\" content=\"Buildplace\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1\" />\n   <meta property=\"csp-nonce\" nonce=\"464e9f6a9d49e10930490cd55d10c80e\">\n\n  <link rel=\"icon\n===\n{\"data\":{\"__typename\":\"Query\"}}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker exec valkey-cache valkey-cli ping; docker exec valkey-queue valkey-cli -p 6379 ping; docker exec valkey-queue valkey-cli -p 6379 config get maxmemory-policy 2>/dev/null | head -2",
+      "exit_code": 0,
+      "stdout": "PONG\nPONG\nmaxmemory-policy\nnoeviction\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'login' /workspace/api/src/routes/ --include='*.ts' -il | head -5; grep -rn 'dev_user\\|DEV_USER' /workspace/api/src --include='*.ts' -l | head -5",
+      "exit_code": 1,
+      "stdout": "/workspace/api/src/routes/api/auth/logout.ts\n/workspace/api/src/routes/api/auth/test/logout.test.ts\n/workspace/api/src/routes/api/auth/test/login.test.ts\n/workspace/api/src/routes/api/auth/test/current-user.test.ts\n/workspace/api/src/routes/api/auth/connect.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/api/src/routes/api/auth/; sed -n 1,60p /workspace/api/src/routes/api/auth/login.ts 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "connect.ts\ncurrent-user.ts\nforgot-password.ts\nlogin.ts\nlogout.ts\nreset-password.ts\nselect-login.ts\nsignup.ts\ntest\nverify-email.ts\n\n\nimport type { FastifyPluginAsyncTypebox } from '@fastify/type-provider-typebox'\nimport { Type } from '@sinclair/typebox'\n\nconst plugin: FastifyPluginAsyncTypebox = async (fastify) => {\n  fastify.post(\n    '/login',\n    {\n      preValidation: fastify.passport.authenticate(['local'], {\n        successMessage: 'Successfully logged in.',\n        failureMessage: 'Log in failed',\n      }),\n      schema: {\n        body: Type.Object({\n          password: Type.String(),\n          email: Type.String({ format: 'email' }),\n        }),\n        response: {\n          200: Type.Object({\n            success: Type.Boolean(),\n            message: Type.Optional(Type.String()),\n          }),\n          401: Type.Object({\n            message: Type.String(),\n          }),\n        },\n        tags: ['Authentication'],\n      },\n    },\n    async (request, reply) => {\n      if (request.user) {\n        request.session.set('loginProvider', 'local')\n        \n        \n        reply.status(200).send({ success: true, message: 'Successfully logged in.' })\n      } else {\n        \n        reply.status(401).send({ message: 'Not authorized.' })\n      }\n    },\n  )\n}\n\nexport default plugin\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 1,80p /workspace/api/src/routes/api/auth/test/login.test.ts",
+      "exit_code": 0,
+      "stdout": "import { hashPassword } from '@api/lib/auth/hashPassword'\nimport { bypassDb as db } from '@api/lib/db'\nimport { scenario } from '@api/lib/testing'\nimport { describe, expect } from 'vitest'\n\ndescribe('Authentication Route Tests', () => {\n  scenario('should return success message on valid login', async ({ app }) => {\n    const email = 'test@example.com'\n    const [hashedPassword, salt] = hashPassword('password')\n\n    await db.user.create({\n      data: {\n        hashedPassword: hashedPassword,\n        salt: salt,\n        email: email,\n        firstName: 'user',\n        lastName: 'user',\n        verificationToken: null,\n        activeStart: new Date(),\n      },\n    })\n\n    const response = await app.inject({\n      method: 'POST',\n      url: 'api/auth/login?redirect=/home',\n      payload: {\n        email: email,\n        password: 'password',\n      },\n    })\n\n    expect(response.statusCode).toBe(200)\n    expect(JSON.parse(response.body)).toEqual({ success: true, message: 'Successfully logged in.' })\n  })\n\n  scenario('should return unauthorized message on invalid login', async ({ app }) => {\n    const email = 'test@example.com'\n    const [hashedPassword, salt] = hashPassword('password')\n\n    await db.user.create({\n      data: {\n        hashedPassword: hashedPassword,\n        salt: salt,\n        email: email,\n        firstName: 'user',\n        lastName: 'user',\n        verificationToken: null,\n        activeStart: new Date(),\n      },\n    })\n    const response = await app.inject({\n      method: 'POST',\n      url: 'api/auth/login',\n      payload: {\n        email: 'invalid@example.com',\n        password: 'wrongpassword',\n      },\n    })\n\n    expect(response.statusCode).toBe(401)\n    expect(response.body).toEqual('Unauthorized')\n  })\n})\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'dev_user\\|DEV_USER_PW\\|devUser\\|dev-user' /workspace/api/src /workspace/scripts --include='*.ts' -i | head -20",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'local' /workspace/api/src/lib/auth/*.ts -l 2>/dev/null | head; ls /workspace/api/src/lib/auth/ 2>/dev/null; grep -rn 'WEBAPP_DEV_USER_PW' /workspace/web /workspace/api /workspace/shared -r 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace/web/lib/testing/browserGlobalSetup.ts:22:const PASSWORD = process.env.WEBAPP_DEV_USER_PW\n/workspace/web/src/hud/common/auth/DevUserSwitch.tsx:45:                    password: import.meta.env.WEBAPP_DEV_USER_PW,\n/workspace/web/vite-env.d.ts:15:  readonly WEBAPP_DEV_USER_PW: string\n/workspace/api/lib/logger/logger.ts:139:      'WEBAPP_DEV_USER_PW',\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rln 'passport\\|LocalStrategy\\|localStrategy\\|authenticate' /workspace/api/src --include='*.ts' | grep -iv test | head; echo ===; grep -rn 'LocalStrategy\\|local' /workspace/api/src/plugins 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "/workspace/api/src/plugins/external/passport.ts\n/workspace/api/src/routes/api/auth/logout.ts\n/workspace/api/src/routes/api/auth/connect.ts\n/workspace/api/src/routes/api/auth/login.ts\n/workspace/api/src/routes/api/auth/current-user.ts\n===\n/workspace/api/src/plugins/external/helmet.ts:29:                    ? ['http://localhost:*', 'ws://localhost:*']\n/workspace/api/src/plugins/external/helmet.ts:42:                    ? ['http://localhost:*', 'ws://localhost:*', 'localhost']\n/workspace/api/src/plugins/external/test/rate-limit.test.ts:34:          origin: 'http://localhost:3000',\n/workspace/api/src/plugins/external/test/rate-limit.test.ts:46:        origin: 'http://localhost:3000',\n/workspace/api/src/plugins/external/test/rate-limit.test.ts:75:          origin: 'http://localhost:3000',\n/workspace/api/src/plugins/external/test/rate-limit.test.ts:87:        origin: 'http://localhost:3000',\n/workspace/api/src/plugins/external/test/helmet.test.ts:13:    vi.stubEnv('IFRAME_BASE_URL', 'http://public.localhost:3000')\n/workspace/api/src/plugins/external/test/helmet.test.ts:14:    vi.stubEnv('BASE_URL', 'http://localhost:3000')\n/workspace/api/src/plugins/external/test/helmet.test.ts:37:        host: 'public.localhost:3000',\n/workspace/api/src/plugins/external/test/passport.test.ts:25:    vi.stubEnv('IFRAME_BASE_URL', 'http://public.localhost:3000')\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'email\\|admin@' /workspace/scripts/seeding/seed.ts 2>/dev/null | head -20; echo === users seeded ===; docker exec postgis psql -U postgres -d ffy_dev -t -c \"SELECT email, \\\"activeStart\\\" FROM \\\"User\\\" LIMIT 10;\" 2>&1 | head -20",
+      "exit_code": 0,
+      "stdout": "=== users seeded ===\n tenantVisitor@buildplace.io       | 2026-10-17 16:04:55.695\n tenantMember@buildplace.io        | 2026-10-17 16:04:55.877\n tenantTeamMember@buildplace.io    | 2026-10-17 16:04:55.938\n tenantTeamLead@buildplace.io      | 2026-10-17 16:04:55.989\n tenantAdmin@buildplace.io         | 2026-10-17 16:04:56.039\n superadmin@buildplace.io          | 2026-10-17 16:04:56.09\n anotherAdmin@buildplace.io        | 2026-10-17 16:04:56.141\n inactiveTenantAdmin@buildplace.io | 2026-10-17 16:04:56.192\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 1,80p /workspace/api/src/plugins/external/passport.ts",
+      "exit_code": 0,
+      "stdout": "import { type CurrentUser, getCurrentUser } from '@api/lib/auth/getCurrentUser'\nimport { configureLocalStrategy } from '@api/lib/auth/strategies/local.strategy'\nimport { configureOIDCTestStrategy } from '@api/lib/auth/strategies/oidc.strategy'\nimport { isIframeRequest } from '@api/src/lib/isIframeRequest'\nimport { Authenticator } from '@fastify/passport'\nimport { requestContext } from '@fastify/request-context'\nimport type { PassportUser } from 'fastify'\nimport fp from 'fastify-plugin'\n\ndeclare module '@fastify/passport' {\n  export interface Authenticator {\n    clients: Record<\n      string,\n      {\n        config: unknown\n        \n        refreshToken?: (\n          userId: string,\n        ) => Promise<{ accessToken: string; expiresAt: string } | undefined>\n        \n        getAccountLogoutUrl?: (\n          \n          idToken: string,\n          \n          \n        ) => string\n      }\n    >\n  }\n}\ndeclare module 'fastify' {\n  interface PassportUser extends CurrentUser {}\n  export interface FastifyInstance {\n    passport: Authenticator\n    currentUser?: CurrentUser\n  }\n}\n\nexport const fastifyPassport = new Authenticator()\nfastifyPassport.clients = {}\n\nexport default fp(\n  async (fastify) => {\n    fastify.register(fastifyPassport.initialize())\n    fastify.register(fastifyPassport.secureSession({}))\n\n    \n    \n\n    \n    fastifyPassport.registerUserSerializer<PassportUser, string>(async (user, request) => {\n      return user.id\n    })\n\n    \n    fastifyPassport.registerUserDeserializer<string, PassportUser>(async (id, request) => {\n      return getCurrentUser(id).then((user) => {\n        if (!user) {\n          throw new Error('User not found')\n        }\n        const currentUser = {\n          id: user.id,\n          firstName: user.firstName,\n          lastName: user.lastName,\n          fullName: user.fullName,\n          picture: user.picture,\n          preferences: user.preferences,\n          email: user.email,\n          phoneNumber: user.phoneNumber,\n          members: user.members ?? [],\n          accounts: user.accounts ?? [],\n        }\n        requestContext.set('currentUser', currentUser)\n        return currentUser\n      })\n    })\n\n    configureLocalStrategy(fastifyPassport)\n\n    if (fastify.config.AUTH_PROVIDER) {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 1,60p /workspace/api/src/lib/auth/strategies/local.strategy.ts",
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "sed: can't read /workspace/api/src/lib/auth/strategies/local.strategy.ts: No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'superadmin\\|buildplace.io\\|hashPassword\\|password' /workspace/scripts/seeding/seed.ts 2>/dev/null | head -30; echo \"=== files ===\"; ls /workspace/scripts/seeding/",
+      "exit_code": 0,
+      "stdout": "=== files ===\ncontactSeed.ts\nenquirySeed.ts\nenquiryTags.ts\ngeoDataSeed.ts\nparcelSeed.ts\nprojectionSeed\npublicationSeed.ts\nscenarioSeed.ts\nseed.ts\nstorySeed\nuserMemberTenantSeed.ts\nweatherSeed\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'local.strategy\\|configureLocalStrategy' /workspace/api/src --include='*.ts' -l | grep -v passport; echo \"===\"; find /workspace/api -name 'local.strategy.ts' 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "===\n/workspace/api/lib/auth/strategies/local.strategy.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn 'hashPassword\\|password\\|superadmin@' /workspace/scripts/seeding/userMemberTenantSeed.ts 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "1:import { hashPassword } from '@api/lib/auth/hashPassword'\n18:    const [hashedPassword, salt] = hashPassword(user.password)\n37:      password: 'somepassword',\n44:      password: 'somepassword',\n51:      password: 'somepassword',\n58:      password: 'somepassword',\n65:      password: 'somepassword',\n71:      email: 'superadmin@buildplace.io',\n72:      password: 'somepassword',\n79:      password: 'somepassword',\n86:      password: 'somepassword',\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && curl -s -c /tmp/cookies.txt -w \"\\nHTTP %{http_code}\\n\" http://localhost:3000/api/auth/login -H 'Content-Type: application/json' -d '{\"email\":\"superadmin@buildplace.io\",\"password\":\"somepassword\"}'; echo \"=== current-user ===\"; curl -s -b /tmp/cookies.txt -w \"\\nHTTP %{http_code}\\n\" http://localhost:3000/api/auth/current-user",
+      "exit_code": 0,
+      "stdout": "{\"success\":true,\"message\":\"Successfully logged in.\"}\nHTTP 200\n=== current-user ===\n{\"id\":\"n4UunwrhYq28aHpqWUye1\",\"firstName\":\"Super\",\"lastName\":\"Tenant\",\"fullName\":\"Super Tenant\",\"email\":\"superadmin@buildplace.io\",\"accounts\":[],\"members\":[{\"id\":\"-v7KEXVLfih-PLibmzcs5\",\"role\":\"SUPERADMIN\",\"tenant\":{\"slug\":\"active-tenant\"},\"teams\":[]}],\"preferences\":{}}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && pnpm prisma migrate status 2>&1 | tail -4; echo ===; docker ps --format 'table {{.Names}}\\t{{.Image}}\\t{{.Status}}\\t{{.Ports}}'",
+      "exit_code": 0,
+      "stdout": "\n7 migrations found in prisma/migrations\n\nDatabase schema is up to date!\n===\nNAMES          IMAGE             STATUS          PORTS\nvalkey-queue   valkey/valkey     Up 14 minutes   0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp\nvalkey-cache   valkey/valkey     Up 14 minutes   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp\npostgis        postgis/postgis   Up 14 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && cat package.json | head -60",
+      "exit_code": 0,
+      "stdout": "total 2508\ndrwxr-xr-x  13 root root    4096 Oct 17 16:08 .\ndr-xr-xr-x   1 root root    4096 Oct 17 15:48 ..\ndrwxr-xr-x   2 root root    4096 Oct 17 15:50 .devcontainer\n-rw-r--r--   1 root root     128 Oct 17 15:50 .dockerignore\n-rw-r--r--   1 root root    1853 Oct 17 16:03 .env\n-rw-r--r--   1 root root    3580 Oct 17 15:50 .env.defaults\ndrwxr-xr-x   8 root root    4096 Oct 17 15:50 .git\n-rw-r--r--   1 root root     140 Oct 17 15:50 .gitattributes\n-rw-r--r--   1 root root    1179 Oct 17 15:50 .gitignore\n-rw-r--r--   1 root root     190 Oct 17 15:50 .gitlab-ci.yml\ndrwxr-xr-x   2 root root    4096 Oct 17 15:50 .husky\n-rw-r--r--   1 root root      41 Oct 17 15:50 .npmrc\n-rw-r--r--   1 root root    1217 Oct 17 15:50 CONTRIBUTORS.md\n-rw-r--r--   1 root root   34521 Oct 17 15:50 LICENSE\n-rw-r--r--   1 root root    4805 Oct 17 15:50 README.md\ndrwxr-xr-x  13 root root    4096 Oct 17 15:50 _docs\ndrwxr-xr-x   7 root root    4096 Oct 17 15:50 api\n-rw-r--r--   1 root root    1979 Oct 17 15:50 biome.json\n-rw-r--r--   1 root root 1555604 Oct 17 15:50 licenses.txt\ndrwxr-xr-x 109 root root   36864 Oct 17 16:07 node_modules\n-rw-r--r--   1 root root   10886 Oct 17 16:03 package.json\ndrwxr-xr-x   2 root root    4096 Oct 17 15:50 patches\n-rw-r--r--   1 root root  801703 Oct 17 15:50 pnpm-lock.yaml\n-rw-r--r--   1 root root     459 Oct 17 15:50 pnpm-workspace.yaml\ndrwxr-xr-x   3 root root    4096 Oct 17 15:50 prisma\n-rw-r--r--   1 root root    2054 Oct 17 15:50 publiccode.yml\ndrwxr-xr-x   4 root root    4096 Oct 17 15:50 scripts\ndrwxr-xr-x  28 root root    4096 Oct 17 15:50 shared\n-rw-r--r--   1 root root     649 Oct 17 15:50 tsconfig.json\n-rw-r--r--   1 root root    1134 Oct 17 15:50 tsup.config.ts\n-rw-r--r--   1 root root    3869 Oct 17 15:50 vite.config.js\n-rw-r--r--   1 root root    5405 Oct 17 15:50 vitest.config.ts\ndrwxr-xr-x   6 root root    4096 Oct 17 16:06 web\n{\n  \"type\": \"module\",\n  \"name\": \"Buildplace\",\n  \"description\": \"Buildplace Repository.\",\n  \"main\": \"app.ts\",\n  \"directories\": {\n    \"test\": \"test\"\n  },\n  \"scripts\": {\n    \"dev\": \"tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\",\n    \"dev:host\": \"tsx watch --tsconfig ./api/tsconfig.json ./api/src/server.ts --dev --host\",\n    \"dev:init\": \"pnpm install && pnpm prisma generate && pnpm codegen && pnpm prisma migrate reset && pnpm dev\",\n    \"test\": \"vitest\",\n    \"test:linux\": \"xvfb-run vitest\",\n    \"test:run\": \"vitest run\",\n    \"test:coverage\": \"vitest run --coverage --browser.headless\",\n    \"start\": \"pnpm prisma migrate deploy && node --import ./dist/instrumentation/index.js dist/server.js\",\n    \"build\": \"pnpm run build:api && pnpm run build:web\",\n    \"build:api\": \"pnpm prisma generate && tsup\",\n    \"build:web\": \"vite build\",\n    \"lint\": \"biome check api test && biome check web test && biome check shared test\",\n    \"lint:fix\": \"biome check api test --write && biome check web test --write && biome check shared test --write\",\n    \"codegen\": \"tsx --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts && pnpm gql-tada generate output\",\n    \"codegen:watch\": \"tsx watch --clear-screen=false --exclude '*' --include './dist/server.js' --tsconfig ./api/tsconfig.json ./api/lib/graphql/codegen.ts\",\n    \"generate\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/generate/index.tsx\",\n    \"codeMod\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/codeMod/index.tsx\",\n    \"dataMigration\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/cli/dataMigration/index.tsx\",\n    \"setupDb\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/setupDb.ts\",\n    \"prepare\": \"husky\"\n  },\n  \"engines\": {\n    \"node\": \"24.15.0\"\n  },\n  \"devEngines\": {\n    \"runtime\": {\n      \"name\": \"node\",\n      \"version\": \"24.15.0\",\n      \"onFail\": \"download\"\n    }\n  },\n  \"prisma\": {\n    \"seed\": \"tsx --tsconfig ./scripts/tsconfig.json ./scripts/seeding/seed.ts\"\n  },\n  \"keywords\": [],\n  \"author\": \"form follows you\",\n  \"private\": true,\n  \"dependencies\": {\n    \"@apollo/client\": \"4.1.6\",\n    \"@ark-ui/react\": \"5.35.0\",\n    \"@aws-sdk/client-s3\": \"3.1020.0\",\n    \"@aws-sdk/s3-request-presigner\": \"3.1020.0\",\n    \"@babylonjs/core\": \"9.2.1\",\n    \"@babylonjs/gui\": \"9.2.1\",\n    \"@babylonjs/gui-editor\": \"9.2.1\",\n    \"@babylonjs/inspector\": \"9.2.1\",\n    \"@babylonjs/loaders\": \"9.2.1\",\n    \"@babylonjs/materials\": \"9.2.1\",\n    \"@babylonjs/node-editor\": \"9.2.1\",\n    \"@babylonjs/serializers\": \"9.2.1\",\n    \"@casl/ability\": \"6.8.0\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker ps -a 2>&1; echo \"---\"; node --version 2>&1; pnpm --version 2>&1; git --version 2>&1",
+      "exit_code": 0,
+      "stdout": "CONTAINER ID   IMAGE             COMMAND                  CREATED          STATUS          PORTS                                         NAMES\n39016f698bc2   valkey/valkey     \"tini -- docker-entr\u2026\"   14 minutes ago   Up 14 minutes   0.0.0.0:6380->6379/tcp, [::]:6380->6379/tcp   valkey-queue\n62e7929d6528   valkey/valkey     \"tini -- docker-entr\u2026\"   14 minutes ago   Up 14 minutes   0.0.0.0:6379->6379/tcp, [::]:6379->6379/tcp   valkey-cache\n802a91030bab   postgis/postgis   \"docker-entrypoint.s\u2026\"   14 minutes ago   Up 14 minutes   0.0.0.0:5432->5432/tcp, [::]:5432->5432/tcp   postgis\n---\nv24.15.0\n11.2.2\ngit version 2.34.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -E \"tsx|vite|node\" | grep -v grep | head -20; echo \"---PORTS---\"; (ss -tlnp 2>/dev/null || netstat -tlnp 2>/dev/null) | head -30",
+      "exit_code": 127,
+      "stdout": "root        2007  3.3  1.5 1776732 123236 ?      Sl   16:06   0:05 /root/.local/share/pnpm/package-manager-store/v11/links/@pnpm/exe/11.2.2/e55b02f2b11eea688cd975d8beeb3e92a9b7e6d8f6293e5253ada0fb1cbe3fbf/node_modules/@pnpm/exe/pnpm dev\nroot        2037  0.0  0.0   2892  1536 ?        S    16:06   0:00 sh -c tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\nroot        2038  1.7  0.9 1443428 75472 ?       Sl   16:06   0:02 /workspace/node_modules/.bin/node /workspace/node_modules/.bin/../tsx/dist/cli.mjs watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\nroot        2054  139 20.1 68727288 1608064 ?    Sl   16:06   3:30 /root/.local/share/pnpm/store/v11/links/@/node/24.15.0/39a78a73744b4f53020193da0b6d7e117656cae0112c8522c93cd6afba5363ee/node_modules/node/bin/node --require /workspace/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/preflight.cjs --import file:///workspace/node_modules/.pnpm/tsx@4.21.0/node_modules/tsx/dist/loader.mjs --inspect ./api/src/server.ts --dev\nroot        2067  1.5  0.2 1239640 17232 ?       Sl   16:06   0:02 /workspace/node_modules/.pnpm/@esbuild+linux-x64@0.27.7/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.27.7 --ping\nroot        2096  0.6  0.1 1239128 15416 ?       Sl   16:06   0:00 /workspace/node_modules/.pnpm/@esbuild+linux-x64@0.27.7/node_modules/@esbuild/linux-x64/bin/esbuild --service=0.27.7 --ping\n---PORTS---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat .env && echo \"---LOG TAIL---\" && tail -40 /tmp/dev.log",
+      "exit_code": 0,
+      "stdout": "NODE_ENV=production\nAPP_ENV=production\nLOG_LEVEL=info\nCOOKIE_NAME=app-cookie\nBASE_URL=http://localhost:3000\nWEBAPP_APP_TITLE=buildplace.io\n\nDATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nMIGRATION_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nTEST_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test\nBYPASS_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_dev\nSHADOW_DATABASE_URL=postgres://postgres:postgrespw@localhost:5432/ffy_shadow\nTEST_DIRECT_URL=postgres://postgres:postgrespw@localhost:5432/ffy_test\nRATE_LIMIT_MAX=10000000000\n\nVALKEY_SERVER=localhost\nVALKEY_PORT=6379\nVALKEY_PERSISTENT_SERVER=localhost\nVALKEY_PERSISTENT_PORT=6380\nBULL_PREFIX=local\n\nWEBAPP_DOMAIN=http://localhost:3000\nWEBAPP_SELFSERVING_TILESERVER=https://example.com\nWEBAPP_OGRE_API=https://ogre.example.com\nWEBAPP_MAP_MAPTILER_KEY=your_maptiler_key_here\nWEBAPP_MAP_GEOAPIFY_KEY=your_geoapify_key_here\nWEBAPP_PUBLIC_URL=\"\"\nWEBAPP_SELFSERVING_DGM_TILES=https://example.com/tiles\nWEBAPP_TILESERVER_KEY=your_tileserver_key_here\nWEBAPP_DEV_USER_PW=devpassword123\n\nSESSION_KEY=3d1cf24288f6eee41d6430b855575a06db934f2694b916f35bbafc75c924633e\nSTORAGE_KEY=07cc5e9a50307d4df6f08943a4aaf5ec\nSTORAGE_SECRET=d74d4c21793b224b6a7b54ce9ddfb1b3\nCRYPTO_SECRET=e89f0de32ea1214c360f6160a0d24fa0499719d9357320212377b3b5f58326d4\n\nSTORAGE_BUCKET=dev\nSTORAGE_URL=storage.example.com\n\nMAIL_SMTP=mail.example.com\nMAIL_NOREPLY_USER=noreply@example.com\nMAIL_NOREPLY_PW=your_mail_password\n\nSELFSERVING_API=https://selfservice.example.com\nSELFSERVING_KEY=your_selfserving_key_here\n\nOTEL_SERVICE_NAME=buildplace\nOTEL_EXPORTER_OTLP_ENDPOINT=http://localhost:4318\n\nXPLANBOX_URL=https://xplanbox.example.com\nXPLANBOX_USER=your_xplanbox_user\nXPLANBOX_PASSWORD=your_xplanbox_password\n\nWEBAPP_COMFORT_ANALYSIS_SERVER=http://localhost:3100\n---LOG TAIL---\nAlready up to date\nDone in 171ms using pnpm v11.2.2\n$ tsx watch --tsconfig ./api/tsconfig.json --inspect ./api/src/server.ts --dev\nDebugger listening on ws://127.0.0.1:9229/2ac67bc2-f315-490c-9ff7-203843968863\nFor help, see: https://nodejs.org/en/docs/inspector\n{\"level\":30,\"time\":1792253193180,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Loading Plugins\"}\n{\"level\":30,\"time\":1792253210605,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Creating Audit Log Triggers\"}\n{\"level\":30,\"time\":1792253210895,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished creating Audit Log Triggers\"}\n{\"level\":30,\"time\":1792253210897,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init GeoDataIntersection Jobs Manager Nightly jobs\"}\n{\"level\":30,\"time\":1792253210938,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init Periodic Key Rotation Jobs Manager\"}\n{\"level\":30,\"time\":1792253210941,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253210975,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init GeoDataIntersection Jobs Manager\"}\n{\"level\":30,\"time\":1792253210976,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253210977,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Finished init Periodic Cleanup Jobs Manager\"}\n{\"level\":30,\"time\":1792253211142,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Loading Routes\"}\n{\"level\":40,\"time\":1792253213498,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"@fastify/reply-from might not behave as expected when used with @fastify/multipart\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://127.0.0.1:3000\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://192.168.127.2:3000\"}\n{\"level\":30,\"time\":1792253213501,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"msg\":\"Server listening at http://172.17.0.1:3000\"}\n4:06:54 PM [vite] (client) [optimizer] scanning dependencies...\n4:06:58 PM [vite] (client) warning: Module \"module\" has been externalized for browser compatibility, imported by \"/workspace/shared/geom/clipper/clipper2Wasm/clipper2z.js\". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.\n4:07:01 PM [vite] (client) [optimizer] bundling dependencies...\n{\"level\":30,\"time\":1792253254784,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-2\",\"req\":{\"method\":\"POST\",\"url\":\"/api/graphql\",\"host\":\"localhost:3000\",\"remoteAddress\":\"127.0.0.1\",\"remotePort\":\"3000\",\"origin\":\"\",\"pageUrl\":\"\"},\"msg\":\"incoming request\"}\n{\"level\":30,\"time\":1792253255751,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-2\",\"res\":{\"statusCode\":200},\"responseTime\":954.1389060020447,\"msg\":\"request completed\"}\n4:07:47 PM [vite] (client) warning: Module \"module\" has been externalized for browser compatibility, imported by \"/workspace/shared/geom/clipper/clipper2Wasm/clipper2z.js\". See https://vite.dev/guide/troubleshooting.html#module-externalized-for-browser-compatibility for more details.\n{\"level\":30,\"time\":1792253307408,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-3\",\"req\":{\"method\":\"POST\",\"url\":\"/api/auth/login\",\"host\":\"localhost:3000\",\"remoteAddress\":\"127.0.0.1\",\"remotePort\":\"3000\",\"origin\":\"\",\"pageUrl\":\"\"},\"msg\":\"incoming request\"}\n{\"level\":30,\"time\":1792253307656,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-3\",\"res\":{\"statusCode\":200},\"responseTime\":246.29177498817444,\"msg\":\"request completed\"}\n{\"level\":30,\"time\":1792253307816,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-4\",\"req\":{\"method\":\"GET\",\"url\":\"/api/auth/current-user\",\"host\":\"localhost:3000\",\"remoteAddress\":\"127.0.0.1\",\"remotePort\":\"3000\",\"origin\":\"\",\"pageUrl\":\"\"},\"msg\":\"incoming request\"}\n{\"level\":30,\"time\":1792253307864,\"pid\":2054,\"hostname\":\"3c4a21127e48\",\"reqId\":\"req-4\",\"res\":{\"statusCode\":200,\"user\":\"n4UunwrhYq28aHpqWUye1\"},\"responseTime\":47.04902699589729,\"msg\":\"request completed\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w \"HTTP %{http_code} in %{time_total}s\\n\" http://localhost:3000/ && curl -s http://localhost:3000/ | head -c 600; echo",
+      "exit_code": 0,
+      "stdout": "HTTP 200 in 0.030846s\n<!DOCTYPE html>\n<html lang=\"de\">\n  <head>\n    <script type=\"module\" src=\"/@vite/client\" nonce=\"c82bfbe899502ad97a14ae3608f865b3\"></script>\n\n  <meta charset=\"UTF-8\" />\n  <meta name=\"description\" content=\"Buildplace\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0, maximum-scale=1\" />\n   <meta property=\"csp-nonce\" nonce=\"c82bfbe899502ad97a14ae3608f865b3\">\n\n  <link rel=\"icon\" type=\"image/png\" href=\"/favicon-96x96.png\" sizes=\"96x96\" />\n  <link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\" />\n  <link rel=\"icon\" type=\"image/x-icon\" href=\"/favicon.ico\" />\n  <link rel=\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { __typename }\"}' -w \"\\nHTTP %{http_code}\\n\"",
+      "exit_code": 0,
+      "stdout": "{\"data\":{\"__typename\":\"Query\"}}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && curl -s -X POST http://localhost:3000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"superadmin@buildplace.io\",\"password\":\"somepassword\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 800; echo",
+      "exit_code": 0,
+      "stdout": "{\"success\":true,\"message\":\"Successfully logged in.\"}\nHTTP 200\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -l 2>&1; echo \"---MIGRATIONS---\"; cd /workspace && pnpm prisma migrate status 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "                                                        List of databases\n       Name       |  Owner   | Encoding | Locale Provider |  Collate   |   Ctype    | Locale | ICU Rules |   Access privileges   \n------------------+----------+----------+-----------------+------------+------------+--------+-----------+-----------------------\n ffy_dev          | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | \n ffy_shadow       | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | \n ffy_test         | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | \n postgres         | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | \n template0        | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | =c/postgres          +\n                  |          |          |                 |            |            |        |           | postgres=CTc/postgres\n template1        | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | =c/postgres          +\n                  |          |          |                 |            |            |        |           | postgres=CTc/postgres\n template_postgis | postgres | UTF8     | libc            | en_US.utf8 | en_US.utf8 |        |           | \n(7 rows)\n\n---MIGRATIONS---\nAlready up to date\nDone in 184ms using pnpm v11.2.2\nAlready up to date\nDone in 94ms using pnpm v11.2.2\nEnvironment variables loaded from .env\nPrisma schema loaded from prisma/schema.prisma\nDatasource \"db\": PostgreSQL database \"ffy_dev\", schema \"public\" at \"localhost:5432\"\n\n7 migrations found in prisma/migrations\n\nDatabase schema is up to date!\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec valkey-cache redis-cli -p 6379 ping 2>&1; docker exec valkey-queue redis-cli -p 6379 ping 2>&1; docker exec valkey-queue redis-cli config get maxmemory-policy 2>&1",
+      "exit_code": 0,
+      "stdout": "PONG\nPONG\nmaxmemory-policy\nnoeviction\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c \"SELECT count(*) AS users FROM \\\"User\\\";\" -c \"SELECT count(*) AS scenarios FROM Scenario;\" 2>&1 | head -20; echo \"---GEO---\"; docker exec postgis psql -U postgres -d ffy_dev -c \"SELECT count(*) FROM \\\"GeoDataFeature\\\";\" 2>&1 | head -8",
+      "exit_code": 1,
+      "stdout": " users \n-------\n     8\n(1 row)\n\nERROR:  relation \"scenario\" does not exist\nLINE 1: SELECT count(*) AS scenarios FROM Scenario;\n                                          ^\n---GEO---\nERROR:  relation \"GeoDataFeature\" does not exist\nLINE 1: SELECT count(*) FROM \"GeoDataFeature\";\n                             ^\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la web/public/web-ifc/ 2>&1; echo \"---CODEGEN---\"; ls -la shared/graphql/types.ts api/lib/graphql/schema.graphql 2>&1; head -5 shared/graphql/types.ts; echo \"---MIGRATIONS DIR---\"; ls prisma/migrations/",
+      "exit_code": 0,
+      "stdout": "total 3832\ndrwxr-xr-x  2 root root    4096 Oct 17 15:50 .\ndrwxr-xr-x 15 root root    4096 Oct 17 15:50 ..\n-rwxr-xr-x  1 root root 1314227 Oct 17 16:03 web-ifc-mt.wasm\n-rw-r--r--  1 root root    2239 Oct 17 15:50 web-ifc-mt.worker.js\n-rwxr-xr-x  1 root root 1288859 Oct 17 16:03 web-ifc-node.wasm\n-rwxr-xr-x  1 root root 1303940 Oct 17 16:03 web-ifc.wasm\n---CODEGEN---\n-rw-r--r-- 1 root root  64686 Oct 17 15:50 api/lib/graphql/schema.graphql\n-rw-r--r-- 1 root root 304916 Oct 17 15:50 shared/graphql/types.ts\nimport { GraphQLResolveInfo, GraphQLScalarType, GraphQLScalarTypeConfig } from 'graphql';\nimport { GraphQLContext } from '@shared/graphql/context';\nexport type Maybe<T> = T | null;\nexport type InputMaybe<T> = Maybe<T>;\nexport type Exact<T extends { [key: string]: unknown }> = { [K in keyof T]: T[K] };\n---MIGRATIONS DIR---\n20260708140910_init_db\n20260708141040_generated_full_name\n20260708141057_generated_geo_bounds_geometry\n20260708141109_generated_permissions\n20260708141132_generated_asset_geometries\n20260708141144_generated_asset_value_numeric\n20260708141155_generated_audit_trigger\nmigration_lock.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c \"\\dt\" 2>&1 | head -40",
+      "exit_code": 0,
+      "stdout": "                    List of relations\n Schema |             Name             | Type  |  Owner   \n--------+------------------------------+-------+----------\n public | Account                      | table | postgres\n public | Address                      | table | postgres\n public | AreaAsset                    | table | postgres\n public | AreaTypeOnPattern            | table | postgres\n public | AreaTypeOnProject            | table | postgres\n public | AreaTypeTemplate             | table | postgres\n public | Asset                        | table | postgres\n public | AssetValue                   | table | postgres\n public | AssetValueOnAssetValue       | table | postgres\n public | Audit                        | table | postgres\n public | Building                     | table | postgres\n public | Comment                      | table | postgres\n public | Contact                      | table | postgres\n public | ContextBuilding              | table | postgres\n public | DataCatalog                  | table | postgres\n public | Discussion                   | table | postgres\n public | Enquiry                      | table | postgres\n public | ExposeTemplate               | table | postgres\n public | FeatureSet                   | table | postgres\n public | File                         | table | postgres\n public | FilterProfile                | table | postgres\n public | GeoDataSource                | table | postgres\n public | GeoDataSourceOnAsset         | table | postgres\n public | GeoDataSourceOnView          | table | postgres\n public | GeoDataSourceProxy           | table | postgres\n public | GeoDataView                  | table | postgres\n public | ItemAsset                    | table | postgres\n public | ItemType                     | table | postgres\n public | ItemTypeTemplate             | table | postgres\n public | Land                         | table | postgres\n public | Mediation                    | table | postgres\n public | Member                       | table | postgres\n public | MemberOnTeam                 | table | postgres\n public | MemberPreference             | table | postgres\n public | Monitoring                   | table | postgres\n public | Parcel                       | table | postgres\n public | ParcelOnProject              | table | postgres\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -E \"^model\" prisma/schema.prisma | head -30; echo \"---SEED USERS---\"; docker exec postgis psql -U postgres -d ffy_dev -c \"SELECT email FROM \\\"User\\\" ORDER BY email;\" 2>&1",
+      "exit_code": 0,
+      "stdout": "model Audit {\nmodel User {\nmodel Account {\nmodel Tenant {\nmodel FeatureSet {\nmodel Address {\nmodel Contact {\nmodel Member {\nmodel MemberPreference {\nmodel MemberOnTeam {\nmodel Team {\nmodel Permission {\nmodel DataCatalog {\nmodel GeoDataSource {\nmodel GeoDataSourceProxy {\nmodel Secret {\nmodel GeoDataView {\nmodel GeoDataSourceOnView {\nmodel GeoDataSourceOnAsset {\nmodel Story {\nmodel Stage {\nmodel Thread {\nmodel Discussion {\nmodel Comment {\nmodel XPlanSource {\nmodel Portfolio {\nmodel FilterProfile {\nmodel Monitoring {\nmodel PropertyOnMonitoring {\nmodel Asset {\n---SEED USERS---\n               email               \n-----------------------------------\n anotherAdmin@buildplace.io\n inactiveTenantAdmin@buildplace.io\n superadmin@buildplace.io\n tenantAdmin@buildplace.io\n tenantMember@buildplace.io\n tenantTeamLead@buildplace.io\n tenantTeamMember@buildplace.io\n tenantVisitor@buildplace.io\n(8 rows)\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -oE \"^\\s{2,4}[a-zA-Z]+ *:\" api/lib/graphql/schema.graphql | head -5; grep -nE \"me|users|projects\" api/lib/graphql/schema.graphql | grep -E \"^\\s*[0-9]+:\\s+(me|users|projects)\" | head -10; grep -n \"type Query\" api/lib/graphql/schema.graphql",
+      "exit_code": 0,
+      "stdout": "  query:\n  mutation:\n  subscription:\n  createdAt:\n  id:\n414:  message: String!\n496:  memberQuota: Int\n622:  memberId: String!\n629:  memberId: String!\n1025:  memberFeature: [String!]!\n1026:  memberQuota: Int\n1134:  mediations: [Mediation!]!\n1376:  member: Member\n1377:  memberId: String!\n1387:  member: Member\n1934:type Query {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c \"SELECT count(*) AS buildings FROM Building;\" -c \"SELECT count(*) AS parcels FROM Parcel;\" -c \"SELECT count(*) AS geodata_views FROM GeoDataView;\" -c \"SELECT count(*) FROM projtbl;\" 2>&1 | head -30",
+      "exit_code": 1,
+      "stdout": "ERROR:  relation \"building\" does not exist\nLINE 1: SELECT count(*) AS buildings FROM Building;\n                                          ^\nERROR:  relation \"parcel\" does not exist\nLINE 1: SELECT count(*) AS parcels FROM Parcel;\n                                        ^\nERROR:  relation \"geodataview\" does not exist\nLINE 1: SELECT count(*) AS geodata_views FROM GeoDataView;\n                                              ^\nERROR:  relation \"projtbl\" does not exist\nLINE 1: SELECT count(*) FROM projtbl;\n                             ^\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c 'SELECT count(*) AS buildings FROM \"Building\";' -c 'SELECT count(*) AS parcels FROM \"Parcel\";' -c 'SELECT count(*) AS geodata_views FROM \"GeoDataView\";' -c 'SELECT count(*) AS projections FROM projtbl;' 2>&1",
+      "exit_code": 1,
+      "stdout": " buildings \n-----------\n       105\n(1 row)\n\n parcels \n---------\n      92\n(1 row)\n\n geodata_views \n---------------\n            15\n(1 row)\n\nERROR:  relation \"projtbl\" does not exist\nLINE 1: SELECT count(*) AS projections FROM projtbl;\n                                            ^\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && sed -n '1934,1990p' api/lib/graphql/schema.graphql",
+      "exit_code": 0,
+      "stdout": "type Query {\n  account(id: String!): Account\n  accounts: [Account!]!\n  address(id: String!): Address!\n  addresses: Address!\n  areaAsset(id: String!): AreaAsset\n  areaAssets: [AreaAsset!]!\n  areaTypeOnPattern(id: String!): AreaTypeOnPattern\n  areaTypeOnPatterns: [AreaTypeOnPattern!]!\n  areaTypeOnProject(id: String!): AreaTypeOnProject\n  areaTypeOnProjects(projectId: String!): [AreaTypeOnProject!]!\n  areaTypeTemplate(id: String!): AreaTypeTemplate\n  areaTypeTemplates: [AreaTypeTemplate!]!\n  asset(id: String!): Asset\n  assetValue(id: ID!): AssetValue\n  assetValues(assetId: String!): [AssetValue!]!\n  \"\"\"\n  Returns assets for a given portfolio. Does not return relations for better performance. For detailed asset information use assetsById endpoint.\n  \"\"\"\n  assets(filterProfile: JSON, filterSearch: String, portfolioId: String!): [Asset!]!\n  assetsById(assetIds: [String!], portfolioId: String!): [Asset!]!\n  assetsWithinBounds(bounds: GeoBounds!, filterProfile: JSON, filterSearch: String, portfolioId: String!): [Asset!]!\n  audit(id: String!): Audit\n  audits(entries: [AuditEntry!], page: Int!): FilteredAudits!\n  building(id: String!): Building\n  buildings(portfolioId: String): [Building!]!\n  buildingsWithinBounds(bounds: GeoBounds!): [Building!]!\n  closestWeatherDataset(lat: Float!, lng: Float!): WeatherDataset!\n  comment(id: String!): Comment\n  comments(discussionId: String!): [Comment!]!\n  contact(id: String!): Contact\n  contacts(page: Int, sortingDirection: String, sortingProperty: String): FilteredContacts\n  contextBuildings: [ContextBuilding!]!\n  dataCatalog(id: String!): DataCatalog\n  dataCatalogs: [DataCatalog!]!\n  discussion(id: String!): Discussion\n  discussions(threadId: String!): [Discussion!]!\n  enquiries(filter: JSON, page: Int, portfolioId: String!, sortingDirection: String, sortingProperty: String): FilteredEnquiries!\n  enquiry(id: String!, portfolioId: String!): Enquiry\n  exportEnquiriesReport(endDate: DateTime!, portfolioId: String!, startDate: DateTime!): EnquiriesReport!\n  exportThreads(threadIds: [String!]!): String\n  exposeTemplate(id: String!): ExposeTemplate\n  exposeTemplates(id: String!, model: ExposeTemplateModel!): [ExposeTemplate!]!\n  featureSet(id: String!): FeatureSet\n  featureSets: [FeatureSet!]!\n  file(id: String!): File\n  files(relation: FileRelation!, relationId: String!): [File!]!\n  filterProfile(id: String!): FilterProfile\n  filterProfiles(portfolioId: String!): [FilterProfile!]!\n  general: General\n  geoDataSource(id: String!): GeoDataSource\n  geoDataSourceOnAsset(assetId: String!, sourceId: String!): GeoDataSourceOnAsset\n  geoDataSourceOnAssets(assetId: String!): [GeoDataSourceOnAsset!]!\n  geoDataSourceOnView(id: String!): GeoDataSourceOnView\n  geoDataSourceOnViews(viewId: String!): [GeoDataSourceOnView!]!\n  geoDataSourceProxies: [GeoDataSourceProxy!]!\n  geoDataSourceProxy(id: String!): GeoDataSourceProxy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -nE \"^\\s+(me|users|currentMember)\" api/lib/graphql/schema.graphql | head; grep -n \"projtbl\\|EPSG\\|spatial_ref_sys\" scripts/seeding/seed.ts 2>/dev/null | head -5; docker exec postgis psql -U postgres -d ffy_dev -c \"SELECT extname FROM pg_extension;\" -c \"SELECT count(*) FROM spatial_ref_sys;\" 2>&1",
+      "exit_code": 0,
+      "stdout": "414:  message: String!\n496:  memberQuota: Int\n622:  memberId: String!\n629:  memberId: String!\n1025:  memberFeature: [String!]!\n1026:  memberQuota: Int\n1134:  mediations: [Mediation!]!\n1376:  member: Member\n1377:  memberId: String!\n1387:  member: Member\n2018:        epsg: 'EPSG:25833',\n2026:        epsg: 'EPSG:25833',\n2034:        epsg: 'EPSG:25833',\n2042:        epsg: 'EPSG:25833',\n2050:        epsg: 'EPSG:25833',\n extname \n---------\n plpgsql\n postgis\n(2 rows)\n\n count \n-------\n  8500\n(1 row)\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && rm -f cookies.txt && curl -s -c cookies.txt -X POST http://localhost:3000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"superadmin@buildplace.io\",\"password\":\"somepassword\"}' && echo && curl -s -b cookies.txt http://localhost:3000/api/auth/current-user -w \"\\nHTTP %{http_code}\\n\" | head -c 600",
+      "exit_code": 0,
+      "stdout": "{\"success\":true,\"message\":\"Successfully logged in.\"}\n{\"id\":\"n4UunwrhYq28aHpqWUye1\",\"firstName\":\"Super\",\"lastName\":\"Tenant\",\"fullName\":\"Super Tenant\",\"email\":\"superadmin@buildplace.io\",\"accounts\":[],\"members\":[{\"id\":\"-v7KEXVLfih-PLibmzcs5\",\"role\":\"SUPERADMIN\",\"tenant\":{\"slug\":\"active-tenant\"},\"teams\":[]}],\"preferences\":{}}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -nE \"^\\s+(portfolios|members|tenants)\" api/lib/graphql/schema.graphql | head -5",
+      "exit_code": 0,
+      "stdout": "2011:  members(slug: String!): [Member!]!\n2021:  portfolios(slug: String!): [Portfolio!]!\n2046:  tenants: [Tenant!]!\n2229:  members: [MemberOnTeam!]\n2259:  members: [Member!]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && curl -s -b cookies.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { portfolios(slug: \\\"active-tenant\\\") { id slug name } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 700; echo; curl -s -b cookies.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { buildings { id } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 400",
+      "exit_code": 23,
+      "stdout": "{\"errors\":[{\"message\":\"Cannot query field \\\"slug\\\" on type \\\"Portfolio\\\".\",\"locations\":[{\"line\":1,\"column\":48}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}}]}\nHTTP 200\n\n{\"errors\":[{\"message\":\"Not authorized.\",\"locations\":[{\"line\":1,\"column\":9}],\"path\":[\"buildings\"],\"extensions\":{\"code\":\"FORBIDDEN\",\"requestId\":\"req-c\",\"args\":\"{\\n  schema: GraphQLSchema {\\n    __validationErrors: [],\\n    description: undefined,\\n    extensions: [Object: null prototype] { directives: {} },\\n    astNode: undefined,\\n    extensionASTNodes: [ { kind: 'SchemaExtension', directives: [],",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && curl -s -b cookies.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { tenants { id name slug } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 500; echo; echo \"---PORTFOLIO IDQ---\"; curl -s -b cookies.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { members { id firstName email } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 400",
+      "exit_code": 0,
+      "stdout": "{\"errors\":[{\"message\":\"Cannot query field \\\"id\\\" on type \\\"Tenant\\\".\",\"locations\":[{\"line\":1,\"column\":19}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}}]}\nHTTP 200\n\n---PORTFOLIO IDQ---\n{\"errors\":[{\"message\":\"Cannot query field \\\"firstName\\\" on type \\\"Member\\\".\",\"locations\":[{\"line\":1,\"column\":22}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}},{\"message\":\"Cannot query field \\\"email\\\" on type \\\"Member\\\".\",\"locations\":[{\"line\":1,\"column\":32}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}},{\"message\":\"Field \\\"members\\\" argument \\\"slug\\\" of type \\\"String!\\\" is required, but ",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && awk '/^type Tenant \\{/,/^\\}/' api/lib/graphql/schema.graphql | head -15; echo \"---MEMBER---\"; awk '/^type Member \\{/,/^\\}/' api/lib/graphql/schema.graphql | head -15; echo \"---PORTFOLIO---\"; awk '/^type Portfolio \\{/,/^\\}/' api/lib/graphql/schema.graphql | head -12",
+      "exit_code": 0,
+      "stdout": "type Tenant {\n  _cruds: [String!]!\n  activeEnd: DateTime\n  activeStart: DateTime\n  address: Address\n  areaTypeTemplates: [AreaTypeTemplate!]\n  cobraEndpoint: String\n  cobraSecret: Secret\n  cobraSecretId: String\n  features: FeatureSet\n  hasRemoteContacts: Boolean!\n  headerImage: String\n  itemTypeTemplates: [ItemTypeTemplate!]\n  komGisPermissionsEndpoint: String\n  komGisPermissionsSecret: Secret\n---MEMBER---\ntype Member {\n  _cruds: [String!]!\n  id: ID\n  preferences: MemberPreference\n  role: Role!\n  teams: [MemberOnTeam!]\n  tenant: Tenant\n  user: User\n}\n---PORTFOLIO---\ntype Portfolio {\n  _cruds: [String!]!\n  assetPermissions: Asset\n  assets: [Asset!]\n  assetsCount: Int!\n  bounds: [Float!]\n  color: String\n  contactRecipientFallback: Contact\n  contactRecipientFallbackId: String\n  contactRecipientPrivacyUrl: String\n  contactRecipientProperty: Property\n  contactRecipientPropertyId: String\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && curl -s -b cookies.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { members(slug: \\\"active-tenant\\\") { id role user { email } } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 600",
+      "exit_code": 23,
+      "stdout": "{\"errors\":[{\"message\":\"No tenant.\",\"locations\":[{\"line\":1,\"column\":9}],\"path\":[\"members\"],\"extensions\":{\"code\":\"FORBIDDEN\",\"requestId\":\"req-f\",\"args\":\"{\\n  schema: GraphQLSchema {\\n    __validationErrors: [],\\n    description: undefined,\\n    extensions: [Object: null prototype] { directives: {} },\\n    astNode: undefined,\\n    extensionASTNodes: [ { kind: 'SchemaExtension', directives: [], operationTypes: [] } ],\\n    _queryType: GraphQLObjectType {\\n      name: 'Query',\\n      description: undefined,\\n      isTypeOf: undefined,\\n      extensions: [Object: null prototype] { pothosOptions: {},",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && rm -f c2.txt && curl -s -c c2.txt -X POST http://localhost:3000/api/auth/login -H \"Content-Type: application/json\" -d '{\"email\":\"tenantMember@buildplace.io\",\"password\":\"somepassword\"}' -w \"\\nlogin: HTTP %{http_code}\\n\" && curl -s -b c2.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { members { id role user { email } tenant { name slug } } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 800",
+      "exit_code": 0,
+      "stdout": "{\"success\":true,\"message\":\"Successfully logged in.\"}\nlogin: HTTP 200\n{\"errors\":[{\"message\":\"Field \\\"members\\\" argument \\\"slug\\\" of type \\\"String!\\\" is required, but it was not provided.\",\"locations\":[{\"line\":1,\"column\":9}],\"extensions\":{\"code\":\"GRAPHQL_VALIDATION_FAILED\"}}]}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && curl -s -b c2.txt -X POST http://localhost:3000/api/graphql -H \"Content-Type: application/json\" -d '{\"query\":\"query { members(slug: \\\"active-tenant\\\") { id role user { email } } }\"}' -w \"\\nHTTP %{http_code}\\n\" | head -c 700",
+      "exit_code": 23,
+      "stdout": "{\"errors\":[{\"message\":\"No tenant.\",\"locations\":[{\"line\":1,\"column\":9}],\"path\":[\"members\"],\"extensions\":{\"code\":\"FORBIDDEN\",\"requestId\":\"req-i\",\"args\":\"{\\n  schema: GraphQLSchema {\\n    __validationErrors: [],\\n    description: undefined,\\n    extensions: [Object: null prototype] { directives: {} },\\n    astNode: undefined,\\n    extensionASTNodes: [ { kind: 'SchemaExtension', directives: [], operationTypes: [] } ],\\n    _queryType: GraphQLObjectType {\\n      name: 'Query',\\n      description: undefined,\\n      isTypeOf: undefined,\\n      extensions: [Object: null prototype] { pothosOptions: {}, pothosConfig: { kind: 'Query', graphqlKind: 'Object', name: 'Query', description: undefined, pothos",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rn \"No tenant\" api/src --include=\"*.ts\" -l | head -5; grep -rn \"No tenant\" api/src --include=\"*.ts\" | head -5",
+      "exit_code": 0,
+      "stdout": "api/src/services/itemAssets/itemAssets.ts\napi/src/services/portfolios/portfolios.ts\napi/src/services/portfolios/report/generateLandMonitoringReport.ts\napi/src/services/underlays/underlays.ts\napi/src/services/lands/lands.ts\napi/src/services/itemAssets/itemAssets.ts:161:        logger.error('No tenant or correct portfolio found when creating itemAsset.')\napi/src/services/portfolios/portfolios.ts:409:        throw new ForbiddenError('No tenant.')\napi/src/services/portfolios/portfolios.ts:472:        throw new ForbiddenError('No tenant or user.')\napi/src/services/portfolios/portfolios.ts:671:        throw new ForbiddenError('No tenant or user.')\napi/src/services/portfolios/report/generateLandMonitoringReport.ts:42:    throw new ForbiddenError('No tenant or user.')\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w \"vite client: HTTP %{http_code}\\n\" http://localhost:3000/@vite/client; curl -s http://localhost:3000/ | grep -oE 'src=\"[^\"]+\"' | head -10",
+      "exit_code": 0,
+      "stdout": "vite client: HTTP 200\nsrc=\"/@vite/client\"\nsrc=\"/src/main.tsx\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c 'SELECT u.email, a.\"tenantId\" FROM \"User\" u LEFT JOIN \"Account\" a ON a.\"userId\"=u.id;' 2>&1 | head -20",
+      "exit_code": 1,
+      "stdout": "ERROR:  column a.tenantId does not exist\nLINE 1: SELECT u.email, a.\"tenantId\" FROM \"User\" u LEFT JOIN \"Accoun...\n                        ^\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && sed -n '400,415p' api/src/services/portfolios/portfolios.ts",
+      "exit_code": 0,
+      "stdout": "        required: true,\n      }),\n    },\n    type: ['Portfolio'],\n    nullable: false,\n    resolve: async (query, parent, { slug }, context, info) => {\n      const currentTenant = requestContext.get('currentTenant')\n      if (!currentTenant || currentTenant.slug !== slug) {\n        logger.error('Tenant missing when searching for portolios.')\n        throw new ForbiddenError('No tenant.')\n      }\n\n      const tenant = await db.tenant.findUnique({\n        where: { id: currentTenant.id },\n        select: { orderPortfolios: true },\n      })\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec postgis psql -U postgres -d ffy_dev -c '\\d \"Account\"' 2>&1 | head -20; echo \"---VITE MAIN---\"; curl -s -o /dev/null -w \"main.tsx: HTTP %{http_code}\\n\" http://localhost:3000/src/main.tsx; curl -s http://localhost:3000/src/main.tsx | head -c 200; echo",
+      "exit_code": 0,
+      "stdout": "                                              Table \"public.Account\"\n      Column      |              Type              | Collation | Nullable |                Default                \n------------------+--------------------------------+-----------+----------+---------------------------------------\n id               | integer                        |           | not null | nextval('\"Account_id_seq\"'::regclass)\n title            | text                           |           | not null | \n providerId       | text                           |           | not null | \n accountId        | text                           |           | not null | \n userId           | text                           |           | not null | \n tokenSecret      | text                           |           |          | \n accessToken      | text                           |           |          | \n refreshToken     | text                           |           |          | \n expiresAt        | timestamp(3) without time zone |           | not null | \n refreshExpiresAt | timestamp(3) without time zone |           |          | \n type             | \"AccountType\"                  |           | not null | \n token            | text                           |           | not null | \n createdAt        | timestamp(3) without time zone |           | not null | CURRENT_TIMESTAMP\n updatedAt        | timestamp(3) without time zone |           | not null | \n scope            | text                           |           |          | \nIndexes:\n    \"Account_pkey\" PRIMARY KEY, btree (id)\n---VITE MAIN---\nmain.tsx: HTTP 200\nconst createRoot = __vite__cjsImport5_reactDom_client[\"createRoot\"];const _jsx = __vite__cjsImport7_react_jsxRuntime[\"jsx\"];import { ApolloProvider } from \"/@fs/workspace/node_modules/.vite/deps/@apol\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --short | head -20; echo \"---TRACKED?---\"; git ls-files shared/graphql/types.ts api/lib/graphql/schema.graphql | head; echo \"---SERVER STILL UP---\"; curl -s -o /dev/null -w \"root: HTTP %{http_code}\\n\" http://localhost:3000/ && docker ps --format \"{{.Names}}: {{.Status}}\"",
+      "exit_code": 0,
+      "stdout": "---TRACKED?---\napi/lib/graphql/schema.graphql\nshared/graphql/types.ts\n---SERVER STILL UP---\nroot: HTTP 200\nvalkey-queue: Up 16 minutes\nvalkey-cache: Up 16 minutes\npostgis: Up 16 minutes\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

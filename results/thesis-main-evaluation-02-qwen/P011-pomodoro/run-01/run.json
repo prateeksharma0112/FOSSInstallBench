@@ -1,0 +1,87 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P011-pomodoro__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T19:46:35.772723+02:00",
+    "finished_at": "2026-10-15T19:54:27.065335+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P011",
+    "project": {
+      "opencode_id": "12891",
+      "name": "Pomodoro",
+      "description": "Local focus timer for greater efficiency in everyday administrative work: fixed work blocks, conscious breaks and honest time tracking that also counts interrupted focus sessions.",
+      "catalogue_url": "https://opencode.de/de/software/pomodoro-12891",
+      "type": "Application",
+      "platforms": [
+        "mac",
+        "linux"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/frederic/pomodoro",
+      "commit_sha": "54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/frederic/pomodoro/-/blob/54320075112b92c70ae0dbb00633ab01f8b600ce/README.md",
+      "language": "English",
+      "word_count": 702
+    },
+    "task_id": "P011-pomodoro"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 471.31200000000536,
+    "repository_setup_duration_seconds": 7.014999999999418,
+    "installation_duration_seconds": 380.5,
+    "validation_duration_seconds": 75.85899999999674,
+    "command_count": 43,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 22,
+    "validation_command_count": 17
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P011-pomodoro/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

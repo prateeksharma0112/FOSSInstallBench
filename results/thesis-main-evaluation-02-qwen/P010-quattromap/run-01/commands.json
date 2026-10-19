@@ -1,0 +1,388 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/kreis-viersen/quattromap /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/kreis-viersen/quattromap.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 24041c041e0de1d41cbab9d9fac0c0cb1681b09f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/kreis-viersen/quattromap.git/\nFrom https://gitlab.opencode.de/kreis-viersen/quattromap\n * branch            24041c041e0de1d41cbab9d9fac0c0cb1681b09f -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 24041c041e0de1d41cbab9d9fac0c0cb1681b09f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 24041c0 Update .gitlab-ci.yml\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 24041c041e0de1d41cbab9d9fac0c0cb1681b09f",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 2124\ndrwxr-xr-x 6 root root    4096 Oct 15 17:39 .\ndr-xr-xr-x 1 root root    4096 Oct 15 17:39 ..\ndrwxr-xr-x 8 root root    4096 Oct 15 17:39 .git\n-rw-r--r-- 1 root root     416 Oct 15 17:39 .gitattributes\ndrwxr-xr-x 3 root root    4096 Oct 15 17:39 .github\n-rw-r--r-- 1 root root      62 Oct 15 17:39 .gitignore\n-rw-r--r-- 1 root root    1787 Oct 15 17:39 .gitlab-ci.yml\n-rw-r--r-- 1 root root    1070 Oct 15 17:39 LICENSE\n-rw-r--r-- 1 root root   35886 Oct 15 17:39 README.md\n-rw-r--r-- 1 root root     737 Oct 15 17:39 SECURITY.md\n-rw-r--r-- 1 root root  379240 Oct 15 17:39 codesandbox_fullscreen.png\n-rw-r--r-- 1 root root   61717 Oct 15 17:39 logo_quattromap_opencode.png\n-rw-r--r-- 1 root root  193512 Oct 15 17:39 package-lock.json\n-rw-r--r-- 1 root root     944 Oct 15 17:39 package.json\n-rw-r--r-- 1 root root    3339 Oct 15 17:39 publiccode.yml\n-rw-r--r-- 1 root root 1434284 Oct 15 17:39 quattromap_measurement-tools.gif\ndrwxr-xr-x 2 root root    4096 Oct 15 17:39 screenshots\ndrwxr-xr-x 3 root root    4096 Oct 15 17:39 src\n-rw-r--r-- 1 root root    2023 Oct 15 17:39 webpack.config.js\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version 2>&1; npm --version 2>&1; which git 2>&1",
+      "exit_code": 0,
+      "stdout": "/bin/bash: line 3: node: command not found\n/bin/bash: line 3: npm: command not found\n/usr/bin/git\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release 2>/dev/null | head -5; echo \"---\"; which apt-get yum dnf apk 2>&1; echo \"---\"; ls /usr/local/bin 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\n---\n/usr/bin/apt-get\n---\ninstallbench-dind-entrypoint\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/package.json",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"quattromap\",\n  \"description\": \"Compare up to 4 maps at once\",\n  \"version\": \"2.0.0\",\n  \"license\": \"MIT\",\n  \"scripts\": {\n    \"start\": \"webpack serve\",\n    \"build\": \"webpack\",\n    \"deploy\": \"gh-pages -d dist\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/kreis-viersen/quattromap\"\n  },\n  \"devDependencies\": {\n    \"copy-webpack-plugin\": \"^14.0.0\",\n    \"css-loader\": \"^7.1.5\",\n    \"gh-pages\": \"^6.3.0\",\n    \"style-loader\": \"^4.0.0\",\n    \"terser-webpack-plugin\": \"^5.6.1\",\n    \"webpack\": \"^5.110.3\",\n    \"webpack-cli\": \"^7.2.3\",\n    \"webpack-dev-server\": \"^6.0.0\",\n    \"webpack-license-plugin\": \"^4.5.1\"\n  },\n  \"dependencies\": {\n    \"@mapbox/mapbox-gl-draw\": \"1.5.1\",\n    \"@mapbox/mapbox-gl-sync-move\": \"^0.3.1\",\n    \"@maplibre/maplibre-gl-geocoder\": \"^1.9.4\",\n    \"@turf/area\": \"^7.4.0\",\n    \"@turf/centroid\": \"^7.4.0\",\n    \"@turf/length\": \"^7.4.0\",\n    \"lz-string\": \"^1.5.0\",\n    \"maplibre-gl\": \"6.9.0\"\n  }\n}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -sI --max-time 15 https://deb.nodesource.com/ | head -3; echo \"EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "HTTP/2 200 \ndate: Thu, 15 Oct 2026 17:40:03 GMT\ncontent-type: text/html\nEXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -fsSL https://deb.nodesource.com/setup_20.x -o /tmp/nodesource_setup.sh && bash /tmp/nodesource_setup.sh 2>&1 | tail -5; echo \"SETUP_EXIT:$?\"",
+      "exit_code": 0,
+      "stdout": "\u001b[1;34m2026-10-15 17:40:38 - Repository configured successfully.\u001b[0m\n\u001b[38;5;79m2026-10-15 17:40:38 - To install Node.js, run: apt install nodejs -y\u001b[0m\n\u001b[38;5;79m2026-10-15 17:40:38 - You can use N|solid Runtime as a node.js alternative\u001b[0m\n\u001b[1;32m2026-10-15 17:40:38 - To install N|solid Runtime, run: apt install nsolid -y \n\u001b[0m\nSETUP_EXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DEBIAN_FRONTEND=noninteractive apt-get install -y nodejs 2>&1 | tail -5; echo \"INSTALL_EXIT:$?\"; node --version; npm --version",
+      "exit_code": 0,
+      "stdout": "Setting up libpython3-stdlib:amd64 (3.10.6-1~22.04.1) ...\nSetting up python3.10 (3.10.12-1~22.04.18) ...\nSetting up python3 (3.10.6-1~22.04.1) ...\nSetting up nodejs (20.20.2-1nodesource1) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nINSTALL_EXIT:0\nv20.20.2\n10.8.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && npm install 2>&1 | tail -15; echo \"NPM_EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "\n15 vulnerabilities (2 moderate, 11 high, 2 critical)\n\nTo address issues that do not require attention, run:\n  npm audit fix\n\nTo address all issues (including breaking changes), run:\n  npm audit fix --force\n\nRun `npm audit` for details.\nnpm notice\nnpm notice New major version of npm available! 10.8.2 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\nNPM_EXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && npm run build 2>&1 | tail -25; echo \"BUILD_EXIT:${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "WARNING in ./node_modules/maplibre-gl/dist/maplibre-gl.mjs 5:36320-36346\nCritical dependency: the request of a dependency is an expression\n @ ./src/index.js 9:0-42 23:0-23 289:16-30 298:30-59 303:16-30 312:30-59 317:16-30 326:30-59 331:16-30 340:30-59 615:4-14 643:6-34 651:6-34 658:6-33\n\nWARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).\nThis can impact web performance.\nAssets: \n  bundle.js (1.24 MiB)\n    Largest modules: ./src/index.js + 72 modules (1.38 MiB), ./node_modules/css-loader/dist/cjs.js!./node_modules/maplibre-gl/dist/maplibre-gl.css (55.4 KiB), data:image/svg+xml;charset=utf-8,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%2288%22%20height%3D%2223%22%20fill%3D%22none%22%3E%3Cpath%20fill%3D%22%23000%22%20fill-opacity%3D%22.4%22%20fill-rule%3D%22evenodd%22%20d%3D%22M17.408%2016.796h-1.827l2.501-12.095h.198l3.324%206.533.988%202.19.988-2.19%203.258-6.533h.181l2.6%2012.095h-1.81l-1.218-5.644-.362-1.71-.658%201.71-2.929%205.644h-.098l-2.914-5.644-.757-1.71-.345%201.71zm1.958-3.42-.726%203.663a1.255%201.255%200%200%201-1.232%201.011h-1.827a1.255%201.255%200%200%201-1.229-1.509l2.501-12.095a1.255%201.255%200%200%201%201.23-1.001h.197a1.25%201.25%200%200%201%201.12.685l3.19%206.273%203.125-6.263a1.25%201.25%200%200%201%201.123-.695h.181a1.255%201.255%200%200%201%201.227.991l1.443%206.71a5%205%200%200%201%20.314-.787l.009-.016a4.6%204.6%200%200%201%201.777-1.887c.782-.46%201.668-.667%202.611-.667a4.6%204.6%200%200%201%201.7.32l.306.134c.21-.16.474-.256.759-.256h1.694a1.255%201.255%200%200%201%201.212.925%201.255%201.255%200%200%201%201.212-.925h1.711c.284%200%20.545.094.755.252.613-.3%201.312-.45%202.075-.45%201.356%200%202.557.445%203.482%201.4q.47.48.763%201.064V4.701a1.255%201.255%200%200%201%201.255-1.255h1.86A1.255%201.255%200%200%201%2054.44%204.7v9.194h2.217c.19%200%20.37.043.532.118v-4.77c0-.356.147-.678.385-.906a2.42%202.42%200%200%201-.682-1.71c0-.665.267-1.253.735-1.7a2.45%202.45%200%200%201%201.722-.674%202.43%202.43%200%200%201%201.705.675q.318.302.504.683V4.7a1.255%201.255%200%200%201%201.255-1.255h1.744A1.255%201.255%200%200%201%2065.812%204.7v3.335a4.8%204.8%200%200%201%201.526-.246c.938%200%201.817.214%202.59.69a4.47%204.47%200%200%201%201.67%201.743v-.98a1.255%201.255%200%200%201%201.256-1.256h1.777c.233%200%20.451.064.639.174a3.4%203.4%200%200%201%201.567-.372c.346%200%20.861.02%201.285.232a1.25%201.25%200%200%201%20.689%201.004%204.7%204.7%200%200%201%20.853-.588c.795-.44%201.675-.647%202.61-.647%201.385%200%202.65.39%203.525%201.396.836.938%201.168%202.173%201.168%203.528q-.001.515-.056%201.051a1.255%201.255%200%200%201-.947%201.09l.408.952a1.255%201.255%200%200%201-.477%201.552c-.418.268-.92.463-1.458.612-.613.171-1.304.244-2.049.244-1.06%200-2.043-.207-2.886-.698l-.015-.008c-.798-.48-1.419-1.135-1.818-1.963l-.004-.008a5.8%205.8%200%200%201-.548-2.512q0-.429.053-.843a1.3%201.3%200%200%201-.333-.086l-.166-.004c-.223%200-.426.062-.643.228-.03.024-.142.139-.142.59v3.883a1.255%201.255%200%200%201-1.256%201.256h-1.777a1.255%201.255%200%200%201-1.256-1.256V15.69l-.032.057a4.8%204.8%200%200%201-1.86%201.833%205.04%205.04%200%200%201-2.484.634%204.5%204.5%200%200%201-1.935-.424%201.25%201.25%200%200%201-.764.258h-1.71a1.255%201.255%200%200%201-1.256-1.255V7.687a2.4%202.4%200%200%201-.428.625c.253.23.412.561.412.93v7.553a1.255%201.255%200%200%201-1.256%201.255h-1.843a1.25%201.25%200%200%201-.894-.373c-.228.23-.544.373-.894.373H51.32a1.255%201.255%200%200%201-1.256-1.255v-1.251l-.061.117a4.7%204.7%200%200%201-1.782%201.884%204.77%204.77%200%200%201-2.485.67%205.6%205.6%200%200%201-1.485-.188l.009%202.764a1.255%201.255%200%200%201-1.255%201.259h-1.729a1.255%201.255%200%200%201-1.255-1.255v-3.537a1.255%201.255%200%200%201-1.167.793h-1.679a1.25%201.25%200%200%201-.77-.263%204.5%204.5%200%200%201-1.945.429c-.885%200-1.724-.21-2.495-.632l-.017-.01a5%205%200%200%201-1.081-.836%201.255%201.255%200%200%201-1.254%201.312h-1.81a1.255%201.255%200%200%201-1.228-.99l-.782-3.625-2.044%203.939a1.25%201.25%200%200%201-1.115.676h-.098a1.25%201.25%200%200%201-1.116-.68l-2.061-3.994zM35.92%2016.63l.207-.114.223-.15q.493-.356.735-.785l.061-.118.033%201.332h1.678V9.242h-1.694l-.033%201.267q-.133-.329-.526-.658l-.032-.028a3.2%203.2%200%200%200-.668-.428l-.27-.12a3.3%203.3%200%200%200-1.235-.23q-1.136-.001-1.974.493a3.36%203.36%200%200%200-1.3%201.382q-.445.89-.444%202.074%200%201.2.51%202.107a3.8%203.8%200%200%200%201.382%201.381%203.9%203.9%200%200%200%201.893.477q.795%200%201.455-.33zm-2.789-5.38q-.576.675-.575%201.762%200%201.102.559%201.794.576.675%201.645.675a2.25%202.25%200%200%200%20.934-.19%202.2%202.2%200%200%200%20.468-.29l.178-.161a2.2%202.2%200%200%200%20.397-.561q.244-.5.244-1.15v-.115q0-.708-.296-1.267l-.043-.077a2.2%202.2%200%200%200-.633-.709l-.13-.086-.047-.028a2.1%202.1%200%200%200-1.073-.285q-1.052%200-1.629.692zm2.316%202.706c.163-.17.28-.407.28-.83v-.114c0-.292-.06-.508-.15-.68a.96.96%200%200%200-.353-.389.85.85%200%200%200-.464-.127c-.4%200-.56.114-.664.239l-.01.012c-.148.174-.275.45-.275.945%200%20.506.122.801.27.99.097.11.266.224.68.224.303%200%20.504-.09.687-.269zm7.545%201.705a2.6%202.6%200%200%200%20.331.423q.319.33.755.548l.173.074q.65.255%201.49.255%201.02%200%201.844-.493a3.45%203.45%200%200%200%201.316-1.4q.493-.904.493-2.089%200-1.909-.988-2.913-.988-1.02-2.584-1.02-.898%200-1.575.347a3%203%200%200%200-.415.262l-.199.166a3.4%203.4%200%200%200-.64.82V9.242h-1.712v11.553h1.729l-.017-5.134zm.53-1.138q.206.29.48.5l.155.11.053.034q.51.296%201.119.297%201.07%200%201.645-.675.577-.69.576-1.762%200-1.119-.576-1.777-.558-.675-1.645-.675-.435%200-.835.16a2%202%200%200%200-.284.136%202%202%200%200%200-.363.254%202.2%202.2%200%200%200-.46.569l-.082.162a2.6%202.6%200%200%200-.213%201.072v.115q0%20.707.296%201.267l.135.211zm.964-.818a1.1%201.1%200%200%200%20.367.385.94.94%200%200%200%20.476.118c.423%200%20.59-.117.687-.23.159-.194.28-.478.28-.95%200-.53-.133-.8-.266-.952l-.021-.025c-.078-.094-.231-.221-.68-.221a1%201%200%200%200-.503.135l-.012.007a.86.86%200%200%200-.335.343c-.073.133-.132.324-.132.614v.115a1.4%201.4%200%200%200%20.14.66zm15.7-6.222q.347-.346.346-.856a1.05%201.05%200%200%200-.345-.79%201.18%201.18%200%200%200-.84-.329q-.51%200-.855.33a1.05%201.05%200%200%200-.346.79q0%20.51.346.855.345.346.856.346.51%200%20.839-.346zm4.337%209.314.033-1.332q.191.403.59.747l.098.081a4%204%200%200%200%20.316.224l.223.122a3.2%203.2%200%200%200%201.44.322%203.8%203.8%200%200%200%201.875-.477%203.5%203.5%200%200%200%201.382-1.366q.527-.89.526-2.09%200-1.184-.444-2.073a3.24%203.24%200%200%200-1.283-1.399q-.823-.51-1.942-.51a3.5%203.5%200%200%200-1.527.344l-.086.043-.165.09a3%203%200%200%200-.33.214q-.432.315-.656.707a2%202%200%200%200-.099.198l.082-1.283V4.701h-1.744v12.095zm.473-2.509a2.5%202.5%200%200%200%20.566.7q.117.098.245.18l.144.08a2.1%202.1%200%200%200%20.975.232q1.07%200%201.645-.675.576-.69.576-1.778%200-1.102-.576-1.777-.56-.691-1.645-.692a2.2%202.2%200%200%200-1.015.235q-.22.113-.415.282l-.15.142a2.1%202.1%200%200%200-.42.594q-.223.479-.223%201.1v.115q0%20.705.293%201.26zm2.616-.293c.157-.191.28-.479.28-.967%200-.51-.13-.79-.276-.961l-.021-.026c-.082-.1-.232-.225-.67-.225a.87.87%200%200%200-.681.279l-.012.011c-.154.155-.274.38-.274.807v.115c0%20.285.057.499.144.669a1.1%201.1%200%200%200%20.367.405c.137.082.28.123.455.123.423%200%20.59-.118.686-.23zm8.266-3.013q.345-.13.724-.14l.069-.002q.493%200%20.642.099l.247-1.794q-.196-.099-.717-.099a2.3%202.3%200%200%200-.545.063%202%202%200%200%200-.411.148%202.2%202.2%200%200%200-.4.249%202.5%202.5%200%200%200-.485.499%202.7%202.7%200%200%200-.32.581l-.05.137v-1.48h-1.778v7.553h1.777v-3.884q0-.546.159-.943a1.5%201.5%200%200%201%20.466-.636%202.5%202.5%200%200%201%20.399-.253%202%202%200%200%201%20.224-.099zm9.784%202.656.05-.922q0-1.743-.856-2.698-.838-.97-2.584-.97-1.119-.001-2.007.493a3.46%203.46%200%200%200-1.4%201.382q-.493.906-.493%202.106%200%201.07.428%201.975.428.89%201.332%201.432.906.526%202.255.526.973%200%201.668-.185l.044-.012.135-.04q.613-.184.984-.421l-.542-1.267q-.3.162-.642.274l-.297.087q-.51.131-1.3.131-.954%200-1.497-.444a1.6%201.6%200%200%201-.192-.193q-.366-.44-.512-1.234l-.004-.021zm-5.427-1.256-.003.022h3.752v-.138q-.011-.727-.288-1.118a1%201%200%200%200-.156-.176q-.46-.428-1.316-.428-.986%200-1.494.604-.379.45-.494%201.234zm-27.053%202.77V4.7h-1.86v12.095h5.333V15.15zm7.103-5.908v7.553h-1.843V9.242h1.843z%22%2F%3E%3Cpath%20fill%3D%22%23fff%22%20d%3D%22m19.63%2011.151-.757-1.71-.345%201.71-1.12%205.644h-1.827L18.083%204.7h.197l3.325%206.533.988%202.19.988-2.19L26.839%204.7h.181l2.6%2012.095h-1.81l-1.218-5.644-.362-1.71-.658%201.71-2.93%205.644h-.098l-2.913-5.644zm14.836%205.81q-1.02%200-1.893-.478a3.8%203.8%200%200%201-1.381-1.382q-.51-.906-.51-2.106%200-1.185.444-2.074a3.36%203.36%200%200%201%201.3-1.382q.839-.494%201.974-.494a3.3%203.3%200%200%201%201.234.231%203.3%203.3%200%200%201%20.97.575q.396.33.527.659l.033-1.267h1.694v7.553H37.18l-.033-1.332q-.279.593-1.02%201.053a3.17%203.17%200%200%201-1.662.444zm.296-1.482q.938%200%201.58-.642.642-.66.642-1.711v-.115q0-.708-.296-1.267a2.2%202.2%200%200%200-.807-.872%202.1%202.1%200%200%200-1.119-.313q-1.053%200-1.629.692-.575.675-.575%201.76%200%201.103.559%201.795.577.675%201.645.675zm6.521-6.237h1.711v1.4q.906-1.597%202.83-1.597%201.596%200%202.584%201.02.988%201.005.988%202.914%200%201.185-.493%202.09a3.46%203.46%200%200%201-1.316%201.399%203.5%203.5%200%200%201-1.844.493q-.954%200-1.662-.329a2.67%202.67%200%200%201-1.086-.97l.017%205.134h-1.728zm4.048%206.22q1.07%200%201.645-.674.577-.69.576-1.762%200-1.119-.576-1.777-.558-.675-1.645-.675-.592%200-1.12.296-.51.28-.822.823-.296.527-.296%201.234v.115q0%20.708.296%201.267.313.543.823.855.51.296%201.119.297z%22%2F%3E%3Cpath%20fill%3D%22%23e1e3e9%22%20d%3D%22M51.325%204.7h1.86v10.45h3.473v1.646h-5.333zm7.12%204.542h1.843v7.553h-1.843zm.905-1.415a1.16%201.16%200%200%201-.856-.346%201.17%201.17%200%200%201-.346-.856%201.05%201.05%200%200%201%20.346-.79q.346-.329.856-.329.494%200%20.839.33a1.05%201.05%200%200%201%20.345.79%201.16%201.16%200%200%201-.345.855q-.33.346-.84.346zm7.875%209.133a3.17%203.17%200%200%201-1.662-.444q-.723-.46-1.004-1.053l-.033%201.332h-1.71V4.701h1.743v4.657l-.082%201.283q.279-.658%201.086-1.119a3.5%203.5%200%200%201%201.778-.477q1.119%200%201.942.51a3.24%203.24%200%200%201%201.283%201.4q.445.888.444%202.072%200%201.201-.526%202.09a3.5%203.5%200%200%201-1.382%201.366%203.8%203.8%200%200%201-1.876.477zm-.296-1.481q1.069%200%201.645-.675.577-.69.577-1.778%200-1.102-.577-1.776-.56-.691-1.645-.692a2.12%202.12%200%200%200-1.58.659q-.642.641-.642%201.694v.115q0%20.71.296%201.267a2.4%202.4%200%200%200%20.807.872%202.1%202.1%200%200%200%201.119.313zm5.927-6.237h1.777v1.481q.263-.757.856-1.217a2.14%202.14%200%200%201%201.349-.46q.527%200%20.724.098l-.247%201.794q-.149-.099-.642-.099-.774%200-1.416.494-.626.493-.626%201.58v3.883h-1.777V9.242zm9.534%207.718q-1.35%200-2.255-.526-.904-.543-1.332-1.432a4.6%204.6%200%200%201-.428-1.975q0-1.2.493-2.106a3.46%203.46%200%200%201%201.4-1.382q.889-.495%202.007-.494%201.744%200%202.584.97.855.956.856%202.7%200%20.444-.05.92h-5.43q.18%201.005.708%201.45.542.443%201.497.443.79%200%201.3-.131a4%204%200%200%200%20.938-.362l.542%201.267q-.411.263-1.119.46-.708.198-1.711.197zm1.596-4.558q.016-1.02-.444-1.432-.46-.428-1.316-.428-1.728%200-1.991%201.86z%22%2F%3E%3Cpath%20d%3D%22M5.074%2015.948a.484.657%200%200%200-.486.659v1.84a.484.657%200%200%200%20.486.659h4.101a.484.657%200%200%200%20.486-.659v-1.84a.484.657%200%200%200-.486-.659zm3.56%201.16H5.617v.838h3.017z%22%20style%3D%22fill%3A%23fff%3Bfill-rule%3Aevenodd%3Bstroke-width%3A1.03600001%22%2F%3E%3Cg%20style%3D%22stroke-width%3A1.12603545%22%3E%3Cpath%20d%3D%22M-9.408-1.416c-3.833-.025-7.056%202.912-7.08%206.615-.02%203.08%201.653%204.832%203.107%206.268.903.892%201.721%201.74%202.32%202.902l-.525-.004c-.543-.003-.992.304-1.24.639a1.87%201.87%200%200%200-.362%201.121l-.011%201.877c-.003.402.104.787.347%201.125.244.338.688.653%201.23.656l4.142.028c.542.003.99-.306%201.238-.641a1.87%201.87%200%200%200%20.363-1.121l.012-1.875a1.87%201.87%200%200%200-.348-1.127c-.243-.338-.688-.653-1.23-.656l-.518-.004c.597-1.145%201.425-1.983%202.348-2.87%201.473-1.414%203.18-3.149%203.2-6.226-.016-3.59-2.923-6.684-6.993-6.707m-.006%201.1v.002c3.274.02%205.92%202.532%205.9%205.6-.017%202.706-1.39%204.026-2.863%205.44-1.034.994-2.118%202.033-2.814%203.633-.018.041-.052.055-.075.065q-.013.004-.02.01a.34.34%200%200%201-.226.084.34.34%200%200%201-.224-.086l-.092-.077c-.699-1.615-1.768-2.669-2.781-3.67-1.454-1.435-2.797-2.762-2.78-5.478.02-3.067%202.7-5.545%205.975-5.523m-.02%202.826c-1.62-.01-2.944%201.315-2.955%202.96-.01%201.646%201.295%202.988%202.916%202.999h.002c1.621.01%202.943-1.316%202.953-2.961.011-1.646-1.294-2.988-2.916-2.998m-.005%201.1c1.017.006%201.829.83%201.822%201.89s-.83%201.874-1.848%201.867c-1.018-.006-1.829-.83-1.822-1.89s.83-1.874%201.848-1.868m-2.155%2011.857%204.14.025c.271.002.49.305.487.676l-.013%201.875c-.003.37-.224.67-.495.668l-4.14-.025c-.27-.002-.487-.306-.485-.676l.012-1.875c.003-.37.224-.67.494-.668%22%20style%3D%22color%3A%23000%3Bfont-style%3Anormal%3Bfont-variant%3Anormal%3Bfont-weight%3A400%3Bfont-stretch%3Anormal%3Bfont-size%3Amedium%3Bline-height%3Anormal%3Bfont-family%3Asans-serif%3Bfont-variant-ligatures%3Anormal%3Bfont-variant-position%3Anormal%3Bfont-variant-caps%3Anormal%3Bfont-variant-numeric%3Anormal%3Bfont-variant-alternates%3Anormal%3Bfont-feature-settings%3Anormal%3Btext-indent%3A0%3Btext-align%3Astart%3Btext-decoration%3Anone%3Btext-decoration-line%3Anone%3Btext-decoration-style%3Asolid%3Btext-decoration-color%3A%23000%3Bletter-spacing%3Anormal%3Bword-spacing%3Anormal%3Btext-transform%3Anone%3Bwriting-mode%3Alr-tb%3Bdirection%3Altr%3Btext-orientation%3Amixed%3Bdominant-baseline%3Aauto%3Bbaseline-shift%3Abaseline%3Btext-anchor%3Astart%3Bwhite-space%3Anormal%3Bshape-padding%3A0%3Bclip-rule%3Aevenodd%3Bdisplay%3Ainline%3Boverflow%3Avisible%3Bvisibility%3Avisible%3Bopacity%3A1%3Bisolation%3Aauto%3Bmix-blend-mode%3Anormal%3Bcolor-interpolation%3AsRGB%3Bcolor-interpolation-filters%3AlinearRGB%3Bsolid-color%3A%23000%3Bsolid-opacity%3A1%3Bvector-effect%3Anone%3Bfill%3A%23000%3Bfill-opacity%3A.4%3Bfill-rule%3Aevenodd%3Bstroke%3Anone%3Bstroke-width%3A2.47727823%3Bstroke-linecap%3Abutt%3Bstroke-linejoin%3Amiter%3Bstroke-miterlimit%3A4%3Bstroke-dasharray%3Anone%3Bstroke-dashoffset%3A0%3Bstroke-opacity%3A1%3Bcolor-rendering%3Aauto%3Bimage-rendering%3Aauto%3Bshape-rendering%3Aauto%3Btext-rendering%3Aauto%22%20transform%3D%22translate%2815.553%202.85%29scale%28.88807%29%22%2F%3E%3Cpath%20d%3D%22M-9.415-.316C-12.69-.338-15.37%202.14-15.39%205.207c-.017%202.716%201.326%204.041%202.78%205.477%201.013%201%202.081%202.055%202.78%203.67l.092.076a.34.34%200%200%200%20.225.086.34.34%200%200%200%20.227-.083l.019-.01c.022-.009.057-.024.074-.064.697-1.6%201.78-2.64%202.814-3.634%201.473-1.414%202.847-2.733%202.864-5.44.02-3.067-2.627-5.58-5.901-5.601m-.057%208.784c1.621.011%202.944-1.315%202.955-2.96.01-1.646-1.295-2.988-2.916-2.999-1.622-.01-2.945%201.315-2.955%202.96s1.295%202.989%202.916%203%22%20style%3D%22clip-rule%3Aevenodd%3Bfill%3A%23e1e3e9%3Bfill-opacity%3A1%3Bfill-rule%3Aevenodd%3Bstroke%3Anone%3Bstroke-width%3A2.47727823%3Bstroke-miterlimit%3A4%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A.4%22%20transform%3D%22translate%2815.553%202.85%29scale%28.88807%29%22%2F%3E%3Cpath%20d%3D%22M-11.594%2015.465c-.27-.002-.492.297-.494.668l-.012%201.876c-.003.371.214.673.485.675l4.14.027c.271.002.492-.298.495-.668l.012-1.877c.003-.37-.215-.672-.485-.674z%22%20style%3D%22clip-rule%3Aevenodd%3Bfill%3A%23fff%3Bfill-opacity%3A1%3Bfill-rule%3Aevenodd%3Bstroke%3Anone%3Bstroke-width%3A2.47727823%3Bstroke-miterlimit%3A4%3Bstroke-dasharray%3Anone%3Bstroke-opacity%3A.4%22%20transform%3D%22translate%2815.553%202.85%29scale%28.88807%29%22%2F%3E%3C%2Fg%3E%3C%2Fsvg%3E (16.7 KiB)\n  img/icon_quattromap.png (645 KiB)\n  vendor/maplibre/maplibre-gl-shared.mjs (497 KiB)\n\nWARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  main (1.24 MiB)\n      bundle.js\n\nWARNING in webpack performance recommendations: \nYou can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.\nFor more info visit https://webpack.js.org/guides/code-splitting/\n\n1 warning has detailed information that is not shown.\nUse 'stats.errorDetails: true' resp. '--stats-error-details' to show it.\n\nwebpack 5.110.3 compiled with 4 warnings in 20507 ms\nBUILD_EXIT:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls -la /workspace/dist/ && echo \"---\" && cat /workspace/webpack.config.js",
+      "exit_code": 0,
+      "stdout": "total 1328\ndrwxr-xr-x 4 root root    4096 Oct 15 17:41 .\ndrwxr-xr-x 8 root root    4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 1295148 Oct 15 17:41 bundle.js\ndrwxr-xr-x 2 root root    4096 Oct 15 17:41 img\n-rw-r--r-- 1 root root    9372 Oct 15 17:41 index.html\n-rw-r--r-- 1 root root   29763 Oct 15 17:41 oss-licenses.json\ndrwxr-xr-x 3 root root    4096 Oct 15 17:41 vendor\n---\nconst CopyPlugin = require('copy-webpack-plugin');\nconst LicensePlugin = require('webpack-license-plugin');\nconst TerserPlugin = require('terser-webpack-plugin');\nconst path = require('path');\n\nmodule.exports = {\n  mode: 'production',\n  entry: './src/index.js',\n  optimization: {\n    minimizer: [\n      new TerserPlugin({\n        extractComments: false,\n      }),\n    ],\n  },\n  devServer: {\n    client: {\n      overlay: {\n        errors: true,\n        warnings: false,\n      },\n    },\n    devMiddleware: {\n      stats: 'minimal',\n    },\n  },\n  output: {\n    filename: 'bundle.js',\n    path: path.resolve(__dirname, 'dist'),\n  },\n  module: {\n    rules: [\n      {\n        test: /\\.css$/i,\n        use: ['style-loader', 'css-loader'],\n      },\n    ],\n  },\n  plugins: [\n    new CopyPlugin({\n      patterns: [\n        {\n          from: './src/index.html',\n          to: 'index.html',\n        },\n        {\n          from: './src/img',\n          to: 'img',\n        },\n        {\n          from: './node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs',\n          to: 'vendor/maplibre/maplibre-gl-worker.mjs',\n        },\n        {\n          from: './node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs',\n          to: 'vendor/maplibre/maplibre-gl-shared.mjs',\n        },\n      ],\n    }),\n    new LicensePlugin({\n      licenseOverrides: {\n        // https://github.com/codepunkt/webpack-license-plugin/issues/443\n        '@mapbox/fusspot@0.4.0': 'BSD-2-Clause'\n      },\n      // mapbox-gl uses a custom license\n      excludedPackageTest: name => name === 'mapbox-gl',\n      additionalFiles: {\n        'oss-licenses.json': packages => JSON.stringify([...packages, {\n          'name': 'mapbox-gl',\n          'version': '1.13.1',\n          'repository': 'https://github.com/mapbox/mapbox-gl-js',\n          'license': \"Mapbox license\",\n          'licenseText': 'content of LICENSE.txt in mapbox-gl-js root directory: https://raw.githubusercontent.com/mapbox/mapbox-gl-js/v1.13.1/LICENSE.txt'\n        }], null, 2)\n      }\n    }),\n  ],\n};",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -40 /workspace/dist/index.html; echo \"==== config.json ====\"; ls -la /workspace/src/ | head; echo \"---\"; cat /workspace/src/config.json 2>/dev/null | head -30",
+      "exit_code": 0,
+      "stdout": "<!DOCTYPE html>\n<html>\n\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>QuattroMap</title>\n\t<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\" />\n\t<meta name=\"viewport\"\n\t\tcontent=\"width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui\" />\n</head>\n\n<body>\n\t<!-- Vollbildmen\u00fc -->\n\t<div id=\"myNav\" class=\"settings-panel\" aria-hidden=\"true\">\n\t\t<div class=\"settings-header\">\n\t\t\t<div>\n\t\t\t\t<div class=\"settings-title\">Einstellungen</div>\n\t\t\t\t<div class=\"settings-subtitle\">Kartendarstellung anpassen</div>\n\t\t\t</div>\n\n\t\t\t<button type=\"button\" class=\"settings-close\" aria-label=\"Einstellungen schlie\u00dfen\" title=\"Schlie\u00dfen\"\n\t\t\t\tonclick=\"swapBars(document.getElementById('menu-button')); toggleNav();\">\n\t\t\t\t\u2715\n\t\t\t</button>\n\t\t</div>\n\n\t\t<div class=\"settings-general\">\n\t\t\t<div class=\"setting-group\">\n\t\t\t\t<label for=\"map-count-select\" class=\"setting-label\">\n\t\t\t\t\tAnzahl Karten\n\t\t\t\t</label>\n\n\t\t\t\t<select id=\"map-count-select\" class=\"setting-select\">\n\t\t\t\t\t<option value=\"1\">1 Karte</option>\n\t\t\t\t\t<option value=\"2\">2 Karten</option>\n\t\t\t\t\t<option value=\"3\">3 Karten</option>\n\t\t\t\t\t<option value=\"4\">4 Karten</option>\n\t\t\t\t</select>\n==== config.json ====\ntotal 116\ndrwxr-xr-x 3 root root  4096 Oct 15 17:39 .\ndrwxr-xr-x 8 root root  4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 37417 Oct 15 17:39 config.json\ndrwxr-xr-x 2 root root  4096 Oct 15 17:39 img\n-rw-r--r-- 1 root root  9372 Oct 15 17:39 index.html\n-rw-r--r-- 1 root root 39452 Oct 15 17:39 index.js\n-rw-r--r-- 1 root root 10769 Oct 15 17:39 style.css\n---\n{\n  \"center\": [6.391263, 51.258812],\n  \"zoom\": 16,\n  \"map_1\": {\n    \"layer\": \"NRW Luftbild Farbe\",\n    \"overlay\": \"NRW vDOP Farbe\",\n    \"overlay_opacity\": 1\n  },\n  \"map_2\": {\n    \"layer\": \"OSM Mapnik\"\n  },\n  \"map_3\": {\n    \"layer\": \"Kreis Viersen ALKIS light\",\n    \"overlay\": \"Kreis Viersen geplante Geb\u00e4ude\"\n  },\n  \"map_4\": {\n    \"layer\": \"NRW DTK\"\n  },\n  \"layer\": [\n    {\n      \"name\": \"NRW Luftbild Farbe\",\n      \"attribution\": \"\",\n      \"url\": \"https://www.wms.nrw.de/geobasis/wms_nw_dop\",\n      \"layer\": \"nw_dop_rgb\",\n      \"format\": \"png\",\n      \"category\": \"GeoBasis NRW\"\n    },\n    {\n      \"name\": \"NRW Luftbild Metadaten\",\n      \"attribution\": \"\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"8080\\|port\" /workspace/webpack.config.js /workspace/package.json 2>/dev/null; echo \"---- check any devServer port in repo ----\"; grep -rn \"8080\" /workspace --include=\"*.js\" --include=\"*.json\" 2>/dev/null | grep -v node_modules | head",
+      "exit_code": 1,
+      "stdout": "/workspace/webpack.config.js:6:module.exports = {\n---- check any devServer port in repo ----\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup npm start > /tmp/webpack_dev.log 2>&1 &\necho \"started bg pid $!\"",
+      "exit_code": 0,
+      "stdout": "started bg pid 1374\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 25; echo \"=== dev server log ===\"; tail -15 /tmp/webpack_dev.log; echo \"=== curl test ===\"; curl -s -o /tmp/page.html -w \"HTTP_CODE:%{http_code}\\n\" http://localhost:8080/; echo \"---\"; head -c 300 /tmp/page.html; echo",
+      "exit_code": 0,
+      "stdout": "=== dev server log ===\nWARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  main (1.29 MiB)\n      bundle.js\n\nWARNING in webpack performance recommendations: \nYou can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.\nFor more info visit https://webpack.js.org/guides/code-splitting/\n\nWARNING in webpack performance recommendations: \nThe runtime is part of the initial chunk of main. It describes every other chunk, so a change anywhere in the build rewrites these assets and clients download them again.\nSet 'optimization.runtimeChunk' to emit the runtime as its own chunk.\nFor more info visit https://webpack.js.org/configuration/optimization/#optimizationruntimechunk\n\nwebpack 5.110.3 compiled with 5 warnings in 17577 ms\n=== curl test ===\nHTTP_CODE:200\n---\n<!DOCTYPE html>\n<html>\n\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>QuattroMap</title>\n\t<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\" />\n\t<meta name=\"viewport\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"bundle.js HTTP:%{http_code} size:%{size_download}\\n\" http://localhost:8080/bundle.js\ngrep -c \"maplibre\\|map-count\\|QuattroMap\" /tmp/page.html\necho \"=== stopping dev server ===\"\npkill -f \"webpack serve\" 2>/dev/null; sleep 3\n# confirm it is gone\npgrep -af \"webpack\" || echo \"no webpack process running\"",
+      "exit_code": 143,
+      "stdout": "bundle.js HTTP:200 size:1356256\n4\n=== stopping dev server ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -i \"webpack\\|node\" | grep -v grep; echo \"---\"; curl -s -o /dev/null --max-time 5 -w \"port8080:%{http_code}\\n\" http://localhost:8080/ || echo \"port 8080 no longer responding (server stopped)\"",
+      "exit_code": 0,
+      "stdout": "root        1387  187  2.1 33025752 169560 ?     Sl   17:41   0:57 webpack\n---\nport8080:200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 1387 2>/dev/null; sleep 3; ps aux | grep -i \"webpack\" | grep -v grep || echo \"webpack dev server stopped\"; curl -s -o /dev/null --max-time 5 -w \"port8080:%{http_code}\\n\" http://localhost:8080/ 2>/dev/null || echo \"port 8080 closed (server stopped)\"",
+      "exit_code": 0,
+      "stdout": "webpack dev server stopped\nport8080:000\nport 8080 closed (server stopped)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && node --version && npm --version && echo \"---\" && ls node_modules | wc -l && echo \"node_modules present\" && ls -la dist/ && echo \"---\" && git -C /workspace log --oneline -1",
+      "exit_code": 0,
+      "stdout": "v20.20.2\n10.8.2\n---\n283\nnode_modules present\ntotal 1328\ndrwxr-xr-x 4 root root    4096 Oct 15 17:41 .\ndrwxr-xr-x 8 root root    4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 1295148 Oct 15 17:41 bundle.js\ndrwxr-xr-x 2 root root    4096 Oct 15 17:41 img\n-rw-r--r-- 1 root root    9372 Oct 15 17:41 index.html\n-rw-r--r-- 1 root root   29763 Oct 15 17:41 oss-licenses.json\ndrwxr-xr-x 3 root root    4096 Oct 15 17:41 vendor\n---\n24041c0 Update .gitlab-ci.yml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la && git log --oneline -3 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 2140\ndrwxr-xr-x   8 root root    4096 Oct 15 17:41 .\ndr-xr-xr-x   1 root root    4096 Oct 15 17:39 ..\ndrwxr-xr-x   8 root root    4096 Oct 15 17:39 .git\n-rw-r--r--   1 root root     416 Oct 15 17:39 .gitattributes\ndrwxr-xr-x   3 root root    4096 Oct 15 17:39 .github\n-rw-r--r--   1 root root      62 Oct 15 17:39 .gitignore\n-rw-r--r--   1 root root    1787 Oct 15 17:39 .gitlab-ci.yml\n-rw-r--r--   1 root root    1070 Oct 15 17:39 LICENSE\n-rw-r--r--   1 root root   35886 Oct 15 17:39 README.md\n-rw-r--r--   1 root root     737 Oct 15 17:39 SECURITY.md\n-rw-r--r--   1 root root  379240 Oct 15 17:39 codesandbox_fullscreen.png\ndrwxr-xr-x   4 root root    4096 Oct 15 17:41 dist\n-rw-r--r--   1 root root   61717 Oct 15 17:39 logo_quattromap_opencode.png\ndrwxr-xr-x 286 root root   12288 Oct 15 17:41 node_modules\n-rw-r--r--   1 root root  193512 Oct 15 17:41 package-lock.json\n-rw-r--r--   1 root root     944 Oct 15 17:39 package.json\n-rw-r--r--   1 root root    3339 Oct 15 17:39 publiccode.yml\n-rw-r--r--   1 root root 1434284 Oct 15 17:39 quattromap_measurement-tools.gif\ndrwxr-xr-x   2 root root    4096 Oct 15 17:39 screenshots\ndrwxr-xr-x   3 root root    4096 Oct 15 17:39 src\n-rw-r--r--   1 root root    2023 Oct 15 17:39 webpack.config.js\n24041c0 Update .gitlab-ci.yml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "node --version; npm --version; which node npm",
+      "exit_code": 0,
+      "stdout": "v20.20.2\n10.8.2\n/usr/bin/node\n/usr/bin/npm\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat package.json && echo \"---WEBPACK---\" && cat webpack.config.js",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"quattromap\",\n  \"description\": \"Compare up to 4 maps at once\",\n  \"version\": \"2.0.0\",\n  \"license\": \"MIT\",\n  \"scripts\": {\n    \"start\": \"webpack serve\",\n    \"build\": \"webpack\",\n    \"deploy\": \"gh-pages -d dist\"\n  },\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://github.com/kreis-viersen/quattromap\"\n  },\n  \"devDependencies\": {\n    \"copy-webpack-plugin\": \"^14.0.0\",\n    \"css-loader\": \"^7.1.5\",\n    \"gh-pages\": \"^6.3.0\",\n    \"style-loader\": \"^4.0.0\",\n    \"terser-webpack-plugin\": \"^5.6.1\",\n    \"webpack\": \"^5.110.3\",\n    \"webpack-cli\": \"^7.2.3\",\n    \"webpack-dev-server\": \"^6.0.0\",\n    \"webpack-license-plugin\": \"^4.5.1\"\n  },\n  \"dependencies\": {\n    \"@mapbox/mapbox-gl-draw\": \"1.5.1\",\n    \"@mapbox/mapbox-gl-sync-move\": \"^0.3.1\",\n    \"@maplibre/maplibre-gl-geocoder\": \"^1.9.4\",\n    \"@turf/area\": \"^7.4.0\",\n    \"@turf/centroid\": \"^7.4.0\",\n    \"@turf/length\": \"^7.4.0\",\n    \"lz-string\": \"^1.5.0\",\n    \"maplibre-gl\": \"6.9.0\"\n  }\n}---WEBPACK---\nconst CopyPlugin = require('copy-webpack-plugin');\nconst LicensePlugin = require('webpack-license-plugin');\nconst TerserPlugin = require('terser-webpack-plugin');\nconst path = require('path');\n\nmodule.exports = {\n  mode: 'production',\n  entry: './src/index.js',\n  optimization: {\n    minimizer: [\n      new TerserPlugin({\n        extractComments: false,\n      }),\n    ],\n  },\n  devServer: {\n    client: {\n      overlay: {\n        errors: true,\n        warnings: false,\n      },\n    },\n    devMiddleware: {\n      stats: 'minimal',\n    },\n  },\n  output: {\n    filename: 'bundle.js',\n    path: path.resolve(__dirname, 'dist'),\n  },\n  module: {\n    rules: [\n      {\n        test: /\\.css$/i,\n        use: ['style-loader', 'css-loader'],\n      },\n    ],\n  },\n  plugins: [\n    new CopyPlugin({\n      patterns: [\n        {\n          from: './src/index.html',\n          to: 'index.html',\n        },\n        {\n          from: './src/img',\n          to: 'img',\n        },\n        {\n          from: './node_modules/maplibre-gl/dist/maplibre-gl-worker.mjs',\n          to: 'vendor/maplibre/maplibre-gl-worker.mjs',\n        },\n        {\n          from: './node_modules/maplibre-gl/dist/maplibre-gl-shared.mjs',\n          to: 'vendor/maplibre/maplibre-gl-shared.mjs',\n        },\n      ],\n    }),\n    new LicensePlugin({\n      licenseOverrides: {\n        // https://github.com/codepunkt/webpack-license-plugin/issues/443\n        '@mapbox/fusspot@0.4.0': 'BSD-2-Clause'\n      },\n      // mapbox-gl uses a custom license\n      excludedPackageTest: name => name === 'mapbox-gl',\n      additionalFiles: {\n        'oss-licenses.json': packages => JSON.stringify([...packages, {\n          'name': 'mapbox-gl',\n          'version': '1.13.1',\n          'repository': 'https://github.com/mapbox/mapbox-gl-js',\n          'license': \"Mapbox license\",\n          'licenseText': 'content of LICENSE.txt in mapbox-gl-js root directory: https://raw.githubusercontent.com/mapbox/mapbox-gl-js/v1.13.1/LICENSE.txt'\n        }], null, 2)\n      }\n    }),\n  ],\n};",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -laR dist/ | head -60 && echo \"---SRC---\" && ls -la src/ && echo \"---CONFIG---\" && cat src/config.json | head -50",
+      "exit_code": 0,
+      "stdout": "dist/:\ntotal 1328\ndrwxr-xr-x 4 root root    4096 Oct 15 17:41 .\ndrwxr-xr-x 8 root root    4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 1295148 Oct 15 17:41 bundle.js\ndrwxr-xr-x 2 root root    4096 Oct 15 17:41 img\n-rw-r--r-- 1 root root    9372 Oct 15 17:41 index.html\n-rw-r--r-- 1 root root   29763 Oct 15 17:41 oss-licenses.json\ndrwxr-xr-x 3 root root    4096 Oct 15 17:41 vendor\n\ndist/img:\ntotal 696\ndrwxr-xr-x 2 root root   4096 Oct 15 17:41 .\ndrwxr-xr-x 4 root root   4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root    255 Oct 15 17:41 cross_black.png\n-rw-r--r-- 1 root root    220 Oct 15 17:41 cross_blue.png\n-rw-r--r-- 1 root root    215 Oct 15 17:41 cross_green.png\n-rw-r--r-- 1 root root    217 Oct 15 17:41 cross_orange.png\n-rw-r--r-- 1 root root    220 Oct 15 17:41 cross_pink.png\n-rw-r--r-- 1 root root    215 Oct 15 17:41 cross_red.png\n-rw-r--r-- 1 root root    219 Oct 15 17:41 cross_yellow.png\n-rw-r--r-- 1 root root 660880 Oct 15 17:41 icon_quattromap.png\n-rw-r--r-- 1 root root   4347 Oct 15 17:41 openCode.svg\n-rw-r--r-- 1 root root   1210 Oct 15 17:41 share.svg\n\ndist/vendor:\ntotal 12\ndrwxr-xr-x 3 root root 4096 Oct 15 17:41 .\ndrwxr-xr-x 4 root root 4096 Oct 15 17:41 ..\ndrwxr-xr-x 2 root root 4096 Oct 15 17:41 maplibre\n\ndist/vendor/maplibre:\ntotal 528\ndrwxr-xr-x 2 root root   4096 Oct 15 17:41 .\ndrwxr-xr-x 3 root root   4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 509209 Oct 15 17:41 maplibre-gl-shared.mjs\n-rw-r--r-- 1 root root  18966 Oct 15 17:41 maplibre-gl-worker.mjs\n---SRC---\ntotal 116\ndrwxr-xr-x 3 root root  4096 Oct 15 17:39 .\ndrwxr-xr-x 8 root root  4096 Oct 15 17:41 ..\n-rw-r--r-- 1 root root 37417 Oct 15 17:39 config.json\ndrwxr-xr-x 2 root root  4096 Oct 15 17:39 img\n-rw-r--r-- 1 root root  9372 Oct 15 17:39 index.html\n-rw-r--r-- 1 root root 39452 Oct 15 17:39 index.js\n-rw-r--r-- 1 root root 10769 Oct 15 17:39 style.css\n---CONFIG---\n{\n  \"center\": [6.391263, 51.258812],\n  \"zoom\": 16,\n  \"map_1\": {\n    \"layer\": \"NRW Luftbild Farbe\",\n    \"overlay\": \"NRW vDOP Farbe\",\n    \"overlay_opacity\": 1\n  },\n  \"map_2\": {\n    \"layer\": \"OSM Mapnik\"\n  },\n  \"map_3\": {\n    \"layer\": \"Kreis Viersen ALKIS light\",\n    \"overlay\": \"Kreis Viersen geplante Geb\u00e4ude\"\n  },\n  \"map_4\": {\n    \"layer\": \"NRW DTK\"\n  },\n  \"layer\": [\n    {\n      \"name\": \"NRW Luftbild Farbe\",\n      \"attribution\": \"\",\n      \"url\": \"https://www.wms.nrw.de/geobasis/wms_nw_dop\",\n      \"layer\": \"nw_dop_rgb\",\n      \"format\": \"png\",\n      \"category\": \"GeoBasis NRW\"\n    },\n    {\n      \"name\": \"NRW Luftbild Metadaten\",\n      \"attribution\": \"\",\n      \"url\": \"https://www.wms.nrw.de/geobasis/wms_nw_dop\",\n      \"layer\": \"nw_dop_utm_info\",\n      \"format\": \"png\",\n      \"category\": \"GeoBasis NRW\",\n      \"onlyOverlay\": true\n    },\n    {\n      \"name\": \"NRW vDOP Farbe\",\n      \"attribution\": \"\",\n      \"url\": \"https://www.wms.nrw.de/geobasis/wms_nw_vdop\",\n      \"layer\": \"nw_vdop_rgb\",\n      \"format\": \"png\",\n      \"category\": \"GeoBasis NRW\"\n    },\n    {\n      \"name\": \"NRW vDOP Metadaten\",\n      \"attribution\": \"\",\n      \"url\": \"https://www.wms.nrw.de/geobasis/wms_nw_vdop\",\n      \"layer\": \"nw_vdop_info\",\n      \"format\": \"png\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --porcelain | head -20; echo \"EXIT: $?\"; ss -tlnp | grep -E '8080|LISTEN' | head; ps aux | grep -E 'webpack|node' | grep -v grep | head",
+      "exit_code": 1,
+      "stdout": "EXIT: 0\n",
+      "stderr": "/bin/bash: line 3: ss: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && python3 -c \"import json; c=json.load(open('src/config.json')); print('keys:', list(c.keys())); print('center:', c['center'], 'zoom:', c['zoom'], 'layers:', len(c['layer']))\" && head -40 dist/index.html",
+      "exit_code": 0,
+      "stdout": "keys: ['center', 'zoom', 'map_1', 'map_2', 'map_3', 'map_4', 'layer']\ncenter: [6.391263, 51.258812] zoom: 16 layers: 120\n<!DOCTYPE html>\n<html>\n\n<head>\n\t<meta charset=\"UTF-8\">\n\t<title>QuattroMap</title>\n\t<meta name=\"apple-mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"mobile-web-app-capable\" content=\"yes\" />\n\t<meta name=\"apple-mobile-web-app-status-bar-style\" content=\"black-translucent\" />\n\t<meta name=\"viewport\"\n\t\tcontent=\"width=device-width, initial-scale=1, minimum-scale=1.0, maximum-scale=1.0, minimal-ui\" />\n</head>\n\n<body>\n\t<!-- Vollbildmen\u00fc -->\n\t<div id=\"myNav\" class=\"settings-panel\" aria-hidden=\"true\">\n\t\t<div class=\"settings-header\">\n\t\t\t<div>\n\t\t\t\t<div class=\"settings-title\">Einstellungen</div>\n\t\t\t\t<div class=\"settings-subtitle\">Kartendarstellung anpassen</div>\n\t\t\t</div>\n\n\t\t\t<button type=\"button\" class=\"settings-close\" aria-label=\"Einstellungen schlie\u00dfen\" title=\"Schlie\u00dfen\"\n\t\t\t\tonclick=\"swapBars(document.getElementById('menu-button')); toggleNav();\">\n\t\t\t\t\u2715\n\t\t\t</button>\n\t\t</div>\n\n\t\t<div class=\"settings-general\">\n\t\t\t<div class=\"setting-group\">\n\t\t\t\t<label for=\"map-count-select\" class=\"setting-label\">\n\t\t\t\t\tAnzahl Karten\n\t\t\t\t</label>\n\n\t\t\t\t<select id=\"map-count-select\" class=\"setting-select\">\n\t\t\t\t\t<option value=\"1\">1 Karte</option>\n\t\t\t\t\t<option value=\"2\">2 Karten</option>\n\t\t\t\t\t<option value=\"3\">3 Karten</option>\n\t\t\t\t\t<option value=\"4\">4 Karten</option>\n\t\t\t\t</select>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --porcelain 2>&1 | head -20; echo \"GIT EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "GIT EXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "netstat -tlnp 2>/dev/null | head -10 || cat /proc/net/tcp /proc/net/tcp6 2>/dev/null | awk 'NR>1 {split($2,a,\":\"); print strtonum(\"0x\" a[2])}' | sort -un | head -20",
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "awk: line 2: function strtonum never defined\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat /workspace/.gitignore; echo \"---PORTS---\"; for f in /proc/net/tcp /proc/net/tcp6; do [ -f \"$f\" ] && awk 'NR>1 && $4==\"0A\" {split($2,a,\":\"); printf \"%d\\n\", (\"0x\" a[2])+0}' \"$f\"; done | sort -un",
+      "exit_code": 0,
+      "stdout": "# Ignore dist folder\ndist\n\n# Dependency directory\nnode_modules---PORTS---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | head -30",
+      "exit_code": 0,
+      "stdout": "USER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot           1  0.0  0.0   2788  1280 ?        Ss   17:39   0:00 /usr/bin/tini -- /usr/local/bin/installbench-dind-entrypoint sleep infinity\nroot           2  0.0  0.0   2792  1280 ?        S    17:39   0:00 sleep infinity\nroot           4  0.5  1.0 2320876 86144 ?       Sl   17:39   0:00 dockerd --host=unix:///var/run/docker.sock --storage-driver=overlay2\nroot          43  0.4  0.5 2043536 40576 ?       Ssl  17:39   0:00 containerd --config /var/run/docker/containerd/containerd.toml\nroot        1532  0.0  0.0   2800  1536 ?        Ss   17:42   0:00 /usr/bin/timeout --signal=TERM --kill-after=5s 600s /bin/bash -lc set -o pipefail cd /workspace || exit 125 ps aux | head -30\nroot        1533  0.0  0.0   4364  3200 ?        S    17:42   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 ps aux | head -30\nroot        1536  0.0  0.0   7064  2816 ?        R    17:42   0:00 ps aux\nroot        1537  0.0  0.0   2804  1408 ?        S    17:42   0:00 head -30\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && nohup npm start > /tmp/quattromap_dev.log 2>&1 & echo \"started pid $!\"",
+      "exit_code": 0,
+      "stdout": "started pid 1542\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "sleep 25; tail -25 /tmp/quattromap_dev.log",
+      "exit_code": 0,
+      "stdout": "Critical dependency: the request of a dependency is an expression\n\nWARNING in asset size limit: The following asset(s) exceed the recommended size limit (244 KiB).\nThis can impact web performance.\nAssets: \n  bundle.js (1.29 MiB)\n    Largest modules: ./src/index.js + 62 modules (1.37 MiB), ./node_modules/webpack-dev-server/client/index.js?protocol=ws%3A&hostname=0.0.0.0&port=8080&pathname=%2Fws&logging=info&overlay=%7B%22errors%22%3Atrue%2C%22warnings%22%3Afalse%7D&reconnect=10&hot=true&live-reload=true + 5 modules (63.2 KiB), ./node_modules/css-loader/dist/cjs.js!./node_modules/maplibre-gl/dist/maplibre-gl.css (55.4 KiB)\n  img/icon_quattromap.png (645 KiB)\n  vendor/maplibre/maplibre-gl-shared.mjs (497 KiB)\n\nWARNING in entrypoint size limit: The following entrypoint(s) combined asset size exceeds the recommended limit (244 KiB). This can impact web performance.\nEntrypoints:\n  main (1.29 MiB)\n      bundle.js\n\nWARNING in webpack performance recommendations: \nYou can limit the size of your bundles by using import() or require.ensure to lazy load some parts of your application.\nFor more info visit https://webpack.js.org/guides/code-splitting/\n\nWARNING in webpack performance recommendations: \nThe runtime is part of the initial chunk of main. It describes every other chunk, so a change anywhere in the build rewrites these assets and clients download them again.\nSet 'optimization.runtimeChunk' to emit the runtime as its own chunk.\nFor more info visit https://webpack.js.org/configuration/optimization/#optimizationruntimechunk\n\nwebpack 5.110.3 compiled with 5 warnings in 20847 ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "code=$(curl -s -o /tmp/qm_index.html -w '%{http_code}' http://localhost:8080/); echo \"index.html HTTP $code, bytes: $(wc -c < /tmp/qm_index.html)\"; grep -o '<title>[^<]*</title>' /tmp/qm_index.html; grep -c 'bundle.js' /tmp/qm_index.html",
+      "exit_code": 0,
+      "stdout": "index.html HTTP 200, bytes: 9372\n<title>QuattroMap</title>\n1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "code=$(curl -s -o /tmp/qm_bundle.js -w '%{http_code}' http://localhost:8080/bundle.js); echo \"bundle.js HTTP $code, bytes: $(wc -c < /tmp/qm_bundle.js)\"; code2=$(curl -s -o /tmp/qm_shared.mjs -w '%{http_code}' http://localhost:8080/vendor/maplibre/maplibre-gl-shared.mjs); echo \"maplibre-gl-shared.mjs HTTP $code2, bytes: $(wc -c < /tmp/qm_shared.mjs)\"; code3=$(curl -s -o /tmp/qm_worker.mjs -w '%{http_code}' http://localhost:8080/vendor/maplibre/maplibre-gl-worker.mjs); echo \"maplibre-gl-worker.mjs HTTP $code3, bytes: $(wc -c < /tmp/qm_worker.mjs)\"",
+      "exit_code": 0,
+      "stdout": "bundle.js HTTP 200, bytes: 1356256\nmaplibre-gl-shared.mjs HTTP 200, bytes: 509209\nmaplibre-gl-worker.mjs HTTP 200, bytes: 18966\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -n \"config.json\" /workspace/src/index.js | head -5",
+      "exit_code": 0,
+      "stdout": "16:import config from './config.json';\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -c \"6.391263\" /tmp/qm_bundle.js; grep -c \"NRW Luftbild Farbe\" /tmp/qm_bundle.js; grep -o 'map-container' /tmp/qm_index.html | wc -l; grep -o 'id=\"map-[1-4]\"' /tmp/qm_index.html | sort | uniq -c",
+      "exit_code": 1,
+      "stdout": "1\n1\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -n 'map-1\\|mapContainer\\|createElement\\|map_\\${\\|map-' /workspace/src/index.js | head -20",
+      "exit_code": 0,
+      "stdout": "166:    var optg = document.createElement('optgroup');\n176:    var optg = document.createElement('optgroup');\n230:      var opt = document.createElement('option');\n278:    var opt = document.createElement('option');\n964:  var message = document.createElement(\"div\");\n1078:    (_, index) => document.getElementById(`map_${index + 1}`)\n1087:    const settingsCard = document.getElementById(`menu_map_${index + 1}`);\n1150:  const mapCountSelect = document.getElementById('map-count-select');\n1161:const mapCountSelect = document.getElementById('map-count-select');\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /workspace/node_modules | wc -l; ls /workspace/node_modules | grep -cE '^\\.'; node -e \"const p=require('/workspace/package.json'); const fs=require('fs'); let missing=[]; for (const d of {...p.dependencies, ...p.devDependencies}) if(!fs.existsSync('/workspace/node_modules/'+d)) missing.push(d); console.log('missing deps:', missing.length? missing : 'none')\"",
+      "exit_code": 1,
+      "stdout": "288\n0\n",
+      "stderr": "[eval]:1\nconst p=require('/workspace/package.json'); const fs=require('fs'); let missing=[]; for (const d of {...p.dependencies, ...p.devDependencies}) if(!fs.existsSync('/workspace/node_modules/'+d)) missing.push(d); console.log('missing deps:', missing.length? missing : 'none')\n                                                                                                                             ^\n\nTypeError: object is not iterable (cannot read property Symbol(Symbol.iterator))\n    at [eval]:1:126\n    at runScriptInThisContext (node:internal/vm:209:10)\n    at node:internal/process/execution:118:14\n    at [eval]-wrapper:6:24\n    at runScript (node:internal/process/execution:101:62)\n    at evalScript (node:internal/process/execution:133:3)\n    at node:internal/main/eval_string:51:3\n\nNode.js v20.20.2\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "node -e \"const p=require('/workspace/package.json'); const fs=require('fs'); const all={...p.dependencies, ...p.devDependencies}; const missing=Object.keys(all).filter(d=>!fs.existsSync('/workspace/node_modules/'+d)); console.log('total direct deps:', Object.keys(all).length); console.log('missing:', missing.length? missing : 'none')\"",
+      "exit_code": 0,
+      "stdout": "total direct deps: 17\nmissing: none\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -n 'createMap\\|map_1\\|new Map\\|maplibregl\\|maplibre' /workspace/src/index.js | head -15; echo '---'; sed -n '1070,1090p' /workspace/src/index.js",
+      "exit_code": 0,
+      "stdout": "2:import MaplibreGeocoder from '@maplibre/maplibre-gl-geocoder';\n9:import * as maplibregl from 'maplibre-gl';\n11:import 'maplibre-gl/dist/maplibre-gl.css';\n13:import '@maplibre/maplibre-gl-geocoder/dist/maplibre-gl-geocoder.css';\n19:const maplibreWorkerUrl = new URL(\n20:  './vendor/maplibre/maplibre-gl-worker.mjs',\n23:maplibregl.setWorkerUrl(maplibreWorkerUrl);\n32:MapboxDraw.constants.classes.CANVAS = 'maplibregl-canvas';\n33:MapboxDraw.constants.classes.CONTROL_BASE = 'maplibregl-ctrl';\n34:MapboxDraw.constants.classes.CONTROL_PREFIX = 'maplibregl-ctrl-';\n35:MapboxDraw.constants.classes.CONTROL_GROUP = 'maplibregl-ctrl-group';\n36:MapboxDraw.constants.classes.ATTRIBUTION = 'maplibregl-ctrl-attrib';\n55:      \"l1\": config.map_1.layer,\n56:      \"o1\": config.map_1.overlay || \"\",\n57:      \"op1\": config.map_1.overlay_opacity || 0.5,\n---\n  if (!layout) {\n    console.error(`Ung\u00fcltige Kartenanzahl: ${mapNumber}`);\n    return;\n  }\n\n  const mapInstances = [map_1, map_2, map_3, map_4];\n\n  const mapElements = mapInstances.map(\n    (_, index) => document.getElementById(`map_${index + 1}`)\n  );\n\n  const crossElements = mapInstances.map(\n    (_, index) => document.getElementById(`cross_${index + 1}`)\n  );\n\n  // only show settings for visible maps\n  mapInstances.forEach((_, index) => {\n    const settingsCard = document.getElementById(`menu_map_${index + 1}`);\n\n    if (settingsCard) {\n      settingsCard.hidden = index >= mapNumber;\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -o 'id=\"map_[1-4]\"\\|id=\"cross_[1-4]\"\\|id=\"menu_map_[1-4]\"' /tmp/qm_index.html | sort | uniq -c",
+      "exit_code": 0,
+      "stdout": "      1 id=\"cross_1\"\n      1 id=\"cross_2\"\n      1 id=\"cross_3\"\n      1 id=\"cross_4\"\n      1 id=\"map_1\"\n      1 id=\"map_2\"\n      1 id=\"map_3\"\n      1 id=\"map_4\"\n      1 id=\"menu_map_1\"\n      1 id=\"menu_map_2\"\n      1 id=\"menu_map_3\"\n      1 id=\"menu_map_4\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -n 'npm run deploy\\|npm run build\\|npm start\\|npm install' /workspace/README.md | head; echo '---'; cd /workspace && npx webpack --version 2>&1 | head -8",
+      "exit_code": 0,
+      "stdout": "271:npm install\n273:npm start\n282:npm run build\n288:npm run deploy\n---\n\n\u2b21 Packages:\n\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\u2500\n  copy-webpack-plugin:     ^14.0.0 \u2192 14.0.0\n  css-loader:              ^7.1.5 \u2192 7.1.5\n  style-loader:            ^4.0.0 \u2192 4.0.0\n  terser-webpack-plugin:   ^5.6.1 \u2192 5.6.1\n  webpack:                 ^5.110.3 \u2192 5.110.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/dist && nohup python3 -m http.server 8081 > /tmp/qm_static.log 2>&1 & sleep 3; c1=$(curl -s -o /tmp/qm_d_index.html -w '%{http_code}' http://localhost:8081/); c2=$(curl -s -o /tmp/qm_d_bundle.js -w '%{http_code}' http://localhost:8081/bundle.js); c3=$(curl -s -o /tmp/qm_d_img.png -w '%{http_code}' http://localhost:8081/img/icon_quattromap.png); echo \"dist index: $c1 ($(wc -c < /tmp/qm_d_index.html) bytes), dist bundle.js: $c2 ($(wc -c < /tmp/qm_d_bundle.js) bytes), dist img: $c3\"; grep -o '<title>[^<]*</title>' /tmp/qm_d_index.html; grep -c '6.391263' /tmp/qm_d_bundle.js",
+      "exit_code": 0,
+      "stdout": "dist index: 200 (9372 bytes), dist bundle.js: 200 (1295148 bytes), dist img: 200\n<title>QuattroMap</title>\n1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "pkill -f \"python3 -m http.server 8081\"; WPIDS=$(ps aux | grep -E 'webpack|npm start|node .*webpack' | grep -v grep | awk '{print $2}'); echo \"webpack pids: $WPIDS\"; for p in $WPIDS; do kill $p 2>/dev/null; done; sleep 3; ps aux | grep -E 'webpack|http.server' | grep -v grep; echo \"---ports after cleanup---\"; for f in /proc/net/tcp /proc/net/tcp6; do [ -f \"$f\" ] && awk 'NR>1 && $4==\"0A\" {split($2,a,\":\"); printf \"%d\\n\", (\"0x\" a[2])+0}' \"$f\"; done | sort -un; echo \"done\"",
+      "exit_code": 143,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ps aux | grep -vE 'grep|ps aux' | grep -E 'webpack|http.server|node' ; echo \"---\"; for f in /proc/net/tcp /proc/net/tcp6; do [ -f \"$f\" ] && awk 'NR>1 && $4==\"0A\" {split($2,a,\":\"); printf \"%d\\n\", (\"0x\" a[2])+0}' \"$f\"; done | sort -un",
+      "exit_code": 0,
+      "stdout": "root        1554  0.0  0.0   2892  1664 ?        S    17:42   0:00 sh -c webpack serve\nroot        1555  108  2.1 33026692 168544 ?     Sl   17:42   1:03 webpack\n---\n8080\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "kill 1554 1555 2>/dev/null; sleep 3; ps -p 1554 -p 1555 2>/dev/null; echo \"---remaining node procs---\"; ps aux | grep -E 'webpack|http.server' | grep -v grep; echo \"---listening ports---\"; for f in /proc/net/tcp /proc/net/tcp6; do [ -f \"$f\" ] && awk 'NR>1 && $4==\"0A\" {split($2,a,\":\"); printf \"%d\\n\", (\"0x\" a[2])+0}' \"$f\"; done | sort -un; echo \"cleanup done\"",
+      "exit_code": 0,
+      "stdout": "    PID TTY          TIME CMD\n---remaining node procs---\n---listening ports---\ncleanup done\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

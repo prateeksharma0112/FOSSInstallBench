@@ -1,0 +1,88 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P036-umweltnavi__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T00:42:56.107557+02:00",
+    "finished_at": "2026-10-18T02:12:18.116139+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P036",
+    "project": {
+      "opencode_id": "4272",
+      "name": "UmweltNAVI",
+      "description": "It combines public environmental data and information with open data and government knowledge, transparently and location-based.",
+      "catalogue_url": "https://opencode.de/de/software/umwelt-navi-4272",
+      "type": "Application",
+      "platforms": [
+        "ios",
+        "android",
+        "linux"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/umweltnavi/app",
+      "commit_sha": "da3ec1e7f4aa31cfe7cacfec445fefc9b52dca7e",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/umweltnavi/app/-/blob/da3ec1e7f4aa31cfe7cacfec445fefc9b52dca7e/README.md",
+      "language": "English",
+      "word_count": 537
+    },
+    "task_id": "P036-umweltnavi"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 5360.391,
+    "repository_setup_duration_seconds": 19.812999999999988,
+    "installation_duration_seconds": 5149.2029999999995,
+    "validation_duration_seconds": 167.32800000000043,
+    "command_count": 133,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 113,
+    "validation_command_count": 16
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P036-umweltnavi/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

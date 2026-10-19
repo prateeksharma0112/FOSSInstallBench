@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P043-bovis__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T14:39:36.484945+02:00",
+    "finished_at": "2026-10-18T15:03:47.866674+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P043",
+    "project": {
+      "opencode_id": "3487",
+      "name": "BoVis",
+      "description": "BoVis drill column visualization",
+      "catalogue_url": "https://opencode.de/de/software/bo-vis-3487",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/oc000047244955/bovis.net",
+      "commit_sha": "cd2c942dda5e774422fdd9bc7a05c2925db05d41",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README \u2014 Schnellstart section",
+      "url": "https://gitlab.opencode.de/oc000047244955/bovis.net/-/blob/cd2c942dda5e774422fdd9bc7a05c2925db05d41/README.md",
+      "language": "German",
+      "word_count": 35
+    },
+    "task_id": "P043-bovis"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1451.421000000002,
+    "repository_setup_duration_seconds": 8.468999999997322,
+    "installation_duration_seconds": 436.2649999999994,
+    "validation_duration_seconds": 999.6410000000033,
+    "command_count": 113,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 35,
+    "validation_command_count": 74
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P043-bovis/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

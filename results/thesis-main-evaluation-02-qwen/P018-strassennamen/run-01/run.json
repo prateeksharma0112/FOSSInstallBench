@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P018-strassennamen__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-16T13:05:44.683112+02:00",
+    "finished_at": "2026-10-16T13:27:20.246976+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P018",
+    "project": {
+      "opencode_id": "8356",
+      "name": "Stra\u00dfennamen",
+      "description": "Web application providing an overview of streets, focusing on their names and renamings, as well as related municipal processes.",
+      "catalogue_url": "https://opencode.de/de/software/strassennamen-8356",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen",
+      "commit_sha": "b1eae252f8ab54c59cda7c3ac10f440ecca46906",
+      "license": "AFL-2.0"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/lecos-gmbh/leipzigerstrassennamen/-/blob/b1eae252f8ab54c59cda7c3ac10f440ecca46906/README.md",
+      "language": "German",
+      "word_count": 555
+    },
+    "task_id": "P018-strassennamen"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1295.594,
+    "repository_setup_duration_seconds": 8.157000000000153,
+    "installation_duration_seconds": 1197.312,
+    "validation_duration_seconds": 66.67200000000048,
+    "command_count": 109,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 90,
+    "validation_command_count": 15
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P018-strassennamen/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

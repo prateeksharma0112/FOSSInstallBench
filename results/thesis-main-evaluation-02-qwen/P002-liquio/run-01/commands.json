@@ -1,0 +1,988 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/govstack/kitsoft/liquio /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/govstack/kitsoft/liquio.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 399b8b10f9776e5253a5daf02019551db4ee5d0e",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/govstack/kitsoft/liquio.git/\nFrom https://gitlab.opencode.de/govstack/kitsoft/liquio\n * branch            399b8b10f9776e5253a5daf02019551db4ee5d0e -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 399b8b10f9776e5253a5daf02019551db4ee5d0e",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 399b8b1 Merge remote-tracking branch 'gitlab1/main' into mirror-gitlab1\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 399b8b10f9776e5253a5daf02019551db4ee5d0e",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 184\ndrwxr-xr-x 12 root root  4096 Oct 15 10:23 .\ndr-xr-xr-x  1 root root  4096 Oct 15 10:23 ..\n-rw-r--r--  1 root root   164 Oct 15 10:23 .dockerignore\ndrwxr-xr-x  8 root root  4096 Oct 15 10:23 .git\ndrwxr-xr-x  3 root root  4096 Oct 15 10:23 .github\n-rw-r--r--  1 root root   231 Oct 15 10:23 .gitignore\n-rw-r--r--  1 root root 16335 Oct 15 10:23 ARCHITECTURE.md\n-rw-r--r--  1 root root  5342 Oct 15 10:23 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root 18278 Oct 15 10:23 CONTRIBUTING.md\n-rw-r--r--  1 root root 34353 Oct 15 10:23 LICENSE.md\n-rw-r--r--  1 root root  5009 Oct 15 10:23 README.md\n-rw-r--r--  1 root root  6253 Oct 15 10:23 SECURITY.md\ndrwxr-xr-x 19 root root  4096 Oct 15 10:23 components\ndrwxr-xr-x 18 root root  4096 Oct 15 10:23 config-templates\n-rw-r--r--  1 root root  8831 Oct 15 10:23 docker-compose.yml\ndrwxr-xr-x  2 root root  4096 Oct 15 10:23 examples\ndrwxr-xr-x  3 root root  4096 Oct 15 10:23 helm-chart\ndrwxr-xr-x  3 root root  4096 Oct 15 10:23 init\n-rw-r--r--  1 root root  3164 Oct 15 10:23 logo.svg\ndrwxr-xr-x  8 root root  4096 Oct 15 10:23 packages\n-rw-r--r--  1 root root 10516 Oct 15 10:23 publiccode.yml\n-rw-r--r--  1 root root  3378 Oct 15 10:23 renovate.json\ndrwxr-xr-x  2 root root  4096 Oct 15 10:23 scripts\ndrwxr-xr-x  4 root root  4096 Oct 15 10:23 test\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker --version 2>&1; docker compose version 2>&1; docker-compose --version 2>&1; node --version 2>&1; git --version 2>&1",
+      "exit_code": 0,
+      "stdout": "Docker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\n/bin/bash: line 3: docker-compose: command not found\n/bin/bash: line 3: node: command not found\ngit version 2.34.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/scripts/init.sh",
+      "exit_code": 0,
+      "stdout": "#!/bin/sh\n\n# Change directory to the script's location\ncd \"$(dirname \"$0\")/..\"\n\n# Make sure that jq is installed\nif ! command -v jq >/dev/null 2>&1; then\n  echo \"jq is not installed. Please install jq to run this script.\"\n  exit 1\nfi\n\n# Make sure that openssl is installed\nif ! command -v openssl >/dev/null 2>&1; then\n  echo \"openssl is not installed. Please install openssl to run this script.\"\n  exit 1\nfi\n\n# Read command line arguments\nFORCE=0\nfor arg in \"$@\"; do\n  case \"$arg\" in\n    -f|--force)\n      FORCE=1\n      ;;\n  esac\ndone\n\n# Remove existing config directory if FORCE is set\nif [ $FORCE -eq 1 ] && [ -d \"./config\" ]; then\n  echo \"Force option is set. Removing existing config directory.\"\n  rm -rf ./config\n  rm -f .env\nfi\n\n# Check if config directory already exists\nif [ -d \"./config\" ]; then\n  echo \"Config directory already exists. Initialization cancelled. Use -f or --force to overwrite.\" >&2\n  exit 1\nfi\n\ngenerate_secret() {\n  local length=\"${1:-32}\"\n  openssl rand -base64 $length | tr -d '/+='\n}\n\ngenerate_fixed_alnum_secret() {\n  local length=\"${1:-32}\"\n  local secret=\"\"\n  while [ \"${#secret}\" -lt \"$length\" ]; do\n    secret=\"${secret}$(openssl rand -base64 \"$length\" | tr -dc 'A-Za-z0-9')\"\n  done\n  printf '%s' \"$secret\" | cut -c1-\"$length\"\n}\n\necho \"==> Copy configuration templates\"\ncp -r ./config-templates ./config\n\necho \"==> Create .env file with service ports\"\ncat <<EOF > .env\n# Public service ports\nSVC_ID_PORT=8080\nSVC_CABINET_FRONT_PORT=8081\nSVC_ADMIN_FRONT_PORT=8082\nSVC_ID_API_PORT=8100\nSVC_CABINET_API_PORT=8101\nSVC_ADMIN_API_PORT=8102\nSVC_REGISTER_PORT=8103\nSVC_EXTERNAL_READER_PORT=8104\nSVC_FILESTORAGE_PORT=8105\nSVC_PDF_GENERATOR_PORT=7007\n\n# Internal service ports\nSVC_TASK_PORT=3000\nSVC_GATEWAY_PORT=3001\nSVC_MANAGER_PORT=3002\nSVC_NOTIFICATION_PORT=3003\nSVC_SIGN_TOOL_PORT=3004\nSVC_PERSIST_LINK_PORT=3346\nEOF\n\necho \"==> Append .env file with default database\"\necho \"\" >> .env\ncat <<EOF >> .env\n# PostgreSQL database configuration\nPOSTGRES_DB=postgres\nPOSTGRES_NAME=postgres\nPOSTGRES_USER=postgres\nPOSTGRES_HOST=postgres\nPOSTGRES_PORT=5432\nEOF\n\necho \"==> Generate a random PostgreSQL password and append it to .env\"\necho \"POSTGRES_PASSWORD=$(generate_secret)\" >> .env\n\necho \"==> Append .env with RabbitMQ configuration\"\necho \"\" >> .env\necho \"# RabbitMQ configuration\" >> .env\necho \"RABBITMQ_HOST=rabbitmq\" >> .env\necho \"RABBITMQ_PORT=5672\" >> .env\necho \"RABBITMQ_DEFAULT_USER=guest\" >> .env\n\necho \"==> Generate a random RabbitMQ password and append it to .env\"\necho \"RABBITMQ_DEFAULT_PASS=$(generate_secret)\" >> .env\n\n# Import environment variables from .env file\nexport $(grep -v '^#' .env | xargs)\n\n{\n  echo \"==> Insert database credentials into config files\"\n\n  file=\"config/admin-api/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/cabinet-api/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/gateway/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/id/config.json\"\n  echo \"$file\"\n  jq --arg db \"id\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.production.db.database = $db | .production.db.username = $user | .production.db.password = $pass | .production.db.host = $host | .production.db.port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/manager/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/notification/config.json\"\n  echo \"$file\"\n  jq --arg db \"notify\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.production.db.database = $db | .production.db.username = $user | .production.db.password = $pass | .production.db.host = $host | .production.db.port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/register/db.json\"\n  echo \"$file\"\n  jq --arg db \"register\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/db.json\"\n  echo \"$file\"\n  jq --arg db \"bpmn\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/filestorage/db.json\"\n  echo \"$file\"\n  jq --arg db \"filestorage\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Insert RabbitMQ credentials into config files\"\n  RABBITMQ_CONNECTION_STRING=\"amqp://${RABBITMQ_DEFAULT_USER}:${RABBITMQ_DEFAULT_PASS}@${RABBITMQ_HOST}:${RABBITMQ_PORT}/\"\n\n  file=\"config/admin-api/message_queue.json\"\n  echo \"$file\"\n  jq --arg conn \"$RABBITMQ_CONNECTION_STRING\" \\\n    '.amqpConnection = $conn' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/message_queue.json\"\n  echo \"$file\"\n  jq --arg conn \"$RABBITMQ_CONNECTION_STRING\" \\\n    '.amqpConnection = $conn' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/gateway/message_queue.json\"\n  echo \"$file\"\n  jq --arg conn \"$RABBITMQ_CONNECTION_STRING\" \\\n    '.amqpConnection = $conn' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/manager/message_queue.json\"\n  echo \"$file\"\n  jq --arg conn \"$RABBITMQ_CONNECTION_STRING\" \\\n    '.amqpConnection = $conn' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/message_queue.json\"\n  echo \"$file\"\n  jq --arg conn \"$RABBITMQ_CONNECTION_STRING\" \\\n    '.amqpConnection = $conn' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/id/config.json\"\n  echo \"$file\"\n  jq --arg secret \"$(generate_secret)\" \\\n    '.production.session.secret_key = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\necho \"==> Generate a random secret for OAuth in ID service\"\nOAUTH_SECRET=$(generate_secret)\nfile=\"config/id/config.json\"\njq --arg secret \"$OAUTH_SECRET\" \\\n  '.production.oauth.secret_key = [$secret]' \\\n  $file > $file.tmp && mv $file.tmp $file\n\n{\n  echo \"==> Insert OAuth secret into config files\"\n\n  file=\"config/admin-api/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$OAUTH_SECRET\" \\\n    '.basicAuthToken = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/cabinet-api/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$OAUTH_SECRET\" \\\n    '.LiquioId.basicAuthToken = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$OAUTH_SECRET\" \\\n    '.LiquioId.basicAuthToken = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\necho \"==> Generate a random secret for JWT in ID service\"\nJWT_SECRET=$(generate_secret)\nfile=\"config/id/config.json\"\njq --arg secret \"$JWT_SECRET\" \\\n  '.production.jwt.secret = $secret' \\\n  $file > $file.tmp && mv $file.tmp $file\n\n{\n  echo \"==> Insert JWT secret into config files\"\n\n  file=\"config/admin-api/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$JWT_SECRET\" \\\n    '.jwtSecret = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/cabinet-api/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$JWT_SECRET\" \\\n    '.jwtSecret = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/auth.json\"\n  echo \"$file\"\n  jq --arg secret \"$JWT_SECRET\" \\\n    '.jwtSecret = $secret' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\necho \"==> Generate an encryption key for Register service\"\nfile=\"config/register/encryption.json\"\njq --arg key \"$(generate_secret)\" \\\n  '.key = $key' \\\n  $file > $file.tmp && mv $file.tmp $file\n\n{\n  echo \"==> Generate access tokens for Register service\"\n  token=\"Basic $(echo register:${generate_secret} | base64 | tr -d '\\n')\"\n\n  file=\"config/register/auth.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    '.tokens = [$token]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/admin-api/register.json\"\n  echo \"$file\"\n  jq --arg port \"$SVC_REGISTER_PORT\" \\\n    --arg server \"http://register\" \\\n    --arg token \"$token\" \\\n    '.port = $port | .server = $server | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/register.json\"\n  echo \"$file\"\n  jq --arg port \"$SVC_REGISTER_PORT\" \\\n    --arg server \"http://register\" \\\n    --arg token \"$token\" \\\n    '.port = $port | .server = $server | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/requester.json\"\n  echo \"$file\"\n  jq --arg url \"http://register:$SVC_REGISTER_PORT\" \\\n    --arg token \"$token\" \\\n    '.registers.url = $url | .registers.token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n}\n\n{\n  echo \"==> Generate access tokens for External Reader service\"\n  login=\"external-reader\"\n  password=$(generate_secret)\n\n  file=\"config/external-reader/auth.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    '.basicAuthTokens = [$login + \":\" + $password]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  token=\"Basic $(echo -n \"$login:$password\" | base64 -w0)\"\n  file=\"config/task/external_reader.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_EXTERNAL_READER_PORT\" \\\n    --arg server \"http://external-reader\" \\\n    '.url = $server + \":\" + $port | .basicAuthToken = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Configure PDF Generator service\"\n  login=\"pdf-generator\"\n  password=$(generate_secret)\n\n  file=\"config/pdf-generator/auth.json\"\n  echo \"$file\"\n  token=\"Basic $(echo -n \"$login:$password\" | base64 -w0)\"\n  jq --arg token \"$token\" \\\n    '.basicAuthTokens = [$token]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/pdf-generator/server.json\"\n  echo \"$file\"\n  jq --arg port \"$SVC_PDF_GENERATOR_PORT\" \\\n    '.port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/pdf_generator.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_PDF_GENERATOR_PORT\" \\\n    --arg server \"http://pdf-generator\" \\\n    '.url = $server + \":\" + $port + \"/pdf\" | .basicAuthToken = $token | .requestTimeout = 120000' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Generate access tokens for File Storage service\"\n  token=\"Basic $(echo -n \"filestorage:$(generate_secret)\" | base64 -w0)\"\n\n  file=\"config/filestorage/auth.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    '.tokens = [$token]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/filestorage.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_FILESTORAGE_PORT\" \\\n    --arg server \"http://filestorage\" \\\n    '.apiHost = $server + \":\" + $port | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/storage.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_FILESTORAGE_PORT\" \\\n    --arg server \"http://filestorage\" \\\n    '.FileStorage.apiHost = $server + \":\" + $port | .FileStorage.token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/admin-api/filestorage.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_FILESTORAGE_PORT\" \\\n    --arg server \"http://filestorage\" \\\n    '.apiHost = $server + \":\" + $port | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/filestorage.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    --arg port \"$SVC_FILESTORAGE_PORT\" \\\n    --arg server \"http://filestorage\" \\\n    '.apiHost = $server + \":\" + $port | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Generate access credentials for Notification service\"\n  server=\"http://notification\"\n  login=\"notification\"\n  password=$(generate_secret)\n  token=\"Basic $(echo -n \"$login:$password\" | base64 -w0)\"\n\n  file=\"config/notification/config.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n      --arg authToken \"Basic $OAUTH_SECRET\" \\\n      '.production.authorization.list = [{ user: $login, password: $password }] | .production.auth_server.basicAuthToken = $authToken' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/admin-api/notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    --arg server \"$server\" \\\n    '.user = $login | .password = $password | .server = $server' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/task/notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    '.user = $login | .password = $password' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    --arg server \"$server\" \\\n    '.email.user = $login | .email.password = $password | .email.server = $server | .sms.user = $login | .sms.password = $password | .sms.server = $server' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/system_notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    --arg server \"$server\" \\\n    '.email.user = $login | .email.password = $password | .email.server = $server' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/gateway/system_notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    --arg server \"$server\" \\\n    '.email.user = $login | .email.password = $password | .email.server = $server' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/manager/system_notifier.json\"\n  echo \"$file\"\n  jq --arg login \"$login\" \\\n    --arg password \"$password\" \\\n    --arg server \"$server\" \\\n    '.email.user = $login | .email.password = $password | .email.server = $server' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/id/config.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    '.production.notify.authorization = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Configure Persist-Link service\"\n\n  file=\"config/persist-link/db.json\"\n  echo \"$file\"\n  jq --arg db \"persist_link\" \\\n    --arg user \"$POSTGRES_USER\" \\\n    --arg pass \"$POSTGRES_PASSWORD\" \\\n    --arg host \"$POSTGRES_HOST\" \\\n    --arg port \"$POSTGRES_PORT\" \\\n    '.database = $db | .username = $user | .password = $pass | .host = $host | .port = ($port|tonumber)' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  login=\"persist-link\"\n  password=$(generate_secret)\n  token=\"Basic $(echo -n \"$login:$password\" | base64 -w0)\"\n\n  file=\"config/persist-link/auth.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" \\\n    '.tokens = [$token]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/persist-link/link_generator.json\"\n  echo \"$file\"\n  jq --arg secretKey \"$(generate_fixed_alnum_secret 32)\" \\\n    --arg cryptIv \"$(generate_fixed_alnum_secret 16)\" \\\n    '.secretKey = $secretKey | .cryptIv = $cryptIv' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Update persist-link references in task and event services\"\n\n  file=\"config/task/persist_link.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" '.server = \"http://persist-link\" | .port = 3346 | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  file=\"config/event/persist_link.json\"\n  echo \"$file\"\n  jq --arg token \"$token\" '.server = \"http://persist-link\" | .port = 3346 | .token = $token' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n\n{\n  echo \"==> Generate CA certificate and private key\"\n  mkdir -p config/certificates\n  openssl req -x509 -nodes -days 3650 -newkey rsa:2048 \\\n    -keyout config/certificates/ca.key \\\n    -out config/certificates/ca.crt \\\n    -subj \"/C=UA/L=Kyiv/O=Liquio/OU=Development/CN=Liquio\" \\\n\n  echo \"==> Insert CA certificate into config files\"\n  file=\"config/sign-tool/x509.json\"\n  jq --arg ca \"$(cat config/certificates/ca.crt)\" \\\n    '.caCerts = [$ca]' \\\n    $file > $file.tmp && mv $file.tmp $file\n\n  echo \"==> Generate a pk12 for admin user\"\n  ./scripts/generate-user.sh --first-name \"Admin\" --last-name \"Liquio\" --serial-number \"0000000001\" --password \"admin\" --output \"config/admin.p12\"\n\n  echo \"==> Generate a pk12 for demo user\"\n  ./scripts/generate-user.sh --first-name \"Demo\" --last-name \"Liquio\" --serial-number \"3123456789\" --password \"demo\" --output \"config/demo.p12\"\n}\n\n{\n  echo \"==> Update ping.json with Docker service endpoints\"\n  file=\"config/task/ping.json\"\n  echo \"$file\"\n  jq --arg id_port \"$SVC_ID_API_PORT\" \\\n    --arg event_port \"$SVC_TASK_PORT\" \\\n    --arg manager_port \"$SVC_MANAGER_PORT\" \\\n    --arg gateway_port \"$SVC_GATEWAY_PORT\" \\\n    --arg register_port \"$SVC_REGISTER_PORT\" \\\n    --arg filestorage_port \"$SVC_FILESTORAGE_PORT\" \\\n    --arg notification_port \"$SVC_NOTIFICATION_PORT\" \\\n    --arg external_reader_port \"$SVC_EXTERNAL_READER_PORT\" \\\n    --arg sign_tool_port \"$SVC_SIGN_TOOL_PORT\" \\\n    --arg cabinet_front_port \"$SVC_CABINET_FRONT_PORT\" \\\n    --arg admin_front_port \"$SVC_ADMIN_FRONT_PORT\" \\\n    '.id.url = \"http://id-api:\" + $id_port + \"/test/ping\" |\n     .eds.url = \"http://sign-tool:\" + $sign_tool_port + \"/api/v1/test/ping\" |\n     .event.url = \"http://task:\" + $event_port + \"/test/ping\" |\n     .manager.url = \"http://manager:\" + $manager_port + \"/test/ping\" |\n     .gateway.url = \"http://gateway:\" + $gateway_port + \"/test/ping\" |\n     .workflow.url = \"http://manager:\" + $manager_port + \"/test/ping\" |\n     .register.url = \"http://register:\" + $register_port + \"/test/ping\" |\n     .filestorage.url = \"http://filestorage:\" + $filestorage_port + \"/test/ping\" |\n     .externalReader.url = \"http://external-reader:\" + $external_reader_port + \"/test/ping\" |\n     .notification.url = \"http://notification:\" + $notification_port + \"/test/ping\" |\n     .front.url = \"http://cabinet-front:\" + $cabinet_front_port + \"/version.json\" |\n     .frontAdmin.url = \"http://admin-front:\" + $admin_front_port + \"/version.json\"' \\\n    $file > $file.tmp && mv $file.tmp $file\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/docker-compose.yml",
+      "exit_code": 0,
+      "stdout": "services:\n  id-front:\n    build:\n      context: ./components/id-front\n    restart: on-failure\n    ports:\n      - \"${SVC_ID_PORT}:8080\"\n    volumes:\n      - ./config/id/config.json:/usr/share/nginx/html/config.json:ro\n    depends_on:\n      - id-api\n\n  id-api:\n    build:\n      context: ./components/id-api\n    restart: on-failure\n    ports:\n      - \"${SVC_ID_API_PORT}:8100\"\n    volumes:\n      - ./config/id:/var/www/config:ro\n    depends_on:\n      - id-migrations\n      - rabbitmq\n      - redis\n\n  id-migrations:\n    build:\n      context: ./components/id-api\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/id:/var/www/config:ro\n    depends_on:\n      - postgres\n\n  admin-api:\n    build:\n      context: ./components/admin-api\n    restart: on-failure\n    ports:\n      - \"${SVC_ADMIN_API_PORT}:8102\"\n    volumes:\n      - ./config/admin-api:/var/www/config:ro\n    depends_on:\n      - postgres\n      - rabbitmq\n      - redis\n\n  admin-front:\n    build:\n      context: ./components/admin-front\n      args:\n        NODE_MAX_OLD_SPACE_SIZE: 1536\n        GENERATE_SOURCEMAP: ${GENERATE_SOURCEMAP:-false}\n        DISABLE_ESLINT_PLUGIN: ${DISABLE_ESLINT_PLUGIN:-true}\n        INLINE_RUNTIME_CHUNK: ${INLINE_RUNTIME_CHUNK:-false}\n      additional_contexts:\n        core: ./packages/front-core\n    restart: on-failure\n    ports:\n      - \"${SVC_ADMIN_FRONT_PORT}:8080\"\n    volumes:\n      - ./config/admin-front/config.json:/usr/share/nginx/html/config.json:ro\n    depends_on:\n      - admin-api\n\n  cabinet-api:\n    build:\n      context: ./components/cabinet-api\n    restart: on-failure\n    ports:\n      - \"${SVC_CABINET_API_PORT}:8101\"\n    volumes:\n      - ./config/cabinet-api:/var/www/config:ro\n    depends_on:\n      - postgres\n      - redis\n\n  cabinet-front:\n    build:\n      context: ./components/cabinet-front\n      args:\n        NODE_MAX_OLD_SPACE_SIZE: 1536\n        GENERATE_SOURCEMAP: ${GENERATE_SOURCEMAP:-false}\n        DISABLE_ESLINT_PLUGIN: ${DISABLE_ESLINT_PLUGIN:-true}\n        INLINE_RUNTIME_CHUNK: ${INLINE_RUNTIME_CHUNK:-false}\n      additional_contexts:\n        core: ./packages/front-core\n    restart: on-failure\n    ports:\n      - \"${SVC_CABINET_FRONT_PORT}:8080\"\n    volumes:\n      - ./config/cabinet-front/config.json:/usr/share/nginx/html/config.json:ro\n    depends_on:\n      - cabinet-api\n\n  manager-migrations:\n    build:\n      context: ./components/manager\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/manager:/var/www/config:ro\n    depends_on:\n      - postgres\n\n  manager:\n    build:\n      context: ./components/manager\n    restart: on-failure\n    volumes:\n      - ./config/manager:/var/www/config:ro\n    depends_on:\n      - manager-migrations\n      - rabbitmq\n      - redis\n\n  register:\n    build:\n      context: ./components/register\n    restart: on-failure\n    ports:\n      - \"${SVC_REGISTER_PORT}:8103\"\n    volumes:\n      - ./config/register:/var/www/config:ro\n    depends_on:\n      - register-migrations\n\n  register-migrations:\n    build:\n      context: ./components/register\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/register:/var/www/config:ro\n    depends_on:\n      - postgres\n      - rabbitmq\n      - redis\n\n  event-plugin-installer:\n    build:\n      context: ./components/event\n    command: [\"npm\", \"run\", \"plugin-installer\"]\n    restart: on-failure\n    volumes:\n      - ./config/event:/var/www/config:ro\n      - event-plugins:/var/www/plugins\n    environment:\n      PLUGINS_INSTALL_DIR: /var/www/plugins\n\n  event:\n    build:\n      context: ./components/event\n    restart: on-failure\n    volumes:\n      - ./config/event:/var/www/config:ro\n      - event-plugins:/var/www/plugins:ro\n    depends_on:\n      event-plugin-installer:\n        condition: service_completed_successfully\n      postgres:\n        condition: service_started\n      rabbitmq:\n        condition: service_started\n      redis:\n        condition: service_started\n\n  gateway:\n    build:\n      context: ./components/gateway\n    restart: on-failure\n    volumes:\n      - ./config/gateway:/var/www/config:ro\n    depends_on:\n      - postgres\n      - rabbitmq\n      - redis\n\n  sign-tool:\n    build:\n      context: ./components/sign-tool\n    restart: on-failure\n    ports:\n      - \"${SVC_SIGN_TOOL_PORT}:3004\"\n    volumes:\n      - ./config/sign-tool:/var/www/config:ro\n\n  task-plugin-installer:\n    build:\n      context: ./components/task\n    command: [\"npm\", \"run\", \"plugin-installer\"]\n    restart: on-failure\n    volumes:\n      - ./config/task:/var/www/config:ro\n      - task-plugins:/var/www/plugins\n    environment:\n      PLUGINS_INSTALL_DIR: /var/www/plugins\n\n  task:\n    build:\n      context: ./components/task\n    restart: on-failure\n    volumes:\n      - ./config/task:/var/www/config:ro\n      - task-plugins:/var/www/plugins:ro\n    depends_on:\n      task-plugin-installer:\n        condition: service_completed_successfully\n      postgres:\n        condition: service_started\n      rabbitmq:\n        condition: service_started\n      redis:\n        condition: service_started\n\n  notification:\n    build:\n      context: ./components/notification\n    restart: on-failure\n    volumes:\n      - ./config/notification:/var/www/config:ro\n    depends_on:\n      - notification-migrations\n\n  notification-migrations:\n    build:\n      context: ./components/notification\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/notification:/var/www/config:ro\n    depends_on:\n      - postgres\n\n  external-reader-plugin-installer:\n    build:\n      context: ./components/external-reader\n    command: [\"npm\", \"run\", \"plugin-installer\"]\n    restart: on-failure\n    volumes:\n      - ./config/external-reader:/var/www/config:ro\n      - external-reader-plugins:/var/www/plugins\n    environment:\n      PLUGINS_INSTALL_DIR: /var/www/plugins\n\n  external-reader:\n    build:\n      context: ./components/external-reader\n    restart: on-failure\n    ports:\n      - \"${SVC_EXTERNAL_READER_PORT}:8104\"\n    volumes:\n      - ./config/external-reader:/var/www/config:ro\n      - external-reader-plugins:/var/www/plugins:ro\n    depends_on:\n      external-reader-plugin-installer:\n        condition: service_completed_successfully\n\n  pdf-generator:\n    build:\n      context: ./components/pdf-generator\n    restart: on-failure\n    ports:\n      - \"${SVC_PDF_GENERATOR_PORT}:7007\"\n    volumes:\n      - ./config/pdf-generator:/var/www/config:ro\n\n  filestorage:\n    build:\n      context: ./components/filestorage\n    restart: on-failure\n    ports:\n      - \"${SVC_FILESTORAGE_PORT}:8105\"\n    volumes:\n      - ./config/filestorage:/var/www/config:ro\n    depends_on:\n      - filestorage-migrations\n\n  filestorage-migrations:\n    build:\n      context: ./components/filestorage\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/filestorage:/var/www/config:ro\n    depends_on:\n      - postgres\n\n  persist-link-migrations:\n    build:\n      context: ./components/persist-link\n    command: [\"npm\", \"run\", \"migration-up\"]\n    restart: on-failure\n    volumes:\n      - ./config/persist-link:/var/www/config:ro\n    depends_on:\n      - postgres\n\n  persist-link:\n    build:\n      context: ./components/persist-link\n    restart: on-failure\n    ports:\n      - \"${SVC_PERSIST_LINK_PORT}:3346\"\n    volumes:\n      - ./config/persist-link:/var/www/config:ro\n    depends_on:\n      - persist-link-migrations\n      - postgres\n\n  postgres:\n    image: postgres:17\n    ports:\n      - \"${POSTGRES_PUBLISHED_PORT:-5432}:5432\"\n    environment:\n      POSTGRES_HOST: ${POSTGRES_HOST}\n      POSTGRES_USER: ${POSTGRES_USER}\n      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}\n      POSTGRES_NAME: ${POSTGRES_NAME}\n    volumes:\n      - postgres_data:/var/lib/postgresql/data\n      - ./init/db/:/docker-entrypoint-initdb.d/:ro\n    healthcheck:\n      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n      interval: 30s\n      timeout: 5s\n      retries: 3\n\n  rabbitmq:\n    image: rabbitmq:3-management\n    ports:\n      - \"${RABBITMQ_MANAGEMENT_PUBLISHED_PORT:-15672}:15672\"\n      - \"${RABBITMQ_AMQP_PUBLISHED_PORT:-5672}:5672\"\n    environment:\n      RABBITMQ_DEFAULT_USER: ${RABBITMQ_DEFAULT_USER}\n      RABBITMQ_DEFAULT_PASS: ${RABBITMQ_DEFAULT_PASS}\n    volumes:\n      - rabbitmq_data:/var/lib/rabbitmq\n    healthcheck:\n      test: [\"CMD\", \"rabbitmq-diagnostics\", \"status\"]\n      interval: 30s\n      timeout: 5s\n      retries: 3\n\n  redis:\n    image: redis:latest\n    ports:\n      - \"${REDIS_PUBLISHED_PORT:-6379}:6379\"\n    volumes:\n      - redis_data:/data\n    healthcheck:\n      test: [\"CMD\", \"redis-cli\", \"ping\"]\n      interval: 30s\n      timeout: 5s\n      retries: 3\n\nvolumes:\n  postgres_data:\n  rabbitmq_data:\n  redis_data:\n  event-plugins:\n  external-reader-plugins:\n  task-plugins:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which jq openssl base64; jq --version; openssl version; docker info 2>&1 | head -30",
+      "exit_code": 0,
+      "stdout": "/usr/bin/openssl\n/usr/bin/base64\nOpenSSL 3.0.2 15 Mar 2022 (Library: OpenSSL 3.0.2 15 Mar 2022)\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n  Backing Filesystem: extfs\n  Supports d_type: true\n  Using metacopy: false\n  Native Overlay Diff: true\n  userxattr: true\n Logging Driver: json-file\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Plugins:\n  Volume: local\n",
+      "stderr": "/bin/bash: line 3: jq: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/scripts/generate-user.sh",
+      "exit_code": 0,
+      "stdout": "#!/bin/sh\n\n# Change directory to the script's location\ncd \"$(dirname \"$0\")/../\"\n\n# Make sure that openssl is installed\nif ! command -v openssl >/dev/null 2>&1; then\n  echo \"openssl is not installed. Please install openssl to run this script.\"\n  exit 1\nfi\n\n# Parse command line arguments\nCOMMON_NAME=\"\"\nFIRST_NAME=\"\"\nMIDDLE_NAME=\"\"\nLAST_NAME=\"\"\nSERIAL_NUMBER=\"\"\nPASSWORD=\"\"\nOUTPUT_FILE=\"\"\nCA_CERT_PATH=\"\"\nCA_KEY_PATH=\"\"\nK8S_SECRET_NAME=\"\"\nK8S_NAMESPACE=\"liquio\"\n\nwhile [ $# -gt 0 ]; do\n  case \"$1\" in\n    --common-name)\n      COMMON_NAME=\"$2\"\n      shift 2\n      ;;\n    --first-name)\n      FIRST_NAME=\"$2\"\n      shift 2\n      ;;\n    --middle-name)\n      MIDDLE_NAME=\"$2\"\n      shift 2\n      ;;\n    --last-name)\n      LAST_NAME=\"$2\"\n      shift 2\n      ;;\n    --serial-number)\n      SERIAL_NUMBER=\"$2\"\n      shift 2\n      ;;\n    --password)\n      PASSWORD=\"$2\"\n      shift 2\n      ;;\n    --output)\n      OUTPUT_FILE=\"$2\"\n      shift 2\n      ;;\n    --ca-cert)\n      CA_CERT_PATH=\"$2\"\n      shift 2\n      ;;\n    --ca-key)\n      CA_KEY_PATH=\"$2\"\n      shift 2\n      ;;\n    --k8s-secret)\n      K8S_SECRET_NAME=\"$2\"\n      shift 2\n      ;;\n    --k8s-namespace)\n      K8S_NAMESPACE=\"$2\"\n      shift 2\n      ;;\n    -h|--help)\n      echo \"Usage: $0 [--common-name <name>] [--first-name <name>] [--middle-name <name>] [--last-name <name>] [--serial-number <number>] [--password <password>] [--output <file>] [--ca-cert <path>] [--ca-key <path>] [--k8s-secret <secret-name>] [--k8s-namespace <namespace>]\"\n      echo \"\"\n      echo \"Options:\"\n      echo \"  --common-name <name>     Common name for the certificate (e.g., 'John Doe')\"\n      echo \"  --first-name <name>      First name (given name) for the certificate\"\n      echo \"  --middle-name <name>     Middle name or initial for the certificate\"\n      echo \"  --last-name <name>       Last name (surname) for the certificate\"\n      echo \"  --serial-number <number> Serial number for the certificate\"\n      echo \"  --password <password>    Password for the p12 file (defaults to serial number)\"\n      echo \"  --output <file>          Output file name for the p12 file (defaults to config/<serial_number>.p12)\"\n      echo \"  --ca-cert <path>         Path to CA certificate file (defaults to config/certificates/ca.crt)\"\n      echo \"  --ca-key <path>          Path to CA private key file (defaults to config/certificates/ca.key)\"\n      echo \"  --k8s-secret <name>      Extract CA certificate and key from specified Kubernetes secret\"\n      echo \"  --k8s-namespace <name>   Kubernetes namespace for the secret (defaults to liquio)\"\n      echo \"  -h, --help              Show this help message\"\n      echo \"\"\n      echo \"Note: You can use either --common-name OR the combination of --first-name, --middle-name, --last-name.\"\n      echo \"      If individual name components are provided, they will be used in separate certificate fields.\"\n      exit 0\n      ;;\n    *)\n      echo \"Error: Unknown option $1\"\n      echo \"Use --help for usage information.\"\n      exit 1\n      ;;\n  esac\ndone\n\n# Handle Kubernetes secret extraction if --k8s-secret flag is used\nif [ -n \"$K8S_SECRET_NAME\" ]; then\n  echo \"==> Extracting CA certificate and key from Kubernetes secret: $K8S_SECRET_NAME\"\n  echo \"==> Using Kubernetes namespace: $K8S_NAMESPACE\"\n  # Check if we have kubectl access\n  if ! command -v kubectl >/dev/null 2>&1; then\n    echo \"Error: kubectl is not available or not configured\"\n    exit 1\n  fi\n\n  # Create temporary directory for CA files\n  TEMP_DIR=\"/tmp/k8s-ca-extract-$$\"\n  mkdir -p \"$TEMP_DIR\"\n\n  # Cleanup function\n  cleanup_k8s() {\n    rm -rf \"$TEMP_DIR\" 2>/dev/null || true\n  }\n  trap cleanup_k8s EXIT\n\n  # Check if the specified secret exists\n  if ! kubectl get secret \"$K8S_SECRET_NAME\" -n \"$K8S_NAMESPACE\" >/dev/null 2>&1; then\n    echo \"Error: Secret '$K8S_SECRET_NAME' not found.\"\n    echo \"Available secrets:\"\n    kubectl get secrets -n \"$K8S_NAMESPACE\"\n    exit 1\n  fi\n\n  echo \"==> Using CA secret: $K8S_SECRET_NAME\"\n\n  # Get the CA certificate\n  kubectl get secret \"$K8S_SECRET_NAME\" -n \"$K8S_NAMESPACE\" -o jsonpath='{.data.ca\\.crt}' | base64 -d > \"$TEMP_DIR/ca.crt\"\n  if [ ! -s \"$TEMP_DIR/ca.crt\" ]; then\n    echo \"Error: Failed to fetch CA certificate from secret\"\n    exit 1\n  fi\n\n  # Get the CA private key\n  kubectl get secret \"$K8S_SECRET_NAME\" -n \"$K8S_NAMESPACE\" -o jsonpath='{.data.ca\\.key}' | base64 -d > \"$TEMP_DIR/ca.key\"\n  if [ ! -s \"$TEMP_DIR/ca.key\" ]; then\n    echo \"Error: Failed to fetch CA private key from secret\"\n    exit 1\n  fi\n\n  # Override CA paths to use the extracted files\n  CA_CERT_PATH=\"$TEMP_DIR/ca.crt\"\n  CA_KEY_PATH=\"$TEMP_DIR/ca.key\"\n  echo \"==> CA certificate and key extracted successfully\"\nfi\n\n# Check if CA certificate and key exist\n# Allow custom CA paths via command line arguments or environment variables\nCA_CERT_PATH=\"${CA_CERT_PATH:-config/certificates/ca.crt}\"\nCA_KEY_PATH=\"${CA_KEY_PATH:-config/certificates/ca.key}\"\n\nif [ ! -f \"$CA_CERT_PATH\" ] || [ ! -f \"$CA_KEY_PATH\" ]; then\n  echo \"CA certificate or key not found.\"\n  echo \"  Expected CA cert: $CA_CERT_PATH\"\n  echo \"  Expected CA key: $CA_KEY_PATH\"\n  echo \"Please run scripts/init.sh first to generate the CA, or use --ca-cert and --ca-key options.\"\n  exit 1\nfi\n\n# Prompt for common name if not provided as argument\nif [ -z \"$COMMON_NAME\" ] && [ -z \"$FIRST_NAME\" ] && [ -z \"$LAST_NAME\" ]; then\n  echo \"Enter the common name for the certificate (e.g., 'John Doe'):\"\n  echo \"Or press Enter to provide individual name components:\"\n  read -r COMMON_NAME\n\n  # If no common name provided, ask for individual components\n  if [ -z \"$COMMON_NAME\" ]; then\n    echo \"Enter first name:\"\n    read -r FIRST_NAME\n    echo \"Enter middle name/initial (optional):\"\n    read -r MIDDLE_NAME\n    echo \"Enter last name:\"\n    read -r LAST_NAME\n  fi\nfi\n\n# Validate that we have some form of name\nif [ -z \"$COMMON_NAME\" ] && [ -z \"$FIRST_NAME\" ] && [ -z \"$LAST_NAME\" ]; then\n  echo \"Error: Must provide either a common name or at least a first or last name.\"\n  exit 1\nfi\n\n# Prompt for serial number if not provided as argument\nif [ -z \"$SERIAL_NUMBER\" ]; then\n  echo \"Enter the serial number:\"\n  read -r SERIAL_NUMBER\nfi\n\n# Set default output file if not provided\nif [ -z \"$OUTPUT_FILE\" ]; then\n  if [ -n \"$K8S_SECRET_NAME\" ]; then\n    # For K8s mode, save to current directory\n    OUTPUT_FILE=\"user-${SERIAL_NUMBER}.p12\"\n  else\n    OUTPUT_FILE=\"config/${SERIAL_NUMBER}.p12\"\n  fi\nfi\n\n# Check if p12 file with this name already exists\nif [ -f \"$OUTPUT_FILE\" ]; then\n  echo \"Error: A certificate file ${OUTPUT_FILE} already exists.\"\n  exit 1\nfi\n\n# Prompt for password if not provided as argument\nif [ -z \"$PASSWORD\" ]; then\n  echo \"Enter password for the p12 file (press Enter for default password same as serial number):\"\n  read -r PASSWORD\nfi\n\n# Use serial number as default password if none provided\nif [ -z \"$PASSWORD\" ]; then\n  PASSWORD=\"$SERIAL_NUMBER\"\nfi\n\n# Build certificate subject\nCERT_SUBJECT=\"/O=Liquio/serialNumber=${SERIAL_NUMBER}\"\n\n# If individual name components are provided, use them; otherwise use common name\nif [ -n \"$FIRST_NAME\" ] || [ -n \"$LAST_NAME\" ]; then\n  # Use individual name components\n  if [ -n \"$FIRST_NAME\" ]; then\n    CERT_SUBJECT=\"${CERT_SUBJECT}/GN=${FIRST_NAME}\"\n  fi\n\n  if [ -n \"$MIDDLE_NAME\" ]; then\n    CERT_SUBJECT=\"${CERT_SUBJECT}/initials=${MIDDLE_NAME}\"\n  fi\n\n  if [ -n \"$LAST_NAME\" ]; then\n    CERT_SUBJECT=\"${CERT_SUBJECT}/SN=${LAST_NAME}\"\n  fi\n\n  # Build full name for CN and display\n  if [ -z \"$COMMON_NAME\" ]; then\n    COMMON_NAME=\"\"\n    [ -n \"$FIRST_NAME\" ] && COMMON_NAME=\"$FIRST_NAME\"\n    [ -n \"$MIDDLE_NAME\" ] && COMMON_NAME=\"$COMMON_NAME $MIDDLE_NAME\"\n    [ -n \"$LAST_NAME\" ] && COMMON_NAME=\"$COMMON_NAME $LAST_NAME\"\n    COMMON_NAME=$(echo \"$COMMON_NAME\" | sed 's/^ *//; s/ *$//') # trim spaces\n  fi\n\n  CERT_SUBJECT=\"${CERT_SUBJECT}/CN=${COMMON_NAME}\"\nelse\n  # Use the common name approach (backward compatibility)\n  CERT_SUBJECT=\"${CERT_SUBJECT}/CN=${COMMON_NAME}\"\nfi\n\necho \"==> Generating certificate for ${COMMON_NAME} with serial number ${SERIAL_NUMBER}\"\n\n# Ensure certificates directory exists\nmkdir -p config/certificates\n\n# Generate private key and certificate signing request, then sign it with CA\nopenssl req -new -newkey rsa:2048 -nodes -utf8 -keyout \"config/certificates/${SERIAL_NUMBER}.key\" \\\n  -subj \"$CERT_SUBJECT\" | \\\nopenssl x509 -req -days 3650 -CA \"$CA_CERT_PATH\" -CAkey \"$CA_KEY_PATH\" -set_serial \"${SERIAL_NUMBER}\" \\\n  -out \"config/certificates/${SERIAL_NUMBER}.crt\"\n\n# Check if certificate generation was successful\nif [ $? -ne 0 ]; then\n  echo \"Error: Failed to generate certificate.\"\n  exit 1\nfi\n\n# Generate p12 file\nopenssl pkcs12 -export -out \"$OUTPUT_FILE\" \\\n  -inkey \"config/certificates/${SERIAL_NUMBER}.key\" \\\n  -in \"config/certificates/${SERIAL_NUMBER}.crt\" \\\n  -name \"${COMMON_NAME}\" \\\n  -passout \"pass:${PASSWORD}\"\n\n# Check if p12 generation was successful\nif [ $? -ne 0 ]; then\n  echo \"Error: Failed to generate p12 file.\"\n  # Clean up partial files\n  rm -f \"config/certificates/${SERIAL_NUMBER}.key\" \"config/certificates/${SERIAL_NUMBER}.crt\"\n  exit 1\nfi\n\n# Clean up temporary certificate and key files\nrm -f \"config/certificates/${SERIAL_NUMBER}.key\" \"config/certificates/${SERIAL_NUMBER}.crt\"\n\necho \"Certificate generated successfully!\"\necho \"File: ${OUTPUT_FILE}\"\necho \"Password: ${PASSWORD}\"\necho \"Common Name: ${COMMON_NAME}\"\necho \"Serial Number: ${SERIAL_NUMBER}\"\n\n# Clean up temporary K8s files if they were created\nif [ -n \"$K8S_SECRET_NAME\" ] && [ -n \"$TEMP_DIR\" ] && [ -d \"$TEMP_DIR\" ]; then\n  rm -rf \"$TEMP_DIR\" 2>/dev/null || true\nfi\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release | head -3; apt-get install -y jq 2>&1 | tail -5 || (apt-get update 2>&1 | tail -3 && apt-get install -y jq 2>&1 | tail -5)",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nReading package lists...\nBuilding dependency tree...\nReading state information...\nE: Unable to locate package jq\nGet:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.9 kB]\nFetched 49.2 MB in 20s (2416 kB/s)\nReading package lists...\nUnpacking jq (1.6-2.1ubuntu3.2) ...\nSetting up libonig5:amd64 (6.9.7.1-2build1) ...\nSetting up libjq1:amd64 (1.6-2.1ubuntu3.2) ...\nSetting up jq (1.6-2.1ubuntu3.2) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ./scripts/init.sh 2>&1",
+      "exit_code": 0,
+      "stdout": "==> Copy configuration templates\n==> Create .env file with service ports\n==> Append .env file with default database\n==> Generate a random PostgreSQL password and append it to .env\n==> Append .env with RabbitMQ configuration\n==> Generate a random RabbitMQ password and append it to .env\n==> Insert database credentials into config files\nconfig/admin-api/db.json\nconfig/cabinet-api/db.json\nconfig/event/db.json\nconfig/gateway/db.json\nconfig/id/config.json\nconfig/manager/db.json\nconfig/notification/config.json\nconfig/register/db.json\nconfig/task/db.json\nconfig/filestorage/db.json\n==> Insert RabbitMQ credentials into config files\nconfig/admin-api/message_queue.json\nconfig/event/message_queue.json\nconfig/gateway/message_queue.json\nconfig/manager/message_queue.json\nconfig/task/message_queue.json\nconfig/id/config.json\n==> Generate a random secret for OAuth in ID service\n==> Insert OAuth secret into config files\nconfig/admin-api/auth.json\nconfig/cabinet-api/auth.json\nconfig/task/auth.json\n==> Generate a random secret for JWT in ID service\n==> Insert JWT secret into config files\nconfig/admin-api/auth.json\nconfig/cabinet-api/auth.json\nconfig/task/auth.json\n==> Generate an encryption key for Register service\n==> Generate access tokens for Register service\nconfig/register/auth.json\nconfig/admin-api/register.json\nconfig/task/register.json\nconfig/event/requester.json\n==> Generate access tokens for External Reader service\nconfig/external-reader/auth.json\nconfig/task/external_reader.json\n==> Configure PDF Generator service\nconfig/pdf-generator/auth.json\nconfig/pdf-generator/server.json\nconfig/task/pdf_generator.json\n==> Generate access tokens for File Storage service\nconfig/filestorage/auth.json\nconfig/task/filestorage.json\nconfig/task/storage.json\nconfig/admin-api/filestorage.json\nconfig/event/filestorage.json\n==> Generate access credentials for Notification service\nconfig/notification/config.json\nconfig/admin-api/notifier.json\nconfig/task/notifier.json\nconfig/event/notifier.json\nconfig/event/system_notifier.json\nconfig/gateway/system_notifier.json\nconfig/manager/system_notifier.json\nconfig/id/config.json\n==> Configure Persist-Link service\nconfig/persist-link/db.json\nconfig/persist-link/auth.json\nconfig/persist-link/link_generator.json\n==> Update persist-link references in task and event services\nconfig/task/persist_link.json\nconfig/event/persist_link.json\n==> Generate CA certificate and private key\n...+.+..+.......+......+.....+.+........+...+...+.+.........+...........+.+..+...+...............+....+......+...+..+...+.........+...+....+...+...........+.......+........+....+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+.....+..........+...+..+.........+...+...+...+....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+....+.....+............+...+......+.+...+..+.+........+.......+........+......+...+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n......+..+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+...+..+...+.........+.+......+.....+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+..+..........+...+..+.....................+.+.....+......+...+.+......+...+..............................+..+...+............+.......+..+..........+.....+......+...............+...+.+..............+..........+.........+..+......+..........+...+......+......+..+.........................+.....+......+.......+...............+............+..+...+...+.......+...+...+............+........+.......+...+..............+...+....+...+......+.........+..+......+.............+............+..+...............+............+......+.......+.....+...+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n-----\n==> Insert CA certificate into config files\n==> Generate a pk12 for admin user\n==> Generating certificate for Admin Liquio with serial number 0000000001\n..+.....+...+.......+..+...+...+......+....+...........+.+..+............+....+.....+.......+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+......+........+.+...............+...............+...........+....+...+......+..+............+.+..............+.+..+....+........+..........+..+.........+.........+.......+.....+.+........+....+..+.+............+...+...+..+.............+.....+.+......+.................+...............+............+.+.....+...+.+...........+.......+...+..+.......+.....+...+.+..............+.+.....+.+...+...+.........+......+..+.......+.....................+...+..+......................+..+.............+...+...+..+.........+...+............+..........+...+..+...+......+..........+..+...+......+...+................+......+...+...........+.+...+...+........+.+........+...+..........+........+...............+......+.+..+...+....+........+.+..+............+.+..+....+.......................+..........+...+.........+.....+.+..............+.+.....+.......+..+.............+...+........+.+...+.....................+......+.....+...+...+.......+........+..........+..+...+.......+..+......+....+...+........+...+..........+.....+...............+.+...........+.......+...+............+..+...+............+...+.......+.........+..+...+....+.....+.......+.....+.........+.........+...+....+.........+.........+..+.+.........+.........+......+.........+..+.......+...+...+............+.....+...+.........+............+.+........................+...+..+...+...............+...+...+.+......+...+...........+...+.+...........+.........+.......+...+.....+....+............+...+..+...+.+......+....................+....+.....+..........+.....+.+.....+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n......+.......+.....+....+.........+.....+.+..+.............+.....+.+.....+...+.+..+....+...+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+.+..+....+.........+......+........+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*............+..........+...+.........+...+..+...+.......+..+..........+...+........+...+..........+............+..+.+.....+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n-----\nCertificate request self-signature ok\nsubject=O = Liquio, serialNumber = 0000000001, GN = Admin, SN = Liquio, CN = Admin Liquio\nCertificate generated successfully!\nFile: config/admin.p12\nPassword: admin\nCommon Name: Admin Liquio\nSerial Number: 0000000001\n==> Generate a pk12 for demo user\n==> Generating certificate for Demo Liquio with serial number 3123456789\n........+.+..+.............+.....+...+....+......+......+...+........+.......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...............+.....+....+..+...+.+...........+.+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*...+.......+..+......+...+....+........+.........+...............+.+.................+...+...+.......+...+..............+...+....+.......................+.+.....+....+..+.+.........+......+............+.....+..........+..+.+.....+.......+...+..+..........+......+....................+.+........+.......+.....+.+...+.........+........+..........+...+.....+.......+.........+.........+..+...+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n..+....+..+.+.....+.......+...+..+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.+.....................+.+..............+.+...+...........+....+..+.+..+.......+...+............+......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*.......+..+.+.................+.+............+.........+.....+....+...............+.....+.+...+..+...+...+.......+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++\n-----\nCertificate request self-signature ok\nsubject=O = Liquio, serialNumber = 3123456789, GN = Demo, SN = Liquio, CN = Demo Liquio\nCertificate generated successfully!\nFile: config/demo.p12\nPassword: demo\nCommon Name: Demo Liquio\nSerial Number: 3123456789\n==> Update ping.json with Docker service endpoints\nconfig/task/ping.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "nproc; free -h; df -h /workspace /var/lib/docker 2>/dev/null | tail -3; docker builder du 2>&1 | tail -3; ls /workspace/components/",
+      "exit_code": 0,
+      "stdout": "8\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       483Mi       5.0Gi       1.0Mi       2.2Gi       6.9Gi\nSwap:          2.0Gi        96Mi       1.9Gi\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.4G  952G   1% /\n/dev/sde       1007G  4.4G  952G   1% /var/lib/docker\nID        RECLAIMABLE   SIZE      LAST ACCESSED\nReclaimable:\t0B\nTotal:\t\t0B\nadmin-api\nadmin-front\ncabinet-api\ncabinet-front\nevent\nexternal-reader\nfilestorage\ngateway\nid-api\nid-front\nmanager\nnotification\npdf-generator\npersist-link\nregister\nsign-tool\ntask\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/components/admin-api/ | head; head -40 /workspace/components/admin-api/Dockerfile; echo ---; head -60 /workspace/components/admin-front/Dockerfile",
+      "exit_code": 0,
+      "stdout": "Dockerfile\nREADME.md\neslint.config.js\njest.config.js\npackage-lock.json\npackage.json\nsrc\ntests\ntsconfig.json\n# Stage 1: transpile TypeScript to JavaScript\nFROM node:24 AS build\nARG NODE_MAX_OLD_SPACE_SIZE=4096\nENV NODE_OPTIONS=\"--max_old_space_size=${NODE_MAX_OLD_SPACE_SIZE}\"\n\nWORKDIR /build/components/admin-api\n\n# Copy package.json and package-lock.json\nCOPY package*.json .\n\n# Install all dependencies\nRUN npm ci\n\n# Copy repository files\nCOPY . .\n\n# Build the project\nRUN npm run build\n\n# Stage 2: runtime image\nFROM node:24-slim AS runtime\n\n# Set the configuration path\nENV CONFIG_PATH=/var/www/config\n\n# Set the working directory\nWORKDIR /var/www/components/admin-api\n\n# Copy package files and install dependencies\nCOPY package*.json .\nRUN npm ci --omit=dev && npm cache clean --force\n\n# Copy the compiled application\nCOPY --from=build /build/components/admin-api/dist ./\n\n# Switch to the node user\nUSER node\n\n# Expose the default listening port\nEXPOSE 8102\n---\n# Build the frontend application\nFROM node:24 AS frontend\nARG NODE_MAX_OLD_SPACE_SIZE=2048\nARG GENERATE_SOURCEMAP=false\nARG DISABLE_ESLINT_PLUGIN=true\nARG INLINE_RUNTIME_CHUNK=false\nENV NODE_OPTIONS=\"--max-old-space-size=${NODE_MAX_OLD_SPACE_SIZE}\"\nENV CI=true GENERATE_SOURCEMAP=${GENERATE_SOURCEMAP} DISABLE_ESLINT_PLUGIN=${DISABLE_ESLINT_PLUGIN} INLINE_RUNTIME_CHUNK=${INLINE_RUNTIME_CHUNK}\n\n# Mirror the monorepo layout so the \"core\": \"file:../../packages/front-core\"\n# dependency in package.json resolves to the same relative path it does on disk.\nWORKDIR /build/packages/front-core\nCOPY --from=core . .\n\nWORKDIR /build/components/admin-front\nCOPY package*.json .\nRUN npm ci\n\n# Prepare the source code\nCOPY . .\n\n# Update the version and build the application\nRUN VERSION=\"$(npm pkg get version)\" && \\\n    sed -ri \"s|\\\"SETVERSION\\\"|$VERSION|\" public/version.json && \\\n    npm run build && \\\n    WORKER_SRC=$(find node_modules -path \"*/pdfjs-dist/build/pdf.worker.min.js\" | head -1) && \\\n    echo \"Using pdfjs worker: $WORKER_SRC\" && \\\n    cp \"$WORKER_SRC\" build/js/pdfjs/pdf.worker.min.js\n\n# Serve the built application with Nginx\nFROM nginxinc/nginx-unprivileged:1-alpine-slim\n\nUSER root\nRUN apk add --no-cache curl\n\n# Deploy the built application files\nCOPY --from=frontend /build/components/admin-front/build/ /usr/share/nginx/html\nCOPY nginx.conf /etc/nginx/conf.d/default.conf\n\n# Run as non-root user\nUSER nginx\n\nHEALTHCHECK --start-period=10s --interval=30s --timeout=5s --retries=3 \\\n    CMD curl -f http://localhost:8080/healthz || exit 1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose build --parallel 2 > /workspace/build.log 2>&1 &\necho \"started build, pid $!\"",
+      "exit_code": 0,
+      "stdout": "started build, pid 962\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -5 /workspace/build.log; echo \"---\"; docker images | head -20",
+      "exit_code": 0,
+      "stdout": "no such service: 2\n---\nIMAGE   ID             DISK USAGE   CONTENT SIZE   EXTRA\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose build --parallel > /workspace/build.log 2>&1 & echo \"started, pid $!\"",
+      "exit_code": 0,
+      "stdout": "started, pid 1017\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; tail -20 /workspace/build.log",
+      "exit_code": 0,
+      "stdout": "\n#95 [external-reader runtime 4/5] RUN npm ci --omit=dev && npm cache clean --force\n#95 ...\n\n#96 [admin-api runtime 4/5] RUN npm ci --omit=dev && npm cache clean --force\n#96 ...\n\n#97 [manager runtime 4/7] RUN npm ci --omit=dev && npm cache clean --force\n#97 ...\n\n#98 [cabinet-api runtime 4/5] RUN npm ci --omit=dev && npm cache clean --force\n#98 ...\n\n#59 [admin-front build 1/6] FROM docker.io/library/node:24@sha256:14078204b6bb268c107ceff6d3c43f45a888105e5c2b18b14c32b3409d93a1b0\n#59 sha256:58d2575fee6cee54a48ed92463a9ef1524abf94e980c12c7212c20945878bdd7 10.49MB / 60.01MB 75.8s\n#59 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 38.80MB / 66.72MB 76.0s\n#59 sha256:610dc773fbd71198e96c7a8710abfd1661f14d776d7169b4ef525d8eb30e1b03 25.17MB / 211.71MB 76.0s\n#59 sha256:58d2575fee6cee54a48ed92463a9ef1524abf94e980c12c7212c20945878bdd7 11.53MB / 60.01MB 81.0s\n#59 sha256:c6c71fff0869aa9bd48cf80d66e30b83adc9a3fe5e77dd9aaf266282c6ec64ff 40.89MB / 66.72MB 81.1s\n#59 sha256:610dc773fbd71198e96c7a8710abfd1661f14d776d7169b4ef525d8eb30e1b03 27.26MB / 211.71MB 81.1s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 240; grep -cE '^#[0-9]+ (DONE|CACHED)' /workspace/build.log 2>/dev/null; tail -8 /workspace/build.log; echo; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "90\n\n#103 [persist-link-migrations runtime 5/8] RUN npm ci --omit=dev && npm cache clean --force\n#103 9.098 npm warn deprecated uuid@3.4.0: Please upgrade  to version 7 or higher.  Older versions may use Math.random() in certain circumstances, which is known to be problematic.  See https://v8.dev/blog/math-random for details.\n#103 ...\n\n#59 [admin-front build 1/6] FROM docker.io/library/node:24@sha256:14078204b6bb268c107ceff6d3c43f45a888105e5c2b18b14c32b3409d93a1b0\n#59 sha256:610dc773fbd71198e96c7a8710abfd1661f14d776d7169b4ef525d8eb30e1b03 42.99MB / 211.71MB 329.2s\n#59 sha256:58d2575fee6cee54a48ed92463a9ef1524abf94e980c12c7212c20945878bdd7 26.21MB / 60.01MB 329.2s\n\n1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; grep -E 'error|ERROR|failed|Killed' /workspace/build.log | grep -vE 'npm warn|eslint|ESLint' | head -10; echo ---; tail -6 /workspace/build.log; echo; free -h | head -2",
+      "exit_code": 0,
+      "stdout": "---\n\n#90 [pdf-generator runtime 4/5] RUN npm ci --omit=dev && npm cache clean --force && rm -rf /var/lib/apt/lists/*\n#90 563.5 |\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0\u25a0                                                        |  30% of 184.3 MiB\n#90 ...\n\n#59 [admin-front build 1/6] FROM docker.io/library/node:24@sha256:14078204b6bb268c107ceff6d3c43f45a888105e5c2b18b14c32b3409d93a1b0\n\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       1.1Gi       1.3Gi       1.0Mi       5.2Gi       6.3Gi\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; grep -cE '\\[DONE\\]' /workspace/build.log; tail -4 /workspace/build.log; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "0\n#178 ...\n\n#179 [manager-migrations build 4/6] RUN npm ci\n#179 172.4 npm warn deprecated glob@7.2.3: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\n3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -E 'docker.*build|compose' | grep -v grep | head; echo \"---process check done---\"; grep -cE '\\.\\.\\.' /workspace/build.log 2>/dev/null",
+      "exit_code": 125,
+      "stdout": "",
+      "stderr": "Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM\nError: unable to connect to Podman socket: failed to connect: ssh: handshake failed: read tcp 127.0.0.1:54297->127.0.0.1:59571: wsarecv: An existing connection was forcibly closed by the remote host.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo alive; pwd",
+      "exit_code": 0,
+      "stdout": "alive\n/workspace\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps -a --format '{{.Names}} {{.Status}}' | head; echo ---; tail -5 /workspace/build.log; echo ---; pgrep -f \"docker compose build\" | head",
+      "exit_code": 125,
+      "stdout": "",
+      "stderr": "Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM\nError: unable to connect to Podman socket: failed to connect: ssh: handshake failed: read tcp 127.0.0.1:62008->127.0.0.1:59571: wsarecv: An existing connection was forcibly closed by the remote host.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -5 /workspace/build.log",
+      "exit_code": 125,
+      "stdout": "",
+      "stderr": "Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM\nError: unable to connect to Podman socket: failed to connect: ssh: handshake failed: read tcp 127.0.0.1:54849->127.0.0.1:59571: wsarecv: An existing connection was forcibly closed by the remote host.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 5; tail -5 /workspace/build.log",
+      "exit_code": 0,
+      "stdout": "#171 335.2 npm warn deprecated core-js@2.6.12: core-js@<3.23.3 is no longer maintained and not recommended for usage due to the number of issues. Because of the V8 engine whims, feature detection in old core-js versions could cause a slowdown up to 100x even if nothing is polyfilled. Some versions have web compatibility issues. Please, upgrade your dependencies to the actual version of core-js.\n#171 ...\n\n#158 [admin-api build 4/6] RUN npm ci\n#158 335.4 npm warn deprecated inflight@1.0.6: This module is not supported, and leaks memory. Do not use it. Check out lru-cache if you want a good and tested way to coalesce async requests by a key value, which is much more comprehensive and powerful.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 240; tail -6 /workspace/build.log; echo ---; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "\n#178 [gateway build 4/6] RUN npm ci\n#178 ...\n\n#181 [external-reader-plugin-installer build 4/6] RUN npm ci\n#181 586.6 npm warn deprecated glob@10.5.0: Old versions of glob are not supported, and contain widely publicized security vulnerabilities, which have been fixed in the current version. Please update. Support for old versions may be purchased (at exorbitant rates) by contacting i@izs.me\n---\n4\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; tail -6 /workspace/build.log; echo ---; docker images | wc -l; docker images | head -15",
+      "exit_code": 0,
+      "stdout": "#170 899.3 Run `npm audit` for details.\n#170 899.3 npm notice\n#170 899.3 npm notice New major version of npm available! 11.19.1 -> 12.2.0\n#170 899.3 npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\n#170 899.3 npm notice To update run: npm install -g npm@12.2.0\n#170 899.3 npm notice\n---\n12\nIMAGE                                               ID             DISK USAGE   CONTENT SIZE   EXTRA\nworkspace-cabinet-api:latest                        c0f4b113dce6        288MB             0B        \nworkspace-external-reader-plugin-installer:latest   4367028743c6        437MB             0B        \nworkspace-external-reader:latest                    4d4759ec13bf        437MB             0B        \nworkspace-gateway:latest                            20d3c00b38c3        292MB             0B        \nworkspace-manager-migrations:latest                 d497d0d27ba0        295MB             0B        \nworkspace-manager:latest                            9751738ddafc        295MB             0B        \nworkspace-notification-migrations:latest            478c53435849        626MB             0B        \nworkspace-notification:latest                       f390025a39f6        626MB             0B        \nworkspace-persist-link-migrations:latest            7c40345a05c0        395MB             0B        \nworkspace-persist-link:latest                       e2ec7f835d04        395MB             0B        \nworkspace-sign-tool:latest                          2f7a80714863        272MB             0B        \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; tail -6 /workspace/build.log; echo ---; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "#263 92.31 \n#263 92.31   https://cra.link/deployment\n#263 92.31 \n#263 DONE 96.5s\n\n#184 [pdf-generator build 4/6] RUN npm ci\n---\n23\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 240; tail -4 /workspace/build.log; echo ---; docker images | wc -l; grep -cE '\\[DONE\\]' /workspace/build.log",
+      "exit_code": 1,
+      "stdout": "#90 2127.0 Get:72 http://deb.debian.org/debian bookworm/main amd64 libxxf86vm1 amd64 1:1.1.4-1+b2 [20.8 kB]\n#90 2127.1 Get:73 http://deb.debian.org/debian bookworm/main amd64 libicu72 amd64 72.1-3+deb12u1 [9376 kB]\n#90 2153.4 Get:74 http://deb.debian.org/debian bookworm/main amd64 libxml2 amd64 2.9.14+dfsg-1.3~deb12u6 [689 kB]\n#90 2155.5 Get:75 http://deb.debian.org/debian bookworm/main amd64 libz3-4 amd64 4.8.12-3.1 [7216 kB]\n---\n25\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; tail -4 /workspace/build.log; echo ---; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "#177 ...\n\n#277 [pdf-generator] exporting to image\n#277 exporting layers\n---\n25\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; tail -8 /workspace/build.log; echo ---EXIT---; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "\n#177 [admin-front frontend 6/8] RUN npm ci\n#177 ...\n\n#278 [pdf-generator] resolving provenance for metadata file\n#278 DONE 0.0s\n\n#177 [admin-front frontend 6/8] RUN npm ci\n---EXIT---\n26\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pgrep -f \"docker compose build\" >/dev/null && echo \"BUILD STILL RUNNING\" || echo \"BUILD FINISHED\"; grep -E \"Successfully built|ERROR\" /workspace/build.log | head",
+      "exit_code": 125,
+      "stdout": "",
+      "stderr": "Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM\nError: unable to connect to Podman socket: failed to connect: ssh: handshake failed: read tcp 127.0.0.1:61994->127.0.0.1:59571: wsarecv: An existing connection was forcibly closed by the remote host.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 3; pgrep -f \"docker compose build\" >/dev/null && echo \"BUILD STILL RUNNING\" || echo \"BUILD FINISHED\"; grep -E \"Successfully built|ERROR|error\" /workspace/build.log | grep -viE \"npm warn|eslint\" | head",
+      "exit_code": 125,
+      "stdout": "",
+      "stderr": "Cannot connect to Podman. Please verify your connection to the Linux system using `podman system connection list`, or try `podman machine init` and `podman machine start` to manage a new Linux VM\nError: unable to connect to Podman socket: failed to connect: ssh: handshake failed: read tcp 127.0.0.1:61997->127.0.0.1:59571: wsarecv: An existing connection was forcibly closed by the remote host.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pgrep -f \"compose build\" | head -3; grep -E \"Successfully built\" /workspace/build.log",
+      "exit_code": 1,
+      "stdout": "1017\n1018\n1038\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -20 /workspace/build.log; echo; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "#276 [pdf-generator runtime 5/5] COPY --from=build /build/components/pdf-generator/dist ./dist\n#276 DONE 0.4s\n\n#177 [admin-front frontend 6/8] RUN npm ci\n#177 ...\n\n#277 [pdf-generator] exporting to image\n#277 exporting layers\n#277 exporting layers 31.8s done\n#277 writing image sha256:9ee241588fb619a03fae48c6dca68058d037c71bdbd1254a959794709a500ca5 0.0s done\n#277 naming to docker.io/library/workspace-pdf-generator 0.0s done\n#277 DONE 31.9s\n\n#177 [admin-front frontend 6/8] RUN npm ci\n#177 ...\n\n#278 [pdf-generator] resolving provenance for metadata file\n#278 DONE 0.0s\n\n#177 [admin-front frontend 6/8] RUN npm ci\n\n26\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker images --format '{{.Repository}}' | sort",
+      "exit_code": 0,
+      "stdout": "workspace-admin-api\nworkspace-cabinet-api\nworkspace-cabinet-front\nworkspace-event\nworkspace-event-plugin-installer\nworkspace-external-reader\nworkspace-external-reader-plugin-installer\nworkspace-filestorage\nworkspace-filestorage-migrations\nworkspace-gateway\nworkspace-id-api\nworkspace-id-front\nworkspace-id-migrations\nworkspace-manager\nworkspace-manager-migrations\nworkspace-notification\nworkspace-notification-migrations\nworkspace-pdf-generator\nworkspace-persist-link\nworkspace-persist-link-migrations\nworkspace-register\nworkspace-register-migrations\nworkspace-sign-tool\nworkspace-task\nworkspace-task-plugin-installer\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "free -h | head -2; sleep 240; tail -3 /workspace/build.log; pgrep -f \"compose build\" >/dev/null && echo RUNNING || echo DONE",
+      "exit_code": 0,
+      "stdout": "               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       2.1Gi       554Mi       1.0Mi       5.0Gi       5.3Gi\n Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \nRUNNING\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -A2 \"#177 \\[admin-front frontend 6/8\\]\" /workspace/build.log | tail -8; echo ---; grep \"#177\" /workspace/build.log | tail -5",
+      "exit_code": 0,
+      "stdout": "--\n#177 [admin-front frontend 6/8] RUN npm ci\n#177 ...\n\n--\n#177 [admin-front frontend 6/8] RUN npm ci\n#177 1923.0 \n#177 1923.0 added 2623 packages, and audited 2625 packages in 32m\n---\n#177 1926.3 npm warn install-scripts   altcha@1.5.1 (postinstall: node postinstall.js)\n#177 1926.3 npm warn install-scripts   core-js@3.47.0 (postinstall: node -e \"try{require('./postinstall')}catch(e){}\")\n#177 1926.3 npm warn install-scripts\n#177 1926.3 npm warn install-scripts Run `npm install-scripts ls` to review, or `npm install-scripts approve <pkg>` to allow.\n#177 DONE 1927.7s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 300; tail -5 /workspace/build.log; pgrep -f \"compose build\" >/dev/null && echo RUNNING || echo DONE",
+      "exit_code": 0,
+      "stdout": " Image workspace-sign-tool Built \n Image workspace-notification Built \n Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \nRUNNING\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -E \"^#2[0-9]+ \" /workspace/build.log | tail -10; echo ---; grep \"admin-front\" /workspace/build.log | tail -6",
+      "exit_code": 0,
+      "stdout": "#282 [admin-front stage-1 4/4] COPY nginx.conf /etc/nginx/conf.d/default.conf\n#282 DONE 0.2s\n#283 [admin-front] exporting to image\n#283 exporting layers\n#283 exporting layers 0.2s done\n#283 writing image sha256:3481bed9cb77ec99256cade52ba4dde5534b70e77149af662e07a1471634f708 done\n#283 naming to docker.io/library/workspace-admin-front 0.0s done\n#283 DONE 0.3s\n#284 [admin-front] resolving provenance for metadata file\n#284 DONE 0.0s\n---\n#281 [admin-front stage-1 3/4] COPY --from=frontend /build/components/admin-front/build/ /usr/share/nginx/html\n#282 [admin-front stage-1 4/4] COPY nginx.conf /etc/nginx/conf.d/default.conf\n#283 [admin-front] exporting to image\n#283 naming to docker.io/library/workspace-admin-front 0.0s done\n#284 [admin-front] resolving provenance for metadata file\n Image workspace-admin-front Built \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 10; tail -3 /workspace/build.log; pgrep -f \"compose build\" >/dev/null && echo RUNNING || echo \"BUILD DONE\"",
+      "exit_code": 0,
+      "stdout": " Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \nRUNNING\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; grep -E \"Successfully built [0-9]+ images\" /workspace/build.log; pgrep -f \"compose build\" >/dev/null && echo RUNNING || echo \"BUILD DONE\"; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "RUNNING\n27\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; grep -E \"Successfully built\" /workspace/build.log; echo \"proc:\"; pgrep -f \"compose build\" >/dev/null && echo RUNNING || echo \"BUILD DONE\"; docker images | wc -l",
+      "exit_code": 0,
+      "stdout": "proc:\nRUNNING\n27\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -15 /workspace/build.log; echo ===; grep -c \"Built\" /workspace/build.log",
+      "exit_code": 0,
+      "stdout": " Image workspace-event Built \n Image workspace-manager Built \n Image workspace-id-front Built \n Image workspace-cabinet-front Built \n Image workspace-gateway Built \n Image workspace-filestorage-migrations Built \n Image workspace-notification-migrations Built \n Image workspace-external-reader Built \n Image workspace-cabinet-api Built \n Image workspace-persist-link-migrations Built \n Image workspace-sign-tool Built \n Image workspace-notification Built \n Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \n===\n26\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -i \"compose\" | grep -v grep | head -5",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps -ef | grep -E \"docker|compose\" | grep -v grep",
+      "exit_code": 0,
+      "stdout": "root           4       2 14 10:23 ?        00:08:36 dockerd --host=unix:///var/run/docker.sock --storage-driver=overlay2\nroot          21       4  0 10:23 ?        00:00:05 containerd --config /var/run/docker/containerd/containerd.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -6 /workspace/build.log; echo \"=== total images:\"; docker images | wc -l; grep -c \"Image workspace-.*Built\" /workspace/build.log",
+      "exit_code": 0,
+      "stdout": " Image workspace-persist-link-migrations Built \n Image workspace-sign-tool Built \n Image workspace-notification Built \n Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \n=== total images:\n27\n26\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose up -d 2>&1 | tail -40",
+      "exit_code": 0,
+      "stdout": " Container workspace-event-plugin-installer-1 Waiting \n Container workspace-admin-api-1 Starting \n Container workspace-task-plugin-installer-1 Started \n Container workspace-task-plugin-installer-1 Waiting \n Container workspace-notification-migrations-1 Started \n Container workspace-notification-1 Starting \n Container workspace-filestorage-migrations-1 Started \n Container workspace-filestorage-1 Starting \n Container workspace-manager-migrations-1 Started \n Container workspace-manager-1 Starting \n Container workspace-persist-link-migrations-1 Started \n Container workspace-persist-link-1 Starting \n Container workspace-id-migrations-1 Started \n Container workspace-id-api-1 Starting \n Container workspace-gateway-1 Started \n Container workspace-cabinet-api-1 Started \n Container workspace-cabinet-front-1 Starting \n Container workspace-notification-1 Started \n Container workspace-admin-api-1 Started \n Container workspace-admin-front-1 Starting \n Container workspace-register-migrations-1 Started \n Container workspace-register-1 Starting \n Container workspace-filestorage-1 Started \n Container workspace-manager-1 Started \n Container workspace-persist-link-1 Started \n Container workspace-id-api-1 Started \n Container workspace-id-front-1 Starting \n Container workspace-cabinet-front-1 Started \n Container workspace-admin-front-1 Started \n Container workspace-register-1 Started \n Container workspace-id-front-1 Started \n Container workspace-external-reader-plugin-installer-1 Exited \n Container workspace-external-reader-1 Starting \n Container workspace-external-reader-1 Started \n Container workspace-task-plugin-installer-1 Exited \n Container workspace-task-1 Starting \n Container workspace-event-plugin-installer-1 Exited \n Container workspace-event-1 Starting \n Container workspace-task-1 Started \n Container workspace-event-1 Started \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; cd /workspace && docker compose ps --format \"table {{.Name}}\\t{{.Status}}\" | sort",
+      "exit_code": 0,
+      "stdout": "NAME                          STATUS\nworkspace-admin-api-1         Up About a minute (healthy)\nworkspace-admin-front-1       Up About a minute (healthy)\nworkspace-cabinet-api-1       Up About a minute (healthy)\nworkspace-cabinet-front-1     Up About a minute (healthy)\nworkspace-event-1             Up About a minute (unhealthy)\nworkspace-external-reader-1   Up About a minute (healthy)\nworkspace-filestorage-1       Up About a minute (healthy)\nworkspace-gateway-1           Up About a minute (healthy)\nworkspace-id-api-1            Up About a minute (healthy)\nworkspace-id-front-1          Up About a minute (healthy)\nworkspace-manager-1           Up About a minute (healthy)\nworkspace-notification-1      Up About a minute (healthy)\nworkspace-pdf-generator-1     Up About a minute (healthy)\nworkspace-persist-link-1      Up About a minute (healthy)\nworkspace-postgres-1          Up About a minute (healthy)\nworkspace-rabbitmq-1          Up About a minute (healthy)\nworkspace-redis-1             Up About a minute (healthy)\nworkspace-register-1          Up About a minute (healthy)\nworkspace-sign-tool-1         Up About a minute (healthy)\nworkspace-task-1              Up About a minute (healthy)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker logs workspace-event-1 2>&1 | tail -30",
+      "exit_code": 0,
+      "stdout": "\n> liquio-event@0.1.15 start:prod\n> node src/index.js\n\n{\"type\":\"redis-connected\",\"data\":{\"host\":\"redis\",\"port\":6379},\"createdAt\":\"2026-10-15T11:25:46.272Z\",\"logId\":\"3ef9e4f6414f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"db-connection\",\"data\":\"Connection to DB has been established successfully.\",\"createdAt\":\"2026-10-15T11:25:46.340Z\",\"logId\":\"b7722e43483f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"custom-logs-cache-not-initialized\",\"data\":{\"cacheEnabled\":false},\"createdAt\":\"2026-10-15T11:25:46.385Z\",\"logId\":\"05a3a928b066\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connection-error|cannot-create-connection\",\"data\":{\"errno\":-111,\"code\":\"ECONNREFUSED\",\"syscall\":\"connect\",\"address\":\"172.18.0.5\",\"port\":5672},\"createdAt\":\"2026-10-15T11:25:46.392Z\",\"logId\":\"9a767d1da44d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"error\"}\n{\"type\":\"amqp-starting-reconnect\",\"data\":{\"totalReconnectCount\":0},\"createdAt\":\"2026-10-15T11:25:56.393Z\",\"logId\":\"feafb13e3783\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connected\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.445Z\",\"logId\":\"d6f12f095601\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-channel-opened\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.452Z\",\"logId\":\"14170eafbd87\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-successfully-reconnected\",\"data\":{\"totalReconnectCount\":1},\"createdAt\":\"2026-10-15T11:25:56.454Z\",\"logId\":\"d8fd7027caf5\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; cd /workspace && docker compose ps --format \"table {{.Name}}\\t{{.Status}}\" | sort",
+      "exit_code": 0,
+      "stdout": "NAME                          STATUS\nworkspace-admin-api-1         Up 2 minutes (healthy)\nworkspace-admin-front-1       Up 2 minutes (healthy)\nworkspace-cabinet-api-1       Up 2 minutes (healthy)\nworkspace-cabinet-front-1     Up 2 minutes (healthy)\nworkspace-event-1             Up 2 minutes (unhealthy)\nworkspace-external-reader-1   Up 2 minutes (healthy)\nworkspace-filestorage-1       Up 2 minutes (healthy)\nworkspace-gateway-1           Up 2 minutes (healthy)\nworkspace-id-api-1            Up 2 minutes (healthy)\nworkspace-id-front-1          Up 2 minutes (healthy)\nworkspace-manager-1           Up 2 minutes (healthy)\nworkspace-notification-1      Up 2 minutes (healthy)\nworkspace-pdf-generator-1     Up 2 minutes (healthy)\nworkspace-persist-link-1      Up 2 minutes (healthy)\nworkspace-postgres-1          Up 2 minutes (healthy)\nworkspace-rabbitmq-1          Up 2 minutes (healthy)\nworkspace-redis-1             Up 2 minutes (healthy)\nworkspace-register-1          Up 2 minutes (healthy)\nworkspace-sign-tool-1         Up 2 minutes (healthy)\nworkspace-task-1              Up 2 minutes (healthy)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker inspect workspace-event-1 --format '{{json .State.Health}}' 2>/dev/null | jq . | head -30",
+      "exit_code": 0,
+      "stdout": "{\n  \"Status\": \"unhealthy\",\n  \"FailingStreak\": 5,\n  \"Log\": [\n    {\n      \"Start\": \"2026-10-15T11:25:39.356532252Z\",\n      \"End\": \"2026-10-15T11:25:39.791110111Z\",\n      \"ExitCode\": 1,\n      \"Output\": \"\"\n    },\n    {\n      \"Start\": \"2026-10-15T11:26:09.792722717Z\",\n      \"End\": \"2026-10-15T11:26:09.878503465Z\",\n      \"ExitCode\": 1,\n      \"Output\": \"\"\n    },\n    {\n      \"Start\": \"2026-10-15T11:26:39.880437358Z\",\n      \"End\": \"2026-10-15T11:26:39.959875582Z\",\n      \"ExitCode\": 1,\n      \"Output\": \"\"\n    },\n    {\n      \"Start\": \"2026-10-15T11:27:09.960585718Z\",\n      \"End\": \"2026-10-15T11:27:10.057759717Z\",\n      \"ExitCode\": 1,\n      \"Output\": \"\"\n    },\n    {\n      \"Start\": \"2026-10-15T11:27:40.058675984Z\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -A8 \"HEALTHCHECK\" components/event/Dockerfile; echo \"=== event port/config ===\"; docker inspect workspace-event-1 --format '{{json .Config.Healthcheck}}' | jq -r .Test",
+      "exit_code": 0,
+      "stdout": "HEALTHCHECK --start-period=10s --interval=30s --timeout=5s --retries=3 \\\n    CMD node -e \"require('http').get('http://localhost:7004/test/ping', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\"\n\n# Start the application\nCMD [\"npm\", \"run\", \"start:prod\"]\n=== event port/config ===\n[\n  \"CMD-SHELL\",\n  \"node -e \\\"require('http').get('http://localhost:7004/test/ping', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\\\"\"\n]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker exec workspace-event-1 node -e \"require('http').get('http://localhost:7004/test/ping', res => {let d='';res.on('data',c=>d+=c);res.on('end',()=>console.log(res.statusCode, d))}).on('error', e=>console.log('ERR',e.message))\"",
+      "exit_code": 0,
+      "stdout": "ERR connect ECONNREFUSED 127.0.0.1:7004\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker exec workspace-event-1 sh -c \"cat /var/www/config/*.json 2>/dev/null | grep -iE 'port' | head\"; echo \"=== listening ports ===\"; docker exec workspace-event-1 sh -c \"netstat -tlnp 2>/dev/null || ss -tlnp 2>/dev/null\" 2>&1 | head",
+      "exit_code": 127,
+      "stdout": "  \"port\": 5432,\n    \"supportBigNumbers\": true,\n  \"port\": 5000\n    \"port\": 3003,\n      \"hideImportantMessage\": \"/message/important/<message-id>/set-unimportant\",\n    \"port\": 3003,\n      \"addSubscribersToGroup\": \"/api/v2/groups/{{groupId}}/subscribers/import\"\n  \"port\": 3346,\n  \"port\": 6379,\n    \"port\": 3003,\n=== listening ports ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker inspect workspace-event-1 --format '{{.State.Status}} {{.State.Running}}' ; docker exec workspace-event-1 ps aux 2>/dev/null | head; echo \"=== check src for port ===\"; grep -rn \"7004\\|5000\" components/event/src/index.js 2>/dev/null | head; grep -rn \"PORT\\|port\" components/event/src/index.js | head -10",
+      "exit_code": 2,
+      "stdout": "running true\nOCI runtime exec failed: exec failed: unable to start container process: exec: \"ps\": executable file not found in $PATH\n=== check src for port ===\n",
+      "stderr": "grep: components/event/src/index.js: No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls components/event/src/ 2>/dev/null; echo \"=== index.js ===\"; head -40 components/event/src/index.js 2>/dev/null; echo \"=== config port 5000 context ===\"; grep -rn \"5000\" config-templates/event/ 2>/dev/null | head; echo \"=== server.json or main config ===\"; ls config/event/",
+      "exit_code": 0,
+      "stdout": "app.ts\nbusinesses\nconstants\ncontrollers\nentities\nindex.ts\nlib\nmodels\nservices\ntypes\n=== index.js ===\n=== config port 5000 context ===\nconfig-templates/event/logs_broadcasting.json:3:  \"port\": 5000\n=== server.json or main config ===\napp.json\ncustom.json\ncustom_logs.json\ndb.json\ndelayer.json\neval_vm.json\nexternal_bpmn.json\nfilestorage.json\nhttp_client.json\nlog.json\nlogs_broadcasting.json\nmessage_queue.json\nnotifier.json\npersist_link.json\nping.json\nredis.json\nrequester.json\nserver.json\nsign.json\nstopper.json\nsystem_notifier.json\ntrembita.json\nuser.json\nversions.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== event server.json ===\"; cat config/event/server.json; echo; echo \"=== event app.json ===\"; cat config/event/app.json 2>/dev/null; echo \"=== task server.json for comparison ===\"; cat config/task/server.json",
+      "exit_code": 0,
+      "stdout": "=== event server.json ===\n{\n  \"hostname\": \"0.0.0.0\",\n  \"port\": 7004,\n  \"maxBodySize\": \"10mb\",\n  \"customer\": \"liquio\",\n  \"environment\": \"dev\"\n}\n=== event app.json ===\n{\n  \"enabledReadMessageQueueMode\": true,\n  \"enabledRunDaemonMode\": true\n}=== task server.json for comparison ===\n{\n  \"hostname\": \"0.0.0.0\",\n  \"port\": 3000,\n  \"maxBodySize\": \"10mb\",\n  \"serverName\": \"http://task.liquio\",\n  \"customer\": \"liquio\",\n  \"environment\": \"dev\"\n}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker exec workspace-event-1 node -e \"\nconst net=require('net');\n[7004,3003,5000].forEach(p=>{\n  const s=net.connect(p,'127.0.0.1');\n  s.on('connect',()=>{console.log(p,'OPEN');s.end()});\n  s.on('error',e=>console.log(p,'CLOSED',e.code));\n});\"",
+      "exit_code": 0,
+      "stdout": "7004 CLOSED ECONNREFUSED\n3003 CLOSED ECONNREFUSED\n5000 CLOSED ECONNREFUSED\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat components/event/src/index.ts",
+      "exit_code": 0,
+      "stdout": "import fs from 'node:fs';\n\nimport Multiconf from 'multiconf';\n\nimport { App } from './app';\n\nconst CONFIG_PATH = process.env.CONFIG_PATH || '../config/event';\nconst SECRET_PATH = process.env.SECRET_PATH;\nconst LIQUIO_CONFIG_PREFIX = process.env.LIQUIO_CONFIG_PREFIX || 'LIQUIO_CFG_EVENT';\n\nasync function main() {\n  const config = Multiconf.get([CONFIG_PATH, ...(SECRET_PATH && fs.existsSync(SECRET_PATH) ? [SECRET_PATH] : [])], `${LIQUIO_CONFIG_PREFIX}_`);\n\n  const app = new App(config);\n  app.useGlobalErrors();\n  app.useGlobalTypeOf();\n  app.useLog();\n  app.useHttpClient();\n  app.useUnhandedRejectionLogging();\n  app.useMoment();\n  app.useRedis();\n  await app.useDb();\n  app.useModels();\n  await app.usePlugins();\n  app.useEventService();\n  app.useEventBusiness();\n  await app.useMessageQueue();\n  await app.useRouter();\n  app.useLogsBroadcasting();\n}\n\nmain();\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker logs workspace-event-plugin-installer-1 2>&1 | tail -15; echo \"=== event full log (last 50) ===\"; docker logs workspace-event-1 2>&1 | tail -20",
+      "exit_code": 0,
+      "stdout": "\n> liquio-event@0.1.15 plugin-installer\n> liquio-plugin-installer\n\n{\"type\":\"plugin-installer-no-plugins-config\",\"data\":{\"configDir\":\"/var/www/config\"},\"createdAt\":\"2026-10-15T11:25:27.144Z\",\"logId\":\"fe31f06e6055\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\nnpm notice\nnpm notice New major version of npm available! 11.19.1 -> 12.2.0\nnpm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n=== event full log (last 50) ===\n\n> liquio-event@0.1.15 start:prod\n> node src/index.js\n\n{\"type\":\"redis-connected\",\"data\":{\"host\":\"redis\",\"port\":6379},\"createdAt\":\"2026-10-15T11:25:46.272Z\",\"logId\":\"3ef9e4f6414f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"db-connection\",\"data\":\"Connection to DB has been established successfully.\",\"createdAt\":\"2026-10-15T11:25:46.340Z\",\"logId\":\"b7722e43483f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"custom-logs-cache-not-initialized\",\"data\":{\"cacheEnabled\":false},\"createdAt\":\"2026-10-15T11:25:46.385Z\",\"logId\":\"05a3a928b066\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connection-error|cannot-create-connection\",\"data\":{\"errno\":-111,\"code\":\"ECONNREFUSED\",\"syscall\":\"connect\",\"address\":\"172.18.0.5\",\"port\":5672},\"createdAt\":\"2026-10-15T11:25:46.392Z\",\"logId\":\"9a767d1da44d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"error\"}\n{\"type\":\"amqp-starting-reconnect\",\"data\":{\"totalReconnectCount\":0},\"createdAt\":\"2026-10-15T11:25:56.393Z\",\"logId\":\"feafb13e3783\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connected\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.445Z\",\"logId\":\"d6f12f095601\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-channel-opened\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.452Z\",\"logId\":\"14170eafbd87\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-successfully-reconnected\",\"data\":{\"totalReconnectCount\":1},\"createdAt\":\"2026-10-15T11:25:56.454Z\",\"logId\":\"d8fd7027caf5\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose ps event --format '{{.Status}}'; grep -n \"useRouter\\|listen\" components/event/src/app.ts | head; echo ===; grep -rn \"useRouter\" components/event/src/lib/ 2>/dev/null | head -5",
+      "exit_code": 1,
+      "stdout": "Up 3 minutes (unhealthy)\n166:  async useRouter() {\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '150,200p' components/event/src/app.ts",
+      "exit_code": 0,
+      "stdout": "      // Init message queue.\n      messageQueue = new MessageQueue(this.config.message_queue, {\n        onInit: () => {\n          messageQueue.subscribeToConsuming(this.eventBusiness.createFromMessage.bind(this.eventBusiness));\n        },\n      });\n    }\n\n    await messageQueue.init();\n    this.messageQueue = messageQueue;\n\n    // TODO: inject, do not set global.\n    global.messageQueue = messageQueue;\n  }\n\n  // Init router.\n  async useRouter() {\n    const routerService = new RouterService(global.config);\n\n    // Note: there is an open async handle created inside.\n    await routerService.init();\n\n    this.routerService = routerService;\n  }\n\n  // Init logs broadcasting.\n  useLogsBroadcasting() {\n    if (process.env.NODE_ENV !== 'prod' && this.config?.logs_broadcasting?.isEnabled) {\n      LogsBroadcasting.start(this.config.logs_broadcasting);\n    }\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && for port in 8082 8081 8080 8100 8101 8102; do\n  code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 8 http://localhost:$port/ 2>/dev/null)\n  echo \"port $port -> HTTP $code\"\ndone",
+      "exit_code": 0,
+      "stdout": "port 8082 -> HTTP 200\nport 8081 -> HTTP 200\nport 8080 -> HTTP 200\nport 8100 -> HTTP 404\nport 8101 -> HTTP 404\nport 8102 -> HTTP 404\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && for port in 8100 8101 8102; do\n  echo -n \"port $port /test/ping -> \"; curl -s --max-time 8 http://localhost:$port/test/ping | head -c 400; echo\ndone",
+      "exit_code": 0,
+      "stdout": "port 8100 /test/ping -> {\"processPid\":20,\"message\":\"pong\"}\nport 8101 /test/ping -> {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\nport 8102 /test/ping -> {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -rn \"class RouterService\" components/event/src/ | head -3",
+      "exit_code": 0,
+      "stdout": "components/event/src/services/router.ts:12:export class RouterService {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat components/event/src/services/router.ts",
+      "exit_code": 0,
+      "stdout": "import express from 'express';\nimport { asyncLocalStorageMiddleware } from '@liquio/back-core';\n\nimport { PingController } from '../controllers/ping';\nimport { MonitorController } from '../controllers/monitor';\nimport { AppIdentHeaders } from '../lib/app_ident_headers';\nimport { Cors } from '../lib/cors';\n\n/**\n * Router service.\n */\nexport class RouterService {\n  static singleton: RouterService;\n\n  config: any;\n\n  controllers: any;\n\n  /**\n   * Route service constructor.\n   * @param {object} config Config object.\n   */\n  constructor(config: any) {\n    // Define singleton.\n    if (!RouterService.singleton) {\n      this.config = config;\n      RouterService.singleton = this;\n    }\n\n    // Return singleton.\n    return RouterService.singleton;\n  }\n\n  /**\n   * Init.\n   */\n  async init(): Promise<void> {\n    // Init Express app.\n    const app = express();\n\n    // Async local storage.\n    app.use(asyncLocalStorageMiddleware);\n\n    // Save request info to log.\n    app.use(global.log.logRouter.bind(global.log));\n\n    // App info in headers.\n    (AppIdentHeaders.add as any)(app, global.config);\n\n    // Allow CORS.\n    Cors.allow(app);\n\n    // Init routes.\n    this.controllers = this.initRoutes(app);\n\n    // Start listening.\n    await this.listen(app);\n  }\n\n  /**\n   * Init routes.\n   * @private\n   * @param {express.Application} app Express app.\n   * @returns {object} Controllers.\n   */\n  initRoutes(app: any): any {\n    const pingController = new PingController(this.config);\n    const monitorController = new MonitorController(this.config);\n\n    app.get('/test/ping', pingController.ping.bind(pingController));\n    app.get('/monitors/system', monitorController.system.bind(monitorController));\n    app.get('/test/ping/minjust', pingController.pingMinjust.bind(pingController));\n    app.get('/test/ping/minjustUsr', pingController.pingMinjustUsr.bind(pingController));\n    app.get('/test/ping/minjustDoc', pingController.pingMinjustDoc.bind(pingController));\n    app.get('/test/ping/trembita', pingController.pingTrembita.bind(pingController));\n    app.get('/test/ping/status_repository', pingController.pingStatusRepository.bind(pingController));\n    app.get('/test/ping/digest_notifier', pingController.pingDigestNotifier.bind(pingController));\n    app.get('/healthz', pingController.healthz.bind(pingController));\n\n    return {\n      ping: pingController,\n      monitor: monitorController,\n    };\n  }\n\n  /**\n   * Listen.\n   * @private\n   * @param {express.Application} app Express app.\n   */\n  async listen(app: any): Promise<void> {\n    return new Promise((resolve) => {\n      // Start server listening.\n      const hostname = this.config.server.hostname;\n      const port = this.config.server.port;\n      app.listen(port, hostname, () => {\n        global.log.save('server-listening-started', `Server listening started at \"http://${hostname}:${port}\".`);\n        resolve();\n      });\n    });\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== full event log ===\"; docker logs workspace-event-1 2>&1; echo \"=== re-probe 7004 ===\"; docker exec workspace-event-1 node -e \"const s=require('net').connect(7004,'127.0.0.1');s.on('connect',()=>{console.log('7004 OPEN');s.end()});s.on('error',e=>console.log('7004 CLOSED',e.code));\"",
+      "exit_code": 0,
+      "stdout": "=== full event log ===\n\n> liquio-event@0.1.15 start:prod\n> node src/index.js\n\n{\"type\":\"redis-connected\",\"data\":{\"host\":\"redis\",\"port\":6379},\"createdAt\":\"2026-10-15T11:25:46.272Z\",\"logId\":\"3ef9e4f6414f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"db-connection\",\"data\":\"Connection to DB has been established successfully.\",\"createdAt\":\"2026-10-15T11:25:46.340Z\",\"logId\":\"b7722e43483f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"custom-logs-cache-not-initialized\",\"data\":{\"cacheEnabled\":false},\"createdAt\":\"2026-10-15T11:25:46.385Z\",\"logId\":\"05a3a928b066\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connection-error|cannot-create-connection\",\"data\":{\"errno\":-111,\"code\":\"ECONNREFUSED\",\"syscall\":\"connect\",\"address\":\"172.18.0.5\",\"port\":5672},\"createdAt\":\"2026-10-15T11:25:46.392Z\",\"logId\":\"9a767d1da44d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"error\"}\n{\"type\":\"amqp-starting-reconnect\",\"data\":{\"totalReconnectCount\":0},\"createdAt\":\"2026-10-15T11:25:56.393Z\",\"logId\":\"feafb13e3783\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connected\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.445Z\",\"logId\":\"d6f12f095601\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-channel-opened\",\"data\":true,\"createdAt\":\"2026-10-15T11:25:56.452Z\",\"logId\":\"14170eafbd87\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-successfully-reconnected\",\"data\":{\"totalReconnectCount\":1},\"createdAt\":\"2026-10-15T11:25:56.454Z\",\"logId\":\"d8fd7027caf5\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n=== re-probe 7004 ===\n7004 CLOSED ECONNREFUSED\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== admin-front 8082 body ===\"; curl -s --max-time 8 http://localhost:8082/ | head -c 300; echo; echo; echo \"=== cabinet-front 8081 body ===\"; curl -s --max-time 8 http://localhost:8081/ | head -c 300; echo",
+      "exit_code": 0,
+      "stdout": "=== admin-front 8082 body ===\n<!DOCTYPE html>\n<html lang=\"en\">\n\n<head>\n  <meta charset=\"utf-8\" />\n  <link rel=\"shortcut icon\" href=\"/favicon.ico\" />\n  <link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\" />\n  <link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-icon.png\" />\n  <meta name=\"viewport\" content=\"width=device\n\n=== cabinet-front 8081 body ===\n<!DOCTYPE html>\n<html lang=\"uk\">\n\n<head>\n  <meta charset=\"utf-8\" />\n  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, shrink-to-fit=no\" />\n  <meta name=\"theme-color\" content=\"#000000\" />\n  <meta name=\"google\" content=\"notranslate\" />\n  <meta property=\"og:title\" content=\"Liquio Ca\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker inspect workspace-event-1 --format 'restarts={{.RestartCount}} started={{.State.StartedAt}}'; docker inspect workspace-task-1 --format 'task: restarts={{.RestartCount}} status={{.State.Status}}'; echo \"=== task ping ===\"; docker exec workspace-task-1 node -e \"require('http').get('http://localhost:3000/test/ping', res=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>console.log(res.statusCode, d.slice(0,300)))}).on('error',e=>console.log('ERR',e.message))\"",
+      "exit_code": 0,
+      "stdout": "restarts=0 started=2026-10-15T11:25:28.543965614Z\ntask: restarts=3 status=running\n=== task ping ===\n200 {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -n \"global.config\" components/event/src/app.ts | head; echo ===; sed -n '1,120p' components/event/src/app.ts",
+      "exit_code": 0,
+      "stdout": "39:    // Set global config for models and other legacy code that still uses it\n40:    global.config = config;\n128:    if (global.config.app.enabledRunDaemonMode) {\n167:    const routerService = new RouterService(global.config);\n===\nimport moment from 'moment';\nimport { Log, ConsoleLogProvider, getTraceId, Sandbox } from '@liquio/back-core';\nimport { PluginLoader } from '@liquio/plugin-sdk';\n\nimport { Db } from './lib/db';\nimport { MessageQueue } from './lib/message_queue';\nimport * as Errors from './lib/errors';\nimport { Models } from './models';\nimport { RouterService } from './services/router';\nimport { EventService } from './services/event';\nimport { ExternalServiceRequester } from './services/event/requester/external_service';\nimport { EventBusiness } from './businesses/event';\nimport { RedisClient } from './lib/redis_client';\nimport { HttpClient } from './lib/http_client';\nimport { LogsBroadcasting } from './lib/logs_broadcasting';\nimport { typeOf } from './lib/type_of';\n\n// Allow not secure connections.\nprocess.env.NODE_TLS_REJECT_UNAUTHORIZED = '0';\n\nexport class App {\n  config: any;\n  sandbox: any;\n  typeOf: any;\n  log: any;\n  httpClient: any;\n  redisClient: any;\n  db: any;\n  models: any;\n  pluginRegistry: any;\n  eventService: any;\n  eventBusiness: any;\n  messageQueue: any;\n  routerService: any;\n\n  constructor(config: any) {\n    this.config = config;\n    this.sandbox = new Sandbox(config.sandbox);\n    // Set global config for models and other legacy code that still uses it\n    global.config = config;\n  }\n\n  // Init global custom error.\n  useGlobalErrors() {\n    Object.entries(Errors).forEach(([ErrorName, ErrorClass]) => {\n      (global as any)[ErrorName] = ErrorClass;\n    });\n  }\n\n  // Init global typeOf.\n  useGlobalTypeOf() {\n    this.typeOf = typeOf;\n  }\n\n  // Init log.\n  useLog() {\n    const consoleName =\n      this.config.log.console && typeof this.config.log.console === 'object' && this.config.log.console.name\n        ? this.config.log.console.name\n        : 'console';\n    const consoleLogProvider = new ConsoleLogProvider(consoleName, { excludeParams: this.config.log.excludeParams });\n    this.log = global.log = new Log([consoleLogProvider], ['console']);\n  }\n\n  // Init http client.\n  useHttpClient() {\n    this.httpClient = new HttpClient(this.config.http_client, this.log.save.bind(this.log), getTraceId);\n  }\n\n  // Log unhandled rejections.\n  useUnhandedRejectionLogging() {\n    process.on('unhandledRejection', (error: any) => {\n      const { stack, message } = error || {};\n      this.log.save('unhandled-rejection', { stack, message });\n      process.exit(1);\n    });\n  }\n\n  // Import moment globally to use in eval.\n  useMoment() {\n    global.moment = moment;\n  }\n\n  // Init redis.\n  useRedis() {\n    this.redisClient = this.config.redis && this.config.redis.enabled ? new RedisClient() : null;\n  }\n\n  // Init DB.\n  async useDb() {\n    this.db = await Db.getInstance(this.config.db);\n    global.db = this.db;\n  }\n\n  // Init models.\n  useModels() {\n    this.models = new Models();\n  }\n\n  // Init plugins.\n  async usePlugins() {\n    const pluginsConfig = this.config.plugins;\n    this.pluginRegistry = pluginsConfig ? await new PluginLoader(this.log).load(pluginsConfig) : undefined;\n\n    // Pre-init the external service requester singleton with the plugin registry, so that\n    // when EventRequester constructs it (without knowledge of plugins) it reuses this instance.\n    new ExternalServiceRequester(this.config.requester?.externalService, this.config.requester?.registers, this.pluginRegistry);\n  }\n\n  // Init event service.\n  useEventService() {\n    this.eventService = new EventService({\n      notifier: this.config.notifier,\n      delayer: this.config.delayer,\n      requester: this.config.requester,\n      stopper: this.config.stopper,\n      unit: this.config.unit,\n      user: this.config.user,\n      filestorage: this.config.filestorage,\n    } as any);\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker stats --no-stream --format '{{.Name}} {{.CPUPerc}} {{.MemUsage}}' 2>/dev/null | sort | head -25",
+      "exit_code": 0,
+      "stdout": "workspace-admin-api-1 0.00% 0B / 0B\nworkspace-admin-front-1 0.00% 0B / 0B\nworkspace-cabinet-api-1 0.00% 0B / 0B\nworkspace-cabinet-front-1 4.85% 0B / 0B\nworkspace-event-1 0.00% 0B / 0B\nworkspace-external-reader-1 0.00% 0B / 0B\nworkspace-filestorage-1 0.00% 0B / 0B\nworkspace-gateway-1 0.01% 0B / 0B\nworkspace-id-api-1 0.00% 0B / 0B\nworkspace-id-front-1 0.00% 0B / 0B\nworkspace-manager-1 0.00% 0B / 0B\nworkspace-notification-1 0.00% 0B / 0B\nworkspace-pdf-generator-1 0.01% 0B / 0B\nworkspace-persist-link-1 0.00% 0B / 0B\nworkspace-postgres-1 0.01% 0B / 0B\nworkspace-rabbitmq-1 1.25% 0B / 0B\nworkspace-redis-1 0.19% 0B / 0B\nworkspace-register-1 0.00% 0B / 0B\nworkspace-sign-tool-1 0.00% 0B / 0B\nworkspace-task-1 0.00% 0B / 0B\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -n \"init\\|resolve\\|reconnect\" components/event/src/lib/message_queue.ts | head -40",
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "grep: components/event/src/lib/message_queue.ts: No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && find components/event/src -name \"message_queue*\"; echo ===; grep -rn \"async init\\|init()\" components/event/src/lib/message_queue.ts 2>/dev/null | head",
+      "exit_code": 2,
+      "stdout": "components/event/src/lib/message_queue\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls components/event/src/lib/message_queue/ && grep -n \"async init\\|amqpConnected\\|resolve\" components/event/src/lib/message_queue/index.ts 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "index.spec.ts\nindex.ts\n64:  async init(): Promise<void> {\n110:  async initConnection(): Promise<void> {\n114:    return new Promise((resolve) => {\n134:        resolve();\n143:  async initChannels(): Promise<void> {\n245:    return new Promise((resolve, reject) => {\n264:        resolve(ch);\n349:              await new Promise((resolve) => {\n350:                setTimeout(resolve, DEFAULT_WIP_WAIT_TIME);\n464:    return new Promise((resolve) => {\n466:        resolve();\n473:          return resolve();\n478:        return resolve();\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sed -n '55,145p' components/event/src/lib/message_queue/index.ts",
+      "exit_code": 0,
+      "stdout": "      this.consumingCount = 0;\n      MessageQueue.singleton = this;\n    }\n    return MessageQueue.singleton;\n  }\n\n  /**\n   * Init.\n   */\n  async init(): Promise<void> {\n    const { onInit } = this.props;\n\n    await this.initConnection();\n    await this.initChannels();\n    this.initQueues();\n\n    onInit?.();\n\n    this.consumingCount = 0;\n\n    process.on('SIGINT', () => {\n      this.exitGracefully();\n    });\n\n    process.on('SIGTERM', () => {\n      this.exitGracefully();\n    });\n  }\n\n  /**\n   * Reconnect.\n   */\n  reconnect(): void {\n    // Check if no need to reconnect.\n    if (this.isClosing) return;\n\n    // Check if already reconnecting.\n    if (this.reconnectTimeout) return;\n\n    // Try to reconnect.\n    this.reconnectTimeout = setTimeout(async () => {\n      global.log.save('amqp-starting-reconnect', { totalReconnectCount: this.totalReconnectCount });\n      await this.close();\n      this.reconnectTimeout = null;\n      await this.init();\n      this.totalReconnectCount += 1;\n      global.log.save('amqp-successfully-reconnected', { totalReconnectCount: this.totalReconnectCount });\n      global.messageQueue = this;\n    }, this.config.retryConnectionTime || RETRY_CONNECTION_TIME);\n  }\n\n  /**\n   * Init connection.\n   * @private\n   */\n  async initConnection(): Promise<void> {\n    // Reconnect on close.\n    this.isClosing = false;\n\n    return new Promise((resolve) => {\n      amqp.connect(this.config.amqpConnection, (error: any, connection: any) => {\n        // Check error.\n        if (error) {\n          global.log.save('amqp-connection-error|cannot-create-connection', error, 'error');\n          return this.reconnect();\n        }\n\n        // Subscribe on error events.\n        connection.on('error', async (error: any) => {\n          global.log.save('amqp-connection-error', error?.message);\n        });\n        connection.on('close', async () => {\n          global.log.save('amqp-connection-closed');\n          return this.reconnect();\n        });\n\n        // Save connection.\n        this.connection = connection;\n        global.log.save('amqp-connected', true);\n        resolve();\n      });\n    });\n  }\n\n  /**\n   * Init channels.\n   * @private\n   */\n  async initChannels(): Promise<void> {\n    // Create channels.\n    const [reading, writing, errors] = await Promise.all([this.createNewChannel(), this.createNewChannel(), this.createNewChannel()]);\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose restart event && sleep 45 && docker logs --tail 8 workspace-event-1 2>&1",
+      "exit_code": 0,
+      "stdout": "{\"type\":\"amqp-channel-opened\",\"data\":true,\"createdAt\":\"2026-10-15T11:29:38.104Z\",\"logId\":\"ed231709c033\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"server-listening-started\",\"data\":\"Server listening started at \\\"http://0.0.0.0:7004\\\".\",\"createdAt\":\"2026-10-15T11:29:38.116Z\",\"logId\":\"a0aefca3f75f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"bf33cdbe82e066aa245e0d11404b1d3d\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:29:41.642Z\",\"logId\":\"29d3b8fffd8d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:29:41.644Z\",\"logId\":\"bc1f83d127c4\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"bf33cdbe82e066aa245e0d11404b1d3d\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":1},\"createdAt\":\"2026-10-15T11:29:41.644Z\",\"logId\":\"eb94fda3e22d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"85fd8b59276c3bdf338957a66ce6ab8b\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:30:11.722Z\",\"logId\":\"2422444a3069\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:30:11.722Z\",\"logId\":\"68e2fa5a82e9\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"85fd8b59276c3bdf338957a66ce6ab8b\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":1},\"createdAt\":\"2026-10-15T11:30:11.723Z\",\"logId\":\"a148cc918f19\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n",
+      "stderr": " Container workspace-event-1 Restarting \n Container workspace-event-1 Started \n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sleep 30 && docker compose ps --format \"table {{.Name}}\\t{{.Status}}\" | sort; echo \"=== event ping ===\"; docker exec workspace-event-1 node -e \"require('http').get('http://localhost:7004/test/ping', res=>{let d='';res.on('data',c=>d+=c);res.on('end',()=>console.log(res.statusCode, d.slice(0,400)))}).on('error',e=>console.log('ERR',e.message))\"",
+      "exit_code": 0,
+      "stdout": "NAME                          STATUS\nworkspace-admin-api-1         Up 4 minutes (healthy)\nworkspace-admin-front-1       Up 5 minutes (healthy)\nworkspace-cabinet-api-1       Up 5 minutes (healthy)\nworkspace-cabinet-front-1     Up 5 minutes (healthy)\nworkspace-event-1             Up About a minute (healthy)\nworkspace-external-reader-1   Up 5 minutes (healthy)\nworkspace-filestorage-1       Up 5 minutes (healthy)\nworkspace-gateway-1           Up 4 minutes (healthy)\nworkspace-id-api-1            Up 5 minutes (healthy)\nworkspace-id-front-1          Up 5 minutes (healthy)\nworkspace-manager-1           Up 4 minutes (healthy)\nworkspace-notification-1      Up 5 minutes (healthy)\nworkspace-pdf-generator-1     Up 5 minutes (healthy)\nworkspace-persist-link-1      Up 5 minutes (healthy)\nworkspace-postgres-1          Up 5 minutes (healthy)\nworkspace-rabbitmq-1          Up 5 minutes (healthy)\nworkspace-redis-1             Up 5 minutes (healthy)\nworkspace-register-1          Up 5 minutes (healthy)\nworkspace-sign-tool-1         Up 5 minutes (healthy)\nworkspace-task-1              Up 5 minutes (healthy)\n=== event ping ===\n200 {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== p12 key files ===\"; ls -la config/*.p12; echo; echo \"=== CA certs ===\"; ls -la config/certificates/; echo; echo \"=== frontends ===\"; for p in 8082 8081 8080; do echo -n \"$p: \"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" --max-time 8 http://localhost:$p/; done; echo \"=== api pings ===\"; for p in 8100 8101 8102 8103 8104 8105; do echo -n \"$p /test/ping: \"; curl -s --max-time 8 http://localhost:$p/test/ping | head -c 60; echo; done",
+      "exit_code": 0,
+      "stdout": "=== p12 key files ===\n-rw------- 1 root root 2636 Oct 15 10:24 config/admin.p12\n-rw------- 1 root root 2634 Oct 15 10:24 config/demo.p12\n\n=== CA certs ===\ntotal 16\ndrwxr-xr-x  2 root root 4096 Oct 15 10:24 .\ndrwxr-xr-x 19 root root 4096 Oct 15 10:24 ..\n-rw-r--r--  1 root root 1285 Oct 15 10:24 ca.crt\n-rw-------  1 root root 1704 Oct 15 10:24 ca.key\n\n=== frontends ===\n8082: HTTP 200\n8081: HTTP 200\n8080: HTTP 200\n=== api pings ===\n8100 /test/ping: {\"processPid\":20,\"message\":\"pong\"}\n8101 /test/ping: {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n8102 /test/ping: {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n8103 /test/ping: {\"data\":{\"processPid\":20,\"message\":\"pong\"}}\n8104 /test/ping: {\"data\":{\"processPid\":21,\"message\":\"pong\"}}\n8105 /test/ping: {\"data\":{\"processPid\":20,\"message\":\"pong\"}}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && openssl pkcs12 -in config/admin.p12 -password pass:admin -nokeys -clcerts 2>/dev/null | openssl x509 -noout -subject -issuer; openssl verify -CAfile config/certificates/ca.crt <(openssl pkcs12 -in config/admin.p12 -password pass:admin -nokeys -clcerts 2>/dev/null)",
+      "exit_code": 0,
+      "stdout": "subject=O = Liquio, serialNumber = 0000000001, GN = Admin, SN = Liquio, CN = Admin Liquio\nissuer=C = UA, L = Kyiv, O = Liquio, OU = Development, CN = Liquio\n/dev/fd/63: OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose ps --format \"table {{.Name}}\\t{{.Status}}\" | sort | head -25; echo; git log -1 --oneline 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "NAME                          STATUS\nworkspace-admin-api-1         Up 5 minutes (healthy)\nworkspace-admin-front-1       Up 5 minutes (healthy)\nworkspace-cabinet-api-1       Up 5 minutes (healthy)\nworkspace-cabinet-front-1     Up 5 minutes (healthy)\nworkspace-event-1             Up About a minute (healthy)\nworkspace-external-reader-1   Up 5 minutes (healthy)\nworkspace-filestorage-1       Up 5 minutes (healthy)\nworkspace-gateway-1           Up 5 minutes (healthy)\nworkspace-id-api-1            Up 5 minutes (healthy)\nworkspace-id-front-1          Up 5 minutes (healthy)\nworkspace-manager-1           Up 5 minutes (healthy)\nworkspace-notification-1      Up 5 minutes (healthy)\nworkspace-pdf-generator-1     Up 5 minutes (healthy)\nworkspace-persist-link-1      Up 5 minutes (healthy)\nworkspace-postgres-1          Up 5 minutes (healthy)\nworkspace-rabbitmq-1          Up 5 minutes (healthy)\nworkspace-redis-1             Up 5 minutes (healthy)\nworkspace-register-1          Up 5 minutes (healthy)\nworkspace-sign-tool-1         Up 5 minutes (healthy)\nworkspace-task-1              Up 5 minutes (healthy)\n\n399b8b1 Merge remote-tracking branch 'gitlab1/main' into mirror-gitlab1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && pwd && ls -la | head -40 && git log --oneline -1 2>/dev/null; docker --version; docker compose version",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 604\ndrwxr-xr-x 13 root root   4096 Oct 15 10:24 .\ndr-xr-xr-x  1 root root   4096 Oct 15 10:23 ..\n-rw-r--r--  1 root root    164 Oct 15 10:23 .dockerignore\n-rw-r--r--  1 root root    808 Oct 15 10:24 .env\ndrwxr-xr-x  8 root root   4096 Oct 15 10:23 .git\ndrwxr-xr-x  3 root root   4096 Oct 15 10:23 .github\n-rw-r--r--  1 root root    231 Oct 15 10:23 .gitignore\n-rw-r--r--  1 root root  16335 Oct 15 10:23 ARCHITECTURE.md\n-rw-r--r--  1 root root   5342 Oct 15 10:23 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root  18278 Oct 15 10:23 CONTRIBUTING.md\n-rw-r--r--  1 root root  34353 Oct 15 10:23 LICENSE.md\n-rw-r--r--  1 root root   5009 Oct 15 10:23 README.md\n-rw-r--r--  1 root root   6253 Oct 15 10:23 SECURITY.md\n-rw-r--r--  1 root root 416109 Oct 15 11:11 build.log\ndrwxr-xr-x 19 root root   4096 Oct 15 10:23 components\ndrwxr-xr-x 19 root root   4096 Oct 15 10:24 config\ndrwxr-xr-x 18 root root   4096 Oct 15 10:23 config-templates\n-rw-r--r--  1 root root   8831 Oct 15 10:23 docker-compose.yml\ndrwxr-xr-x  2 root root   4096 Oct 15 10:23 examples\ndrwxr-xr-x  3 root root   4096 Oct 15 10:23 helm-chart\ndrwxr-xr-x  3 root root   4096 Oct 15 10:23 init\n-rw-r--r--  1 root root   3164 Oct 15 10:23 logo.svg\ndrwxr-xr-x  8 root root   4096 Oct 15 10:23 packages\n-rw-r--r--  1 root root  10516 Oct 15 10:23 publiccode.yml\n-rw-r--r--  1 root root   3378 Oct 15 10:23 renovate.json\ndrwxr-xr-x  2 root root   4096 Oct 15 10:23 scripts\ndrwxr-xr-x  4 root root   4096 Oct 15 10:23 test\n399b8b1 Merge remote-tracking branch 'gitlab1/main' into mirror-gitlab1\nDocker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls config/ 2>/dev/null && ls config/certificates 2>/dev/null | head && head -c 400 .env 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "admin-api\nadmin-front\nadmin.p12\ncabinet-api\ncabinet-front\ncertificates\ndemo.p12\nevent\nexternal-reader\nfilestorage\ngateway\nid\nmanager\nnotification\npdf-generator\npersist-link\nregister\nsign-tool\ntask\nca.crt\nca.key\n# Public service ports\nSVC_ID_PORT=8080\nSVC_CABINET_FRONT_PORT=8081\nSVC_ADMIN_FRONT_PORT=8082\nSVC_ID_API_PORT=8100\nSVC_CABINET_API_PORT=8101\nSVC_ADMIN_API_PORT=8102\nSVC_REGISTER_PORT=8103\nSVC_EXTERNAL_READER_PORT=8104\nSVC_FILESTORAGE_PORT=8105\nSVC_PDF_GENERATOR_PORT=7007\n\n# Internal service ports\nSVC_TASK_PORT=3000\nSVC_GATEWAY_PORT=3001\nSVC_MANAGER_PORT=3002\nSVC_NOTIFICATION_PORT=3003\nSVC_SIGN_TOO",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && docker compose ps --format 'table {{.Name}}\\t{{.Status}}\\t{{.Service}}' 2>&1",
+      "exit_code": 0,
+      "stdout": "NAME                          STATUS                        SERVICE\nworkspace-admin-api-1         Up 5 minutes (healthy)        admin-api\nworkspace-admin-front-1       Up 6 minutes (healthy)        admin-front\nworkspace-cabinet-api-1       Up 5 minutes (healthy)        cabinet-api\nworkspace-cabinet-front-1     Up 6 minutes (healthy)        cabinet-front\nworkspace-event-1             Up About a minute (healthy)   event\nworkspace-external-reader-1   Up 5 minutes (healthy)        external-reader\nworkspace-filestorage-1       Up 6 minutes (healthy)        filestorage\nworkspace-gateway-1           Up 5 minutes (healthy)        gateway\nworkspace-id-api-1            Up 6 minutes (healthy)        id-api\nworkspace-id-front-1          Up 6 minutes (healthy)        id-front\nworkspace-manager-1           Up 5 minutes (healthy)        manager\nworkspace-notification-1      Up 6 minutes (healthy)        notification\nworkspace-pdf-generator-1     Up 6 minutes (healthy)        pdf-generator\nworkspace-persist-link-1      Up 6 minutes (healthy)        persist-link\nworkspace-postgres-1          Up 6 minutes (healthy)        postgres\nworkspace-rabbitmq-1          Up 6 minutes (healthy)        rabbitmq\nworkspace-redis-1             Up 6 minutes (healthy)        redis\nworkspace-register-1          Up 6 minutes (healthy)        register\nworkspace-sign-tool-1         Up 6 minutes (healthy)        sign-tool\nworkspace-task-1              Up 5 minutes (healthy)        task\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ss -tlnp 2>/dev/null | grep -E ':(8080|8081|8082|8100|8101|8102|8103|8104|8105|7007)\\b' || netstat -tlnp 2>/dev/null | grep -E '808|810|7007'",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in 8080 8081 8082 8100 8101 8102 8103 8104 8105 7007; do code=$(curl -s -o /tmp/resp_$p.txt -w '%{http_code}' --max-time 10 http://localhost:$p/ 2>&1); echo \"port $p -> HTTP $code ($(wc -c < /tmp/resp_$p.txt 2>/dev/null) bytes)\"; done",
+      "exit_code": 0,
+      "stdout": "port 8080 -> HTTP 200 (867 bytes)\nport 8081 -> HTTP 200 (2406 bytes)\nport 8082 -> HTTP 200 (2111 bytes)\nport 8100 -> HTTP 404 (139 bytes)\nport 8101 -> HTTP 404 (50 bytes)\nport 8102 -> HTTP 404 (50 bytes)\nport 8103 -> HTTP 404 (139 bytes)\nport 8104 -> HTTP 404 (132 bytes)\nport 8105 -> HTTP 404 (139 bytes)\nport 7007 -> HTTP 404 (132 bytes)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && docker logs workspace-event-1 --tail 25 2>&1 && docker inspect workspace-event-1 --format 'RestartCount={{.RestartCount}} StartedAt={{.State.StartedAt}} Health={{.State.Health.Status}}' 2>&1",
+      "exit_code": 0,
+      "stdout": "\n> liquio-event@0.1.15 start:prod\n> node src/index.js\n\n{\"type\":\"redis-connected\",\"data\":{\"host\":\"redis\",\"port\":6379},\"createdAt\":\"2026-10-15T11:29:37.927Z\",\"logId\":\"dff40e20b09f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"db-connection\",\"data\":\"Connection to DB has been established successfully.\",\"createdAt\":\"2026-10-15T11:29:37.995Z\",\"logId\":\"51fac8ec5dca\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"custom-logs-cache-not-initialized\",\"data\":{\"cacheEnabled\":false},\"createdAt\":\"2026-10-15T11:29:38.039Z\",\"logId\":\"3de6bb558c0b\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-connected\",\"data\":true,\"createdAt\":\"2026-10-15T11:29:38.097Z\",\"logId\":\"b5bcfab5667c\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"amqp-channel-opened\",\"data\":true,\"createdAt\":\"2026-10-15T11:29:38.104Z\",\"logId\":\"ed231709c033\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"server-listening-started\",\"data\":\"Server listening started at \\\"http://0.0.0.0:7004\\\".\",\"createdAt\":\"2026-10-15T11:29:38.116Z\",\"logId\":\"a0aefca3f75f\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\"}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"bf33cdbe82e066aa245e0d11404b1d3d\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:29:41.642Z\",\"logId\":\"29d3b8fffd8d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:29:41.644Z\",\"logId\":\"bc1f83d127c4\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"bf33cdbe82e066aa245e0d11404b1d3d\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":1},\"createdAt\":\"2026-10-15T11:29:41.644Z\",\"logId\":\"eb94fda3e22d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"199beed1-cdfe-477b-aa5d-4e47171265b4\",\"traceMeta\":{}}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"85fd8b59276c3bdf338957a66ce6ab8b\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:30:11.722Z\",\"logId\":\"2422444a3069\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:30:11.722Z\",\"logId\":\"68e2fa5a82e9\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"85fd8b59276c3bdf338957a66ce6ab8b\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":1},\"createdAt\":\"2026-10-15T11:30:11.723Z\",\"logId\":\"a148cc918f19\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"350211e6-e757-4352-9a0f-2971ee0c64b0\",\"traceMeta\":{}}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"efce5ff5cc5994bef8e9cbe5a3030aad\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:30:41.821Z\",\"logId\":\"e2b0c85c275d\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"30c923a6-4b61-4ad3-87fd-3122b1e38534\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:30:41.821Z\",\"logId\":\"2d64e0883e65\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"30c923a6-4b61-4ad3-87fd-3122b1e38534\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"efce5ff5cc5994bef8e9cbe5a3030aad\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":0},\"createdAt\":\"2026-10-15T11:30:41.821Z\",\"logId\":\"bf4fb3f4a68b\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"30c923a6-4b61-4ad3-87fd-3122b1e38534\",\"traceMeta\":{}}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"3a10295931f5314455e2ea2b3578f17e\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:30:53.877Z\",\"logId\":\"89abd19dd605\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"f7f1969d-da41-4b4f-a217-e51f0f0b924f\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:30:53.877Z\",\"logId\":\"f21692468469\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"f7f1969d-da41-4b4f-a217-e51f0f0b924f\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"3a10295931f5314455e2ea2b3578f17e\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":0},\"createdAt\":\"2026-10-15T11:30:53.877Z\",\"logId\":\"6f953a69dbd7\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"f7f1969d-da41-4b4f-a217-e51f0f0b924f\",\"traceMeta\":{}}\n{\"type\":\"http-request\",\"data\":{\"method\":\"GET\",\"url\":\"/test/ping\",\"userAgent\":null,\"userIp\":{\"remoteAddress\":\"127.0.0.1\",\"xForwardedFor\":null},\"requestId\":\"07c85c2cb1241c319057fe0f15211e3a\",\"uriPattern\":\"GET:/test/ping\"},\"createdAt\":\"2026-10-15T11:31:11.978Z\",\"logId\":\"821e05b5c57c\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"a69f97f2-a66d-47f0-95e8-20d1d837a1d1\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"data\":{\"processPid\":19,\"message\":\"pong\"}},\"createdAt\":\"2026-10-15T11:31:11.979Z\",\"logId\":\"dd4f3bc102e8\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"a69f97f2-a66d-47f0-95e8-20d1d837a1d1\",\"traceMeta\":{}}\n{\"type\":\"http-response\",\"data\":{\"requestId\":\"07c85c2cb1241c319057fe0f15211e3a\",\"method\":\"GET\",\"url\":\"/test/ping\",\"statusCode\":200,\"responseTime\":0},\"createdAt\":\"2026-10-15T11:31:11.979Z\",\"logId\":\"98b628b9fa47\",\"appInfo\":{\"name\":\"liquio-event\",\"version\":\"0.1.15\"},\"level\":\"info\",\"traceId\":\"a69f97f2-a66d-47f0-95e8-20d1d837a1d1\",\"traceMeta\":{}}\nRestartCount=0 StartedAt=2026-10-15T11:29:36.217275077Z Health=healthy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== 8080 id-front ===\"; curl -s --max-time 10 http://localhost:8080/ | grep -oiE '<title>[^<]*</title>|liquio' | sort -u | head; echo \"=== 8081 cabinet-front ===\"; curl -s --max-time 10 http://localhost:8081/ | grep -oiE '<title>[^<]*</title>|liquio' | sort -u | head; echo \"=== 8082 admin-front ===\"; curl -s --max-time 10 http://localhost:8082/ | grep -oiE '<title>[^<]*</title>|liquio' | sort -u | head",
+      "exit_code": 0,
+      "stdout": "=== 8080 id-front ===\n<title></title>\n=== 8081 cabinet-front ===\n<title>Liquio Cabinet</title>\nLiquio\n=== 8082 admin-front ===\n<title>Liquio Admin</title>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in 8100 8101 8102 8103 8104 8105 7007; do echo -n \"port $p /test/ping -> \"; curl -s --max-time 10 http://localhost:$p/test/ping; echo; done",
+      "exit_code": 0,
+      "stdout": "port 8100 /test/ping -> {\"processPid\":20,\"message\":\"pong\"}\nport 8101 /test/ping -> {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\nport 8102 /test/ping -> {\"data\":{\"processPid\":19,\"message\":\"pong\"}}\nport 8103 /test/ping -> {\"data\":{\"processPid\":20,\"message\":\"pong\"}}\nport 8104 /test/ping -> {\"data\":{\"processPid\":21,\"message\":\"pong\"}}\nport 8105 /test/ping -> {\"data\":{\"processPid\":20,\"message\":\"pong\"}}\nport 7007 /test/ping -> {\"processPid\":37,\"message\":\"pong\"}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 10 http://localhost:8080/ | head -c 600; echo; echo \"---\"; for p in 3000 3001 3002 3003 3004 3005 7004; do echo -n \"port $p /test/ping -> \"; curl -s --max-time 5 http://localhost:$p/test/ping 2>&1 | head -c 100; echo; done",
+      "exit_code": 0,
+      "stdout": "<!doctype html><html lang=\"en\"><head><meta charset=\"utf-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1,shrink-to-fit=no\"><meta name=\"theme-color\" content=\"#000000\"><meta name=\"google\" content=\"notranslate\"/><meta name=\"description\" content=\"%REACT_APP_WEBSITE_DESCRIPTION%\"/><link rel=\"manifest\" href=\"/manifest.json\"><link rel=\"shortcut icon\" href=\"/favicon.ico\"><link rel=\"icon\" type=\"image/svg+xml\" href=\"/favicon.svg\"><link rel=\"apple-touch-icon\" sizes=\"180x180\" href=\"/apple-icon.png\"><link rel=\"stylesheet\" href=\"https://fonts.googleapis.com/icon?family=Material+Icons\"><t\n---\nport 3000 /test/ping -> \nport 3001 /test/ping -> \nport 3002 /test/ping -> \nport 3003 /test/ping -> \nport 3004 /test/ping -> {\"data\":{\"processPid\":37,\"message\":\"pong\"}}\nport 3005 /test/ping -> \nport 7004 /test/ping -> \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && openssl pkcs12 -in config/admin.p12 -nokeys -passin pass:admin 2>&1 | grep -E 'Subject|Issuer' ; echo \"exit=$?\"; openssl pkcs12 -in config/demo.p12 -nokeys -passin pass:demo 2>&1 | grep -E 'Subject|Issuer'; echo \"exit=$?\"; ls -la config/admin.p12 config/demo.p12; openssl x509 -in config/certificates/ca.crt -noout -subject -dates 2>&1",
+      "exit_code": 0,
+      "stdout": "exit=1\nexit=1\n-rw------- 1 root root 2636 Oct 15 10:24 config/admin.p12\n-rw------- 1 root root 2634 Oct 15 10:24 config/demo.p12\nsubject=C = UA, L = Kyiv, O = Liquio, OU = Development, CN = Liquio\nnotBefore=Oct 15 10:24:40 2026 GMT\nnotAfter=Oct 12 10:24:40 2036 GMT\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== admin.p12 ===\"; openssl pkcs12 -in config/admin.p12 -passin pass:admin 2>&1 | head -30; echo; echo \"=== demo.p12 ===\"; openssl pkcs12 -in config/demo.p12 -passin pass:demo 2>&1 | head -30",
+      "exit_code": 1,
+      "stdout": "=== admin.p12 ===\nEnter PEM pass phrase:\nError outputting keys and certificates\n80DB74ACFA760000:error:1400006B:UI routines:UI_process:processing error:../crypto/ui/ui_lib.c:544:while reading strings\n80DB74ACFA760000:error:0480006D:PEM routines:PEM_def_callback:problems getting password:../crypto/pem/pem_lib.c:62:\n80DB74ACFA760000:error:07880109:common libcrypto routines:do_ui_passphrase:interrupted or cancelled:../crypto/passphrase.c:184:\n80DB74ACFA760000:error:1C80009F:Provider routines:p8info_to_encp8:unable to get passphrase:../providers/implementations/encode_decode/encode_key2any.c:116:\nBag Attributes\n    localKeyID: 0E 09 76 50 D0 5E F0 AA E4 D9 BB 14 F3 AD 2C 25 34 6D 4E 35 \n    friendlyName: Admin Liquio\nsubject=O = Liquio, serialNumber = 0000000001, GN = Admin, SN = Liquio, CN = Admin Liquio\nissuer=C = UA, L = Kyiv, O = Liquio, OU = Development, CN = Liquio\n-----BEGIN CERTIFICATE-----\nMIIDJjCCAg4CAQEwDQYJKoZIhvcNAQELBQAwVDELMAkGA1UEBhMCVUExDTALBgNV\nBAcMBEt5aXYxDzANBgNVBAoMBkxpcXVpbzEUMBIGA1UECwwLRGV2ZWxvcG1lbnQx\nDzANBgNVBAMMBkxpcXVpbzAeFw0yNjEwMTUxMDI0NDFaFw0zNjEwMTIxMDI0NDFa\nMF4xDzANBgNVBAoMBkxpcXVpbzETMBEGA1UEBRMKMDAwMDAwMDAwMTEOMAwGA1UE\nKgwFQWRtaW4xDzANBgNVBAQMBkxpcXVpbzEVMBMGA1UEAwwMQWRtaW4gTGlxdWlv\nMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0As1KYLPqB4sav72s02e\nyUphB5ptPupZ1136gSoCTeEl+tgWTuODf5IF3XZf9jrgtN6p+pFOpAJmN6yZju/n\nbowTER/enSn2YMVK0XmnEHW0a7aSwP57SR83EFwa2WSaR6JYFh7h6w+b+TYMCgsa\nL5YKz/cMo9cawc1U176N7K5g5TvynDpDozdc5f4apwEr+FFQehxHpcf3ASuYDOAe\nshhutu4TzllGnNtScwFH67OoGv10tg0Z/F9d7yuVVWFSQbWrQwlkvChJk5AI+Ehu\neXxkKBiwhHFSvCzDmcKASX4Q+PzHWM6YMxtkoUN5D1qT67PsJ2OiEc1EDmZQiwFq\neQIDAQABMA0GCSqGSIb3DQEBCwUAA4IBAQBTmsAPRmyyTjhpVUfdlzhgqo+ycew9\nJUKZFGXOWo39WzeJvPFxlH1UF35oJrXkvuXI8UG0kGtTiWAvtXVg4h4+EHrTCmMh\nTRAvtaD7Nk4ts8kdzxEofUdFU9uH3nn4Tej1bCA/m3Mw4/4mNmv2cB66dmlK5agU\nsjB9z80MpzoA5nBbitneVB1DqIXv7vdixlXQe+SuglekBY2ZXFkXR2ufEYeN9YE3\nQkAgNSeys+CJiQyg6PjZcUD30uJztd4ahjWmaboYKyvyXrCPhn9ftj1iGEWkSlw/\nyZEDfW/W4DlQhhgqZooA2llkEVm1X0PenhZxIDej2/yqBx+onztWKddl\n-----END CERTIFICATE-----\n\n=== demo.p12 ===\nEnter PEM pass phrase:\nError outputting keys and certificates\n808BC212907E0000:error:1400006B:UI routines:UI_process:processing error:../crypto/ui/ui_lib.c:544:while reading strings\n808BC212907E0000:error:0480006D:PEM routines:PEM_def_callback:problems getting password:../crypto/pem/pem_lib.c:62:\n808BC212907E0000:error:07880109:common libcrypto routines:do_ui_passphrase:interrupted or cancelled:../crypto/passphrase.c:184:\n808BC212907E0000:error:1C80009F:Provider routines:p8info_to_encp8:unable to get passphrase:../providers/implementations/encode_decode/encode_key2any.c:116:\nBag Attributes\n    localKeyID: 59 19 19 86 1C DA B0 10 61 0F 89 67 36 12 2C DC F1 0E 6A F9 \n    friendlyName: Demo Liquio\nsubject=O = Liquio, serialNumber = 3123456789, GN = Demo, SN = Liquio, CN = Demo Liquio\nissuer=C = UA, L = Kyiv, O = Liquio, OU = Development, CN = Liquio\n-----BEGIN CERTIFICATE-----\nMIIDKDCCAhACBQC6LCsVMA0GCSqGSIb3DQEBCwUAMFQxCzAJBgNVBAYTAlVBMQ0w\nCwYDVQQHDARLeWl2MQ8wDQYDVQQKDAZMaXF1aW8xFDASBgNVBAsMC0RldmVsb3Bt\nZW50MQ8wDQYDVQQDDAZMaXF1aW8wHhcNMjYxMDE1MTAyNDQyWhcNMzYxMDEyMTAy\nNDQyWjBcMQ8wDQYDVQQKDAZMaXF1aW8xEzARBgNVBAUTCjMxMjM0NTY3ODkxDTAL\nBgNVBCoMBERlbW8xDzANBgNVBAQMBkxpcXVpbzEUMBIGA1UEAwwLRGVtbyBMaXF1\naW8wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC8WM621WyvEsnK69i9\nphAf89aHAOONxMkSfq3r2xaoFZq6bcx4qng1/x3syKRSU/OfclTq190IFPhpaRFT\njor4kxyblBp0wpLzPqiKZc9AziCBGZOIXEp6AerTyvsaS9LIUqTehDIBFuIDCNcV\nEhLiLv+kGlhJqzamNKgZLtM3nTMdgjy5HMXl5H6oPA2G3ZXsD7bfffIjI1BWa/4p\nnI6qhe7ecKJzDjZHm2BtBdoHaOAaOhsbegYI7mLWTyGZCN+abS+9/tuHICB/0Nmo\n0C8Allq7EVIo5riyQNSyaPdl1phzcxeOitKG3J8oHtt1KhqXJWedEsPlW6eDREt0\nNN4LAgMBAAEwDQYJKoZIhvcNAQELBQADggEBAMMnKqIFMuM3pbPmW3e9/UaQWqcB\nsiatow8hBviIwfqGmjkpf7cz5NvHIf9d4Hc7f5EpXYE6hOlK1jRxQiCKxzACM3Xt\n7fsJeCBU/eukRjV9D8+q244yasW0stl/V/UOyr4Jth0Am3HOxHDG0ZiqSMg3MwNm\nLrhVpESZVy5hR3IKnMw2C9t+5wz6fGCdpcFIldV5iyjKSgJjOlZ9eU9o2/S6v0zl\n3ReAANMzBZ1gI7kuPEdbY9kJn61syzQNoIKvsAMoyrdvXAxStrc6NbuHPKOFgFgk\nL87rzezkDCg4pdApVrTgYr6rcd/sPujJmZh3bb5uGl7JDh9AVE84S9sKD+Y=\n-----END CERTIFICATE-----\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"test/ping\" --include=\"*.ts\" -l | head -5; echo \"---register routes---\"; grep -rn \"router.get\\|app.get\" admin-api/src --include=\"*.ts\" | head -20",
+      "exit_code": 141,
+      "stdout": "task/src/lib/filestorage.ts\ntask/src/lib/persist_link.ts\ntask/src/services/auth/providers/liquio_id.ts\ntask/src/services/router/routes.ts\ntask/src/services/register.ts\n---register routes---\nadmin-api/src/services/router.ts:220:    app.get('/test/ping', pingController.ping.bind(pingController));\nadmin-api/src/services/router.ts:221:    app.get('/test/ping/services', pingController.pingServices.bind(pingController));\nadmin-api/src/services/router.ts:224:    app.get('/auth/me', authController.getCheckMiddleware(adminRoles), authController.me.bind(authController));\nadmin-api/src/services/router.ts:227:    app.get('/redirect/auth', redirectController.auth.bind(redirectController));\nadmin-api/src/services/router.ts:228:    app.get('/redirect/logout', redirectController.logout.bind(redirectController));\nadmin-api/src/services/router.ts:230:    app.get(\nadmin-api/src/services/router.ts:236:    app.get(\nadmin-api/src/services/router.ts:242:    app.get(\nadmin-api/src/services/router.ts:249:    app.get(\nadmin-api/src/services/router.ts:270:    app.get(\nadmin-api/src/services/router.ts:312:    app.get(\nadmin-api/src/services/router.ts:319:    app.get(\nadmin-api/src/services/router.ts:327:    app.get(\nadmin-api/src/services/router.ts:334:    app.get(\nadmin-api/src/services/router.ts:341:    app.get(\nadmin-api/src/services/router.ts:355:    app.get(\nadmin-api/src/services/router.ts:362:    app.get(\nadmin-api/src/services/router.ts:404:    app.get(\nadmin-api/src/services/router.ts:411:    app.get(\nadmin-api/src/services/router.ts:425:    app.get(\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in 8101 8102 8103; do echo \"=== port $p /test/ping/services ===\"; curl -s --max-time 10 http://localhost:$p/test/ping/services; echo; done",
+      "exit_code": 0,
+      "stdout": "=== port 8101 /test/ping/services ===\n{\"data\":{\"taskResponse\":{\"name\":\"liquio-task\",\"version\":\"0.1.34\",\"processPid\":19,\"message\":\"pong\",\"authResponse\":false,\"authMeta\":{\"versionsEqual\":false},\"notifyResponse\":false,\"notifyMeta\":{\"versionsEqual\":false},\"edsServiceResponse\":false,\"registerServiceResponse\":false,\"registerMeta\":{\"versionsEqual\":false},\"fileStorageServiceResponse\":false,\"filestorageMeta\":{\"versionsEqual\":false,\"customerEqual\":false,\"environmentEqual\":false},\"managerServiceResponse\":false,\"managerMeta\":{\"versionsEqual\":false}},\"idResponse\":{\"name\":\"liquio-id-api\",\"version\":\"0.1.19\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"eventResponse\":{\"name\":\"liquio-task\",\"version\":\"0.1.34\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"managerResponse\":{\"name\":\"liquio-manager\",\"version\":\"0.1.13\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"workflowResponse\":{\"name\":\"liquio-manager\",\"version\":\"0.1.13\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"registerResponse\":{\"name\":\"liquio-register\",\"version\":\"0.1.8\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"filestorageResponse\":{\"name\":\"liquio-filestorage\",\"version\":\"0.1.4\",\"customer\":\"1\",\"environment\":\"0\",\"processPid\":20,\"message\":\"pong\"},\"externalReaderResponse\":{\"processPid\":21,\"message\":\"pong\"},\"notifyResponse\":{\"name\":\"liquio-notification\",\"version\":\"0.1.9\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"eds\":{\"message\":\"Cannot GET /api/v1/test/ping\",\"error\":\"Not Found\",\"statusCode\":404}}}\n=== port 8102 /test/ping/services ===\n{\"data\":{\"taskResponse\":{\"name\":\"liquio-task\",\"version\":\"0.1.34\",\"processPid\":19,\"message\":\"pong\",\"authResponse\":false,\"authMeta\":{\"versionsEqual\":false},\"notifyResponse\":false,\"notifyMeta\":{\"versionsEqual\":false},\"edsServiceResponse\":false,\"registerServiceResponse\":false,\"registerMeta\":{\"versionsEqual\":false},\"fileStorageServiceResponse\":false,\"filestorageMeta\":{\"versionsEqual\":false,\"customerEqual\":false,\"environmentEqual\":false},\"managerServiceResponse\":false,\"managerMeta\":{\"versionsEqual\":false}},\"idResponse\":{\"name\":\"liquio-id-api\",\"version\":\"0.1.19\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"eventResponse\":{\"name\":\"liquio-task\",\"version\":\"0.1.34\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"managerResponse\":{\"name\":\"liquio-manager\",\"version\":\"0.1.13\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"workflowResponse\":{\"name\":\"liquio-manager\",\"version\":\"0.1.13\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":19,\"message\":\"pong\"},\"registerResponse\":{\"name\":\"liquio-register\",\"version\":\"0.1.8\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"filestorageResponse\":{\"name\":\"liquio-filestorage\",\"version\":\"0.1.4\",\"customer\":\"1\",\"environment\":\"0\",\"processPid\":20,\"message\":\"pong\"},\"externalReaderResponse\":{\"processPid\":21,\"message\":\"pong\"},\"notifyResponse\":{\"name\":\"liquio-notification\",\"version\":\"0.1.9\",\"customer\":\"liquio\",\"environment\":\"dev\",\"processPid\":20,\"message\":\"pong\"},\"eds\":{\"message\":\"Cannot GET /api/v1/test/ping\",\"error\":\"Not Found\",\"statusCode\":404}}}\n=== port 8103 /test/ping/services ===\n<!DOCTYPE html>\n<html lang=\"en\">\n<head>\n<meta charset=\"utf-8\">\n<title>Error</title>\n</head>\n<body>\n<pre>Cannot GET /test/ping/services</pre>\n</body>\n</html>\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components/admin-api/src && sed -n '190,230p' services/router.ts",
+      "exit_code": 0,
+      "stdout": "    const unitAccessController = new UnitAccessController(this.config);\n    const numberTemplateController = new NumberTemplateController(this.config);\n    const customLogController = new CustomLogController(this.config);\n    const accessHistoryController = new AccessHistoryController(this.config);\n    const loginHistoryController = new LoginHistoryController(this.config);\n    const userAdminActionController = new UserAdminActionController(this.config);\n    const uiFilterController = new UIFilterController(this.config);\n    const customInterfaceController = new CustomInterfaceController(this.config);\n    const proxyItemController = new ProxyItemController(this.config);\n    const messageTemplateController = new MessageTemplateController(this.config);\n    const sqlReportsController = new SqlReportsController(this.config);\n    const statController = new StatController(this.config);\n    const favoritesController = new FavoritesController(this.config);\n    const snippetsController = new SnippetsController(this.config);\n    const assetsController = new AssetsController(this.config);\n    const massMessagesMailingController = new MassMessagesMailingController(this.config);\n    const localizationLanguageController = new LocalizationLanguageController(this.config);\n    const localizationTextController = new LocalizationTextController(this.config);\n    const userSettingsController = new UserSettingsController(this.config);\n    const fileLibraryController = new FileLibraryController(this.config);\n    const cabinetMenuController = new CabinetMenuController(this.config);\n\n    // Init validators.\n    const validators = new Validators(this.config);\n\n    // Define admin roles list.\n    const { clientId } = this.config.auth;\n    const adminRoles = ['admin', `admin-${clientId}`];\n\n    // Init routes.\n    app.get('/test/ping', pingController.ping.bind(pingController));\n    app.get('/test/ping/services', pingController.pingServices.bind(pingController));\n\n    app.post('/auth/login', authController.login.bind(authController));\n    app.get('/auth/me', authController.getCheckMiddleware(adminRoles), authController.me.bind(authController));\n    app.post('/local/change_password', authController.getCheckMiddleware(adminRoles), authController.changePassword.bind(authController));\n\n    app.get('/redirect/auth', redirectController.auth.bind(redirectController));\n    app.get('/redirect/logout', redirectController.logout.bind(redirectController));\n\n    app.get(\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/test && ls -R | head -30 && grep -rln \"p12\\|login\" --include=\"*.ts\" --include=\"*.js\" . | head -10",
+      "exit_code": 0,
+      "stdout": ".:\nREADME.md\nauth.spec.js\nbasic-workflow.spec.js\nemail-change.spec.js\neslint.config.js\nfixtures\nhelpers\nmessage-template.spec.js\npackage-lock.json\npackage.json\nplaywright.config.js\nsecurity.spec.js\nuser.spec.js\nworkflow-1001.spec.js\nworkflow-900001.spec.js\nworkflow-900002.spec.js\nworkflow-900003.spec.js\nworkflow-900004.spec.js\n\n./fixtures:\nworkflow-900001.bpmn\nworkflow-900002.bpmn\nworkflow-900003.bpmn\nworkflow-900004.bpmn\n\n./helpers:\nauth.js\ncabinet_api.js\ndebug.js\n./auth.spec.js\n./workflow-900004.spec.js\n./email-change.spec.js\n./workflow-900002.spec.js\n./user.spec.js\n./workflow-1001.spec.js\n./workflow-900003.spec.js\n./workflow-900001.spec.js\n./message-template.spec.js\n./helpers/user.js\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/test && head -80 helpers/auth.js; ls node_modules 2>/dev/null | wc -l; cat package.json | head -30",
+      "exit_code": 0,
+      "stdout": "const { expect } = require('@playwright/test');\nconst { debug } = require('./debug');\n\nasync function ensureAtLoginPage(page) {\n  debug('ensureAtLoginPage: Make sure we are at the login page http://localhost:8080/');\n  await expect(page).toHaveURL('http://localhost:8080/');\n  debug('ensureAtLoginPage: At login page');\n\n  debug('ensureAtLoginPage: Checking personal key button is visible');\n  await expect(\n    page.getByRole('button', { name: 'Personal key' })\n  ).toBeVisible();\n  debug('ensureAtLoginPage: Personal key button visible');\n}\n\nasync function loginWithPersonalKey(page, filePath, password) {\n  debug('loginWithPersonalKey: Make sure we are at the login page http://localhost:8080/');\n  await expect(page).toHaveURL('http://localhost:8080/');\n  debug('loginWithPersonalKey: At login page');\n\n  debug('loginWithPersonalKey: Clicking \"Personal key\" button');\n  await page.getByRole('button', { name: 'Personal key' }).click();\n  debug('loginWithPersonalKey: Button clicked');\n\n  debug('loginWithPersonalKey: Uploading admin file');\n  await page.locator('input[type=\"file\"]').setInputFiles(filePath);\n  debug('loginWithPersonalKey: File uploaded');\n\n  debug('loginWithPersonalKey: Entering admin password');\n  await page.locator('input[type=\"password\"]').fill(password);\n  debug('loginWithPersonalKey: Password entered');\n\n  debug('loginWithPersonalKey: Clicking \"Continue\"');\n  await page.getByRole('button', { name: 'Continue' }).click();\n  debug('loginWithPersonalKey: Button clicked');\n\n  debug('loginWithPersonalKey: Waiting for x509 authorization request (with 100s timeout)');\n  await page.waitForResponse('http://localhost:8080/authorise/x509', { timeout: 100000 });\n  debug('loginWithPersonalKey: X509 authorization completed');\n}\n\nmodule.exports = {\n  ensureAtLoginPage,\n  loginWithPersonalKey,\n};\n0\n{\n  \"name\": \"test\",\n  \"version\": \"1.0.0\",\n  \"engines\": {\n    \"node\": \"22\"\n  },\n  \"description\": \"\",\n  \"main\": \"index.js\",\n  \"scripts\": {\n    \"test\": \"playwright test\",\n    \"test:headed\": \"playwright test --headed\",\n    \"test:ui\": \"playwright test --ui\",\n    \"lint\": \"eslint \\\"**/*.js\\\"\",\n    \"lint:fix\": \"eslint \\\"**/*.js\\\" --fix\"\n  },\n  \"keywords\": [],\n  \"author\": \"\",\n  \"license\": \"ISC\",\n  \"dependencies\": {\n    \"@playwright/test\": \"^1.58.2\",\n    \"debug\": \"^4.4.3\",\n    \"playwright\": \"^1.58.2\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"^10.0.1\",\n    \"eslint\": \"^10.2.1\",\n    \"eslint-plugin-jsdoc\": \"^64.2.0\",\n    \"globals\": \"^17.4.0\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && ls id-api/src/services/ && grep -rn \"auth/login\\|login\" id-api/src/services/router/routes.ts 2>/dev/null | head",
+      "exit_code": 2,
+      "stdout": "app_info.service.ts\nauth.service.ts\nbase_service.ts\nconfirm_\u0441ode_\u0441leanup.service.ts\neds.service.ts\nindex.ts\nldap.service.spec.ts\nldap.service.ts\nnotify.service.ts\npassword_manager.service.ts\nping_request.service.ts\nredis.service.spec.ts\nredis.service.ts\nscheduler.service.ts\nuser.service.ts\nx509.service.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"authorise\" id-front/src --include=\"*.tsx\" --include=\"*.ts\" | grep -iv \"import\\|spec\" | head -10; echo \"===\"; grep -rn \"authorise\\|x509\" id-api/src/app_info.service.ts id-api/src/x509.service.ts 2>/dev/null | head; echo \"===id-api routes===\"; find id-api/src -name \"routes.ts\" -o -name \"router*.ts\" | head",
+      "exit_code": 0,
+      "stdout": "===\n===id-api routes===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"authorise\" --include=\"*.ts\" --include=\"*.tsx\" . | grep -v node_modules | grep -v spec | head -20",
+      "exit_code": 141,
+      "stdout": "./task/src/services/auth/providers/liquio_id.ts:12:  getCode: '/authorise',\n./id-api/src/lib/auth_providers.ts:41:    options.push(toOption('wso2', 'wso2', '/authorise/wso2', authProviders.wso2.display));\n./id-api/src/lib/auth_providers.ts:48:    options.push(toOption('oidc', providerId, `/authorise/oidc/${providerId}`, provider.display));\n./id-api/src/strategies/passport_libs/passport-govid/strategy.ts:55:      this.log.save('authenticate-govid|authorise-continue', { user }, 'info');\n./id-api/src/strategies/passport_libs/passport-govid/strategy.ts:56:      req.res!.redirect('/authorise/continue/');\n./id-api/src/strategies/passport_libs/passport-eds/strategy.ts:28:      return req.res!.redirect('/authorise/continue/');\n./id-api/src/strategies/wso2.ts:142:  app.get('/authorise/wso2', passport.authenticate('wso2'));\n./id-api/src/strategies/wso2.ts:145:  app.get('/authorise/wso2/callback', passport.authenticate('wso2', { failureRedirect: '/login', keepSessionInfo: true }), async (req, res) => {\n./id-api/src/strategies/wso2.ts:152:    res.redirect('/authorise/continue');\n./id-api/src/strategies/local.ts:107:  async function authorise(req: Request, res: Response): Promise<void> {\n./id-api/src/strategies/local.ts:120:    res.send({ error: null, redirect: '/authorise/continue/' });\n./id-api/src/strategies/local.ts:242:  app.post('/authorise/local', app.passport.authenticate('local', { keepSessionInfo: true }), authorise);\n./id-api/src/strategies/local.ts:245:  app.post('/authorise/local/change_password', changePassword);\n./id-api/src/strategies/oidc.ts:160:    this.app.get('/authorise/oidc/:provider', (req, res, next) => {\n./id-api/src/strategies/oidc.ts:187:    this.app.get('/authorise/oidc/:provider/callback', (req, res, next) => {\n./id-api/src/strategies/oidc.ts:239:          res.redirect('/authorise/continue');\n./id-api/src/strategies/eds.ts:195:    '/authorise/eds',\n./id-api/src/strategies/eds.ts:204:        res.send({ error: null, redirect: '/authorise/continue/' });\n./id-api/src/strategies/eds.ts:209:  app.get('/authorise/eds/sign', (req: Request, res: Response) => {\n./id-api/src/strategies/govid.ts:252:    '/authorise/govid',\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && ls id-api/src/strategies/ && grep -rn \"x509\" id-api/src/strategies/*.ts | grep \"app\\.\\|router\\.\" | head",
+      "exit_code": 0,
+      "stdout": "bankid.spec.ts\nbankid.ts\neds.ts\ngovid.ts\nlocal.ts\noidc.ts\npassport_libs\nwso2.ts\nx509.ts\nid-api/src/strategies/x509.ts:81:  if (!app.config.auth_providers.x509?.isEnabled) {\nid-api/src/strategies/x509.ts:170:  app.passport.mapping['x509'] = {\nid-api/src/strategies/x509.ts:174:  app.post('/authorise/x509', passport.authenticate('x509', { keepSessionInfo: true }), async (req: Request, res: Response) => {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && sed -n '1,110p' id-api/src/strategies/x509.ts",
+      "exit_code": 0,
+      "stdout": "import { Strategy as PassportStrategy } from 'passport-strategy';\nimport { Log } from '@liquio/back-core';\n\nimport { Express, Request, Response } from '../types';\nimport { saveSession } from '../middleware/session';\nimport { SignatureInfoSigner, X509Service } from '../services/x509.service';\nimport { Services } from '../services';\nimport { Helpers } from '../lib/helpers';\nimport { Models, UserAttributes, UserServicesAttributes } from '../models';\nimport { prepareLoginHistoryData } from '../lib/login_history_extractor';\n\nexport interface X509StrategyOptions {\n  passReqToCallback?: boolean;\n}\n\nexport type X509VerifyFunction = (req: Request, userInfo: SignatureInfoSigner, done: (error: any, user?: any, info?: any) => void) => void;\n\n/**\n * X509Strategy for Passport that authenticates users based on PKCS#7 (CMS) certificate data.\n * Expects a base64-encoded PKCS#7 in req.body.pkcs7.\n * Extracts eIDAS fields from the certificate subject.\n */\nexport class X509Strategy extends PassportStrategy {\n  name = 'x509';\n  private readonly verify: X509VerifyFunction;\n  private readonly x509Service: X509Service;\n  private readonly log: Log;\n\n  constructor(options: X509StrategyOptions, verify: X509VerifyFunction) {\n    super();\n    this.verify = verify;\n    this.x509Service = Services.service('x509');\n    this.log = Log.getInstance();\n  }\n\n  async authenticate(req: Request) {\n    try {\n      const signatureInfo = await this.x509Service.getSignatureInfo(req.body.pkcs7);\n      if (!signatureInfo) {\n        this.log.save('x509-strategy|authenticate|invalid-pkcs7', { pkcs7: Helpers.shorten(req.body.pkcs7) }, 'error');\n        return this.fail({ message: 'Invalid PKCS#7 structure' }, 400);\n      }\n\n      // Build user info object\n      const userInfo = signatureInfo.subject;\n\n      // Call verify callback\n      const verified = (error: any, user?: any, info?: any) => {\n        if (error) {\n          this.log.save('x509-strategy|authenticate|error', Helpers.processError(error), 'error');\n          return this.error(error);\n        }\n\n        if (!user) {\n          this.log.save('x509-strategy|authenticate|no-user', { info }, 'error');\n          return this.fail(info, 401);\n        }\n\n        this.success(user, info);\n      };\n\n      this.verify(req, userInfo, verified);\n    } catch (error: any) {\n      const processedError = Helpers.processError(error);\n      this.log.save('x509-strategy|authenticate|error', processedError, 'error');\n      if (error && error.status === 400) {\n        return this.fail(processedError.error, 400);\n      }\n      this.error(error);\n    }\n  }\n}\n\n// x509 certificate auth has no external session to tear down \u2014 kept as a stub\n// so the caller can always invoke a strategy's logout() uniformly.\nexport async function logout(): Promise<void> {}\n\nexport async function x509(app: Express) {\n  const log = Log.getInstance();\n\n  if (!app.config.auth_providers.x509?.isEnabled) {\n    log.save('x509-strategy', { status: 'disabled' }, 'info');\n    return;\n  }\n\n  const passport = app.passport;\n\n  passport.valid['x509'] = ['last_name', 'first_name', 'edrpou', 'ipn', 'companyName'];\n\n  passport.use(\n    'x509',\n    new X509Strategy({}, async (req, userInfo, done) => {\n      log.save('x509-strategy|authenticate|verify', { user: userInfo }, 'info');\n\n      const ipn = userInfo.serialNumber || userInfo.personIdentifier;\n      if (!ipn) {\n        log.save('x509-strategy|authenticate|no-user-id', { userInfo }, 'error');\n        return done(new Error('No user ID found in certificate'));\n      }\n\n      // Find user by email\n      const existingUser = await Models.model('user')\n        .findOne({\n          where: { ipn },\n          include: [{ model: Models.model('userServices') }],\n        })\n        .then((row) => row?.dataValues as UserAttributes & { user_services: UserServicesAttributes[] });\n\n      let newUser: UserAttributes;\n      if (!existingUser) {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && sed -n '110,185p' id-api/src/strategies/x509.ts && echo \"=== x509.service ===\" && grep -n \"getSignatureInfo\\|sign-tool\\|api/v1\\|fetch\\|axios\\|http\" id-api/src/services/x509.service.ts | head -20",
+      "exit_code": 0,
+      "stdout": "      if (!existingUser) {\n        let givenName = userInfo.givenName || '';\n        let surname = userInfo.surname || '';\n        let middleName = userInfo.middleName || '';\n\n        // Handle givenName and surname naively if not provided\n        if (!userInfo.givenName && userInfo.commonName) {\n          const nameParts = userInfo.commonName.split(' ');\n          givenName = nameParts[0];\n          surname = nameParts[nameParts.length - 1];\n          if (nameParts.length > 2) {\n            middleName = nameParts.slice(1, -1).join(' ');\n          }\n        }\n\n        // Create a new user if not found\n        newUser = await Models.model('user')\n          .create(\n            {\n              first_name: givenName,\n              last_name: surname,\n              middle_name: middleName,\n              ipn,\n            },\n            { returning: true },\n          )\n          .then((row) => row.dataValues);\n\n        log.save('x509-strategy|authenticate|user-created', { userId: newUser.userId }, 'info');\n      } else {\n        await Models.model('user').update(\n          {\n            first_name: userInfo.givenName || existingUser.first_name,\n            last_name: userInfo.surname || existingUser.last_name,\n            middle_name: userInfo.middleName || existingUser.middle_name,\n          },\n          { where: { userId: existingUser.userId } },\n        );\n\n        log.save('x509-strategy|authenticate|user-found', { userId: existingUser.userId }, 'info');\n      }\n\n      const userService = await Models.model('userServices').upsert(\n        {\n          userId: (existingUser || newUser!).userId,\n          provider: 'x509',\n          provider_id: ipn,\n          data: userInfo,\n        },\n        { conflictFields: ['provider', 'provider_id'] },\n      );\n\n      done(null, {\n        ...(existingUser || newUser!),\n        provider: 'x509',\n        services: { x509: userService },\n      });\n    }),\n  );\n\n  app.passport.mapping['x509'] = {\n    userIdentificationType: 'ipn',\n  };\n\n  app.post('/authorise/x509', passport.authenticate('x509', { keepSessionInfo: true }), async (req: Request, res: Response) => {\n    const userId = (req.user as any)?.userId;\n    const actualUser = userId ? await Services.service('auth').getUser({ userId }) : null;\n\n    if (actualUser?.isActive === false) {\n      req.user = actualUser as any;\n\n      const blockedLoginHistoryData = prepareLoginHistoryData(req, { actionType: 'login' });\n      if (blockedLoginHistoryData) {\n        await Models.model('loginHistory').create(blockedLoginHistoryData);\n      }\n\n=== x509.service ===\n1:import axios, { AxiosInstance } from 'axios';\n8:// X.509 Signature Info Types (extracted from sign-tool)\n86:    this.client = axios.create({\n109:  async getSignatureInfo(sign: Buffer | string): Promise<SignatureInfoResponse> {\n153:    // We must pass data in base64 format only to the sign-tool service.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && sed -n '80,175p' id-api/src/services/x509.service.ts",
+      "exit_code": 0,
+      "stdout": "    if (!this.config.x509?.externalUrl) {\n      throw new Error('`config.x509.externalUrl` is not configured.');\n    }\n\n    const url = this.config.x509.externalUrl;\n\n    this.client = axios.create({\n      baseURL: url,\n      timeout: this.config.x509.timeout ?? 10000,\n    });\n  }\n\n  async init() {\n    try {\n      const response = await this.client.get('/test/ping');\n      if (response.status !== 200) {\n        throw new Error('Invalid response');\n      }\n    } catch (error: any) {\n      this.log.save(`x509-service|init-error`, Helpers.prepareAxiosErrorToLog(error), 'error');\n      throw new Error(`Sign-tool connection failed: ${error}`);\n    }\n  }\n\n  /**\n   * Get signature info.\n   * @param sign Signature as Buffer or base64 string.\n   * @returns SignatureInfoResponse\n   */\n  async getSignatureInfo(sign: Buffer | string): Promise<SignatureInfoResponse> {\n    const signBase64 = typeof sign === 'string' ? sign : sign.toString('base64');\n\n    try {\n      const data = await this.post('/x509/signature-info', { sign: signBase64 });\n      if (data.content) {\n        data.content = Buffer.from(data.content, 'base64');\n      }\n      return data;\n    } catch (error: any) {\n      this.log.save(`x509-service|get-signature-info|error`, Helpers.prepareAxiosErrorToLog(error), 'error');\n      throw error;\n    }\n  }\n\n  /**\n   * Verify hash.\n   */\n  async verifyHash(hash: Buffer | string, sign: Buffer | string) {\n    if (hash instanceof Buffer) {\n      hash = hash.toString('base64');\n    }\n\n    if (sign instanceof Buffer) {\n      sign = sign.toString('base64');\n    }\n\n    let result;\n    try {\n      result = await this.post('/x509/verify-hash', {\n        hash,\n        sign,\n      });\n    } catch (error: any) {\n      this.log.save(`x509-service|verify-hash|error`, Helpers.prepareAxiosErrorToLog(error), 'error');\n      throw error;\n    }\n    return result;\n  }\n\n  /**\n   * Obtain data chunk hash.\n   */\n  async hashData(data: Buffer | string, asBase64 = false): Promise<Buffer | string> {\n    // We must pass data in base64 format only to the sign-tool service.\n    let dataBase64;\n    if (data instanceof Buffer) {\n      dataBase64 = data.toString('base64');\n    } else if (typeof data === 'string') {\n      dataBase64 = Buffer.from(data, 'utf8').toString('base64');\n    } else {\n      const dataType = typeOf(data);\n      this.log.save(`x509-service|hash-data|invalid-param-error`, { dataType }, 'error');\n      throw new Error(`X509External.hashData: Invalid data type. Expected Buffer or string, but got ${dataType}.`);\n    }\n\n    let response;\n    try {\n      response = await this.post('/x509/hash-data', {\n        data: dataBase64,\n        isReturnAsBase64: true,\n      });\n    } catch (error: any) {\n      this.log.save(`x509-service|hash-data|error`, Helpers.prepareAxiosErrorToLog(error), 'error');\n      throw error;\n    }\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"authorise/x509\\|pkcs7\" id-front/src --include=\"*.ts\" --include=\"*.tsx\" | grep -v spec | head -10",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rln \"authorise/x509\" --include=\"*.ts\" --include=\"*.tsx\" --include=\"*.js\" . | grep -v node_modules | head; echo \"---\"; grep -rn \"x509\" id-front/src 2>/dev/null | head -10; echo \"---id-front structure---\"; ls id-front/src 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "./id-api/src/strategies/x509.ts\n./id-api/tests/auth-x509.e2e-spec.ts\n./id-front/src/actions/auth.js\n---\nid-front/src/actions/auth.js:177:    'authorise/x509',\nid-front/src/pages/Login/components/MainPage.jsx:137:  x509: 'keySign',\nid-front/src/pages/Login/components/MainPage.jsx:149:    if (provider.type === 'x509') {\n---id-front structure---\nApp.jsx\nactions\nassets\ncomponents\ncontainers\nhelpers\nindex.js\nlayouts\npages\nreducers\nroutes\nservices\nstore\nthemes\nvariables\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && sed -n '140,210p' id-front/src/actions/auth.js",
+      "exit_code": 0,
+      "stdout": "  return api.post(\n    'authorise/local/change_password',\n    body,\n    'CHANGE_PASSWORD',\n    dispatch\n  );\n}\n\nexport function handleCreateByLoginPassword(body) {\n  return api.post(\n    'sign_up',\n    body,\n    'CREATE_USER',\n    dispatch\n  )\n}\n\nexport function handleResetPassword(body) {\n  return api.post(\n    'user/password/reset',\n    body,\n    'RESET_PASSWORD',\n    dispatch\n  )\n}\n\nexport function handleSendCode(body) {\n  return api.post(\n    'user/password/forgot',\n    body,\n    'SEND_CODE',\n    dispatch\n  )\n}\n\nexport function handlePKCS7Auth(pkcs7) {\n  return api.post(\n    'authorise/x509',\n    { pkcs7 },\n    'PKCS7_AUTH',\n    dispatch\n  );\n}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && sed -n '1,80p' id-api/tests/auth-x509.e2e-spec.ts",
+      "exit_code": 0,
+      "stdout": "import nock from 'nock';\n\nimport { TestApp, config } from './test_app';\n\ndescribe('AuthController - x509', () => {\n  let app: TestApp;\n\n  beforeAll(async () => {\n    await TestApp.beforeAll();\n  });\n\n  afterAll(async () => {\n    await app.destroy();\n    await TestApp.afterAll();\n  });\n\n  beforeEach(async () => {\n    await TestApp.beforeEach();\n  });\n\n  it('should setup an app successfully', async () => {\n    config.redis.isEnabled = true;\n    config.auth_providers.x509 = { isEnabled: true };\n    config.notify = { url: 'http://notify-service', authorization: 'bm90aWZ5Om5vdGlmeQ==' };\n    config.x509 = { externalUrl: 'http://sign-tool', timeout: 500 };\n\n    try {\n      app = await TestApp.setup();\n    } catch (error: any) {\n      throw new Error(`Failed to setup app: ${error.toString()}`);\n    }\n  });\n\n  describe('PKCS#7 Certificate Authorization (x509)', () => {\n    it('should try to login with invalid credentials', async () => {\n      nock('http://sign-tool').post('/x509/signature-info').once().reply(400, {\n        cause: 'Invalid PKCS#7 certificate',\n      });\n\n      await app.request().post('/authorise/x509').send({ pkcs7: 'invalid' }).expect(400);\n    });\n\n    it('should try to login with valid credentials', async () => {\n      nock('http://sign-tool')\n        .post('/x509/signature-info')\n        .once()\n        .reply(200, {\n          subject: {\n            commonName: 'Test Person',\n            organizationName: 'Liquio Test',\n            countryName: 'UA',\n            serialNumber: '1234567890',\n          },\n          issuer: {\n            commonName: 'Liquio Test CA',\n            organizationName: 'Liquio Test CA',\n            countryName: 'UA',\n          },\n          serial: '1C07D16DDAE3ECF9A031DC7F5257AD25EE541683',\n          signTime: '',\n          content:\n            'ew0KICAidXNlciI6ICJ0ZXN0dXNlciIsDQogICJlbWFpbCI6ICJ0ZXN0dXNlckBleGFtcGxlLmNvbSIsDQogICJ0aW1lc3RhbXAiOiAiMjAyNC0wNy0xN1QxOTowMDowMFoiDQp9IA==',\n          pem:\n            '-----BEGIN CERTIFICATE-----\\n' +\n            'MIIDYDCCAkigAwIBAgIUHAfRbdrj7PmgMdx/UletJe5UFoMwDQYJKoZIhvcNAQEL\\n' +\n            'BQAwPzELMAkGA1UEBhMCVUExFzAVBgNVBAoMDkxpcXVpbyBUZXN0IENBMRcwFQYD\\n' +\n            'VQQDDA5MaXF1aW8gVGVzdCBDQTAeFw0yNTA3MTgxMDE3MDVaFw0yNjA3MTgxMDE3\\n' +\n            'MDVaMDkxCzAJBgNVBAYTAlVBMRQwEgYDVQQKDAtMaXF1aW8gVGVzdDEUMBIGA1UE\\n' +\n            'AwwLVGVzdCBQZXJzb24wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCP\\n' +\n            'FXgHjEagXlO1dJjWMr5a+qsGrB9Y2O+xOd2oiJj0fHb8n0i9Tb8oJpZybGDsFLQ3\\n' +\n            'byVjl+jTh+J1BK5x2VkaXbvrHyMpbqJ8yjAayID+q3nETTqBBlMBhJno2Bk+vrhd\\n' +\n            '/Hijr1T67qYeoYFIFA8JMBalQQWE0E0e0gJjG4kn0o7ujIEzBqXDVVUwTX6H5iZW\\n' +\n            'sRV83hRiHHC+GWsBXxKlIekMpu7WISD3DFNYM/u4zYrZHLoAIuC6EQ8rEhLPZjA6\\n' +\n            'of45ehTNlSrSjUPMLzYBtlXPBpJVskmvraf4K/TziRYCz1+SVcmBQcgThOc1Q++o\\n' +\n            'u5rIZ3BkphBozTIdGH/hAgMBAAGjWjBYMAkGA1UdEwQCMAAwCwYDVR0PBAQDAgWg\\n' +\n            'MB0GA1UdDgQWBBQkP6jBkVCx9CWtGV0eoQkuD3j47jAfBgNVHSMEGDAWgBSBz8K7\\n' +\n            '0XPT2o1D66btkNEUAgFrjjANBgkqhkiG9w0BAQsFAAOCAQEAUmbnNL8iJ3cgjW1/\\n' +\n            'pLzjVD/KEUkl3Bue89qaN+7VUVrRvAC3aFJKnWGdN2zLH2Q4U6BEPeIuQ8ngKTCS\\n' +\n            'jaT4Cg3mJNcNzd8H46Nwck6kM6w1yOsBnfYK89+ZFVEr7X2ml8kRFCVlQPylcCqI\\n' +\n            'Ft0MlGgbnMf1jJCvYIO+9ilGvzM8gYkbDN6ST4QMcnvfw2xiJa5yWU24BtqxMfo1\\n' +\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"keySign\" id-front/src --include=\"*.js\" --include=\"*.jsx\" -l | head; grep -rn \"pkcs7\\|PKCS7\\|PKCS7Signer\" id-front/src/helpers 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "id-front/src/variables/translations/ua-UK.js\nid-front/src/variables/translations/fr-FR.js\nid-front/src/variables/translations/en-GB.js\nid-front/src/pages/Login/components/MainPage.jsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -n \"sign\\|pkcs7\\|PKCS7\\|crypto\" id-front/src/pages/Login/components/MainPage.jsx | head -20; echo \"===\"; grep -rn \"pkcs7\\|createPKCS7\\|smime\" id-front/src/services id-front/src/helpers 2>/dev/null | head -10",
+      "exit_code": 1,
+      "stdout": "===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -rn \"x509\\|pkcs7\\|sign\" id-front/src/pages/Login/components/MainPage.jsx | head -30",
+      "exit_code": 0,
+      "stdout": "137:  x509: 'keySign',\n149:    if (provider.type === 'x509') {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && find id-front/src -iname \"*sign*\" -o -iname \"*key*\" | grep -v translation | head; echo ===; grep -rn \"webcrypto\\|subtle\\|pkcs7\\|PKCS7\\|cms\" id-front/src --include=\"*.js\" --include=\"*.jsx\" | grep -v translation | grep -vi spec | head -15",
+      "exit_code": 0,
+      "stdout": "id-front/src/pages/Login/components/OwnKeyLogin.jsx\nid-front/src/assets/img/ic_key.svg\nid-front/src/helpers/keyToUint8Array.js\nid-front/src/components/PKCS7Form/PKCS7SignForm.jsx\n===\nid-front/src/actions/auth.js:175:export function handlePKCS7Auth(pkcs7) {\nid-front/src/actions/auth.js:178:    { pkcs7 },\nid-front/src/actions/auth.js:179:    'PKCS7_AUTH',\nid-front/src/pages/Login/components/OwnKeyLogin.jsx:8:import PKCS7Form from 'components/PKCS7Form';\nid-front/src/pages/Login/components/OwnKeyLogin.jsx:43:    <PKCS7Form\nid-front/src/pages/Login/components/OwnKeyLogin.jsx:48:      setId={(elementName) => setId(`sign-form-pkcs7-${elementName}`)}\nid-front/src/components/PKCS7Form/index.jsx:6:import PKCS7SignForm from './PKCS7SignForm';\nid-front/src/components/PKCS7Form/index.jsx:8:const PKCS7Form = ({ t, classes, setId, ...rest }) => {\nid-front/src/components/PKCS7Form/index.jsx:11:      <PKCS7SignForm {...rest} t={t} classes={classes} setId={(elementName) => setId(`pkcs7-${elementName}`)} />\nid-front/src/components/PKCS7Form/index.jsx:16:PKCS7Form.propTypes = {\nid-front/src/components/PKCS7Form/index.jsx:22:PKCS7Form.defaultProps = {\nid-front/src/components/PKCS7Form/index.jsx:23:  setId: setComponentsId('sign-form-pkcs7'),\nid-front/src/components/PKCS7Form/index.jsx:26:export default translate('SignForm')(PKCS7Form);\nid-front/src/components/PKCS7Form/PKCS7SignForm.jsx:20:import { handlePKCS7Auth } from 'actions/auth';\nid-front/src/components/PKCS7Form/PKCS7SignForm.jsx:22:class PKCS7SignForm extends React.Component {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la examples/ && echo \"=== healthcheck defs ===\" && grep -n \"healthcheck\\|test:\\|interval\\|8082\\|8081\\|ping\" docker-compose.yml | head -30",
+      "exit_code": 0,
+      "stdout": "total 200\ndrwxr-xr-x  2 root root   4096 Oct 15 10:23 .\ndrwxr-xr-x 13 root root   4096 Oct 15 10:24 ..\n-rw-r--r--  1 root root   3964 Oct 15 10:23 register-100-100.dat\n-rw-r--r--  1 root root   5505 Oct 15 10:23 register-100-101.dat\n-rw-r--r--  1 root root   6716 Oct 15 10:23 register-100-102.dat\n-rw-r--r--  1 root root 145367 Oct 15 10:23 workflow-1000.bpmn\n-rw-r--r--  1 root root  26474 Oct 15 10:23 workflow-1001.bpmn\n=== healthcheck defs ===\n324:    healthcheck:\n325:      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n326:      interval: 30s\n340:    healthcheck:\n341:      test: [\"CMD\", \"rabbitmq-diagnostics\", \"status\"]\n342:      interval: 30s\n352:    healthcheck:\n353:      test: [\"CMD\", \"redis-cli\", \"ping\"]\n354:      interval: 30s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== sign-tool 7007-ish? check compose ports for sign-tool ===\"; cd /workspace && grep -n \"sign-tool\" docker-compose.yml; echo \"=== sign-tool ping via its container internal port 3006? ===\"; docker inspect workspace-sign-tool-1 --format '{{range .Config.HealthTest}}{{. }} {{end}}'; for pp in 3006 3007 3008 7006; do echo -n \"port $pp ping -> \"; curl -s --max-time 5 http://localhost:$pp/test/ping 2>&1 | head -c 60; echo; done",
+      "exit_code": 0,
+      "stdout": "=== sign-tool 7007-ish? check compose ports for sign-tool ===\n180:  sign-tool:\n182:      context: ./components/sign-tool\n187:      - ./config/sign-tool:/var/www/config:ro\n=== sign-tool ping via its container internal port 3006? ===\n\nport 3006 ping -> \nport 3007 ping -> \nport 3008 ping -> \nport 7006 ping -> \n",
+      "stderr": "template parsing error: template: :1:15: executing \"\" at <.Config.HealthTest>: map has no entry for key \"HealthTest\"\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -n -A4 \"healthcheck\" docker-compose.yml | head -60",
+      "exit_code": 0,
+      "stdout": "324:    healthcheck:\n325-      test: [\"CMD-SHELL\", \"pg_isready -U postgres\"]\n326-      interval: 30s\n327-      timeout: 5s\n328-      retries: 3\n--\n340:    healthcheck:\n341-      test: [\"CMD\", \"rabbitmq-diagnostics\", \"status\"]\n342-      interval: 30s\n343-      timeout: 5s\n344-      retries: 3\n--\n352:    healthcheck:\n353-      test: [\"CMD\", \"redis-cli\", \"ping\"]\n354-      interval: 30s\n355-      timeout: 5s\n356-      retries: 3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components && grep -l \"HEALTHCHECK\" */Dockerfile 2>/dev/null | head -25; echo \"===\"; grep -A6 \"HEALTHCHECK\" sign-tool/Dockerfile 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "admin-api/Dockerfile\nadmin-front/Dockerfile\ncabinet-api/Dockerfile\ncabinet-front/Dockerfile\nevent/Dockerfile\nexternal-reader/Dockerfile\nfilestorage/Dockerfile\ngateway/Dockerfile\nid-api/Dockerfile\nid-front/Dockerfile\nmanager/Dockerfile\nnotification/Dockerfile\npdf-generator/Dockerfile\npersist-link/Dockerfile\nregister/Dockerfile\nsign-tool/Dockerfile\ntask/Dockerfile\n===\nHEALTHCHECK --start-period=10s --interval=30s --timeout=5s --retries=3 \\\n    CMD node -e \"require('http').get('http://localhost:3004/test/ping', res => process.exit(res.statusCode === 200 ? 0 : 1)).on('error', () => process.exit(1))\"\n\n# Start the application\nCMD [\"npm\", \"run\", \"start:prod\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== admin-front bundle refs ===\"; curl -s --max-time 10 http://localhost:8082/ | grep -oE 'src=\"[^\"]*\\.js\"|href=\"[^\"]*\\.css\"' | head; echo \"=== fetch a bundle ===\"; B=$(curl -s --max-time 10 http://localhost:8082/ | grep -oE '/static/js/[^\"]*\\.js' | head -1); echo \"bundle: $B\"; if [ -n \"$B\" ]; then curl -s -o /dev/null -w \"bundle HTTP %{http_code} size %{size_download}\\n\" --max-time 15 \"http://localhost:8082$B\"; fi",
+      "exit_code": 0,
+      "stdout": "=== admin-front bundle refs ===\nhref=\"/css/style.css\"\nsrc=\"/assets/index.D5feDU0y.js\"\n=== fetch a bundle ===\nbundle: \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w \"admin-front bundle HTTP %{http_code} size %{size_download}\\n\" --max-time 15 \"http://localhost:8082/assets/index.D5feDU0y.js\"; B2=$(curl -s --max-time 10 http://localhost:8081/ | grep -oE 'src=\"[^\"]*\\.js\"' | head -2); echo \"cabinet-front: $B2\"",
+      "exit_code": 0,
+      "stdout": "admin-front bundle HTTP 200 size 183439\ncabinet-front: src=\"/assets/index.B9qF1rkl.js\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== build.log tail ===\"; tail -15 build.log; echo; echo \"=== restart counts ===\"; for c in $(docker compose ps -q); do docker inspect $c --format '{{.Name}} {{.RestartCount}} {{.State.Status}}'; done | sort",
+      "exit_code": 0,
+      "stdout": "=== build.log tail ===\n Image workspace-event Built \n Image workspace-manager Built \n Image workspace-id-front Built \n Image workspace-cabinet-front Built \n Image workspace-gateway Built \n Image workspace-filestorage-migrations Built \n Image workspace-notification-migrations Built \n Image workspace-external-reader Built \n Image workspace-cabinet-api Built \n Image workspace-persist-link-migrations Built \n Image workspace-sign-tool Built \n Image workspace-notification Built \n Image workspace-register-migrations Built \n Image workspace-pdf-generator Built \n Image workspace-id-api Built \n\n=== restart counts ===\n/workspace-admin-api-1 1 running\n/workspace-admin-front-1 0 running\n/workspace-cabinet-api-1 1 running\n/workspace-cabinet-front-1 0 running\n/workspace-event-1 0 running\n/workspace-external-reader-1 0 running\n/workspace-filestorage-1 0 running\n/workspace-gateway-1 1 running\n/workspace-id-api-1 0 running\n/workspace-id-front-1 0 running\n/workspace-manager-1 1 running\n/workspace-notification-1 0 running\n/workspace-pdf-generator-1 0 running\n/workspace-persist-link-1 0 running\n/workspace-postgres-1 0 running\n/workspace-rabbitmq-1 0 running\n/workspace-redis-1 0 running\n/workspace-register-1 0 running\n/workspace-sign-tool-1 0 running\n/workspace-task-1 3 running\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== GUIDE ACCESS POINT 1: admin panel http://localhost:8082 ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" --max-time 10 http://localhost:8082/; curl -s --max-time 10 http://localhost:8082/ | grep -oiE '<title>[^<]*</title>'; echo \"=== GUIDE ACCESS POINT 2: cabinet http://localhost:8081 ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" --max-time 10 http://localhost:8081/; curl -s --max-time 10 http://localhost:8081/ | grep -oiE '<title>[^<]*</title>'; echo \"=== health snapshot (all 20) ===\"; docker compose ps --format '{{.Service}}: {{.Status}}' | sort; echo \"=== unhealthy count ===\"; docker compose ps --format '{{.Status}}' | grep -vc healthy",
+      "exit_code": 1,
+      "stdout": "=== GUIDE ACCESS POINT 1: admin panel http://localhost:8082 ===\nHTTP 200\n<title>Liquio Admin</title>\n=== GUIDE ACCESS POINT 2: cabinet http://localhost:8081 ===\nHTTP 200\n<title>Liquio Cabinet</title>\n=== health snapshot (all 20) ===\nadmin-api: Up 6 minutes (healthy)\nadmin-front: Up 7 minutes (healthy)\ncabinet-api: Up 7 minutes (healthy)\ncabinet-front: Up 7 minutes (healthy)\nevent: Up 3 minutes (healthy)\nexternal-reader: Up 7 minutes (healthy)\nfilestorage: Up 7 minutes (healthy)\ngateway: Up 6 minutes (healthy)\nid-api: Up 7 minutes (healthy)\nid-front: Up 7 minutes (healthy)\nmanager: Up 6 minutes (healthy)\nnotification: Up 7 minutes (healthy)\npdf-generator: Up 7 minutes (healthy)\npersist-link: Up 7 minutes (healthy)\npostgres: Up 7 minutes (healthy)\nrabbitmq: Up 7 minutes (healthy)\nredis: Up 7 minutes (healthy)\nregister: Up 7 minutes (healthy)\nsign-tool: Up 7 minutes (healthy)\ntask: Up 6 minutes (healthy)\n=== unhealthy count ===\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/components/sign-tool && grep -rn \"signature-info\" src --include=\"*.ts\" -l | head -3 && grep -rn \"createPKCS7Verify\\|createPKCS7\\|cms\\|pkcs7\" src -r --include=\"*.ts\" | grep -v spec | head -15",
+      "exit_code": 1,
+      "stdout": "src/x509/x509.controller.spec.ts\nsrc/x509/x509.controller.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== admin-api /auth/me without token (expect 401) ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" --max-time 10 http://localhost:8102/auth/me; echo \"=== cabinet-api /test/ping ===\"; curl -s --max-time 10 http://localhost:8101/test/ping; echo; echo \"=== admin-api /test/ping ===\"; curl -s --max-time 10 http://localhost:8102/test/ping; echo; echo \"=== register /test/ping ===\"; curl -s --max-time 10 http://localhost:8103/test/ping; echo; echo \"=== id-api /test/ping ===\"; curl -s --max-time 10 http://localhost:8100/test/ping; echo",
+      "exit_code": 0,
+      "stdout": "=== admin-api /auth/me without token (expect 401) ===\nHTTP 401\n=== cabinet-api /test/ping ===\n{\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n=== admin-api /test/ping ===\n{\"data\":{\"processPid\":19,\"message\":\"pong\"}}\n=== register /test/ping ===\n{\"data\":{\"processPid\":20,\"message\":\"pong\"}}\n=== id-api /test/ping ===\n{\"processPid\":20,\"message\":\"pong\"}\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

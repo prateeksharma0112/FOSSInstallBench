@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P026-foederales-entwicklungsportal__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T14:55:17.677245+02:00",
+    "finished_at": "2026-10-17T15:12:27.034028+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P026",
+    "project": {
+      "opencode_id": "1875",
+      "name": "F\u00f6derales Entwicklungsportal",
+      "description": "Web portal for documentation, standards, APIs and other development resources of German administrative IT.",
+      "catalogue_url": "https://opencode.de/de/software/foderales-entwicklungsportal-1875",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/fitko/docs/portal",
+      "commit_sha": "aada0a846d42d896535b6352d8cddad6c1c56efd",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/fitko/docs/portal/-/blob/aada0a846d42d896535b6352d8cddad6c1c56efd/README.md",
+      "language": "English",
+      "word_count": 132
+    },
+    "task_id": "P026-foederales-entwicklungsportal"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1029.375,
+    "repository_setup_duration_seconds": 11.593999999997322,
+    "installation_duration_seconds": 686.25,
+    "validation_duration_seconds": 220.15699999999197,
+    "command_count": 40,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 18,
+    "validation_command_count": 18
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P026-foederales-entwicklungsportal/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

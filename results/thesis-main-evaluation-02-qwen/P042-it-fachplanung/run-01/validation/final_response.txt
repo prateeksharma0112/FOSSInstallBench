@@ -1,0 +1,23 @@
+Validation of IT-Fachplanung installation: **success**.
+
+All guide steps verified with objective evidence in /workspace (ddev project `tfm-fachplanung`):
+
+**Services (ddev status / docker ps):** web (PHP 8.3, docroot public) OK, db (mariadb 10.3, db/db) OK, openldap OK, phpmyadmin OK, phpldapadmin OK. Optional cypress/xhgui stopped.
+
+**Dependencies:** `vendor/` populated (composer install, 21 top-level packages); `node_modules/` populated (npm i, 451 entries).
+
+**Database (importDump):** `docker exec ddev-tfm-fachplanung-db mysql -udb -pdb db` shows all 9 dump tables with data: antragsbuch 0, dienststelle 53, dynform_field 166, fachplanung 106, gesamtplan 2, massnahme 817, teilmassnahme 4205, user 6, zweck 32.
+
+**LDAP:** ldapsearch (admin bind, dc=example,dc=org) returns all 10 test users user1–user10 under ou=people.
+
+**Local config:** `config/web.config.local.php` exists (copy of example).
+
+**App operational (HTTP to 127.0.0.1:32789):**
+- GET `/` → 302 to /login; GET `/login` → 200 "Anmeldung - IT-Fachplanung - Thüringen"
+- All 7 referenced theme CSS/JS assets (committed compiled build) → 200
+- End-to-end login: temporarily set known bcrypt hash on R1 demo user (id=1), POST `/login` → 302 to `/`, authenticated GET `/` → 200 "Startseite - IT-Fachplanung - Thüringen" with full R1 nav (Antragsbuch, Berichte, Dienststellen, Dokumentation, Fachplanung, Gesamtplan); original hash restored byte-identical
+- Wrong password → graceful "Der Login ist fehlgeschlagen", no session
+
+**Repo state:** only the documented LDAP compose fix (`M .ddev/docker-compose.ldap.yaml`, `?? .ddev/ldap-seed/`) plus expected untracked artifacts (vendor/, node_modules/, local config).
+
+**Limitations/notes (non-blocking):** The committed `web.config.php` `ldap` block still contains boilerplate values (dc=planetexpress,dc=com) that don't match the dev LDAP (dc=example,dc=org); therefore the app's LDAP-validated login path (only user id=10, ldap=1) would not authenticate without a local-config override. This is a shipped-repo config/data inconsistency, not an installation defect — the guide's LDAP setup goal (loading the 10 test users into the LDAP container) is met, and the primary DB login path is proven working. ddev itself was installed during the attempt because the guide assumes a pre-installed ddev.

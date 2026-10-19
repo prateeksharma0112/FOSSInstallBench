@@ -1,0 +1,22 @@
+{
+  "reported_outcome": "success",
+  "installation_summary": "**Environment:** Shared installation workspace at `/workspace` (Ubuntu 22.04.5 LTS container, root user; the guide targets macOS, but the package supports Linux per `src/pomodoro/persistence/paths.py`). The project repo was pre-checked-out at `/workspace`.\n\n**Method used (guide's primary method):**\n1. Installed prerequisites via apt (none preinstalled): `python3` (3.10.6, meeting the guide's 3.10+ requirement), `python3-venv`, `python3-pip`, plus the Qt/X11 runtime libraries the project's own Dockerfile uses for the `xcb` Qt platform plugin (`libxcb-xkb1`, `libxkbcommon0`, `libgl1`, `libegl1`, `libfontconfig1`, `libfreetype6`, etc.) and `xvfb` (a virtual display, to launch the GUI headlessly for verification).\n2. In `/workspace`: `python3 -m venv .venv`, then `pip install -e .` \u2192 installed `pomodoro-timer 0.3.0` (editable) and its dependency `PySide6 6.12.0`.\n\n**Resulting state:**\n- Virtual environment: `/workspace/.venv`\n- Console command: `/workspace/.venv/bin/pomodoro` (entry point `pomodoro.cli:main` from `pyproject.toml`)\n- Runtime data directory (Linux/XDG): `/root/.local/share/Pomodoro/` containing `pomodoro.db` (auto-created on launch)\n\n**Known startup command:** `cd /workspace && source .venv/bin/activate && pomodoro` (opens the Qt GUI window; on a headless machine a display such as Xvfb is required, e.g. `DISPLAY=:99 pomodoro`).\n\n**Verification performed:**\n- `.venv/bin/python -c \"import pomodoro, pomodoro.cli, pomodoro.gui.app\"` \u2192 OK; `pip show pomodoro-timer` \u2192 0.3.0.\n- Started `Xvfb :99`, ran `DISPLAY=:99 QT_QPA_PLATFORM=xcb ./.venv/bin/pomodoro`; the process stayed running and `xwininfo -root -tree` showed a live 960x640 \"Pomodoro\" window on the display (repeated in a second clean run).\n- `pytest tests/ -q` in the venv \u2192 20 passed.\n- Background verification processes (Xvfb, app) were killed afterwards; no leftover processes.\n\n**Documented methods not used (unnecessary):** `packaging/build.sh` (PyInstaller `Pomodoro.app`, macOS-only) and the Docker/noVNC method (`docker build`/`docker run`); the primary venv installation succeeded and was fully verified.",
+  "additional_actions": [
+    "Installed apt prerequisites not present in the container: python3, python3-venv, python3-pip (the guide assumes Python is already available)",
+    "Installed Qt/X11 runtime libraries (libxcb-*, libxkbcommon0, libgl1, libegl1, libfontconfig1, libfreetype6, etc.) and xvfb so the PySide6 GUI could load its xcb platform plugin on the headless Linux container (mirrors the apt list in the project's own Dockerfile)",
+    "Started a local Xvfb virtual display to launch and verify the GUI in the headless environment",
+    "Installed pytest and ran the repository's existing test suite for verification",
+    "Killed the temporary Xvfb and app processes after verification"
+  ],
+  "verification": "Verification command 1: `cd /workspace && DISPLAY=:99 QT_QPA_PLATFORM=xcb ./.venv/bin/pomodoro` (backgrounded) \u2014 process stayed alive; `DISPLAY=:99 xwininfo -root -tree` output showed `0x200007 \"Pomodoro\": (\"pomodoro\" \"Pomodoro\") 960x640+0+0`, i.e. the app's main window rendered on the virtual display. Verification command 2: `cd /workspace && ./.venv/bin/python -m pytest tests/ -q` \u2192 exit 0, \"20 passed in 0.15s\". Verification command 3: `./.venv/bin/pip show pomodoro-timer` \u2192 Name: pomodoro-timer, Version: 0.3.0; `import pomodoro` OK. All checks passed.",
+  "reported_outcome_evidence": [
+    "`pip install -e .` \u2192 'Successfully installed PySide6-6.12.0 ... pomodoro-timer-0.3.0 shiboken6-6.12.0 tomli-2.5.0' (exit 0)",
+    "`pip show pomodoro-timer` \u2192 Name: pomodoro-timer, Version: 0.3.0; `.venv/bin/pomodoro` entry-point script present and executable",
+    "Ran `DISPLAY=:99 QT_QPA_PLATFORM=xcb ./.venv/bin/pomodoro` on Xvfb :99 \u2192 process kept running ('RUNNING pid=3262', 'VERIFIED: pomodoro running on DISPLAY=:99 (pid 3389)')",
+    "`xwininfo -root -tree` on DISPLAY=:99 \u2192 `0x200007 \"Pomodoro\": (\"pomodoro\" \"Pomodoro\") 960x640+0+0` \u2014 app window rendered",
+    "App auto-created its data dir: `/root/.local/share/Pomodoro/pomodoro.db` (12288 bytes, SQLite) appeared after launch",
+    "`pytest tests/ -q` \u2192 '20 passed in 0.15s', exit 0"
+  ],
+  "failure_mode": null,
+  "failure_attribution": null
+}

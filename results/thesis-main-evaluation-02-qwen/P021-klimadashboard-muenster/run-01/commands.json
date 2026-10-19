@@ -1,0 +1,564 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin ffb429f03b5b63ee97bca85bb9fce1ec0de91769",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster.git/\nFrom https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/klimadashboard-muenster\n * branch            ffb429f03b5b63ee97bca85bb9fce1ec0de91769 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach ffb429f03b5b63ee97bca85bb9fce1ec0de91769",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at ffb429f Merge branch 'chore/update-dependencies' into 'main'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = ffb429f03b5b63ee97bca85bb9fce1ec0de91769",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && git log --oneline -5 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 616\ndrwxr-xr-x 17 root root   4096 Oct 16 12:27 .\ndr-xr-xr-x  1 root root   4096 Oct 16 12:27 ..\n-rw-r--r--  1 root root     55 Oct 16 12:27 .env\n-rw-r--r--  1 root root    103 Oct 16 12:27 .env.example\n-rw-r--r--  1 root root   1830 Oct 16 12:27 .eslintrc.json\ndrwxr-xr-x  8 root root   4096 Oct 16 12:27 .git\n-rw-r--r--  1 root root    410 Oct 16 12:27 .gitignore\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 .gitlab\n-rw-r--r--  1 root root     29 Oct 16 12:27 .gitlab-ci.yml\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 .husky\n-rw-r--r--  1 root root    246 Oct 16 12:27 .lintstagedrc.js\n-rw-r--r--  1 root root    298 Oct 16 12:27 .prettierrc\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 .vscode\n-rw-r--r--  1 root root    611 Oct 16 12:27 AUTHORS.md\n-rw-r--r--  1 root root   2426 Oct 16 12:27 Dockerfile\n-rw-r--r--  1 root root  34502 Oct 16 12:27 LICENSE\n-rw-r--r--  1 root root   3967 Oct 16 12:27 README.md\ndrwxr-xr-x  7 root root   4096 Oct 16 12:27 app\ndrwxr-xr-x  6 root root   4096 Oct 16 12:27 assets\n-rw-r--r--  1 root root     66 Oct 16 12:27 commitlint.config.js\ndrwxr-xr-x 10 root root   4096 Oct 16 12:27 components\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 docs\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 hooks\ndrwxr-xr-x  3 root root   4096 Oct 16 12:27 lib\n-rw-r--r--  1 root root    590 Oct 16 12:27 next.config.js\n-rw-r--r--  1 root root 448569 Oct 16 12:27 package-lock.json\n-rw-r--r--  1 root root   2114 Oct 16 12:27 package.json\n-rw-r--r--  1 root root     82 Oct 16 12:27 postcss.config.js\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 public\n-rw-r--r--  1 root root   6591 Oct 16 12:27 publiccode.yml\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 scripts\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 styles\n-rw-r--r--  1 root root   1111 Oct 16 12:27 tailwind.config.js\n-rw-r--r--  1 root root    638 Oct 16 12:27 tsconfig.json\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 types\ndrwxr-xr-x  2 root root   4096 Oct 16 12:27 utils\nffb429f Merge branch 'chore/update-dependencies' into 'main'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/package.json && cat /workspace/.env.example && cat /workspace/.env",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"klimadashboard-ms\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"next lint\",\n    \"prepare\": \"husky install\",\n    \"svg\": \"svgr svgicons --out-dir components/Icons --typescript --ignore-existing --no-dimensions --no-prettier\",\n    \"postinstall\": \"bash ./scripts/postinstall.sh\"\n  },\n  \"dependencies\": {\n    \"@directus/sdk\": \"^10.3.5\",\n    \"@headlessui/react\": \"^1.7.17\",\n    \"@heroicons/react\": \"^2.0.18\",\n    \"@isaacs/ttlcache\": \"^1.4.1\",\n    \"@radix-ui/react-collapsible\": \"^1.0.3\",\n    \"@radix-ui/react-dropdown-menu\": \"^2.0.5\",\n    \"@radix-ui/react-progress\": \"^1.0.3\",\n    \"@radix-ui/react-slider\": \"^1.1.2\",\n    \"@radix-ui/react-switch\": \"^1.0.3\",\n    \"@radix-ui/react-toggle-group\": \"^1.0.4\",\n    \"@react-spring/web\": \"^9.7.3\",\n    \"@splidejs/react-splide\": \"^0.7.12\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"date-fns\": \"^2.30.0\",\n    \"echarts\": \"^5.4.3\",\n    \"eslint\": \"8.49.0\",\n    \"eslint-config-next\": \"13.4.19\",\n    \"framer-motion\": \"^10.16.4\",\n    \"next\": \"^15.5.9\",\n    \"react\": \"18.2.0\",\n    \"react-cookie-consent\": \"^10.0.2\",\n    \"react-dom\": \"18.2.0\",\n    \"react-markdown\": \"^8.0.7\",\n    \"react-use\": \"^17.4.0\",\n    \"remark-gfm\": \"^3.0.1\",\n    \"server-only\": \"^0.0.1\",\n    \"sharp\": \"^0.35.3\",\n    \"simple-statistics\": \"^7.8.3\"\n  },\n  \"devDependencies\": {\n    \"@commitlint/cli\": \"^17.7.1\",\n    \"@commitlint/config-conventional\": \"^17.7.0\",\n    \"@svgr/cli\": \"^8.1.0\",\n    \"@types/geojson\": \"^7946.0.10\",\n    \"@types/node\": \"20.6.0\",\n    \"@types/react\": \"18.2.21\",\n    \"@types/react-dom\": \"18.2.7\",\n    \"@types/share-api-polyfill\": \"^1.0.3\",\n    \"autoprefixer\": \"^10.4.15\",\n    \"csv-loader\": \"^3.0.5\",\n    \"eslint-config-prettier\": \"^9.1.2\",\n    \"eslint-plugin-react\": \"^7.33.2\",\n    \"eslint-plugin-react-hooks\": \"^4.6.0\",\n    \"eslint-plugin-unused-imports\": \"^3.0.0\",\n    \"husky\": \"^8.0.3\",\n    \"lint-staged\": \"^16.1.6\",\n    \"postcss\": \"^8.4.29\",\n    \"prettier\": \"^3.0.3\",\n    \"prettier-plugin-tailwindcss\": \"^0.5.6\",\n    \"tailwindcss\": \"^3.3.3\",\n    \"typescript\": \"^5.2.2\"\n  }\n}\nNEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055\n\nDIRECTUS_ITEM_STATUS=draft # draft, published, archivedNEXT_PUBLIC_DIRECTUS_URL=https://cms.klimadashboard.ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version 2>/dev/null; npm --version 2>/dev/null; yarn --version 2>/dev/null; echo \"---\"; ls /workspace/scripts/ && cat /workspace/scripts/postinstall.sh",
+      "exit_code": 0,
+      "stdout": "---\nbip-recent.sh\neinwohner.sh\nms-buildings-data.sh\nms-cars.sh\nms-climate-data.sh\nms-open-data.sh\npostinstall.sh\nstadtradeln.sh\ntrafficload.sh\nwachstum-recent.sh\n#!/bin/bash\n\n# This script is used to run other scripts in this folder\n\necho \"Running bip recent script...\"\nsh scripts/bip-recent.sh\n\necho \"Running regional wachstum recent script...\"\nsh scripts/wachstum-recent.sh\n\n# Run the traffic load script\necho \"Running traffic load script...\"\nsh scripts/trafficload.sh\n\n# Run the stadtradeln script\necho \"Running stadtradeln script...\"\nsh scripts/stadtradeln.sh\n\n# Run the ms open data script\necho \"Running ms open data script...\"\nsh scripts/ms-open-data.sh\n\n# Run the ms climate data script\necho \"Running ms climate data script...\"\nsh scripts/ms-climate-data.sh\n\n# Run the ms buildings data script\necho \"Running ms buildings data script...\"\nsh scripts/ms-buildings-data.sh\n\n# Run the ms cars data script\necho \"Running ms cars data script...\"\nsh scripts/ms-cars.sh\n\necho \"Running regional Einwohner Data\"\nsh scripts/einwohner.sh\n\n# Exit the script\nexit 0",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which node npm yarn npx; echo \"exit: $?\"; ls /usr/local/bin/ | head -30; echo \"---\"; head -50 /workspace/scripts/ms-climate-data.sh",
+      "exit_code": 0,
+      "stdout": "exit: 1\ninstallbench-dind-entrypoint\n---\n#!/bin/bash\n\n# This script is used to download the ms climate data from gitlab and move it to the assets/data folder\n\n\n\n# Download the ms climate data from gitlab\ncurl -o climate_indices.json \"https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/climate-indices-parser/-/raw/main/data/climate_indices.json\"\ncurl -o climate_history.json \"https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/climate-history-parser/-/raw/main/data/climate_history.json\"\n\n\n# Move the ms climate data to the assets/data folder\nmv climate_indices.json assets/data/climate_indices.json\nmv climate_history.json assets/data/climate_history.json\n\n# Exit the script\nexit 0",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/README.md | head -60; echo \"===\"; which apt apt-get dnf yum apk 2>/dev/null; echo \"---\"; cat /etc/os-release | head -5",
+      "exit_code": 0,
+      "stdout": "# Klimadashboard M\u00fcnster\n\nThis is the Klimadashboard M\u00fcnster. It provides real time information about the climate footprint for the city of [M\u00fcnster](https://en.wikipedia.org/wiki/M%C3%BCnster). The application displays the data using different charts and a tile-based layout with separate pages for each category. The data is sourced from various providers, including the Open Data Portal of the City of M\u00fcnster, the German Weather Service (DWD), BrightSky, and other data providers.\n\n## Getting Started\n\nTo run the Klimadashboard application on your local machine, first clone the repository:\n\n> git clone https://github.com/your-username/klimadashboard.git\n> cd klimadashboard\n\nThen, install the dependencies:\n\n> yarn install\n\nFinally, start the development server:\n\n> yarn dev\n\nYou should now be able to access the application at `http://localhost:3000`.\n\n## Features\n\nThe Klimadashboard web application provides the following features:\n\n- **Data visualization:** The application visualizes open smart city data for the city of M\u00fcnster using different charts, including bar charts, line charts, and scatter plots. The charts are interactive and allow users to filter the data by different criteria.\n\n- **Tile-based layout:** The application uses a tile-based layout with separate pages for each category of data. The tiles display key indicators for each category and provide a quick overview of the data.\n\n- **Real-time data:** The data in the Klimadashboard application is updated in real-time, providing users with the latest information on climate and environmental indicators in the city of M\u00fcnster.\n\n- **Responsive design:** The application is designed to be responsive, adapting to different screen sizes and devices.\n\n- **Data sources:** The data in the Klimadashboard application is sourced from various providers, including the Open Data Portal of the City of M\u00fcnster, the German Weather Service (DWD), BrightSky, and other data providers.\n\n- **Built with Next.js:** Klimadashboard is built using Next.js 13 with an app directory.\n\n- **Styling with TailwindCSS:** The application uses TailwindCSS for styling, making it easy to customize the look and feel of the application.\n\n- **UI components with Radix UI:** The application uses Radix UI components for a consistent and accessible user interface.\n\n- **Data visualization with Apache ECharts:** The application uses Apache ECharts for data visualization, providing a powerful and flexible charting library.\n\n## Data Sources\n\nThe data in the Klimadashboard application is sourced from various providers, including:\n\n- **Open Data Portal of the City of M\u00fcnster:** The City of M\u00fcnster provides open data on climate and environmental indicators in the city.\n\n- **German Weather Service (DWD):** The DWD provides weather data for Germany, including temperature, precipitation, and wind.\n\n- **BrightSky:** BrightSky provides air quality data for cities around the world.\n\n- **Other data providers:** The Klimadashboard application may also source data from other providers as needed.\n\n## Contributing\n\nThank you for considering contributing to this project! We appreciate your help in making it better.\n\n### Development Workflow\n===\n/usr/bin/apt\n/usr/bin/apt-get\n---\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -sI https://deb.nodesource.com/setup_20.x -o /dev/null -w \"%{http_code}\\n\" --max-time 20; echo \"network check done\"",
+      "exit_code": 0,
+      "stdout": "200\nnetwork check done\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -sSL --max-time 300 -o node20.tar.xz \"https://nodejs.org/dist/v20.18.1/node-v20.18.1-linux-x64.tar.xz\" && ls -la node20.tar.xz",
+      "exit_code": 0,
+      "stdout": "-rw-r--r-- 1 root root 25792116 Oct 16 12:27 node20.tar.xz\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && tar -xJf node20.tar.xz -C /usr/local --strip-components=1 && node --version && npm --version",
+      "exit_code": 0,
+      "stdout": "v20.18.1\n10.8.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "npm install -g yarn 2>&1 | tail -3 && yarn --version",
+      "exit_code": 0,
+      "stdout": "npm notice Changelog: https://github.com/npm/cli/releases/tag/v12.2.0\nnpm notice To update run: npm install -g npm@12.2.0\nnpm notice\n1.22.22\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && yarn install --network-timeout 600000 2>&1 | tail -40",
+      "exit_code": 0,
+      "stdout": "                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:04 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:05 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:06 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:07 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:08 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:09 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:10 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:11 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:12 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:13 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:14 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:15 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:16 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:17 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:18 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:19 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:20 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:21 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:22 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:23 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:24 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:25 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:26 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:27 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:28 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:29 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:30 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:31 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:32 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:33 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:34 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:35 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:36 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:37 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:38 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:39 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:40 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:41 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:42 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:43 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:44 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:45 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:46 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:47 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:48 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:49 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:50 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:51 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:52 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:53 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:54 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:55 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:56 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:57 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:58 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:59 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:00 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:01 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:02 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:03 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:04 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:05 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:06 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:07 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:08 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:09 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:10 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:11 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:12 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:13 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:14 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:15 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:16 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:17 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:18 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:19 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:20 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:21 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:22 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:23 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:24 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:25 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:26 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:27 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:28 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:29 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:30 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:31 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:32 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:33 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:34 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:35 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:36 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:37 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:38 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:39 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:40 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:41 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:42 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:43 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:44 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:45 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:46 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:47 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:48 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:49 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:50 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:51 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:52 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:53 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:54 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:55 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:56 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:57 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:01:58 --:--:--     0\n100  7593    0  7593    0     0     63      0 --:--:--  0:01:59 --:--:--  1667\n100  215k    0  215k    0     0   1843      0 --:--:--  0:01:59 --:--:-- 54752\n100  225k    0  225k    0     0   1933      0 --:--:--  0:01:59 --:--:-- 75943\nRunning stadtradeln script...\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100  3082  100  3082    0     0   3696      0 --:--:-- --:--:-- --:--:--  3699\nRunning ms open data script...\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\n100 12064    0 12064    0     0   9801      0 --:--:--  0:00:01 --:--:--  9800\nscripts/ms-open-data.sh: 9: unzip: not found\nmv: cannot stat 'ms-open-data-parser-main-data/data/*': No such file or directory\nrm: cannot remove 'ms-open-data-parser-main-data': No such file or directory\nRunning ms climate data script...\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\n100  478k  100  478k    0     0   286k      0  0:00:01  0:00:01 --:--:--  286k\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n 82  469k   82  385k    0     0   323k      0  0:00:01  0:00:01 --:--:--  322k\n100  469k  100  469k    0     0   363k      0  0:00:01  0:00:01 --:--:--  363k\nRunning ms buildings data script...\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100 13944  100 13944    0     0  20004      0 --:--:-- --:--:-- --:--:-- 20034\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:01 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:02 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:03 --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:--  0:00:04 --:--:--     0\n100 13369  100 13369    0     0   2698      0  0:00:04  0:00:04 --:--:--  2820\nRunning ms cars data script...\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100  226k  100  226k    0     0   507k      0 --:--:-- --:--:-- --:--:--  507k\nRunning regional Einwohner Data\n  % Total    % Received % Xferd  Average Speed   Time    Time     Time  Current\n                                 Dload  Upload   Total   Spent    Left  Speed\n\n  0     0    0     0    0     0      0      0 --:--:-- --:--:-- --:--:--     0\n100   167    0     0  100   167      0    132  0:00:01  0:00:01 --:--:--   132\n100   376  100   209  100   167    149    119  0:00:01  0:00:01 --:--:--   268\nscripts/einwohner.sh: 15: unzip: not found\nmv: cannot stat 'einwohner/12411-01-01-4_*.csv': No such file or directory\n$ husky install\nhusky - Git hooks installed\nDone in 292.45s.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls node_modules | wc -l && ls assets/data/ 2>/dev/null && echo \"---scripts---\" && cat scripts/ms-open-data.sh scripts/einwohner.sh",
+      "exit_code": 0,
+      "stdout": "609\nREADME.md\nclimate_history.json\nclimate_indices.json\nmodal-split.csv\nms_fahrzeuge.csv\nstadtradeln_data.csv\nstrom.json\ntrafficload.json\nwachstum-historical.csv\nwaerme.json\n---scripts---\n#!/bin/bash\n\n# This script is used to download the ms open data from gitlab and move it to the assets/data folder\n\n# Download thems open data from gitlab\ncurl -o ms-open-data-parser-main.zip \"https://gitlab.opencode.de/smart-city-muenster/klimadashboard-muenster/ms-open-data-parser/-/archive/main/ms-open-data-parser-main.zip?path=data\"\n\n# Extract .zip and move the ms open data to the assets/data folder\nunzip ms-open-data-parser-main.zip\nmv ms-open-data-parser-main-data/data/* assets/data/\n\n# Remove the .zip and extracted folder\nrm -r ms-open-data-parser-main.zip ms-open-data-parser-main-data\n\n# Exit the script\nexit 0#!/bin/bash\n\n# This script is used to download the CSV file from the provided URL and move it to the assets/data folder\n\n# Download the CSV file\ncurl --output einwohner.zip -X 'POST' \\\n  \"https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile\" \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'name=12411-01-01-4&area=free&compress=false&transpose=false&startyear=2018&timeslices=7&regionalkey=05515&format=ffcsv&job=false&stand=01.01.1970%2001%3A00&language=de'\n\n# Unzip the file\nunzip einwohner.zip -d einwohner\n\n# Move and rename the file (relative path from the root of the project)\nmv einwohner/12411-01-01-4_*.csv assets/data/einwohner.csv\n\n# Cleanup\nrm -rf einwohner\nrm einwohner.zip\n\n# Exit the script\nexit 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y unzip 2>&1 | tail -3; echo \"exit: $?\"; which unzip",
+      "exit_code": 1,
+      "stdout": "Building dependency tree...\nReading state information...\nE: Unable to locate package unzip\nexit: 100\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update 2>&1 | tail -3 && apt-get install -y unzip 2>&1 | tail -3; which unzip && unzip -v | head -2",
+      "exit_code": 141,
+      "stdout": "Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.9 kB]\nFetched 49.2 MB in 15s (3306 kB/s)\nReading package lists...\nPreparing to unpack .../unzip_6.0-26ubuntu3.2_amd64.deb ...\nUnpacking unzip (6.0-26ubuntu3.2) ...\nSetting up unzip (6.0-26ubuntu3.2) ...\n/usr/bin/unzip\nUnZip 6.00 of 20 April 2009, by Debian. Original by Info-ZIP.\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sh scripts/ms-open-data.sh 2>&1 | tail -5; echo \"=== open-data exit: $?\"",
+      "exit_code": 0,
+      "stdout": "  inflating: ms-open-data-parser-main-data/data/teilnehmer-startberatung.csv  \n  inflating: ms-open-data-parser-main-data/data/verbrauch-erzeugung-strom.csv  \n  inflating: ms-open-data-parser-main-data/data/verbrauch-erzeugung-waerme.csv  \n  inflating: ms-open-data-parser-main-data/data/verkehrsmittelwahl-zeitreihe.csv  \n  inflating: ms-open-data-parser-main-data/data/wachstum.csv  \n=== open-data exit: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && sh scripts/einwohner.sh 2>&1 | tail -8; echo \"=== einwohner exit: $?\"; ls assets/data/",
+      "exit_code": 0,
+      "stdout": "Archive:  einwohner.zip\n  End-of-central-directory signature not found.  Either this file is not\n  a zipfile, or it constitutes one disk of a multi-part archive.  In the\n  latter case the central directory and zipfile comment will be found on\n  the last disk(s) of this archive.\nunzip:  cannot find zipfile directory in one of einwohner.zip or\n        einwohner.zip.zip, and cannot find einwohner.zip.ZIP, period.\nmv: cannot stat 'einwohner/12411-01-01-4_*.csv': No such file or directory\n=== einwohner exit: 0\nREADME.md\nawm-abfallaufkommen-pro-kopf.csv\nawm-e-mobilitaet.csv\nbestand-pv-anlagen.csv\nbestand-windanlagen.csv\nclimate_history.json\nclimate_indices.json\nco2-emissionen-anwendungen.csv\nco2-emissionen-sektoren.csv\nco2-emissionen-tonnen.csv\nemissionen-strom.csv\nemissionen-waerme.csv\nendenergie.csv\nmodal-split.csv\nms_fahrzeuge.csv\noekoprofit.csv\npv-anlagen.csv\nstadtradeln.csv\nstadtradeln_data.csv\nstadtwerke-bus-fahrg#U00e4ste.csv\nstadtwerke-bus-fahrzeuge.csv\nstrom.json\nteilnehmer-startberatung.csv\ntrafficload.json\nverbrauch-erzeugung-strom.csv\nverbrauch-erzeugung-waerme.csv\nverkehrsmittelwahl-zeitreihe.csv\nwachstum-historical.csv\nwachstum.csv\nwaerme.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -rn \"einwohner\" app/ components/ lib/ 2>/dev/null | head; echo \"---\"; ls assets/data/einwohner.csv 2>&1",
+      "exit_code": 2,
+      "stdout": "components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:import Einwohner from '@/assets/data/einwohner.csv'\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:10:  einwohnerAmount: number\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:38:        einwohnerAmount: row.value,\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:50:  const einwohnerPerSelectedYear = filterEinwohnerCols().filter(\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:55:  if (einwohnerPerSelectedYear.length > 0) {\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:56:    pkwProEinwohner = parseFloat((props.total / einwohnerPerSelectedYear[0].einwohnerAmount).toFixed(3));\n---\nls: cannot access 'assets/data/einwohner.csv': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx",
+      "exit_code": 0,
+      "stdout": "import { Spacer } from '@/components/Elements/Spacer'\nimport Title from '@/components/Elements/Title'\n// @ts-ignore\nimport AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n// @ts-ignore\nimport Einwohner from '@/assets/data/einwohner.csv'\n\ninterface InputDataType {\n  year: string\n  einwohnerAmount: number\n}\ninterface CsvRow {\n  statistics_code: string\n  statistics_label: string\n  time_code: string\n  time_label: string\n  time: string\n  '1_variable_code': string\n  '1_variable_label': string\n  '1_variable_attribute_code': string\n  '1_variable_attribute_label': string\n  '2_variable_code': string\n  '2_variable_label': string\n  '2_variable_attribute_code': string\n  '2_variable_attribute_label': string\n  value: number,\n  'value_unit': string;\n  'value_variable_code': string;\n  'value_variable_label': string;\n}\n\nfunction filterEinwohnerCols(): InputDataType[] {\n  return Einwohner\n    .filter((row: CsvRow) => row['2_variable_attribute_label'] === 'Insgesamt')\n    .map((row: CsvRow) => {\n      const mappedData: InputDataType = {\n        year: row.time.split('-')[0],\n        einwohnerAmount: row.value,\n      };\n      return mappedData;\n    });\n}\n\nfunction AutoCardHeader(props: {\n  title: React.ReactNode\n  year: string | number\n  AllYear: string | number\n  total: number\n}) {\n  const einwohnerPerSelectedYear = filterEinwohnerCols().filter(\n    (d: InputDataType) => d.year === String(props.year),\n  )\n\n  let pkwProEinwohner: number = 0;\n  if (einwohnerPerSelectedYear.length > 0) {\n    pkwProEinwohner = parseFloat((props.total / einwohnerPerSelectedYear[0].einwohnerAmount).toFixed(3));\n  }\n\n  return (\n    <>\n      <div className=\"flex flex-wrap justify-start gap-x-4 lg:max-w-[87%]\">\n        <Title\n          as={'h1'}\n          className=\"min-w-fit tracking-tighter xl:text-6xl 2xl:text-7xl\"\n          font={'normal'}\n          variant={'mobility'}\n        >\n          {props.title} Autos\n        </Title>\n\n        <Title as={'subtitle'} color=\"dark\">\n          {props.year !== 'Alle Jahre' ? (\n            <>\n              waren <span className=\"text-mobility\">{props.year}</span> in\n              M\u00fcnster angemeldet.{' '}\n              {pkwProEinwohner > 0 ? (\n                <>\n                  Das waren{' '}\n                  <span className=\"text-mobility\">\n                    <AnimatedNumber\n                      className=\"inline-block\"\n                      decimals={3}\n                    >\n                      {pkwProEinwohner}\n                    </AnimatedNumber>{' '}\n                    PKW\n                  </span>{' '}\n                  pro Einwohner*in.{' '}\n                </>\n              ) : (\n                <br />\n              )}\n              Aufgeteilt auf folgende Antriebsarten:\n            </>\n          ) : (\n            <>\n              sind <span className=\"text-mobility\">seit {props.AllYear}</span>{' '}\n              in M\u00fcnster hinzugekommen, aufgeteilt auf folgende Antriebsarten:\n            </>\n          )}\n        </Title>\n      </div>\n      <Spacer />\n    </>\n  )\n}\n\nexport default AutoCardHeader\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && git ls-files assets/data/ && echo \"---gitignore---\" && cat .gitignore && echo \"---status---\" && git status --short | head -20",
+      "exit_code": 0,
+      "stdout": "assets/data/.gitignore\nassets/data/README.md\nassets/data/modal-split.csv\nassets/data/wachstum-historical.csv\n---gitignore---\n# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.\n\n# IDE\n.idea\n\n# dependencies\n/node_modules\n/.pnp\n.pnp.js\n\n# testing\n/coverage\n\n# next.js\n/.next/\n/out/\n\n# production\n/build\n\n# misc\n.DS_Store\n*.pem\n\n# debug\nnpm-debug.log*\nyarn-debug.log*\nyarn-error.log*\n.pnpm-debug.log*\n\n# local env files\n.env*.local\n\n# vercel\n.vercel\n\n# typescript\n*.tsbuildinfo\nnext-env.d.ts\n\n/svgicons\n\n---status---\n?? yarn.lock\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat assets/data/.gitignore; echo \"---ENV---\"; cat .env; echo; echo \"---ENV EXAMPLE---\"; cat .env.example; echo; echo \"---check env files---\"; ls -la .env*",
+      "exit_code": 0,
+      "stdout": "# ignore data that will be fetched during build time\n*\n\n!modal-split.csv\n!wachstum-historical.csv\n!README.md\n!.gitignore---ENV---\nNEXT_PUBLIC_DIRECTUS_URL=https://cms.klimadashboard.ms\n\n---ENV EXAMPLE---\nNEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055\n\nDIRECTUS_ITEM_STATUS=draft # draft, published, archived\n---check env files---\n-rw-r--r-- 1 root root  55 Oct 16 12:27 .env\n-rw-r--r-- 1 root root 103 Oct 16 12:27 .env.example\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat Dockerfile; echo \"===\"; ls app/",
+      "exit_code": 0,
+      "stdout": "# Install dependencies only when needed\nFROM node:20-alpine AS deps\n# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.\nRUN apk add --no-cache libc6-compat\nWORKDIR /app\n\n# Install dependencies based on the preferred package manager\nCOPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* scripts/ ./\nRUN \\\n  if [ -f yarn.lock ]; then yarn --frozen-lockfile --ignore-scripts; \\\n  elif [ -f package-lock.json ]; then npm ci --ignore-scripts; \\\n  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile --ignore-scripts; \\\n  else echo \"Lockfile not found.\" && exit 1; \\\n  fi\n\n\n# Rebuild the source code only when needed\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY . .\n\n# Run the postinstall script (and install curl for the script to work)\nRUN apk add --no-cache curl bash\nRUN --mount=type=secret,id=REGIONALSTATISTIK_USER --mount=type=secret,id=REGIONALSTATISTIK_SECRET \\\n    export REGIONALSTATISTIK_USER=$(cat /run/secrets/REGIONALSTATISTIK_USER) && \\\n    export REGIONALSTATISTIK_SECRET=$(cat /run/secrets/REGIONALSTATISTIK_SECRET) && \\\n    yarn postinstall && \\\n    unset REGIONALSTATISTIK_USER && \\\n    unset REGIONALSTATISTIK_SECRET\n\n# Next.js collects completely anonymous telemetry data about general usage.\n# Learn more here: https://nextjs.org/telemetry\n# Uncomment the following line in case you want to disable telemetry during the build.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN yarn build\n\n# If using npm comment out above and use below instead\n# RUN npm run build\n\n# Production image, copy all the files and run next\nFROM node:20-alpine AS runner\nWORKDIR /app\n\nENV NODE_ENV production\n# Uncomment the following line in case you want to disable telemetry during runtime.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN addgroup --system --gid 1001 nodejs\nRUN adduser --system --uid 1001 nextjs\n\nCOPY --from=builder /app/public ./public\n\n# Automatically leverage output traces to reduce image size\n# https://nextjs.org/docs/advanced-features/output-file-tracing\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/server ./.next/server\n\nUSER nextjs\n\nEXPOSE 3000\n\nENV PORT 3000\n\nCMD [\"node\", \"server.js\"]===\n(main)\nCookies.tsx\nMatomo.tsx\napi\nembed\nfonts\nlayout.tsx\nopengraph-image.png\nsammlung\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && (yarn dev > /tmp/dev-server.log 2>&1 &) && sleep 25 && cat /tmp/dev-server.log",
+      "exit_code": 0,
+      "stdout": "yarn run v1.22.22\n$ next dev\n   \u25b2 Next.js 15.5.28\n   - Local:        http://localhost:3000\n   - Network:      http://192.168.127.2:3000\n   - Environments: .env\n\n \u2713 Starting...\nAttention: Next.js now collects completely anonymous telemetry regarding usage.\nThis information is used to shape Next.js' roadmap and prioritize features.\nYou can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:\nhttps://nextjs.org/telemetry\n\n \u2713 Ready in 2.8s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 3; curl -s -o /tmp/page.html -w \"HTTP %{http_code}\\n\" --max-time 120 http://localhost:3000/ && echo \"---\" && head -c 500 /tmp/page.html",
+      "exit_code": 0,
+      "stdout": "HTTP 200\n---\n<!DOCTYPE html><html class=\"__className_10b8bd\" lang=\"de\"><head><meta charSet=\"utf-8\"/><meta name=\"viewport\" content=\"width=device-width, initial-scale=1\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/layout.css?v=1792154097017\" data-precedence=\"next_static/css/app/layout.css\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/(main)/layout.css?v=1792154097017\" data-precedence=\"next_static/css/app/(main)/layout.css\"/><link rel=\"stylesheet\" href=\"/_next/static/css/app/(main)/page.css?v=179",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls \"app/(main)\"; echo \"===pages===\"; find \"app/(main)\" -name \"page.tsx\" | head",
+      "exit_code": 0,
+      "stdout": "(sub)\nlayout.tsx\nloading.tsx\npage.tsx\nshare\n===pages===\napp/(main)/(sub)/energie/page.tsx\napp/(main)/(sub)/feedback/page.tsx\napp/(main)/(sub)/gebaeude/page.tsx\napp/(main)/(sub)/mobilitaet/page.tsx\napp/(main)/(sub)/klima/page.tsx\napp/(main)/(sub)/impressum/page.tsx\napp/(main)/(sub)/datenschutz/page.tsx\napp/(main)/page.tsx\napp/(main)/share/[id]/page.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for p in energie mobilitaet gebaeude klima; do code=$(curl -s -o /tmp/page_$p.html -w \"%{http_code}\" --max-time 180 http://localhost:3000/$p); echo \"$p: HTTP $code ($(wc -c < /tmp/page_$p.html) bytes)\"; done",
+      "exit_code": 0,
+      "stdout": "energie: HTTP 200 (321666 bytes)\nmobilitaet: HTTP 500 (2694 bytes)\ngebaeude: HTTP 500 (2694 bytes)\nklima: HTTP 500 (2630 bytes)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -60 /tmp/dev-server.log; echo \"===500 body===\"; cat /tmp/page_mobilitaet.html",
+      "exit_code": 0,
+      "stdout": "https://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /mobilitaet 500 in 11499ms\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /gebaeude 500 in 13126ms\n \u2a2f ./components/Tiles/Climate/Wachstum/WachstumChart.tsx:11:1\nModule not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n   9 | import WachstumDataHistorical from '@/assets/data/wachstum-historical.csv'\n  10 | // @ts-ignore\n> 11 | import WachstumDataRecent from '@/assets/data/wachstum-recent.csv'\n     | ^\n  12 | // @ts-ignore\n  13 | import BipDataRecent from '@/assets/data/bip-recent.csv';\n  14 | // @ts-ignore\n\nhttps://nextjs.org/docs/messages/module-not-found\n GET /klima 500 in 3161ms\n===500 body===\n<!DOCTYPE html><html><head><style data-next-hide-fouc=\"true\">body{display:none}</style><noscript data-next-hide-fouc=\"true\"><style>body{display:block}</style></noscript><meta charSet=\"utf-8\" data-next-head=\"\"/><meta name=\"viewport\" content=\"width=device-width\" data-next-head=\"\"/><noscript data-n-css=\"\"></noscript><script defer=\"\" nomodule=\"\" src=\"/_next/static/chunks/polyfills.js\"></script><script src=\"/_next/static/chunks/fallback/webpack.js\" defer=\"\"></script><script src=\"/_next/static/chunks/fallback/main.js\" defer=\"\"></script><script src=\"/_next/static/chunks/fallback/pages/_app.js\" defer=\"\"></script><script src=\"/_next/static/chunks/fallback/pages/_error.js\" defer=\"\"></script><noscript id=\"__next_css__DO_NOT_USE__\"></noscript></head><body><div id=\"__next\"></div><script src=\"/_next/static/chunks/fallback/react-refresh.js\"></script><script id=\"__NEXT_DATA__\" type=\"application/json\">{\"props\":{\"pageProps\":{\"statusCode\":500,\"hostname\":\"localhost\"}},\"page\":\"/_error\",\"query\":{},\"buildId\":\"development\",\"isFallback\":false,\"err\":{\"name\":\"Error\",\"source\":\"server\",\"message\":\"Module not found: Can't resolve '@/assets/data/einwohner.csv'\\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\\n  5 | // @ts-ignore\\n\\u003e 6 | import Einwohner from '@/assets/data/einwohner.csv'\\n    | ^\\n  7 |\\n  8 | interface InputDataType {\\n  9 |   year: string\\n\\nhttps://nextjs.org/docs/messages/module-not-found\\n\\nImport trace for requested module:\\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\",\"stack\":\"Error: Module not found: Can't resolve '@/assets/data/einwohner.csv'\\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\\n  5 | // @ts-ignore\\n\\u003e 6 | import Einwohner from '@/assets/data/einwohner.csv'\\n    | ^\\n  7 |\\n  8 | interface InputDataType {\\n  9 |   year: string\\n\\nhttps://nextjs.org/docs/messages/module-not-found\\n\\nImport trace for requested module:\\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\\n    at getNotFoundError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)\\n    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)\\n    at async getModuleBuildError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)\\n    at async /workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:29:49\\n    at async Promise.all (index 0)\\n    at async /workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/index.js:27:21\"},\"gip\":true,\"scriptLoader\":[]}</script></body></html>",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cat scripts/wachstum-recent.sh scripts/bip-recent.sh; echo \"===\"; ls -la assets/data/ | grep -Ei \"einwohner|recent\"; echo \"===\"; grep -n \"bip-recent\\|wachstum-recent\\|einwohner\" /tmp/dev-server.log | head",
+      "exit_code": 0,
+      "stdout": "#!/bin/bash\n\n# Download the file\ncurl --output wachstum-recent.zip -X 'POST' \\\n  'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'regionalkey=05515&compress=false&name=13111-01-03-4&area=free&timeslices=&classifyingkey1=&classifyingkey2=&classifyingkey3=&classifyingkey4=&classifyingkey5=&stand=01.01.1970%2001%3A00&classifyingvariable1=&format=ffcsv&classifyingvariable2=&language=de&endyear=&classifyingvariable3=&transpose=false&classifyingvariable4=&contents=&classifyingvariable5=&regionalvariable=&job=false&quality=off&startyear=2023'\n\n# Unzip the file\nunzip wachstum-recent.zip -d wachstum-recent\n\n# Move and rename the file\nmv wachstum-recent/13111-01-03-4_*.csv assets/data/wachstum-recent.csv\n\n# Cleanup\nrm -rf wachstum-recent\nrm wachstum-recent.zip\n\nexit 0\n#!/bin/bash\n\n# Download the file\ncurl --output bip-recent.zip -X 'POST' \\\n  'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'regionalkey=05515&compress=false&name=82000-01-01-4&area=free&timeslices=&classifyingkey1=&classifyingkey2=&classifyingkey3=&classifyingkey4=&classifyingkey5=&stand=01.01.1970%2001%3A00&classifyingvariable1=&format=ffcsv&classifyingvariable2=&language=de&endyear=&classifyingvariable3=&transpose=false&classifyingvariable4=&contents=&classifyingvariable5=&regionalvariable=&job=false&quality=off&startyear=2022'\n\n# Unzip the file\nunzip bip-recent.zip -d bip-recent\n\n# Move and rename the file (relative path from the root of the project)\nmv bip-recent/82000-01-01-4_*.csv assets/data/bip-recent.csv\n\n# Cleanup\nrm -rf bip-recent\nrm bip-recent.zip\n\nexit 0\n===\n===\n23:Module not found: Can't resolve '@/assets/data/einwohner.csv'\n26:> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n37:Module not found: Can't resolve '@/assets/data/einwohner.csv'\n40:> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n51:Module not found: Can't resolve '@/assets/data/einwohner.csv'\n54:> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n66:Module not found: Can't resolve '@/assets/data/einwohner.csv'\n69:> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n81:Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n84:> 11 | import WachstumDataRecent from '@/assets/data/wachstum-recent.csv'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s -X POST 'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' \\\n  -H 'accept: application/octet-stream' \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'name=12411-01-01-4&area=free&compress=false&transpose=false&startyear=2018&timeslices=7&regionalkey=05515&format=ffcsv&job=false&stand=01.01.1970%2001%3A00&language=de' \\\n  -o out.bin -w \"HTTP %{http_code}  size=%{size_download}\\n\" --max-time 60\necho \"--- file type ---\"; file out.bin; echo \"--- head ---\"; head -c 400 out.bin; echo",
+      "exit_code": 0,
+      "stdout": "HTTP 401  size=209\n--- file type ---\n--- head ---\n{\"Code\":15,\"Content\":\"Sie sind nicht berechtigt diesen Service aufzurufen oder der Header Ihres Requests enth\u00e4lt nicht alle notwendigen Angaben, sodass Ihre Zugangsdaten nicht erkannt werden.\",\"Type\":\"ERROR\"}\n",
+      "stderr": "/bin/bash: line 8: file: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && rm -f /tmp/out.bin\n# Stop the dev server (find the specific next dev process)\npkill -f \"next dev\" 2>/dev/null; pkill -f \"next-server\" 2>/dev/null\nsleep 2\necho \"--- dev server processes after kill ---\"; pgrep -af \"next\" | grep -v pgrep || echo \"none running\"\necho \"=== Final missing credential-gated data files ===\"\nfor f in einwohner.csv wachstum-recent.csv bip-recent.csv; do\n  if [ -f \"assets/data/$f\" ]; then echo \"$f: PRESENT\"; else echo \"$f: MISSING\"; fi\ndone\necho \"=== node_modules count ===\"; ls node_modules | wc -l\necho \"=== key versions ===\"; node --version; yarn --version",
+      "exit_code": 143,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pgrep -af \"next\" | grep -v pgrep || echo \"no next processes\"",
+      "exit_code": 0,
+      "stdout": "no next processes\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && for f in einwohner.csv wachstum-recent.csv bip-recent.csv; do [ -f \"assets/data/$f\" ] && echo \"$f: PRESENT\" || echo \"$f: MISSING\"; done; echo \"node_modules: $(ls node_modules | wc -l)\"; node --version; yarn --version",
+      "exit_code": 0,
+      "stdout": "einwohner.csv: MISSING\nwachstum-recent.csv: MISSING\nbip-recent.csv: MISSING\nnode_modules: 609\nv20.18.1\n1.22.22\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -E \"Module not found|GET /\" /tmp/dev-server.log | sort | uniq -c | sort -rn",
+      "exit_code": 0,
+      "stdout": "      4 Module not found: Can't resolve '@/assets/data/einwohner.csv'\n      1 Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n      1  GET /mobilitaet 500 in 11499ms\n      1  GET /klima 500 in 3161ms\n      1  GET /gebaeude 500 in 13126ms\n      1  GET /energie 200 in 12889ms\n      1  GET / 200 in 35538ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -rln \"AutoCardHeader\\|einwohner.csv\" components/ | head; echo \"===\"; grep -rln \"AutoChartTile\\|AutoChartContent\" \"app/(main)/(sub)/gebaeude/\" \"app/(main)/(sub)/mobilitaet/\" \"app/(main)/(sub)/klima/\" components/Tiles/ 2>/dev/null | grep -v \"Auto/\" | head",
+      "exit_code": 1,
+      "stdout": "components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx\ncomponents/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -B2 -A8 \"GET /klima 500\" /tmp/dev-server.log | head -30; echo \"=====\"; grep -rln \"WachstumChart\\|bip-recent\" components/Tiles/ | head",
+      "exit_code": 0,
+      "stdout": "\nhttps://nextjs.org/docs/messages/module-not-found\n GET /klima 500 in 3161ms\nerror Command failed with signal \"SIGTERM\".\ninfo Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.\n\u001b[?25h\n=====\ncomponents/Tiles/Climate/Wachstum/index.tsx\ncomponents/Tiles/Climate/Wachstum/WachstumChart.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== .env / .env.example credentials check ===\"; grep -i \"REGIONALSTATISTIK\" .env .env.example || echo \"NO REGIONALSTATISTIK credentials in .env or .env.example\"\necho \"=== Data files present vs required ===\"\nfor f in modal-split.csv wachstum-historical.csv strom.json waerme.json trafficload.json ms_fahrzeuge.csv climate_indices.json climate_history.json einwohner.csv wachstum-recent.csv bip-recent.csv; do\n  [ -f \"assets/data/$f\" ] && echo \"$f: OK\" || echo \"$f: MISSING\"\ndone\necho \"=== node_modules ===\"; ls node_modules | wc -l\necho \"=== dev server still running? ===\"; pgrep -af \"next dev\" | grep -v pgrep || echo \"stopped (was verified serving then stopped)\"",
+      "exit_code": 0,
+      "stdout": "=== .env / .env.example credentials check ===\nNO REGIONALSTATISTIK credentials in .env or .env.example\n=== Data files present vs required ===\nmodal-split.csv: OK\nwachstum-historical.csv: OK\nstrom.json: OK\nwaerme.json: OK\ntrafficload.json: OK\nms_fahrzeuge.csv: OK\nclimate_indices.json: OK\nclimate_history.json: OK\neinwohner.csv: MISSING\nwachstum-recent.csv: MISSING\nbip-recent.csv: MISSING\n=== node_modules ===\n609\n=== dev server still running? ===\nstopped (was verified serving then stopped)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== env vars ===\"; env | grep -i \"REGIONALSTATISTIK\" || echo \"REGIONALSTATISTICT_USER/SECRET NOT in environment\"\necho \"=== any env files ===\"; ls -la /workspace/.env* 2>/dev/null\necho \"=== search repo for credentials ===\"; grep -rin \"REGIONALSTATISTICT\\|REGIONALSTATISTIK\" /workspace --include=\"*.env*\" --include=\"*.md\" --include=\"*.yml\" --include=\"*.yaml\" --include=\"*.sh\" --include=\"Dockerfile\" -l 2>/dev/null | head\necho \"=== .gitlab dir (CI may hold secrets) ===\"; ls -la /workspace/.gitlab/ && cat /workspace/.gitlab-ci.yml 2>/dev/null | head -30",
+      "exit_code": 0,
+      "stdout": "=== env vars ===\nREGIONALSTATISTICT_USER/SECRET NOT in environment\n=== any env files ===\n-rw-r--r-- 1 root root  55 Oct 16 12:27 /workspace/.env\n-rw-r--r-- 1 root root 103 Oct 16 12:27 /workspace/.env.example\n=== search repo for credentials ===\n/workspace/.gitlab/.docker-registry.yml\n/workspace/Dockerfile\n/workspace/scripts/einwohner.sh\n/workspace/scripts/wachstum-recent.sh\n/workspace/scripts/bip-recent.sh\n=== .gitlab dir (CI may hold secrets) ===\ntotal 16\ndrwxr-xr-x  2 root root 4096 Oct 16 12:27 .\ndrwxr-xr-x 19 root root 4096 Oct 16 12:34 ..\n-rw-r--r--  1 root root 1205 Oct 16 12:27 .docker-registry.yml\n-rw-r--r--  1 root root  272 Oct 16 12:27 .gitlab-pages.yml\ninclude:\n  - '.gitlab/*.yml'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && echo \"=== root page size ===\"; wc -c /tmp/page.html; echo \"=== title / key content markers in root ===\"; grep -o \"<title>[^<]*</title>\" /tmp/page.html; grep -c \"energie\\|mobilitaet\\|gebaeude\\|klima\" /tmp/page.html; echo \"=== energie page title ===\"; grep -o \"<title>[^<]*</title>\" /tmp/page_energie.html; echo \"=== gebaeude 500 title ===\"; grep -o '\"statusCode\":[0-9]*' /tmp/page_gebaeude.html",
+      "exit_code": 0,
+      "stdout": "=== root page size ===\n705985 /tmp/page.html\n=== title / key content markers in root ===\n<title>Klimadashboard M\u00fcnster</title>\n3\n=== energie page title ===\n<title>Klimadashboard M\u00fcnster</title>\n=== gebaeude 500 title ===\n\"statusCode\":500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup yarn dev > /tmp/dev-server-final.log 2>&1 & \nsleep 20; grep -E \"Ready|Local\" /tmp/dev-server-final.log; echo \"=== final page checks ===\"; for p in \"\" energie mobilitaet gebaeude klima; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 180 \"http://localhost:3000/$p\"); echo \"/$p -> HTTP $code\"; done",
+      "exit_code": 0,
+      "stdout": "   - Local:        http://localhost:3000\n \u2713 Ready in 3s\n=== final page checks ===\n/ -> HTTP 200\n/energie -> HTTP 200\n/mobilitaet -> HTTP 500\n/gebaeude -> HTTP 500\n/klima -> HTTP 500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && echo \"---\" && cat package.json 2>/dev/null | head -60",
+      "exit_code": 0,
+      "stdout": "total 940\ndrwxr-xr-x  19 root root   4096 Oct 16 12:34 .\ndr-xr-xr-x   1 root root   4096 Oct 16 12:27 ..\n-rw-r--r--   1 root root     55 Oct 16 12:27 .env\n-rw-r--r--   1 root root    103 Oct 16 12:27 .env.example\n-rw-r--r--   1 root root   1830 Oct 16 12:27 .eslintrc.json\ndrwxr-xr-x   8 root root   4096 Oct 16 12:33 .git\n-rw-r--r--   1 root root    410 Oct 16 12:27 .gitignore\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 .gitlab\n-rw-r--r--   1 root root     29 Oct 16 12:27 .gitlab-ci.yml\ndrwxr-xr-x   3 root root   4096 Oct 16 12:33 .husky\n-rw-r--r--   1 root root    246 Oct 16 12:27 .lintstagedrc.js\ndrwxr-xr-x   6 root root   4096 Oct 16 12:39 .next\n-rw-r--r--   1 root root    298 Oct 16 12:27 .prettierrc\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 .vscode\n-rw-r--r--   1 root root    611 Oct 16 12:27 AUTHORS.md\n-rw-r--r--   1 root root   2426 Oct 16 12:27 Dockerfile\n-rw-r--r--   1 root root  34502 Oct 16 12:27 LICENSE\n-rw-r--r--   1 root root   3967 Oct 16 12:27 README.md\ndrwxr-xr-x   7 root root   4096 Oct 16 12:27 app\ndrwxr-xr-x   6 root root   4096 Oct 16 12:27 assets\n-rw-r--r--   1 root root     66 Oct 16 12:27 commitlint.config.js\ndrwxr-xr-x  10 root root   4096 Oct 16 12:27 components\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 docs\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 hooks\ndrwxr-xr-x   3 root root   4096 Oct 16 12:27 lib\n-rw-r--r--   1 root root    262 Oct 16 12:34 next-env.d.ts\n-rw-r--r--   1 root root    590 Oct 16 12:27 next.config.js\ndrwxr-xr-x 612 root root  20480 Oct 16 12:30 node_modules\n-rw-r--r--   1 root root 448569 Oct 16 12:27 package-lock.json\n-rw-r--r--   1 root root   2114 Oct 16 12:27 package.json\n-rw-r--r--   1 root root     82 Oct 16 12:27 postcss.config.js\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 public\n-rw-r--r--   1 root root   6591 Oct 16 12:27 publiccode.yml\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 scripts\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 styles\n-rw-r--r--   1 root root   1111 Oct 16 12:27 tailwind.config.js\n-rw-r--r--   1 root root    638 Oct 16 12:27 tsconfig.json\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 types\ndrwxr-xr-x   2 root root   4096 Oct 16 12:27 utils\n-rw-r--r--   1 root root 300815 Oct 16 12:30 yarn.lock\n---\n{\n  \"name\": \"klimadashboard-ms\",\n  \"version\": \"0.1.0\",\n  \"private\": true,\n  \"scripts\": {\n    \"dev\": \"next dev\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"next lint\",\n    \"prepare\": \"husky install\",\n    \"svg\": \"svgr svgicons --out-dir components/Icons --typescript --ignore-existing --no-dimensions --no-prettier\",\n    \"postinstall\": \"bash ./scripts/postinstall.sh\"\n  },\n  \"dependencies\": {\n    \"@directus/sdk\": \"^10.3.5\",\n    \"@headlessui/react\": \"^1.7.17\",\n    \"@heroicons/react\": \"^2.0.18\",\n    \"@isaacs/ttlcache\": \"^1.4.1\",\n    \"@radix-ui/react-collapsible\": \"^1.0.3\",\n    \"@radix-ui/react-dropdown-menu\": \"^2.0.5\",\n    \"@radix-ui/react-progress\": \"^1.0.3\",\n    \"@radix-ui/react-slider\": \"^1.1.2\",\n    \"@radix-ui/react-switch\": \"^1.0.3\",\n    \"@radix-ui/react-toggle-group\": \"^1.0.4\",\n    \"@react-spring/web\": \"^9.7.3\",\n    \"@splidejs/react-splide\": \"^0.7.12\",\n    \"class-variance-authority\": \"^0.7.0\",\n    \"date-fns\": \"^2.30.0\",\n    \"echarts\": \"^5.4.3\",\n    \"eslint\": \"8.49.0\",\n    \"eslint-config-next\": \"13.4.19\",\n    \"framer-motion\": \"^10.16.4\",\n    \"next\": \"^15.5.9\",\n    \"react\": \"18.2.0\",\n    \"react-cookie-consent\": \"^10.0.2\",\n    \"react-dom\": \"18.2.0\",\n    \"react-markdown\": \"^8.0.7\",\n    \"react-use\": \"^17.4.0\",\n    \"remark-gfm\": \"^3.0.1\",\n    \"server-only\": \"^0.0.1\",\n    \"sharp\": \"^0.35.3\",\n    \"simple-statistics\": \"^7.8.3\"\n  },\n  \"devDependencies\": {\n    \"@commitlint/cli\": \"^17.7.1\",\n    \"@commitlint/config-conventional\": \"^17.7.0\",\n    \"@svgr/cli\": \"^8.1.0\",\n    \"@types/geojson\": \"^7946.0.10\",\n    \"@types/node\": \"20.6.0\",\n    \"@types/react\": \"18.2.21\",\n    \"@types/react-dom\": \"18.2.7\",\n    \"@types/share-api-polyfill\": \"^1.0.3\",\n    \"autoprefixer\": \"^10.4.15\",\n    \"csv-loader\": \"^3.0.5\",\n    \"eslint-config-prettier\": \"^9.1.2\",\n    \"eslint-plugin-react\": \"^7.33.2\",\n    \"eslint-plugin-react-hooks\": \"^4.6.0\",\n    \"eslint-plugin-unused-imports\": \"^3.0.0\",\n    \"husky\": \"^8.0.3\",\n    \"lint-staged\": \"^16.1.6\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which node yarn; node --version 2>&1; yarn --version 2>&1; echo \"---\"; (ss -tlnp 2>/dev/null || netstat -tlnp 2>/dev/null) | grep -E ':3000|LISTEN' | head -20; echo \"---\"; ps aux | grep -E 'node|next' | grep -v grep | head -10",
+      "exit_code": 0,
+      "stdout": "/usr/local/bin/node\n/usr/local/bin/yarn\nv20.18.1\n1.22.22\n---\n---\nroot        1059  0.3  0.9 1312792 78496 ?       Sl   12:38   0:00 node /usr/local/bin/yarn dev\nroot        1070  0.0  0.0   2896  1664 ?        S    12:38   0:00 /bin/sh -c next dev\nroot        1071  1.0  0.9 22014348 74672 ?      Sl   12:38   0:00 /usr/local/bin/node /workspace/node_modules/.bin/next dev\nroot        1082  109 32.9 89624672 2622964 ?    Sl   12:38   1:32 next-server (v15.5.28)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in / /energie /mobilitaet /gebaeude /klima; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 120 \"http://localhost:3000$p\"); echo \"$p -> $code\"; done",
+      "exit_code": 0,
+      "stdout": "/ -> 500\n/energie -> 500\n/mobilitaet -> 500\n/gebaeude -> 500\n/klima -> 500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la assets/data/ 2>/dev/null | head -40; echo \"---\"; ls scripts/; echo \"---\"; cat .env; echo \"---\"; cat .env.example; echo \"---\"; env | grep -i regional",
+      "exit_code": 1,
+      "stdout": "total 1548\ndrwxr-xr-x 2 root root   4096 Oct 16 12:33 .\ndrwxr-xr-x 6 root root   4096 Oct 16 12:27 ..\n-rw-r--r-- 1 root root    120 Oct 16 12:27 .gitignore\n-rw-r--r-- 1 root root    785 Oct 16 12:27 README.md\n-rw-r--r-- 1 root root    363 Sep  4 02:44 awm-abfallaufkommen-pro-kopf.csv\n-rw-r--r-- 1 root root    216 Sep  4 02:44 awm-e-mobilitaet.csv\n-rw-r--r-- 1 root root    221 Sep  4 02:44 bestand-pv-anlagen.csv\n-rw-r--r-- 1 root root    182 Sep  4 02:44 bestand-windanlagen.csv\n-rw-r--r-- 1 root root 481122 Oct 16 12:32 climate_history.json\n-rw-r--r-- 1 root root 490136 Oct 16 12:32 climate_indices.json\n-rw-r--r-- 1 root root   1653 Sep  4 02:44 co2-emissionen-anwendungen.csv\n-rw-r--r-- 1 root root   3222 Sep  4 02:44 co2-emissionen-sektoren.csv\n-rw-r--r-- 1 root root   1305 Sep  4 02:44 co2-emissionen-tonnen.csv\n-rw-r--r-- 1 root root   1658 Sep  4 02:44 emissionen-strom.csv\n-rw-r--r-- 1 root root    944 Sep  4 02:44 emissionen-waerme.csv\n-rw-r--r-- 1 root root   1316 Sep  4 02:44 endenergie.csv\n-rw-r--r-- 1 root root    438 Oct 16 12:27 modal-split.csv\n-rw-r--r-- 1 root root 232092 Oct 16 12:32 ms_fahrzeuge.csv\n-rw-r--r-- 1 root root    944 Sep  4 02:44 oekoprofit.csv\n-rw-r--r-- 1 root root    228 Sep  4 02:44 pv-anlagen.csv\n-rw-r--r-- 1 root root    106 Sep  4 02:44 stadtradeln.csv\n-rw-r--r-- 1 root root   3082 Oct 16 12:32 stadtradeln_data.csv\n-rw-r--r-- 1 root root     93 Sep  4 02:44 stadtwerke-bus-fahrg#U00e4ste.csv\n-rw-r--r-- 1 root root   2089 Sep  4 02:44 stadtwerke-bus-fahrzeuge.csv\n-rw-r--r-- 1 root root  13944 Oct 16 12:32 strom.json\n-rw-r--r-- 1 root root    159 Sep  4 02:44 teilnehmer-startberatung.csv\n-rw-r--r-- 1 root root 231171 Oct 16 12:32 trafficload.json\n-rw-r--r-- 1 root root   1867 Sep  4 02:44 verbrauch-erzeugung-strom.csv\n-rw-r--r-- 1 root root   1066 Sep  4 02:44 verbrauch-erzeugung-waerme.csv\n-rw-r--r-- 1 root root    590 Sep  4 02:44 verkehrsmittelwahl-zeitreihe.csv\n-rw-r--r-- 1 root root    919 Oct 16 12:27 wachstum-historical.csv\n-rw-r--r-- 1 root root    887 Sep  4 02:44 wachstum.csv\n-rw-r--r-- 1 root root  13369 Oct 16 12:32 waerme.json\n---\nbip-recent.sh\neinwohner.sh\nms-buildings-data.sh\nms-cars.sh\nms-climate-data.sh\nms-open-data.sh\npostinstall.sh\nstadtradeln.sh\ntrafficload.sh\nwachstum-recent.sh\n---\nNEXT_PUBLIC_DIRECTUS_URL=https://cms.klimadashboard.ms\n---\nNEXT_PUBLIC_DIRECTUS_URL=http://localhost:8055\n\nDIRECTUS_ITEM_STATUS=draft # draft, published, archived---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /tmp/dev-server*.log 2>/dev/null; echo \"===\"; tail -80 /tmp/dev-server-final.log 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "-rw-r--r-- 1 root root 3172 Oct 16 12:40 /tmp/dev-server-final.log\n-rw-r--r-- 1 root root 3511 Oct 16 12:36 /tmp/dev-server.log\n===\n GET / 200 in 10420ms\n \u25cb Compiling /energie ...\n \u2713 Compiled /energie in 5.4s (5633 modules)\n GET /energie 200 in 8305ms\n \u25cb Compiling /mobilitaet ...\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /mobilitaet 500 in 11598ms\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /gebaeude 500 in 6252ms\n \u2a2f ./components/Tiles/Climate/Wachstum/WachstumChart.tsx:11:1\nModule not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n   9 | import WachstumDataHistorical from '@/assets/data/wachstum-historical.csv'\n  10 | // @ts-ignore\n> 11 | import WachstumDataRecent from '@/assets/data/wachstum-recent.csv'\n     | ^\n  12 | // @ts-ignore\n  13 | import BipDataRecent from '@/assets/data/bip-recent.csv';\n  14 | // @ts-ignore\n\nhttps://nextjs.org/docs/messages/module-not-found\n GET /klima 500 in 1481ms\n GET / 500 in 53ms\n GET /energie 500 in 39ms\n GET /mobilitaet 500 in 40ms\n GET /gebaeude 500 in 48ms\n GET /klima 500 in 60ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git status --short | head; echo \"---\"; git log --oneline -3 2>/dev/null; echo \"---\"; ls -la .next/ 2>/dev/null | head",
+      "exit_code": 0,
+      "stdout": "?? yarn.lock\n---\nffb429f Merge branch 'chore/update-dependencies' into 'main'\n---\ntotal 392\ndrwxr-xr-x  6 root root   4096 Oct 16 12:39 .\ndrwxr-xr-x 19 root root   4096 Oct 16 12:34 ..\n-rw-r--r--  1 root root     17 Oct 16 12:39 app-build-manifest.json\n-rw-r--r--  1 root root    388 Oct 16 12:39 build-manifest.json\ndrwxr-xr-x  4 root root   4096 Oct 16 12:34 cache\n-rw-r--r--  1 root root    734 Oct 16 12:39 fallback-build-manifest.json\n-rw-r--r--  1 root root     20 Oct 16 12:38 package.json\n-rw-r--r--  1 root root    354 Oct 16 12:38 prerender-manifest.json\n-rw-r--r--  1 root root      2 Oct 16 12:39 react-loadable-manifest.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "sleep 5; for p in / /energie; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 180 \"http://localhost:3000$p\"); echo \"$p -> $code\"; done; echo \"===\"; free -m | head -3; echo \"===\"; tail -5 /tmp/dev-server-final.log",
+      "exit_code": 0,
+      "stdout": "/ -> 500\n/energie -> 500\n===\n               total        used        free      shared  buff/cache   available\nMem:            7784        2810         645           2        4328        4775\nSwap:           2048          61        1986\n===\n GET /mobilitaet 500 in 40ms\n GET /gebaeude 500 in 48ms\n GET /klima 500 in 60ms\n GET / 500 in 33ms\n GET /energie 500 in 36ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat assets/data/.gitignore; echo \"===\"; ls assets/data/*.csv | wc -l; echo \"===\"; grep -rhoE \"@/assets/data/[a-zA-Z0-9_#.-]+\\.(csv|json)\" app components 2>/dev/null | sort -u",
+      "exit_code": 0,
+      "stdout": "# ignore data that will be fetched during build time\n*\n\n!modal-split.csv\n!wachstum-historical.csv\n!README.md\n!.gitignore===\n24\n===\n@/assets/data/awm-abfallaufkommen-pro-kopf.csv\n@/assets/data/awm-e-mobilitaet.csv\n@/assets/data/bestand-pv-anlagen.csv\n@/assets/data/bestand-windanlagen.csv\n@/assets/data/bip-recent.csv\n@/assets/data/climate_history.json\n@/assets/data/climate_indices.json\n@/assets/data/co2-emissionen-tonnen.csv\n@/assets/data/einwohner.csv\n@/assets/data/emissionen-strom.csv\n@/assets/data/modal-split.csv\n@/assets/data/oekoprofit.csv\n@/assets/data/pv-anlagen.csv\n@/assets/data/stadtradeln_data.csv\n@/assets/data/stadtwerke-bus-fahrzeuge.csv\n@/assets/data/strom.json\n@/assets/data/teilnehmer-startberatung.csv\n@/assets/data/trafficload.json\n@/assets/data/verbrauch-erzeugung-strom.csv\n@/assets/data/verkehrsmittelwahl-zeitreihe.csv\n@/assets/data/wachstum-historical.csv\n@/assets/data/wachstum-recent.csv\n@/assets/data/waerme.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cat /tmp/dev-server-final.log; echo \"====OLDER LOG====\"; tail -30 /tmp/dev-server.log",
+      "exit_code": 0,
+      "stdout": "yarn run v1.22.22\n$ next dev\n   \u25b2 Next.js 15.5.28\n   - Local:        http://localhost:3000\n   - Network:      http://192.168.127.2:3000\n   - Environments: .env\n\n \u2713 Starting...\n \u2713 Ready in 3s\n \u25cb Compiling / ...\n \u2713 Compiled / in 7.4s (5593 modules)\n GET / 200 in 10420ms\n \u25cb Compiling /energie ...\n \u2713 Compiled /energie in 5.4s (5633 modules)\n GET /energie 200 in 8305ms\n \u25cb Compiling /mobilitaet ...\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /mobilitaet 500 in 11598ms\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /gebaeude 500 in 6252ms\n \u2a2f ./components/Tiles/Climate/Wachstum/WachstumChart.tsx:11:1\nModule not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n   9 | import WachstumDataHistorical from '@/assets/data/wachstum-historical.csv'\n  10 | // @ts-ignore\n> 11 | import WachstumDataRecent from '@/assets/data/wachstum-recent.csv'\n     | ^\n  12 | // @ts-ignore\n  13 | import BipDataRecent from '@/assets/data/bip-recent.csv';\n  14 | // @ts-ignore\n\nhttps://nextjs.org/docs/messages/module-not-found\n GET /klima 500 in 1481ms\n GET / 500 in 53ms\n GET /energie 500 in 39ms\n GET /mobilitaet 500 in 40ms\n GET /gebaeude 500 in 48ms\n GET /klima 500 in 60ms\n GET / 500 in 33ms\n GET /energie 500 in 36ms\n====OLDER LOG====\n \u2a2f ./components/Tiles/Mobility/Auto/AutoChartTile/AutoCardHeader.tsx:6:1\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n  4 | import AnimatedNumber from '@/components/Elements/Animated/AnimatedNumber'\n  5 | // @ts-ignore\n> 6 | import Einwohner from '@/assets/data/einwohner.csv'\n    | ^\n  7 |\n  8 | interface InputDataType {\n  9 |   year: string\n\nhttps://nextjs.org/docs/messages/module-not-found\n\nImport trace for requested module:\n./components/Tiles/Mobility/Auto/AutoChartTile/AutoChartContent.tsx\n GET /gebaeude 500 in 13126ms\n \u2a2f ./components/Tiles/Climate/Wachstum/WachstumChart.tsx:11:1\nModule not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n   9 | import WachstumDataHistorical from '@/assets/data/wachstum-historical.csv'\n  10 | // @ts-ignore\n> 11 | import WachstumDataRecent from '@/assets/data/wachstum-recent.csv'\n     | ^\n  12 | // @ts-ignore\n  13 | import BipDataRecent from '@/assets/data/bip-recent.csv';\n  14 | // @ts-ignore\n\nhttps://nextjs.org/docs/messages/module-not-found\n GET /klima 500 in 3161ms\nerror Command failed with signal \"SIGTERM\".\ninfo Visit https://yarnpkg.com/en/docs/cli/run for documentation about this command.\n\u001b[?25h\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:3000/ | grep -oE \"(Module not found|Can't resolve[^<]*|Error[^<]{0,120})\" | head -10; echo \"===\"; curl -s --max-time 60 http://localhost:3000/energie | grep -oE \"(Module not found|Can't resolve[^<]*|Error[^<]{0,120})\" | head -10",
+      "exit_code": 0,
+      "stdout": "Error\",\"source\":\"server\",\"message\":\"Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\\n   9 | import Wachst\nError: Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\\n   9 | import WachstumDataHistorical from '@/asse\nError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)\\n    at \nError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)\\n    at \n===\nError\",\"source\":\"server\",\"message\":\"Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\\n   9 | import Wachst\nError: Module not found: Can't resolve '@/assets/data/wachstum-recent.csv'\\n   9 | import WachstumDataHistorical from '@/asse\nError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/parseNotFoundError.js:140:16)\\n    at \nError (/workspace/node_modules/next/dist/build/webpack/plugins/wellknown-errors-plugin/webpackModuleError.js:103:27)\\n    at \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat scripts/postinstall.sh; echo \"=== einwohner.sh ===\"; cat scripts/einwohner.sh; echo \"=== wachstum-recent.sh ===\"; cat scripts/wachstum-recent.sh; echo \"=== bip-recent.sh ===\"; cat scripts/bip-recent.sh",
+      "exit_code": 0,
+      "stdout": "#!/bin/bash\n\n# This script is used to run other scripts in this folder\n\necho \"Running bip recent script...\"\nsh scripts/bip-recent.sh\n\necho \"Running regional wachstum recent script...\"\nsh scripts/wachstum-recent.sh\n\n# Run the traffic load script\necho \"Running traffic load script...\"\nsh scripts/trafficload.sh\n\n# Run the stadtradeln script\necho \"Running stadtradeln script...\"\nsh scripts/stadtradeln.sh\n\n# Run the ms open data script\necho \"Running ms open data script...\"\nsh scripts/ms-open-data.sh\n\n# Run the ms climate data script\necho \"Running ms climate data script...\"\nsh scripts/ms-climate-data.sh\n\n# Run the ms buildings data script\necho \"Running ms buildings data script...\"\nsh scripts/ms-buildings-data.sh\n\n# Run the ms cars data script\necho \"Running ms cars data script...\"\nsh scripts/ms-cars.sh\n\necho \"Running regional Einwohner Data\"\nsh scripts/einwohner.sh\n\n# Exit the script\nexit 0=== einwohner.sh ===\n#!/bin/bash\n\n# This script is used to download the CSV file from the provided URL and move it to the assets/data folder\n\n# Download the CSV file\ncurl --output einwohner.zip -X 'POST' \\\n  \"https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile\" \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'name=12411-01-01-4&area=free&compress=false&transpose=false&startyear=2018&timeslices=7&regionalkey=05515&format=ffcsv&job=false&stand=01.01.1970%2001%3A00&language=de'\n\n# Unzip the file\nunzip einwohner.zip -d einwohner\n\n# Move and rename the file (relative path from the root of the project)\nmv einwohner/12411-01-01-4_*.csv assets/data/einwohner.csv\n\n# Cleanup\nrm -rf einwohner\nrm einwohner.zip\n\n# Exit the script\nexit 0\n=== wachstum-recent.sh ===\n#!/bin/bash\n\n# Download the file\ncurl --output wachstum-recent.zip -X 'POST' \\\n  'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'regionalkey=05515&compress=false&name=13111-01-03-4&area=free&timeslices=&classifyingkey1=&classifyingkey2=&classifyingkey3=&classifyingkey4=&classifyingkey5=&stand=01.01.1970%2001%3A00&classifyingvariable1=&format=ffcsv&classifyingvariable2=&language=de&endyear=&classifyingvariable3=&transpose=false&classifyingvariable4=&contents=&classifyingvariable5=&regionalvariable=&job=false&quality=off&startyear=2023'\n\n# Unzip the file\nunzip wachstum-recent.zip -d wachstum-recent\n\n# Move and rename the file\nmv wachstum-recent/13111-01-03-4_*.csv assets/data/wachstum-recent.csv\n\n# Cleanup\nrm -rf wachstum-recent\nrm wachstum-recent.zip\n\nexit 0\n=== bip-recent.sh ===\n#!/bin/bash\n\n# Download the file\ncurl --output bip-recent.zip -X 'POST' \\\n  'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' \\\n  -H 'accept: application/octet-stream' \\\n  -H \"username: $REGIONALSTATISTIK_USER\" \\\n  -H \"password: $REGIONALSTATISTIK_SECRET\" \\\n  -H 'Content-Type: application/x-www-form-urlencoded' \\\n  -d 'regionalkey=05515&compress=false&name=82000-01-01-4&area=free&timeslices=&classifyingkey1=&classifyingkey2=&classifyingkey3=&classifyingkey4=&classifyingkey5=&stand=01.01.1970%2001%3A00&classifyingvariable1=&format=ffcsv&classifyingvariable2=&language=de&endyear=&classifyingvariable3=&transpose=false&classifyingvariable4=&contents=&classifyingvariable5=&regionalvariable=&job=false&quality=off&startyear=2022'\n\n# Unzip the file\nunzip bip-recent.zip -d bip-recent\n\n# Move and rename the file (relative path from the root of the project)\nmv bip-recent/82000-01-01-4_*.csv assets/data/bip-recent.csv\n\n# Cleanup\nrm -rf bip-recent\nrm bip-recent.zip\n\nexit 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rn \"REGIONALSTATICT\" --include=\"*\" -l . 2>/dev/null | grep -v node_modules | grep -v .git/; echo \"=== Dockerfile ===\"; cat Dockerfile; echo \"=== env check ===\"; env | grep -i -E \"regional|secret|user\" | head; echo \"(end)\"",
+      "exit_code": 0,
+      "stdout": "=== Dockerfile ===\n# Install dependencies only when needed\nFROM node:20-alpine AS deps\n# Check https://github.com/nodejs/docker-node/tree/b4117f9333da4138b03a546ec926ef50a31506c3#nodealpine to understand why libc6-compat might be needed.\nRUN apk add --no-cache libc6-compat\nWORKDIR /app\n\n# Install dependencies based on the preferred package manager\nCOPY package.json yarn.lock* package-lock.json* pnpm-lock.yaml* scripts/ ./\nRUN \\\n  if [ -f yarn.lock ]; then yarn --frozen-lockfile --ignore-scripts; \\\n  elif [ -f package-lock.json ]; then npm ci --ignore-scripts; \\\n  elif [ -f pnpm-lock.yaml ]; then yarn global add pnpm && pnpm i --frozen-lockfile --ignore-scripts; \\\n  else echo \"Lockfile not found.\" && exit 1; \\\n  fi\n\n\n# Rebuild the source code only when needed\nFROM node:20-alpine AS builder\nWORKDIR /app\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY . .\n\n# Run the postinstall script (and install curl for the script to work)\nRUN apk add --no-cache curl bash\nRUN --mount=type=secret,id=REGIONALSTATISTIK_USER --mount=type=secret,id=REGIONALSTATISTIK_SECRET \\\n    export REGIONALSTATISTIK_USER=$(cat /run/secrets/REGIONALSTATISTIK_USER) && \\\n    export REGIONALSTATISTIK_SECRET=$(cat /run/secrets/REGIONALSTATISTIK_SECRET) && \\\n    yarn postinstall && \\\n    unset REGIONALSTATISTIK_USER && \\\n    unset REGIONALSTATISTIK_SECRET\n\n# Next.js collects completely anonymous telemetry data about general usage.\n# Learn more here: https://nextjs.org/telemetry\n# Uncomment the following line in case you want to disable telemetry during the build.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN yarn build\n\n# If using npm comment out above and use below instead\n# RUN npm run build\n\n# Production image, copy all the files and run next\nFROM node:20-alpine AS runner\nWORKDIR /app\n\nENV NODE_ENV production\n# Uncomment the following line in case you want to disable telemetry during runtime.\nENV NEXT_TELEMETRY_DISABLED 1\n\nRUN addgroup --system --gid 1001 nodejs\nRUN adduser --system --uid 1001 nextjs\n\nCOPY --from=builder /app/public ./public\n\n# Automatically leverage output traces to reduce image size\n# https://nextjs.org/docs/advanced-features/output-file-tracing\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static\nCOPY --from=builder --chown=nextjs:nodejs /app/.next/server ./.next/server\n\nUSER nextjs\n\nEXPOSE 3000\n\nENV PORT 3000\n\nCMD [\"node\", \"server.js\"]=== env check ===\n(end)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && head -60 README.md; echo \"===\"; grep -rn \"einwohner\\|wachstum-recent\\|bip-recent\" README.md docs/ 2>/dev/null | head",
+      "exit_code": 1,
+      "stdout": "# Klimadashboard M\u00fcnster\n\nThis is the Klimadashboard M\u00fcnster. It provides real time information about the climate footprint for the city of [M\u00fcnster](https://en.wikipedia.org/wiki/M%C3%BCnster). The application displays the data using different charts and a tile-based layout with separate pages for each category. The data is sourced from various providers, including the Open Data Portal of the City of M\u00fcnster, the German Weather Service (DWD), BrightSky, and other data providers.\n\n## Getting Started\n\nTo run the Klimadashboard application on your local machine, first clone the repository:\n\n> git clone https://github.com/your-username/klimadashboard.git\n> cd klimadashboard\n\nThen, install the dependencies:\n\n> yarn install\n\nFinally, start the development server:\n\n> yarn dev\n\nYou should now be able to access the application at `http://localhost:3000`.\n\n## Features\n\nThe Klimadashboard web application provides the following features:\n\n- **Data visualization:** The application visualizes open smart city data for the city of M\u00fcnster using different charts, including bar charts, line charts, and scatter plots. The charts are interactive and allow users to filter the data by different criteria.\n\n- **Tile-based layout:** The application uses a tile-based layout with separate pages for each category of data. The tiles display key indicators for each category and provide a quick overview of the data.\n\n- **Real-time data:** The data in the Klimadashboard application is updated in real-time, providing users with the latest information on climate and environmental indicators in the city of M\u00fcnster.\n\n- **Responsive design:** The application is designed to be responsive, adapting to different screen sizes and devices.\n\n- **Data sources:** The data in the Klimadashboard application is sourced from various providers, including the Open Data Portal of the City of M\u00fcnster, the German Weather Service (DWD), BrightSky, and other data providers.\n\n- **Built with Next.js:** Klimadashboard is built using Next.js 13 with an app directory.\n\n- **Styling with TailwindCSS:** The application uses TailwindCSS for styling, making it easy to customize the look and feel of the application.\n\n- **UI components with Radix UI:** The application uses Radix UI components for a consistent and accessible user interface.\n\n- **Data visualization with Apache ECharts:** The application uses Apache ECharts for data visualization, providing a powerful and flexible charting library.\n\n## Data Sources\n\nThe data in the Klimadashboard application is sourced from various providers, including:\n\n- **Open Data Portal of the City of M\u00fcnster:** The City of M\u00fcnster provides open data on climate and environmental indicators in the city.\n\n- **German Weather Service (DWD):** The DWD provides weather data for Germany, including temperature, precipitation, and wind.\n\n- **BrightSky:** BrightSky provides air quality data for cities around the world.\n\n- **Other data providers:** The Klimadashboard application may also source data from other providers as needed.\n\n## Contributing\n\nThank you for considering contributing to this project! We appreciate your help in making it better.\n\n### Development Workflow\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "code=$(curl -s -o /tmp/genesis-test.txt -w \"%{http_code}\" --max-time 30 -X POST 'https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile' -H 'accept: application/octet-stream' -H 'Content-Type: application/x-www-form-urlencoded' -d 'name=12411-01-01-4&area=free&compress=false&transpose=false&startyear=2018&timeslices=7&regionalkey=05515&format=ffcsv&job=false&language=de'); echo \"endpoint without creds -> HTTP $code\"; head -c 300 /tmp/genesis-test.txt",
+      "exit_code": 0,
+      "stdout": "endpoint without creds -> HTTP 404\n{\"Code\":2,\"Content\":\"Ein Fehler ist aufgetreten. (Der Anwendungsserver ist nicht vorhanden.)\",\"Type\":\"ERROR\"}",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat app/energie/page.tsx 2>/dev/null | head -30; echo \"===\"; ls app/; echo \"===\"; grep -rn \"einwohner\\|wachstum\\|bip\" app/energie/page.tsx app/page.tsx 2>/dev/null | head",
+      "exit_code": 2,
+      "stdout": "===\n(main)\nCookies.tsx\nMatomo.tsx\napi\nembed\nfonts\nlayout.tsx\nopengraph-image.png\nsammlung\n===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && find app -maxdepth 2 -name \"page.tsx\" | head -20; echo \"===\"; ls \"app/(main)\" 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "app/(main)/page.tsx\napp/embed/page.tsx\n===\n(sub)\nlayout.tsx\nloading.tsx\npage.tsx\nshare\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls \"app/(main)/(sub)\"; echo \"===\"; head -40 \"app/(main)/(sub)/energie/page.tsx\" 2>/dev/null; echo \"===\"; head -40 \"app/(main)/page.tsx\"",
+      "exit_code": 0,
+      "stdout": "datenschutz\nenergie\nfeedback\ngebaeude\nimpressum\nklima\nlayout.tsx\nloading.tsx\nmobilitaet\n===\nimport EnergyView from '@/components/Views/EnergyView'\n\nexport const revalidate = 10\n\nexport default function Energie() {\n  return <EnergyView />\n}\n===\nimport InsightsContainer from '@/components/Insights/InsightsContainer'\nimport Container from '@/components/Layout/Container'\n\nimport AnimatedPage from '@/components/Layout/AnimatedPage'\n\nimport Columns from '@/components/Layout/Columns'\nimport EnergyComsumptionTile from '@/components/Tiles/Buildings/EnergyConsumption'\nimport CO2EmissionsTile from '@/components/Tiles/Climate/CO2EmissionsTile'\nimport ClimateDevelopmentTile from '@/components/Tiles/Climate/Devlopment'\nimport WeatherTile from '@/components/Tiles/Climate/WeatherTile'\nimport EnergietraegerTile from '@/components/Tiles/Energy/EnergietraegerTile'\nimport PhotovoltTile from '@/components/Tiles/Energy/PhotovoltTile'\nimport WindEnergyTile from '@/components/Tiles/Energy/WindEnergyTile'\nimport BicycleChartTile from '@/components/Tiles/Mobility/Bicycle/BicycleChartTile'\nimport BusTile from '@/components/Tiles/Mobility/Bus'\nimport TrafficloadTile from '@/components/Tiles/Mobility/TrafficloadTile'\nimport BaseView from '@/components/Views/BaseView'\n\nexport default async function Home() {\n  return (\n    <div className=\"-translate-y-52\">\n      <AnimatedPage>\n        <InsightsContainer />\n        <Container>\n          <BaseView\n            showGoToButton={true}\n            showSuccessStories={false}\n            showSurveys={false}\n            type=\"climate\"\n          >\n            <CO2EmissionsTile />\n            <Columns>\n              <WeatherTile />\n              <ClimateDevelopmentTile />\n            </Columns>\n          </BaseView>\n\n          <BaseView\n            showGoToButton={true}\n            showSuccessStories={false}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rn \"WachstumChart\\|Wachstum/\" components/Tiles/Climate/CO2EmissionsTile/ 2>/dev/null | head; echo \"===\"; grep -rn \"import\" components/Tiles/Climate/CO2EmissionsTile/CO2EmissionsTile.tsx 2>/dev/null | head -20; echo \"===\"; grep -rln \"WachstumChart\" components/ app/ | head",
+      "exit_code": 0,
+      "stdout": "===\n===\ncomponents/Tiles/Climate/Wachstum/index.tsx\ncomponents/Tiles/Climate/Wachstum/WachstumChart.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rln \"Climate/Wachstum\" components/Tiles --include=\"*.tsx\" | grep -v \"Climate/Wachstum/\" | head; echo \"=== who imports CO2EmissionsTile ===\"; grep -rln \"CO2EmissionsTile\" \"app/(main)/page.tsx\" components/Tiles | grep -v \"CO2EmissionsTile/\" | head",
+      "exit_code": 0,
+      "stdout": "=== who imports CO2EmissionsTile ===\napp/(main)/page.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls components/Tiles/Climate/CO2EmissionsTile/; echo \"===\"; grep -rn \"Wachstum\" components/Tiles/Climate/CO2EmissionsTile/*.tsx; echo \"===\"; grep -rn \"Wachstum\" components/Views/EnergyView.tsx 2>/dev/null; echo \"=== EnergyView imports ===\"; grep -n \"import\" components/Views/EnergyView.tsx | head -30",
+      "exit_code": 0,
+      "stdout": "CO2Chart.tsx\nCO2EmissionsContent.tsx\nindex.tsx\n===\n===\n=== EnergyView imports ===\n1:import Columns from '../Layout/Columns'\n2:import EnergietraegerTile from '../Tiles/Energy/EnergietraegerTile'\n3:import LanternsTile from '../Tiles/Energy/LanternsTile'\n4:import PVAnlagenTile from '../Tiles/Energy/PVAnlagenTile'\n5:import PhotovoltTile from '../Tiles/Energy/PhotovoltTile'\n6:import WindEnergyTile from '../Tiles/Energy/WindEnergyTile'\n7:import BaseView from './BaseView'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rln \"Climate/Wachstum\" components --include=\"*.tsx\" | grep -v \"^components/Tiles/Climate/Wachstum/\"; echo \"===\"; grep -rln \"Tiles/Climate/CO2EmissionsTile\" components app --include=\"*.tsx\" | grep -v \"^components/Tiles/Climate/CO2EmissionsTile/\"",
+      "exit_code": 0,
+      "stdout": "components/Views/ClimateView.tsx\n===\ncomponents/Views/ClimateView.tsx\napp/(main)/page.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -n \"import\" components/Tiles/Climate/CO2EmissionsTile/index.tsx components/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx components/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx | head -30; echo \"=== ClimateView imports ===\"; grep -n \"import\" components/Views/ClimateView.tsx | head",
+      "exit_code": 0,
+      "stdout": "components/Tiles/Climate/CO2EmissionsTile/index.tsx:1:import { Spacer } from '@/components/Elements/Spacer'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:2:import Title from '@/components/Elements/Title'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:3:import { MsKlimadashboardIconsKCo2 } from '@/components/Icons/Klima'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:4:import getTileData from '@/lib/api/getTileData'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:5:import { format } from 'date-fns'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:6:import { TileSplitView } from '../../Base/TileSplitView'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:7:import ClimateTile from '../ClimateTile'\ncomponents/Tiles/Climate/CO2EmissionsTile/index.tsx:8:import CO2EmissionsContent from './CO2EmissionsContent'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:1:import { ReactECharts } from '@/components/Charts/ReactECharts'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:2:import { Spacer } from '@/components/Elements/Spacer'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:3:import Title from '@/components/Elements/Title'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:4:import useCO2Data from '@/hooks/useCO2Data'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:5:import useDevice from '@/hooks/useDevice'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:6:import { chartFormatter } from '@/utils/chartFormatter'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:7:import { parse } from 'date-fns'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:8:import { SeriesOption } from 'echarts'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:9:import { useWindowSize } from 'react-use'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2Chart.tsx:10:import { linearRegression } from 'simple-statistics'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx:3:import { useState } from 'react'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx:4:import CO2Chart from './CO2Chart'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx:5:import Switch from '@/components/Inputs/Switch'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx:6:import ToggleGroup from '@/components/Inputs/ToggleGroup'\ncomponents/Tiles/Climate/CO2EmissionsTile/CO2EmissionsContent.tsx:7:import Title from '@/components/Elements/Title'\n=== ClimateView imports ===\n1:import Columns from '../Layout/Columns'\n2:import AirqualityTile from '../Tiles/Climate/Airquality'\n3:import ClimateIndicesTile from '../Tiles/Climate/ClimateIndices'\n4:import CO2EmissionsTile from '../Tiles/Climate/CO2EmissionsTile'\n5:import ClimateDevelopmentTile from '../Tiles/Climate/Devlopment'\n6:import GarbageTile from '../Tiles/Climate/Garbage'\n7:// import TreesTile from '../Tiles/Climate/Trees'\n8:import Wachstum from '../Tiles/Climate/Wachstum'\n9:import WeatherTile from '../Tiles/Climate/WeatherTile'\n10:import DataCountTile from '../Tiles/Data/DataCountTile'\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "kill 1059 1070 1071 2>/dev/null; sleep 3; ps aux | grep -E 'next' | grep -v grep; echo \"(processes after kill)\"",
+      "exit_code": 0,
+      "stdout": "(processes after kill)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && (nohup yarn dev > /tmp/validation-dev.log 2>&1 &) && sleep 20 && tail -5 /tmp/validation-dev.log",
+      "exit_code": 0,
+      "stdout": "   - Network:      http://192.168.127.2:3000\n   - Environments: .env\n\n \u2713 Starting...\n \u2713 Ready in 3.7s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in / /energie /mobilitaet /gebaeude /klima; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 300 \"http://localhost:3000$p\"); echo \"$p -> $code\"; done",
+      "exit_code": 0,
+      "stdout": "/ -> 200\n/energie -> 200\n/mobilitaet -> 500\n/gebaeude -> 500\n/klima -> 500\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:3000/ | grep -oE \"<title>[^<]*</title>\"; curl -s --max-time 60 http://localhost:3000/energie | grep -oE \"<title>[^<]*</title>\"; echo \"===\"; curl -s --max-time 60 http://localhost:3000/ | grep -oiE \"(klima|dashboard|energie|mobilitaet|gebaeude)\" | sort | uniq -c | sort -rn | head -8; echo \"=== energie page keywords ===\"; curl -s --max-time 60 http://localhost:3000/energie | grep -oiE \"(energie|photovoltaik|strom|wind)\" | sort | uniq -c | sort -rn | head -6",
+      "exit_code": 1,
+      "stdout": "===\n=== energie page keywords ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "grep -E \"GET|Compiled|Module not found|Can't resolve\" /tmp/validation-dev.log | head -30",
+      "exit_code": 0,
+      "stdout": " \u2713 Compiled / in 14.8s (5593 modules)\n GET / 200 in 18520ms\n \u2713 Compiled /energie in 5.3s (5619 modules)\n GET /energie 200 in 7378ms\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n GET /mobilitaet 500 in 9217ms\nModule not found: Can't resolve '@/assets/data/einwohner.csv'\n GET /gebaeude 500 in 1844ms\nModule not found: Can't resolve '@/assets/data/wachstum-recent.csv'\n GET /klima 500 in 1406ms\n GET / 500 in 39ms\n GET /energie 500 in 38ms\n GET / 500 in 28ms\n GET /energie 500 in 49ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && for f in einwohner.csv wachstum-recent.csv bip-recent.csv; do [ -f \"assets/data/$f\" ] && echo \"PRESENT: $f\" || echo \"MISSING: $f\"; done; echo \"===\"; ls assets/data/*.csv assets/data/*.json 2>/dev/null | wc -l; echo \"total data assets\"; echo \"===\"; grep -E \"GET /\" /tmp/validation-dev.log",
+      "exit_code": 0,
+      "stdout": "MISSING: einwohner.csv\nMISSING: wachstum-recent.csv\nMISSING: bip-recent.csv\n===\n29\ntotal data assets\n===\n GET / 200 in 18520ms\n GET /energie 200 in 7378ms\n GET /mobilitaet 500 in 9217ms\n GET /gebaeude 500 in 1844ms\n GET /klima 500 in 1406ms\n GET / 500 in 39ms\n GET /energie 500 in 38ms\n GET / 500 in 28ms\n GET /energie 500 in 49ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s -o /dev/null -w \"final server check: / -> %{http_code}\\n\" --max-time 120 http://localhost:3000/klima; ps aux | grep -E \"next-server\" | grep -v grep | awk '{print \"dev server running (PID \" $2 \")\"}'",
+      "exit_code": 0,
+      "stdout": "final server check: / -> 500\ndev server running (PID 1354)\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

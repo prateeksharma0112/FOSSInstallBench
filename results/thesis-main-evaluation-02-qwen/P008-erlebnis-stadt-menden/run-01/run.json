@@ -1,0 +1,88 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P008-erlebnis-stadt-menden__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T17:15:15.301092+02:00",
+    "finished_at": "2026-10-15T17:49:31.763518+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P008",
+    "project": {
+      "opencode_id": "3604",
+      "name": "Erlebnis.Stadt Menden",
+      "description": "Web app with experiences from the city of Menden",
+      "catalogue_url": "https://opencode.de/de/software/erlebnis-stadt-menden-3604",
+      "type": "Application",
+      "platforms": [
+        "web",
+        "ios",
+        "android"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/stadt-menden/erlebnis.stadt",
+      "commit_sha": "e5a8336a130b9e379db54b4b8d6fa21cfd38dd58",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/stadt-menden/erlebnis.stadt/-/blob/e5a8336a130b9e379db54b4b8d6fa21cfd38dd58/README.md",
+      "language": "English",
+      "word_count": 703
+    },
+    "task_id": "P008-erlebnis-stadt-menden"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "failure",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "failure",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2056.5,
+    "repository_setup_duration_seconds": 208.54700000000594,
+    "installation_duration_seconds": 1730.125,
+    "validation_duration_seconds": 52.76599999998871,
+    "command_count": 93,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 76,
+    "validation_command_count": 13
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P008-erlebnis-stadt-menden/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

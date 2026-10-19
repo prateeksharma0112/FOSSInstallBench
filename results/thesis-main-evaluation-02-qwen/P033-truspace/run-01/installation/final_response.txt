@@ -1,0 +1,1 @@
+TruSpace installed and running successfully via the documented local setup (./start.sh with local-dev profile). All 5 containers up: frontend :3000 (HTTP 200, title "TruSpace"), backend API :8000 (listening, migrations applied), IPFS kubo v0.42.0 (healthy), IPFS Cluster v1.1.6, Open WebUI :3333 (healthy, bundled Ollama v0.30.11).

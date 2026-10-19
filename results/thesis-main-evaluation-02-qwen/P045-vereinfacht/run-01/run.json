@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P045-vereinfacht__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T18:28:20.270125+02:00",
+    "finished_at": "2026-10-18T18:55:11.003505+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P045",
+    "project": {
+      "opencode_id": "6203",
+      "name": "vereinfacht",
+      "description": "Web-based club management software for the digitization of central organizational tasks for non-profit and volunteer-run clubs.",
+      "catalogue_url": "https://opencode.de/de/software/vereinfacht-6203",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine",
+      "commit_sha": "c2a2b2e2414297e90c41ce011b22ac51425279c0",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/vereinfacht-buchhaltung-fuer-vereine/-/blob/c2a2b2e2414297e90c41ce011b22ac51425279c0/README.md",
+      "language": "English",
+      "word_count": 989
+    },
+    "task_id": "P045-vereinfacht"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1610.9370000000054,
+    "repository_setup_duration_seconds": 48.01600000000326,
+    "installation_duration_seconds": 1287.452999999994,
+    "validation_duration_seconds": 240.67200000000594,
+    "command_count": 93,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 52,
+    "validation_command_count": 37
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P045-vereinfacht/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

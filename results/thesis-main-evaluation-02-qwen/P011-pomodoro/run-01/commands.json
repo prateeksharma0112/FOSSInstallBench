@@ -1,0 +1,348 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/frederic/pomodoro /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/frederic/pomodoro.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/frederic/pomodoro.git/\nFrom https://gitlab.opencode.de/frederic/pomodoro\n * branch            54320075112b92c70ae0dbb00633ab01f8b600ce -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 5432007 gitlab ci change\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 54320075112b92c70ae0dbb00633ab01f8b600ce",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 536\ndrwxr-xr-x 11 root root   4096 Oct 15 17:46 .\ndr-xr-xr-x  1 root root   4096 Oct 15 17:46 ..\n-rw-r--r--  1 root root    293 Oct 15 17:46 .dockerignore\ndrwxr-xr-x  8 root root   4096 Oct 15 17:46 .git\n-rw-r--r--  1 root root    699 Oct 15 17:46 .gitignore\ndrwxr-xr-x  4 root root   4096 Oct 15 17:46 .gitlab\n-rw-r--r--  1 root root   8239 Oct 15 17:46 .gitlab-ci.yml\n-rw-r--r--  1 root root   4935 Oct 15 17:46 CHANGELOG.md\n-rw-r--r--  1 root root   4818 Oct 15 17:46 CONTRIBUTING.md\n-rw-r--r--  1 root root   3193 Oct 15 17:46 Dockerfile\n-rw-r--r--  1 root root   1067 Oct 15 17:46 LICENSE\n-rw-r--r--  1 root root   9817 Oct 15 17:46 README.md\n-rw-r--r--  1 root root   2967 Oct 15 17:46 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 assets\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 docker\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 docs\n-rw-r--r--  1 root root 422831 Oct 15 17:46 logo.png\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 packaging\n-rw-r--r--  1 root root  11374 Oct 15 17:46 publiccode.yml\n-rw-r--r--  1 root root    668 Oct 15 17:46 pyproject.toml\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 sounds\ndrwxr-xr-x  3 root root   4096 Oct 15 17:46 src\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 tests\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "python3 --version; which python3 pip3 git docker 2>&1; cat /etc/os-release 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "/usr/bin/git\n/usr/bin/docker\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/pyproject.toml; echo ---; ls -R /workspace/src /workspace/packaging /workspace/docker /workspace/sounds /workspace/tests | head -60",
+      "exit_code": 0,
+      "stdout": "[build-system]\nrequires = [\"setuptools>=68\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"pomodoro-timer\"\nversion = \"0.3.0\"\ndescription = \"A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\"\nreadme = \"README.md\"\nlicense = { text = \"MIT\" }\nauthors = [{ name = \"L3monKenji\" }]\nrequires-python = \">=3.10\"\ndependencies = [\n    \"PySide6>=6.6\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=7.0\",\n]\npackage = [\n    \"pyinstaller>=6.11\",\n]\n\n[project.scripts]\npomodoro = \"pomodoro.cli:main\"\n\n[project.urls]\nHomepage = \"https://github.com/l3montree-dev/pomodoro\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n---\n/workspace/docker:\nentrypoint.sh\n\n/workspace/packaging:\nPomodoro.spec\nbuild.sh\nmake_icon.py\npomodoro_app.py\n\n/workspace/sounds:\nREADME.md\n\n/workspace/src:\npomodoro\n\n/workspace/src/pomodoro:\n__init__.py\n__main__.py\naudio\ncli.py\ncore\ngui\npersistence\n\n/workspace/src/pomodoro/audio:\n__init__.py\nnotifications.py\nplayer.py\n\n/workspace/src/pomodoro/core:\n__init__.py\ntimer.py\n\n/workspace/src/pomodoro/gui:\n__init__.py\napp.py\nconfetti.py\nmain_window.py\nstats_view.py\ntheme.py\ntimer_view.py\nwidgets.py\n\n/workspace/src/pomodoro/persistence:\n__init__.py\nhistory.py\npaths.py\nsettings.py\n\n/workspace/tests:\n__init__.py\ntest_paths.py\ntest_timer.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/Dockerfile; echo ---; cat /workspace/docker/entrypoint.sh 2>/dev/null; echo ---; apt-cache policy python3 2>/dev/null | head -8; apt list --installed 2>/dev/null | grep -i python3 | head -10",
+      "exit_code": 1,
+      "stdout": "# Pomodoro as a container: a real, working desktop GUI app, made reachable\n# from a plain browser tab via VNC/noVNC. There is no \"headless mode\" for a\n# Qt window - this exposes the actual UI, not a stub.\n#\n#   docker build -t pomodoro .\n#   docker run --rm -p 6080:6080 -v pomodoro-data:/home/pomodoro/.local/share/Pomodoro pomodoro\n#   open http://localhost:6080/vnc.html\n#\n# See \"Running Pomodoro in a container\" in README.md for details, including\n# how data persistence and sound/notifications behave in this environment.\n\n# ---- build stage: produce the wheel the same way `packaging/build.sh` does ----\nFROM python:3.12-slim AS build\n\nWORKDIR /src\nCOPY pyproject.toml README.md LICENSE ./\nCOPY src ./src\nRUN pip install --no-cache-dir --upgrade build && python -m build --wheel\n\n# ---- runtime stage --------------------------------------------------------\nFROM python:3.12-slim\n\n# Qt (xcb platform plugin) runtime libraries, a virtual display, a VNC\n# server on it, and noVNC (a websocket<->VNC bridge with a bundled HTML5\n# client) so a real browser tab can open and use the actual window.\nRUN apt-get update && apt-get install -y --no-install-recommends \\\n        xvfb \\\n        x11vnc \\\n        novnc \\\n        websockify \\\n        libgl1 \\\n        libegl1 \\\n        libglib2.0-0 \\\n        libxkbcommon0 \\\n        libxkbcommon-x11-0 \\\n        libdbus-1-3 \\\n        libxcb-cursor0 \\\n        libxcb-icccm4 \\\n        libxcb-image0 \\\n        libxcb-keysyms1 \\\n        libxcb-randr0 \\\n        libxcb-render-util0 \\\n        libxcb-shape0 \\\n        libxcb-xinerama0 \\\n        libxcb-xkb1 \\\n        libfontconfig1 \\\n        libfreetype6 \\\n        libxrender1 \\\n        libxi6 \\\n        libsm6 \\\n        libice6 \\\n        fonts-dejavu-core \\\n    && rm -rf /var/lib/apt/lists/*\n\nCOPY --from=build /src/dist/*.whl /tmp/\nRUN pip install --no-cache-dir /tmp/*.whl && rm -f /tmp/*.whl\n\nRUN useradd --create-home --uid 1000 pomodoro\nCOPY docker/entrypoint.sh /usr/local/bin/pomodoro-entrypoint.sh\nRUN chmod +x /usr/local/bin/pomodoro-entrypoint.sh \\\n    # Xvfb (running as the unprivileged `pomodoro` user below) needs to\n    # create its socket here; the world-writable sticky bit matches how a\n    # real X11 install sets this directory up.\n    && mkdir -p /tmp/.X11-unix && chmod 1777 /tmp/.X11-unix \\\n    # Pre-create and own the data dir a volume gets mounted at (see README):\n    # Docker seeds a fresh named volume from whatever is already at the\n    # mount point in the image, ownership included, so this is what makes\n    # `-v pomodoro-data:/home/pomodoro/.local/share/Pomodoro` writable by\n    # the unprivileged user instead of landing root-owned.\n    && mkdir -p /home/pomodoro/.local/share/Pomodoro \\\n    && chown -R pomodoro:pomodoro /home/pomodoro\n\nUSER pomodoro\nWORKDIR /home/pomodoro\n\n# No user accounts/cloud/telemetry inside the container either - see\n# publiccode.yml. Settings + history land under this XDG path by default\n# (persistence/paths.py); mount a volume there (or set POMODORO_DATA_DIR) to\n# keep stats across `docker run`s.\nENV HOME=/home/pomodoro \\\n    XDG_DATA_HOME=/home/pomodoro/.local/share\n\nEXPOSE 6080\n\nENTRYPOINT [\"/usr/local/bin/pomodoro-entrypoint.sh\"]\n---\n#!/bin/sh\n# Starts a virtual X display, a VNC server on it, and a noVNC (websocket ->\n# VNC) proxy so a real, unmodified Qt GUI app can be opened from a plain\n# browser tab. Then runs the app itself against that display.\n#\n# This is a well-established pattern for shipping desktop GUI apps in\n# containers (there is no headless mode - Pomodoro is a real window, so\n# something has to render it and let a user see/click it).\nset -eu\n\nDISPLAY_NUM=\"${POMODORO_DISPLAY:-:99}\"\nSCREEN_GEOMETRY=\"${POMODORO_SCREEN_GEOMETRY:-1280x800x24}\"\nVNC_PORT=\"${POMODORO_VNC_PORT:-5900}\"\nWEB_PORT=\"${POMODORO_WEB_PORT:-6080}\"\n\nexport DISPLAY=\"$DISPLAY_NUM\"\nexport QT_QPA_PLATFORM=xcb\nexport QT_X11_NO_MITSHM=1\n\ncleanup() {\n    trap - TERM INT\n    kill \"$POMODORO_PID\" \"$WEBSOCKIFY_PID\" \"$X11VNC_PID\" \"$XVFB_PID\" 2>/dev/null || true\n}\ntrap cleanup TERM INT\n\nXvfb \"$DISPLAY_NUM\" -screen 0 \"$SCREEN_GEOMETRY\" -nolisten tcp &\nXVFB_PID=$!\n\n# Wait for the X socket instead of a fixed sleep, so slow/loaded hosts don't\n# race x11vnc against a display that isn't listening yet.\nsocket_name=\"X${DISPLAY_NUM#:}\"\nfor _ in $(seq 1 40); do\n    [ -e \"/tmp/.X11-unix/$socket_name\" ] && break\n    sleep 0.25\ndone\n\nx11vnc -display \"$DISPLAY_NUM\" -forever -shared -nopw -quiet -rfbport \"$VNC_PORT\" &\nX11VNC_PID=$!\n\nwebsockify --web=/usr/share/novnc \"$WEB_PORT\" \"localhost:$VNC_PORT\" &\nWEBSOCKIFY_PID=$!\n\necho \"Pomodoro is starting. Open http://localhost:${WEB_PORT}/vnc.html in a browser.\"\n\npomodoro &\nPOMODORO_PID=$!\n\nwait \"$POMODORO_PID\"\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/pomodoro/cli.py /workspace/src/pomodoro/__main__.py /workspace/src/pomodoro/persistence/paths.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"Console entry point: ``pomodoro`` opens the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\n\ndef main() -> int:\n    from .gui.app import run\n\n    return run()\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n\"\"\"Allow ``python -m pomodoro`` to open the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\nfrom .cli import main\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\n\"\"\"Shared location for the app's persistent files.\n\nEverything the app writes at runtime (settings, history database) lives\nunder a per-OS \"user data\" directory - never in the repo/install directory -\nso it survives reinstalls and stays out of version control.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport os\nimport sys\nfrom pathlib import Path\n\n_APP_FOLDER_NAME = \"Pomodoro\"\n\n\ndef app_data_dir() -> Path:\n    \"\"\"Resolve the per-user directory for ``settings.json`` and ``pomodoro.db``.\n\n    Order of precedence:\n\n    1. ``POMODORO_DATA_DIR`` env var, for an explicit override. This is the\n       simplest way to persist data across restarts of the container image\n       (mount a volume at this path) or to isolate it in tests.\n    2. The OS-standard per-user data location:\n\n       - macOS: ``~/Library/Application Support/Pomodoro``\n       - Windows: ``%APPDATA%\\\\Pomodoro``\n       - Linux and everything else (including the container image):\n         ``$XDG_DATA_HOME/Pomodoro``, defaulting to ``~/.local/share/Pomodoro``\n         per the XDG Base Directory spec.\n    \"\"\"\n    override = os.environ.get(\"POMODORO_DATA_DIR\")\n    if override:\n        directory = Path(override).expanduser()\n    elif sys.platform == \"darwin\":\n        directory = Path.home() / \"Library\" / \"Application Support\" / _APP_FOLDER_NAME\n    elif sys.platform == \"win32\":\n        base = os.environ.get(\"APPDATA\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / _APP_FOLDER_NAME\n    else:\n        base = os.environ.get(\"XDG_DATA_HOME\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / \".local\" / \"share\" / _APP_FOLDER_NAME\n\n    directory.mkdir(parents=True, exist_ok=True)\n    return directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker info 2>&1 | head -12; echo \"EXIT:$?\"; apt-get update 2>&1 | tail -3; apt-cache policy python3 python3-venv 2>&1 | head -14",
+      "exit_code": 141,
+      "stdout": "Client: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nEXIT:141\nGet:20 http://archive.ubuntu.com/ubuntu jammy-backports/main amd64 Packages [82.9 kB]\nFetched 49.2 MB in 20s (2453 kB/s)\nReading package lists...\npython3:\n  Installed: (none)\n  Candidate: 3.10.6-1~22.04.1\n  Version table:\n     3.10.6-1~22.04.1 500\n        500 http://archive.ubuntu.com/ubuntu jammy-updates/main amd64 Packages\n     3.10.6-1~22.04 500\n        500 http://security.ubuntu.com/ubuntu jammy-security/main amd64 Packages\n     3.10.4-0ubuntu2 500\n        500 http://archive.ubuntu.com/ubuntu jammy/main amd64 Packages\npython3-venv:\n  Installed: (none)\n  Candidate: 3.10.6-1~22.04.1\n  Version table:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker info 2>&1 | grep -E \"Server Version|Operating System|ERROR|Cannot connect\" ; echo \"grep-exit:$?\"",
+      "exit_code": 0,
+      "stdout": " Server Version: 29.7.2\n Operating System: Ubuntu 22.04.5 LTS\ngrep-exit:0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 python3-venv python3-pip xvfb x11vnc novnc websockify libgl1 libegl1 libglib2.0-0 libxkbcommon0 libxkbcommon-x11-0 libdbus-1-3 libxcb-cursor0 libxcb-icccm4 libxcb-image0 libxcb-keysyms1 libxcb-randr0 libxcb-render-util0 libxcb-shape0 libxcb-xinerama0 libxcb-xkb1 libfontconfig1 libfreetype6 libxrender1 libxi6 libsm6 libice6 fonts-dejavu-core 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "Processing triggers for sgml-base (1.30) ...\nSetting up python3-docutils (0.17.1+dfsg-2) ...\nSetting up python3-oslo.config (1:8.8.0-0ubuntu1) ...\nSetting up python3-novnc (1:1.0.0-5) ...\nSetting up novnc (1:1.0.0-5) ...\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m venv .venv && ./.venv/bin/python -m pip install --no-cache-dir --upgrade pip 2>&1 | tail -2",
+      "exit_code": 0,
+      "stdout": "      Successfully uninstalled pip-22.0.2\nSuccessfully installed pip-26.2.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ./.venv/bin/pip install --no-cache-dir -e . 2>&1 | tail -8",
+      "exit_code": 0,
+      "stdout": "  Building editable for pomodoro-timer (pyproject.toml): started\n  Building editable for pomodoro-timer (pyproject.toml): finished with status 'done'\n  Created wheel for pomodoro-timer: filename=pomodoro_timer-0.3.0-0.editable-py3-none-any.whl size=7016 sha256=b2b76eebe46eb5957b79a61cf452a033653a97f5469a93c1d9be12b73236fc95\n  Stored in directory: /tmp/pip-ephem-wheel-cache-sk8575tt/wheels/80/75/f6/d63789e3414f7f88206102fa596a8ddafc889f48984e8712b3\nSuccessfully built pomodoro-timer\nInstalling collected packages: tomli, shiboken6, PySide6_Essentials, PySide6_Pdf, PySide6_Addons, PySide6_WebEngine, PySide6, pomodoro-timer\n\nSuccessfully installed PySide6-6.12.0 PySide6_Addons-6.12.0 PySide6_Essentials-6.12.0 PySide6_Pdf-6.12.0.140 PySide6_WebEngine-6.12.0.140 pomodoro-timer-0.3.0 shiboken6-6.12.0 tomli-2.5.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ls .venv/bin | head; ./.venv/bin/python -c \"import pomodoro, pomodoro.cli, pomodoro.gui.app; print('import OK:', pomodoro.__file__)\"; ./.venv/bin/pip show pomodoro-timer | head -6",
+      "exit_code": 120,
+      "stdout": "Activate.ps1\nactivate\nactivate.csh\nactivate.fish\npip\npip3\npip3.10\npomodoro\npyside6-android-deploy\npyside6-assistant\nimport OK: /workspace/src/pomodoro/__init__.py\nName: pomodoro-timer\nVersion: 0.3.0\nSummary: A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\nHome-page: https://github.com/l3montree-dev/pomodoro\nAuthor: L3monKenji\nAuthor-email: \n",
+      "stderr": "ERROR: Pipe to stdout was broken\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/src/pomodoro/gui/app.py",
+      "exit_code": 0,
+      "stdout": "\"\"\"QApplication bootstrap.\"\"\"\n\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nfrom PySide6.QtWidgets import QApplication\n\nfrom ..audio import default_sounds_dir\nfrom .main_window import MainWindow\n\n\ndef run(sounds_dir: Path | None = None) -> int:\n    app = QApplication.instance() or QApplication(sys.argv)\n    app.setApplicationName(\"Pomodoro\")\n    app.setOrganizationName(\"L3monKenji\")\n\n    window = MainWindow(sounds_dir or default_sounds_dir())\n    window.show()\n    return app.exec()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && Xvfb :99 -screen 0 1280x800x24 -nolisten tcp >/tmp/xvfb.log 2>&1 & echo \"xvfb pid $!\"; sleep 2; ls /tmp/.X11-unix/",
+      "exit_code": 0,
+      "stdout": "xvfb pid 3253\nX99\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DISPLAY=:99 QT_QPA_PLATFORM=xcb ./.venv/bin/pomodoro >/tmp/pomodoro.log 2>&1 & APP_PID=$!; sleep 12; if kill -0 $APP_PID 2>/dev/null; then echo \"RUNNING pid=$APP_PID\"; else echo \"DEAD\"; fi; ps aux | grep -E \"venv/bin/pomodoro\" | grep -v grep; echo ---; cat /tmp/pomodoro.log",
+      "exit_code": 0,
+      "stdout": "RUNNING pid=3262\nroot        3264 10.9  0.8 278840 68436 ?        Sl   17:51   0:01 /workspace/.venv/bin/python ./.venv/bin/pomodoro\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which xwininfo xdotool xwd 2>/dev/null; DISPLAY=:99 xwininfo -root -tree 2>/dev/null | grep -iE \"pomodoro|0x[0-9a-f]+\" | head -20",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends x11-utils xdotool 2>&1 | tail -1; DISPLAY=:99 xwininfo -root -tree 2>&1 | grep -iE \"pomodoro\"",
+      "exit_code": 0,
+      "stdout": "Processing triggers for libc-bin (2.35-0ubuntu3.14) ...\n     0x200009 \"Pomodoro\": ()  1x1+0+0  +0+0\n     0x200007 \"Pomodoro\": (\"pomodoro\" \"Pomodoro\")  960x640+0+0  +0+0\n     0x200005 \"Qt Selection Owner for pomodoro\": ()  3x3+0+0  +0+0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DISPLAY=:99 xwd -root -silent -out /tmp/pomodoro_shot.xwd 2>&1; ls -la /tmp/pomodoro_shot.xwd; file /tmp/pomodoro_shot.xwd 2>/dev/null || true; ls -la /root/.local/share/Pomodoro/ 2>&1; cat /root/.local/share/Pomodoro/settings.json 2>/dev/null",
+      "exit_code": 1,
+      "stdout": "/bin/bash: line 3: xwd: command not found\ntotal 20\ndrwxr-xr-x 2 root root  4096 Oct 15 17:51 .\ndrwxr-xr-x 3 root root  4096 Oct 15 17:51 ..\n-rw-r--r-- 1 root root 12288 Oct 15 17:51 pomodoro.db\n",
+      "stderr": "ls: cannot access '/tmp/pomodoro_shot.xwd': No such file or directory\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ./.venv/bin/pip install --no-cache-dir -q pytest 2>&1 | tail -1; ./.venv/bin/python -m pytest tests/ -q 2>&1 | tail -6",
+      "exit_code": 0,
+      "stdout": "....................                                                     [100%]\n20 passed in 0.15s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && ./.venv/bin/python -m pomodoro --help 2>&1 | head -3; echo \"---entry-point---\"; cat .venv/bin/pomodoro; echo \"---which in venv---\"; ls -la .venv/bin/pomodoro; echo \"---import check---\"; ./.venv/bin/python -c \"import pomodoro; from pomodoro.cli import main; print('entry OK', pomodoro.__name__)\"",
+      "exit_code": 0,
+      "stdout": "qt.qpa.xcb: could not connect to display \nqt.qpa.plugin: From 6.5.0, xcb-cursor0 or libxcb-cursor0 is needed to load the Qt xcb platform plugin.\nqt.qpa.plugin: Could not load the Qt platform plugin \"xcb\" in \"\" even though it was found.\n---entry-point---\n#!/workspace/.venv/bin/python\nimport sys\nfrom pomodoro.cli import main\nif __name__ == '__main__':\n    sys.argv[0] = sys.argv[0].removesuffix('.exe')\n    sys.exit(main())\n---which in venv---\n-rwxr-xr-x 1 root root 170 Oct 15 17:51 .venv/bin/pomodoro\n---import check---\nentry OK pomodoro\n",
+      "stderr": "/bin/bash: line 3:  3381 Aborted                 (core dumped) ./.venv/bin/python -m pomodoro --help 2>&1\n      3382 Done                    | head -3\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && DISPLAY=:99 timeout 8 ./.venv/bin/pomodoro >/tmp/pom2.log 2>&1 & APP=$!; sleep 5; if kill -0 $APP 2>/dev/null; then echo \"VERIFIED: pomodoro running on DISPLAY=:99 (pid $APP)\"; kill $APP 2>/dev/null; else echo \"not running\"; fi; sleep 1; echo \"--- log ---\"; cat /tmp/pom2.log",
+      "exit_code": 0,
+      "stdout": "VERIFIED: pomodoro running on DISPLAY=:99 (pid 3389)\n--- log ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep -E \"Xvfb|venv/bin/pomodoro\" | grep -v grep | awk '{print $2, $11, $12, $13}'",
+      "exit_code": 0,
+      "stdout": "3253 /bin/bash -lc set\n3255 Xvfb :99 -screen\n3264 /workspace/.venv/bin/python ./.venv/bin/pomodoro \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 3264 3255 2>/dev/null; sleep 2; kill -9 3264 3255 2>/dev/null; ps aux | grep -E \"Xvfb|venv/bin/pomodoro\" | grep -v grep || echo \"clean - no leftover processes\"; ls /workspace",
+      "exit_code": 0,
+      "stdout": "clean - no leftover processes\nCHANGELOG.md\nCONTRIBUTING.md\nDockerfile\nLICENSE\nREADME.md\nSECURITY.md\nassets\ndocker\ndocs\nlogo.png\npackaging\npubliccode.yml\npyproject.toml\nsounds\nsrc\ntests\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && cat pyproject.toml 2>/dev/null | head -60",
+      "exit_code": 0,
+      "stdout": "total 544\ndrwxr-xr-x 13 root root   4096 Oct 15 17:52 .\ndr-xr-xr-x  1 root root   4096 Oct 15 17:46 ..\n-rw-r--r--  1 root root    293 Oct 15 17:46 .dockerignore\ndrwxr-xr-x  8 root root   4096 Oct 15 17:46 .git\n-rw-r--r--  1 root root    699 Oct 15 17:46 .gitignore\ndrwxr-xr-x  4 root root   4096 Oct 15 17:46 .gitlab\n-rw-r--r--  1 root root   8239 Oct 15 17:46 .gitlab-ci.yml\ndrwxr-xr-x  3 root root   4096 Oct 15 17:52 .pytest_cache\ndrwxr-xr-x  5 root root   4096 Oct 15 17:49 .venv\n-rw-r--r--  1 root root   4935 Oct 15 17:46 CHANGELOG.md\n-rw-r--r--  1 root root   4818 Oct 15 17:46 CONTRIBUTING.md\n-rw-r--r--  1 root root   3193 Oct 15 17:46 Dockerfile\n-rw-r--r--  1 root root   1067 Oct 15 17:46 LICENSE\n-rw-r--r--  1 root root   9817 Oct 15 17:46 README.md\n-rw-r--r--  1 root root   2967 Oct 15 17:46 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 assets\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 docker\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 docs\n-rw-r--r--  1 root root 422831 Oct 15 17:46 logo.png\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 packaging\n-rw-r--r--  1 root root  11374 Oct 15 17:46 publiccode.yml\n-rw-r--r--  1 root root    668 Oct 15 17:46 pyproject.toml\ndrwxr-xr-x  2 root root   4096 Oct 15 17:46 sounds\ndrwxr-xr-x  4 root root   4096 Oct 15 17:50 src\ndrwxr-xr-x  3 root root   4096 Oct 15 17:52 tests\n[build-system]\nrequires = [\"setuptools>=68\", \"wheel\"]\nbuild-backend = \"setuptools.build_meta\"\n\n[project]\nname = \"pomodoro-timer\"\nversion = \"0.3.0\"\ndescription = \"A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\"\nreadme = \"README.md\"\nlicense = { text = \"MIT\" }\nauthors = [{ name = \"L3monKenji\" }]\nrequires-python = \">=3.10\"\ndependencies = [\n    \"PySide6>=6.6\",\n]\n\n[project.optional-dependencies]\ndev = [\n    \"pytest>=7.0\",\n]\npackage = [\n    \"pyinstaller>=6.11\",\n]\n\n[project.scripts]\npomodoro = \"pomodoro.cli:main\"\n\n[project.urls]\nHomepage = \"https://github.com/l3montree-dev/pomodoro\"\n\n[tool.setuptools.packages.find]\nwhere = [\"src\"]\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls /workspace/.venv/bin/ 2>/dev/null | head -20 && /workspace/.venv/bin/python --version && /workspace/.venv/bin/pip show pomodoro-timer 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "Activate.ps1\nactivate\nactivate.csh\nactivate.fish\npip\npip3\npip3.10\npomodoro\npy.test\npygmentize\npyside6-android-deploy\npyside6-assistant\npyside6-balsam\npyside6-balsamui\npyside6-deploy\npyside6-designer\npyside6-genpyi\npyside6-linguist\npyside6-lrelease\npyside6-lupdate\nPython 3.10.12\nName: pomodoro-timer\nVersion: 0.3.0\nSummary: A modern, native macOS Pomodoro timer with a distraction-focused blue/green design.\nHome-page: https://github.com/l3montree-dev/pomodoro\nAuthor: L3monKenji\nAuthor-email: \nLicense: MIT\nLocation: /workspace/.venv/lib/python3.10/site-packages\nEditable project location: /workspace\nRequires: PySide6\nRequired-by: \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && /workspace/.venv/bin/python -c \"import pomodoro, pomodoro.cli; print('pomodoro at', pomodoro.__file__)\" && /workspace/.venv/bin/pip list 2>/dev/null | grep -iE \"pyside|shiboken|pomodoro|pytest\"",
+      "exit_code": 0,
+      "stdout": "pomodoro at /workspace/src/pomodoro/__init__.py\npomodoro-timer     0.3.0      /workspace\nPySide6            6.12.0\nPySide6_Addons     6.12.0\nPySide6_Essentials 6.12.0\nPySide6_Pdf        6.12.0.140\nPySide6_WebEngine  6.12.0.140\npytest             9.1.1\nshiboken6          6.12.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls src/pomodoro/ src/pomodoro/persistence/ sounds/ docker/ 2>/dev/null && cat src/pomodoro/persistence/paths.py",
+      "exit_code": 0,
+      "stdout": "docker/:\nentrypoint.sh\n\nsounds/:\nREADME.md\n\nsrc/pomodoro/:\n__init__.py\n__main__.py\n__pycache__\naudio\ncli.py\ncore\ngui\npersistence\n\nsrc/pomodoro/persistence/:\n__init__.py\n__pycache__\nhistory.py\npaths.py\nsettings.py\n\"\"\"Shared location for the app's persistent files.\n\nEverything the app writes at runtime (settings, history database) lives\nunder a per-OS \"user data\" directory - never in the repo/install directory -\nso it survives reinstalls and stays out of version control.\n\"\"\"\n\nfrom __future__ import annotations\n\nimport os\nimport sys\nfrom pathlib import Path\n\n_APP_FOLDER_NAME = \"Pomodoro\"\n\n\ndef app_data_dir() -> Path:\n    \"\"\"Resolve the per-user directory for ``settings.json`` and ``pomodoro.db``.\n\n    Order of precedence:\n\n    1. ``POMODORO_DATA_DIR`` env var, for an explicit override. This is the\n       simplest way to persist data across restarts of the container image\n       (mount a volume at this path) or to isolate it in tests.\n    2. The OS-standard per-user data location:\n\n       - macOS: ``~/Library/Application Support/Pomodoro``\n       - Windows: ``%APPDATA%\\\\Pomodoro``\n       - Linux and everything else (including the container image):\n         ``$XDG_DATA_HOME/Pomodoro``, defaulting to ``~/.local/share/Pomodoro``\n         per the XDG Base Directory spec.\n    \"\"\"\n    override = os.environ.get(\"POMODORO_DATA_DIR\")\n    if override:\n        directory = Path(override).expanduser()\n    elif sys.platform == \"darwin\":\n        directory = Path.home() / \"Library\" / \"Application Support\" / _APP_FOLDER_NAME\n    elif sys.platform == \"win32\":\n        base = os.environ.get(\"APPDATA\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / _APP_FOLDER_NAME\n    else:\n        base = os.environ.get(\"XDG_DATA_HOME\")\n        directory = Path(base) / _APP_FOLDER_NAME if base else Path.home() / \".local\" / \"share\" / _APP_FOLDER_NAME\n\n    directory.mkdir(parents=True, exist_ok=True)\n    return directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat src/pomodoro/cli.py && ls /root/.local/share/Pomodoro/ 2>/dev/null; echo \"---\"; cat src/pomodoro/gui/app.py | head -50",
+      "exit_code": 0,
+      "stdout": "\"\"\"Console entry point: ``pomodoro`` opens the GUI window.\"\"\"\n\nfrom __future__ import annotations\n\n\ndef main() -> int:\n    from .gui.app import run\n\n    return run()\n\n\nif __name__ == \"__main__\":\n    raise SystemExit(main())\npomodoro.db\n---\n\"\"\"QApplication bootstrap.\"\"\"\n\nfrom __future__ import annotations\n\nimport sys\nfrom pathlib import Path\n\nfrom PySide6.QtWidgets import QApplication\n\nfrom ..audio import default_sounds_dir\nfrom .main_window import MainWindow\n\n\ndef run(sounds_dir: Path | None = None) -> int:\n    app = QApplication.instance() or QApplication(sys.argv)\n    app.setApplicationName(\"Pomodoro\")\n    app.setOrganizationName(\"L3monKenji\")\n\n    window = MainWindow(sounds_dir or default_sounds_dir())\n    window.show()\n    return app.exec()\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && /workspace/.venv/bin/python -m pytest tests/ -q 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "....................                                                     [100%]\n20 passed in 0.39s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which Xvfb xwininfo xdotool 2>&1; echo \"---\"; Xvfb :99 -screen 0 1024x768x24 & sleep 2; echo started; DISPLAY=:99 xwininfo -root 2>&1 | head -5",
+      "exit_code": 0,
+      "stdout": "/usr/bin/Xvfb\n/usr/bin/xwininfo\n/usr/bin/xdotool\n---\nstarted\n\nxwininfo: Window id: 0x50d (the root window) (has no name)\n\n  Absolute upper-left X:  0\n  Absolute upper-left Y:  0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && rm -f /tmp/pomodoro.log && (DISPLAY=:99 QT_QPA_PLATFORM=xcb nohup ./.venv/bin/pomodoro > /tmp/pomodoro.log 2>&1 & echo \"PID: $!\") && sleep 8 && echo \"--- process check ---\" && pgrep -af \"pomodoro\" | grep -v pgrep; echo \"--- log ---\" && cat /tmp/pomodoro.log; echo \"--- windows on :99 ---\" && DISPLAY=:99 xwininfo -root -tree 2>&1 | grep -iE \"pomodoro|0x\" | head -10",
+      "exit_code": 0,
+      "stdout": "PID: 3472\n--- process check ---\n3472 /workspace/.venv/bin/python ./.venv/bin/pomodoro\n--- log ---\n--- windows on :99 ---\nxwininfo: Window id: 0x50d (the root window) (has no name)\n  Root window id: 0x50d (the root window) (has no name)\n  Parent window id: 0x0 (none)\n     0x200009 \"Pomodoro\": ()  1x1+0+0  +0+0\n     0x200007 \"Pomodoro\": (\"pomodoro\" \"Pomodoro\")  960x640+0+0  +0+0\n     0x200005 \"Qt Selection Owner for pomodoro\": ()  3x3+0+0  +0+0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /root/.local/share/Pomodoro/ && /workspace/.venv/bin/python -c \"\nimport sqlite3, json\ndb = sqlite3.connect('/root/.local/share/Pomodoro/pomodoro.db')\ntables = db.execute(\\\"SELECT name FROM sqlite_master WHERE type='table'\\\").fetchall()\nprint('tables:', tables)\nfor t in tables:\n    print(t[0], 'rows:', db.execute(f'SELECT COUNT(*) FROM {t[0]}').fetchone()[0])\n\" 2>&1",
+      "exit_code": 0,
+      "stdout": "total 20\ndrwxr-xr-x 2 root root  4096 Oct 15 17:51 .\ndrwxr-xr-x 3 root root  4096 Oct 15 17:51 ..\n-rw-r--r-- 1 root root 12288 Oct 15 17:51 pomodoro.db\ntables: [('focus_sessions',), ('sqlite_sequence',)]\nfocus_sessions rows: 0\nsqlite_sequence rows: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which import 2>/dev/null; DISPLAY=:99 xdotool getwindowname $(DISPLAY=:99 xdotool search --name \"^Pomodoro$\" 2>/dev/null | head -1) 2>&1",
+      "exit_code": 0,
+      "stdout": "Pomodoro\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which import xwd 2>/dev/null; cd /tmp && (DISPLAY=:99 import -window root /tmp/pomodoro_shot.png 2>&1 || DISPLAY=:99 xwd -root -out /tmp/pomodoro_shot.xwd 2>&1); ls -la /tmp/pomodoro_shot.* 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "/bin/bash: line 3: import: command not found\n/bin/bash: line 3: xwd: command not found\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -n \"def save\\|settings.json\\|write\" src/pomodoro/persistence/settings.py | head -10 && grep -rn \"beep\\|hint\\|Hint\\|no sound\\|missing\" src/pomodoro/audio/*.py src/pomodoro/gui/main_window.py 2>/dev/null | head -15",
+      "exit_code": 0,
+      "stdout": "13:_SETTINGS_FILENAME = \"settings.json\"\n46:    def save(self) -> None:\n53:            self.path.write_text(json.dumps(payload, indent=2), encoding=\"utf-8\")\nsrc/pomodoro/audio/player.py:1:\"\"\"MP3 playback for phase-end signals, with a safe silent/beep fallback.\nsrc/pomodoro/audio/player.py:4:dependency. Missing sound files (or a missing ``afplay``) never crash the\nsrc/pomodoro/audio/player.py:5:app - callers can check the return value to surface a hint in the UI.\nsrc/pomodoro/audio/player.py:71:        fell back to a silent no-op / terminal beep.\nsrc/pomodoro/audio/player.py:84:        self._fallback_beep()\nsrc/pomodoro/audio/player.py:88:    def _fallback_beep() -> None:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls src/pomodoro/core/ && grep -n \"def \\|^class \" src/pomodoro/core/*.py | head -40",
+      "exit_code": 0,
+      "stdout": "__init__.py\n__pycache__\ntimer.py\nsrc/pomodoro/core/timer.py:15:class Phase(Enum):\nsrc/pomodoro/core/timer.py:21:class RunState(Enum):\nsrc/pomodoro/core/timer.py:29:class TimerConfig:\nsrc/pomodoro/core/timer.py:39:    def phase_duration_seconds(self, phase: Phase) -> float:\nsrc/pomodoro/core/timer.py:48:class PhaseEvent:\nsrc/pomodoro/core/timer.py:55:class TimerEngine:\nsrc/pomodoro/core/timer.py:62:    def __init__(\nsrc/pomodoro/core/timer.py:79:    def total_seconds(self) -> float:\nsrc/pomodoro/core/timer.py:83:    def progress(self) -> float:\nsrc/pomodoro/core/timer.py:90:    def start(self) -> None:\nsrc/pomodoro/core/timer.py:94:    def pause(self) -> None:\nsrc/pomodoro/core/timer.py:98:    def resume(self) -> None:\nsrc/pomodoro/core/timer.py:101:    def toggle_pause(self) -> None:\nsrc/pomodoro/core/timer.py:107:    def stop(self) -> None:\nsrc/pomodoro/core/timer.py:128:    def apply_config(self, config: TimerConfig) -> None:\nsrc/pomodoro/core/timer.py:134:    def tick(self, delta_seconds: float) -> None:\nsrc/pomodoro/core/timer.py:145:    def _next_phase_after_focus(self) -> Phase:\nsrc/pomodoro/core/timer.py:151:    def _advance_phase(self) -> None:\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && mkdir -p /tmp/pomodoro-data-test && (DISPLAY=:99 POMODORO_DATA_DIR=/tmp/pomodoro-data-test QT_QPA_PLATFORM=xcb nohup ./.venv/bin/pomodoro > /tmp/pomodoro2.log 2>&1 & echo PID2:$!) && sleep 6 && pgrep -af \"\\.venv/bin/pomodoro\" | grep -v pgrep; echo \"--- override dir ---\"; ls -la /tmp/pomodoro-data-test/; echo \"--- log2 ---\"; cat /tmp/pomodoro2.log",
+      "exit_code": 0,
+      "stdout": "PID2:3527\n3472 /workspace/.venv/bin/python ./.venv/bin/pomodoro\n3527 /workspace/.venv/bin/python ./.venv/bin/pomodoro\n--- override dir ---\ntotal 20\ndrwxr-xr-x 2 root root  4096 Oct 15 17:53 .\ndrwxrwxrwt 1 root root  4096 Oct 15 17:53 ..\n-rw-r--r-- 1 root root 12288 Oct 15 17:53 pomodoro.db\n--- log2 ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls tests/ && grep -n \"def \\|^class \" src/pomodoro/persistence/history.py | head && head -40 src/pomodoro/persistence/history.py",
+      "exit_code": 0,
+      "stdout": "__init__.py\n__pycache__\ntest_paths.py\ntest_timer.py\n26:class SessionRecord:\n34:class StatsSummary:\n43:class HistoryStore:\n46:    def __init__(self, path: Path | None = None) -> None:\n53:    def _migrate(self) -> None:\n67:    def close(self) -> None:\n70:    def record_focus_round(self, duration_minutes: float, tag: str = \"\", completed: bool = True) -> None:\n77:    def _rows(self, tag: str | None = None) -> list[SessionRecord]:\n93:    def distinct_tags(self) -> list[str]:\n99:    def summary(self, tag: str | None = None) -> StatsSummary:\n\"\"\"SQLite-backed persistence for completed focus rounds and their stats.\"\"\"\n\nfrom __future__ import annotations\n\nimport sqlite3\nfrom dataclasses import dataclass\nfrom datetime import date, datetime, timedelta\nfrom pathlib import Path\n\nfrom .paths import app_data_dir\n\n_DB_FILENAME = \"pomodoro.db\"\n\n_SCHEMA = \"\"\"\nCREATE TABLE IF NOT EXISTS focus_sessions (\n    id INTEGER PRIMARY KEY AUTOINCREMENT,\n    completed_at TEXT NOT NULL,\n    duration_minutes REAL NOT NULL,\n    tag TEXT,\n    completed INTEGER NOT NULL DEFAULT 1\n);\n\"\"\"\n\n\n@dataclass(slots=True)\nclass SessionRecord:\n    completed_at: datetime\n    duration_minutes: float\n    tag: str\n    completed: bool = True\n\n\n@dataclass(slots=True)\nclass StatsSummary:\n    today_minutes: float = 0.0\n    today_count: int = 0\n    week_minutes: float = 0.0\n    week_count: int = 0\n    total_minutes: float = 0.0\n    total_count: int = 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "kill 3472 3527 2>/dev/null; sleep 1; pgrep -af \"pomodoro\" | grep -v pgrep; echo \"--- killing done ---\" && cd /workspace && POMODORO_DATA_DIR=/tmp/pomodoro-data-test /workspace/.venv/bin/python -c \"\nfrom pathlib import Path\nfrom pomodoro.persistence.history import HistoryStore\nstore = HistoryStore(Path('/tmp/pomodoro-data-test/pomodoro.db'))\nstore.record_focus_round(duration_minutes=25.0, tag='validation', completed=True)\nstore.record_focus_round(duration_minutes=12.5, tag='validation', completed=False)  # interrupted round, per 0.2.0 behavior\ns = store.summary()\nprint('summary:', s)\nstore.close()\n\"",
+      "exit_code": 0,
+      "stdout": "--- killing done ---\nsummary: StatsSummary(today_minutes=37.5, today_count=2, week_minutes=37.5, week_count=2, total_minutes=37.5, total_count=2)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "pkill -x Xvfb 2>/dev/null; sleep 1; pgrep -af \"Xvfb|pomodoro\" | grep -v pgrep; rm -rf /tmp/pomodoro-data-test /tmp/pomodoro.log /tmp/pomodoro2.log; echo \"cleanup done, exit: $?\"; pgrep -af Xvfb | grep -v pgrep; echo \"final process check done\"",
+      "exit_code": 0,
+      "stdout": "cleanup done, exit: 0\nfinal process check done\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

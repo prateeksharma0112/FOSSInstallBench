@@ -1,0 +1,21 @@
+Successfully installed OpenProject using the documented Docker all-in-one method.
+
+## What was done
+1. **Verified environment**: Docker Engine 29.7.2 was present; host is x86_64 with ~7.6GiB RAM and ample disk. Docker Hub was reachable and the `openproject/openproject:17` tag (amd64, ~880MB) was confirmed available.
+2. **Generated a secret key base** with `openssl rand -hex 64`, stored at `/workspace/openproject-install/secret_key_base.txt` (chmod 600).
+3. **Created persistence directories**: `/var/lib/openproject/pgdata` and `/var/lib/openproject/assets`.
+4. **Pulled the image**: `docker pull openproject/openproject:17` (digest sha256:3603f071443e...), completed in ~4m16s.
+5. **Started the container** detached with data persistence (per the guide's "Using this container in production" one-liner), named `openproject`, mapped host:8080→container:80, with `OPENPROJECT_HOST__NAME=localhost:8080`, `OPENPROJECT_HTTPS=false`, `OPENPROJECT_DEFAULT__LANGUAGE=en`, and the generated `SECRET_KEY_BASE`.
+
+## Resulting state
+- Container `openproject` is **Up** and stable, running the `openproject/openproject:17` all-in-one image (internal PostgreSQL 17, memcached, Apache, Rails/Puma, GoodJob workers).
+- First launch seeded the database and printed the expected message: *"On first installation, the default admin credentials are login: admin, password: admin"*.
+- Data persists at `/var/lib/openproject/pgdata` (80M, valid PG cluster) and `/var/lib/openproject/assets`.
+- Access point: **http://localhost:8080** (host 8080 → container 80).
+
+## Verification (all passed)
+- `curl http://localhost:8080/` → **HTTP 302 → /login**; `curl http://localhost:8080/login` → **HTTP 200**, title "Sign in | OpenProject".
+- Puma log: `Listening on http://0.0.0.0:8080`.
+- Admin login with `admin`/`admin` (correct `username`/`password` form fields + CSRF token) **succeeded** — redirected to the "Change password" page, with no subsequent "Failed login" warnings in the log. (An earlier 422 was due to my using wrong form field names `user[login]`/`user[password]`; the real fields are `username`/`password`, and login then succeeded.)
+
+To stop/start: `docker stop openproject` / `docker start openproject`.

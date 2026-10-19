@@ -1,0 +1,35 @@
+## Validation Report: Startuphafen
+
+**Assessed outcome: SUCCESS** — the installation is complete and operational per the guide.
+
+### Verified access points (all per the guide's "Dev Ports" table)
+| Port | Check | Result |
+|------|-------|--------|
+| caddy :4000 | `GET /` | 200, `<title>Startuphafen</title>`, full Angular bundle (`main.js` 1.6 MB) |
+| caddy :4000 | `GET /trpc/FeatureFlags.getFeatureFlags` | 200, 6 real DB rows |
+| caddy :4000 | `GET /kc/health/ready` | 200 |
+| caddy :4000 | `/kc-admin` | 302 → Keycloak admin console 200 |
+| caddy :4000 | `/kc` login page | 200, themed "Anmeldung bei startuphafen" |
+| angular :4201 (in devcontainer) | `GET /` | 200, "Compiled successfully" |
+| backend :5000 (in devcontainer) | `GET /` | 200, `[ ready ] http://0.0.0.0:5000` |
+| keycloak :28080 | JWKS | 200 |
+| pgadmin :3838 | `GET /` | 302 → `/browser/` 200 |
+| maildev :1080 | SMTP :1025 + web UI + REST API | fully working (see below) |
+
+### Verified behavior (evidence of operation, not just file presence)
+- **All 3 documented dev logins work** via Keycloak password grant against the `startuphafen` realm / `startuphafen_app` client:
+  - `admin/admin` (master realm, admin-cli) → 200 Bearer token
+  - `alice/alice` → 200, roles `['activatedUser','user']` (matches "Activated standard user")
+  - `marie/marie` → 200, roles `['user']` only (matches "Fresh user without activation")
+- **Authenticated tRPC** through caddy with alice's Bearer token → 200.
+- **Database**: 13 app tables + `_prisma_migrations` (57 rows), `pgvector` extension enabled, backend log shows "All migrations have been successfully applied".
+- **MailDev end-to-end**: sent a real email over SMTP on :1025 (EHLO→MAIL→RCPT→DATA→`250 Message queued`→`221 Bye`); retrieved it via `GET /api/email/summary` and `/api/email`; web UI returns 200 with a browser `Accept` header; `/api/healthz` → `true`.
+- **`.localConfigs.json`** exists at `apps/startuphafen-backend/src/assets/` and is gitignored, as the guide requires.
+
+### Known/cosmetic limitations (do not affect the operational state)
+- **MailDev container status "unhealthy"** is cosmetic: the image's built-in healthcheck probes `/healthz`, but maildev v3 exposes `/api/healthz`. The actual SMTP + web UI + API are all verified functional.
+- **Intentional out-of-scope items** (per the guide's "Open source release notes"): strapi/ERiC/OZG/Mistral left as empty placeholders; chatbot & HWK pre-check disabled without a Mistral key; ERiC gateway/ELSTER cert, strapi content, PLZ mapping, and HWK form are placeholders by design. These are explicitly documented as not part of the open-source release.
+- The documented devcontainer path (VS Code Dev Container + Docker-in-Docker) was reproduced headlessly with a fixed compose file (`.devcontainer/dev-fixed.yml`) because the original dev-compose referenced files absent from the repo (`.devcontainer/keycloak/entrypoint.sh`, themes) and required VS Code desktop features. The installer created those missing files and adjusted the realm `passwordPolicy` to `length(5)` so the documented 5-char dev passwords (admin/alice/marie) could be imported. This is a legitimate reproduction of the documented architecture, not an abandoned alternative.
+
+### Conclusion
+Every component described in the installation guide is present, running, and responding correctly. All documented dev logins authenticate, the frontend→caddy→backend→database→Keycloak flow works end-to-end, and maildev captures and serves mail. The installation is complete and operational.

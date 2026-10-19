@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P003-green-ecolution__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T13:37:10.798718+02:00",
+    "finished_at": "2026-10-15T14:31:51.096841+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P003",
+    "project": {
+      "opencode_id": "11929",
+      "name": "Green Ecolution",
+      "description": "Platform for smart irrigation and green space management in municipalities based on LoRaWAN sensor data and route optimization.",
+      "catalogue_url": "https://opencode.de/de/software/green-ecolution-11929",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/green-ecolution/green-ecolution",
+      "commit_sha": "94229d0d6c84b3590827ee1c144d8e62c2180101",
+      "license": "AGPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/green-ecolution/green-ecolution/-/blob/94229d0d6c84b3590827ee1c144d8e62c2180101/README.md",
+      "language": "English",
+      "word_count": 692
+    },
+    "task_id": "P003-green-ecolution"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 3280.375,
+    "repository_setup_duration_seconds": 29.687000000005355,
+    "installation_duration_seconds": 3150.953999999998,
+    "validation_duration_seconds": 66.63999999999942,
+    "command_count": 137,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 110,
+    "validation_command_count": 23
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P003-green-ecolution/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

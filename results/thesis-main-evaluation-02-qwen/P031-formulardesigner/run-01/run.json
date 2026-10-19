@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P031-formulardesigner__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T20:50:12.037388+02:00",
+    "finished_at": "2026-10-17T21:02:16.548782+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P031",
+    "project": {
+      "opencode_id": "9727",
+      "name": "Formulardesigner",
+      "description": "Modular form designer for creating and maintaining digital, accessible forms in JSON format \u2013 KERN-UX based and ready for your adaptation.",
+      "catalogue_url": "https://opencode.de/de/software/formulardesigner-9727",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/OC000097948268/formulardesigner",
+      "commit_sha": "7acedda5483d76c071b62c287574e8332549638c",
+      "license": "MPL-2.0"
+    },
+    "installation": {
+      "complexity": "Low"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/OC000097948268/formulardesigner/-/blob/7acedda5483d76c071b62c287574e8332549638c/README.md",
+      "language": "German",
+      "word_count": 142
+    },
+    "task_id": "P031-formulardesigner"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 724.5629999999946,
+    "repository_setup_duration_seconds": 8.046999999991385,
+    "installation_duration_seconds": 389.375,
+    "validation_duration_seconds": 304.85899999999674,
+    "command_count": 43,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 18,
+    "validation_command_count": 21
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P031-formulardesigner/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

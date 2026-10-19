@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P025-spark-api__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T11:39:57.616237+02:00",
+    "finished_at": "2026-10-17T14:54:34.051911+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P025",
+    "project": {
+      "opencode_id": "11326",
+      "name": "SPARK API",
+      "description": "Modular AI toolkit for legally compliant and transparent end-to-end support of all planning and approval processes",
+      "catalogue_url": "https://opencode.de/de/software/spark-api-11326",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-api",
+      "commit_sha": "520d93f96241be2de7ea025b4d2325ded86389d8",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository deployment guide",
+      "url": "https://gitlab.opencode.de/bmds/planungs-und-genehmigungsbeschleunigung/spark-api/-/blob/520d93f96241be2de7ea025b4d2325ded86389d8/DEPLOYMENT.md?plain=0",
+      "language": "English",
+      "word_count": 554
+    },
+    "task_id": "P025-spark-api"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "failure",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 11676.36,
+    "repository_setup_duration_seconds": 15.85899999999674,
+    "installation_duration_seconds": 10227.296999999991,
+    "validation_duration_seconds": 1365.2190000000119,
+    "command_count": 321,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 241,
+    "validation_command_count": 76
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P025-spark-api/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

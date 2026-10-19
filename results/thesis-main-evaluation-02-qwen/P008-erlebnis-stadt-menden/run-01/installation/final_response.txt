@@ -1,0 +1,19 @@
+## Installation Outcome: FAILURE (backend fully installed and running; both frontends blocked by missing GitHub token)
+
+### What was completed (verified)
+1. **Backend (Menden CMS Backend) — installed and running**:
+   - `cd /workspace/backend/docker && docker compose up -d` → all 5 services healthy: menden-backend-postgres, menden-backend-keycloak, menden-backend-meilisearch, menden-backend-localstack, poi-test-api
+   - Installed Node.js 22.23.3 (NodeSource) + pnpm 10.20.0 (corepack), OpenJDK 21 (apt)
+   - Guide stated JDK 21, but the build requires JVM 25 (build error: "Dependency requires at least JVM runtime version 25"); installed Amazon Corretto 25 to `/opt/java25` (matches CI workflow `javaVersion: "25"`)
+   - `JAVA_HOME=/opt/java25 ./gradlew :menden-app:bootRun` → compiled and started: `Started MendenCmsApplicationKt in 39.151 seconds`, Tomcat on port 8080 (also 8081)
+   - API verified: `GET http://localhost:8080/v1/feature-collection/experiences` → HTTP 200 `{"type":"FeatureCollection","features":[]}`; `GET /v1/experience-categories` → HTTP 200 `[]`; Meilisearch health → 200; LocalStack health → 200; app imported 75 events and configured Meilisearch indexes
+   - No GitHub token needed for the backend at this commit — its `settings.gradle.kts` resolves `io.swcode.*` from the public S3 Maven repo (`urbo-maven.s3.eu-central-1.amazonaws.com/releases`), so the guide's Maven token section is outdated (and the referenced file `buildSrc/src/main/kotlin/io/swcode/menden/common-conventions.gradle.kts` does not exist at this commit)
+
+2. **Frontends (app + cms) — FAILED to install dependencies**:
+   - `pnpm install --frozen-lockfile` in both `/workspace/app` and `/workspace/cms` fails: `ERR_PNPM_FETCH_401 GET https://npm.pkg.github.com/download/@sw-code/urbo-core/2.0.268/...: Unauthorized - 401`
+   - No `GITHUB_TOKEN` in environment, no `_authToken` in either `.npmrc` (they only declare `@sw-code:registry=https://npm.pkg.github.com`), no credentials anywhere in the repo
+   - Confirmed `@sw-code/*` packages are not on public npm (HTTP 404 for all) and no public alternative registry/repo exists; direct tarball fetch without auth → 401
+   - Therefore `pnpm nx serve/build` and `pnpm start` cannot be run; both `node_modules` are partially populated but unusable
+
+### Root cause
+The guide documents that a GitHub Personal Access Token is required for the private GitHub Packages registry; no token was provided in the environment, so 2 of the 3 project components (the entire frontend layer) cannot be installed.

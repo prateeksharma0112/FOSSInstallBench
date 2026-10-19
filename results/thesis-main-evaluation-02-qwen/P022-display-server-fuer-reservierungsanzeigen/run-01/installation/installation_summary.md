@@ -1,0 +1,21 @@
+**Workspace / execution context:** Shared installation workspace at `/workspace` (Docker 29.7.2, Compose v5.5.0, running as root in the active benchmark container). The display-server repository was pre-cloned at `/workspace` (origin `gitlab.opencode.de/smart-city-ulm/co-learning-spaces/display-server`, commit `fccc32f`).
+
+**Method used (final):** Docker Compose per the guide, with the Biletado booking dependency self-hosted per the project README's documented "Option 2: Self-Host the Platform".
+
+**Steps performed:**
+1. `cp .env.example .env` in `/workspace` (guide step 2), then `docker compose up -d` (guide step 3).
+2. First failure: `network shared-net declared as external, but could not be found` — fixed by `docker network create shared-net` (prerequisite not documented in the guide).
+3. Image `display-server:latest` built successfully from `/workspace/Dockerfile` (python:3.13-slim + pip install of requirements.txt), but the container restarted in a loop: the app signs in to `API_BASE_URL` at startup and exits on failure. The `.env.example` placeholder `https://your_tenant-api.smart-city-booking.de/api` is a dummy host (resolves via DNS but returns 404 for all routes, self-signed cert, no valid `APP_USERNAME`/`APP_PASSWORD` exist for it).
+4. To satisfy the required Biletado API using the README's documented Option 2: cloned `github.com/ECCdigital/smart-city-booking-backend` (branch `develop`) into `/workspace/smart-city-booking-backend`; built a lean Docker image `smart-city-booking-backend:local` with a custom `/workspace/smart-city-booking-backend/Dockerfile.lean` (`node:22-slim`, `npm ci`, no Playwright/Chromium step — that part is only needed for PDF generation, not the reservation API). First build used `npm ci --omit=optional` and crashed at boot on the missing `sharp` platform binary; rebuilt with plain `npm ci` — OK.
+5. Created `/workspace/biletado/docker-compose.yml` + `/workspace/biletado/.env` (generated `CRYPTO_SECRET`/`JWT_SECRET`/`JWT_REFRESH_SECRET`, `INIT_ADMIN=admin`, `INIT_ADMIN_SECRET=admin`) running `mongo:7` and the backend (port 8081) on the external network `shared-net`. Started with `docker compose up -d` in `/workspace/biletado`; backend completed migrations, seeded a verified init admin, `/healthz/ready` → 200.
+6. Seeded demo data via the backend REST API: tenant "Ulm Co-Learning" (`39605dab-2465-466f-b659-1b0bc138f426`), bookable room "Raum A" (`c75ef8fb-3cce-4c81-b821-f7623e99595f`, schedule mode; first attempt rejected with "Only one booking mode flag may be true"), and a confirmed booking `TABS-FASU` for today (+1 h, 2 h long).
+7. Rewrote `/workspace/.env` with working values: `API_BASE_URL = 'http://backend:8081/api'` (backend container name on `shared-net`), `TENANT = '39605dab-...'`, `APP_USERNAME=admin`, `APP_PASSWORD=admin`.
+8. `docker compose up -d` in `/workspace` → `display-server` container started cleanly: logs show `BASE URL: http://backend:8081/api`, `SIGNIN URL: http://backend:8081/auth/signin`, `Updated bookings cache.`
+
+**Final state / access points:**
+- `display-server` container: Up, 0 restarts, HTTP on `http://localhost:8001` (bound to `127.0.0.1:8001` per compose).
+- Resource pages: `curl http://localhost:8001/resources/{resource}` and `curl 'http://localhost:8001/resources?ids={A}|{B}|{C}|{D}'` — both return the generated kiosk HTML.
+- Dependencies: `biletado-backend-1` (Biletado API, port 8081) and `biletado-mongodb-1` on `shared-net`; data in `biletado_mongodb_data` volume; seed state in `/tmp/seed.env` (tenant/bookable ids) and `/tmp/seed.sh`, `/tmp/seed2.sh`.
+- Stop command per guide: `docker compose down` in `/workspace` (and in `/workspace/biletado` for the backend stack).
+
+**Known deviations / caveats:** the guide's step 2 assumes "settings for your setup" which did not exist, so the self-hosted backend's credentials were used; the single-resource route returns 200 with an empty page for unknown resource names (observed app behavior, not required by the guide); `BASE_PATH=/display-server` from compose is applied to internal asset URLs but curl paths work as documented.

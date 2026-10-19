@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P039-index-data-explorer__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T13:36:34.312789+02:00",
+    "finished_at": "2026-10-18T14:04:38.580941+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P039",
+    "project": {
+      "opencode_id": "11490",
+      "name": "Index Data Explorer",
+      "description": "Open-source web application for analyzing and visualizing multidimensional data from Elasticsearch indices.",
+      "catalogue_url": "https://opencode.de/de/software/index-data-explorer-11490",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/stadt-kaiserslautern1/indexdataexplorer",
+      "commit_sha": "a8c421073aacb126b5ad2b158c38ccefa2027a67",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/stadt-kaiserslautern1/indexdataexplorer/-/blob/a8c421073aacb126b5ad2b158c38ccefa2027a67/Readme.md",
+      "language": "English",
+      "word_count": 227
+    },
+    "task_id": "P039-index-data-explorer"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1684.2969999999987,
+    "repository_setup_duration_seconds": 7.655999999995402,
+    "installation_duration_seconds": 1264.875,
+    "validation_duration_seconds": 406.82800000000134,
+    "command_count": 149,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 107,
+    "validation_command_count": 38
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P039-index-data-explorer/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

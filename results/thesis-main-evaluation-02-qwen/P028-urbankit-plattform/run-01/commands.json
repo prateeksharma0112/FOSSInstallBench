@@ -1,0 +1,636 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin d170d748ae3d7873d83816fe68a36c7989dce0a7",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform.git/\nFrom https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform\n * branch            d170d748ae3d7873d83816fe68a36c7989dce0a7 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach d170d748ae3d7873d83816fe68a36c7989dce0a7",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at d170d74 CHANGE \u2013 users.read liefert f\u00fcr Nicht-Admins eine Where-Einschr\u00e4nkung auf das eigene Konto statt eines Booleans, damit auch Listen-Abfragen self zur\u00fcckgeben (vorher: leer)\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = d170d748ae3d7873d83816fe68a36c7989dce0a7",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 520\ndrwxr-xr-x 12 root root   4096 Oct 17 15:19 .\ndr-xr-xr-x  1 root root   4096 Oct 17 15:18 ..\n-rw-r--r--  1 root root     92 Oct 17 15:19 .dockerignore\n-rw-r--r--  1 root root   2003 Oct 17 15:19 .env.example\ndrwxr-xr-x  8 root root   4096 Oct 17 15:19 .git\ndrwxr-xr-x  3 root root   4096 Oct 17 15:19 .github\n-rw-r--r--  1 root root    330 Oct 17 15:19 .gitignore\n-rw-r--r--  1 root root      3 Oct 17 15:19 .nvmrc\n-rw-r--r--  1 root root  14931 Oct 17 15:19 AGENTS.md\n-rw-r--r--  1 root root   1468 Oct 17 15:19 CLAUDE.md\n-rw-r--r--  1 root root   5571 Oct 17 15:19 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root   2826 Oct 17 15:19 CONTRIBUTING.md\n-rw-r--r--  1 root root   2270 Oct 17 15:19 Dockerfile\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 LICENSES\n-rw-r--r--  1 root root   3659 Oct 17 15:19 README.md\n-rw-r--r--  1 root root   2629 Oct 17 15:19 REUSE.toml\n-rw-r--r--  1 root root   2176 Oct 17 15:19 docker-compose.prod.yml\n-rw-r--r--  1 root root   4107 Oct 17 15:19 docker-compose.yml\ndrwxr-xr-x  3 root root   4096 Oct 17 15:19 docs\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 hocuspocus\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 messages\n-rw-r--r--  1 root root    211 Oct 17 15:19 next-env.d.ts\n-rw-r--r--  1 root root    523 Oct 17 15:19 next.config.mjs\n-rw-r--r--  1 root root 379171 Oct 17 15:19 package-lock.json\n-rw-r--r--  1 root root   2689 Oct 17 15:19 package.json\n-rw-r--r--  1 root root    181 Oct 17 15:19 postcss.config.mjs\ndrwxr-xr-x  4 root root   4096 Oct 17 15:19 public\n-rw-r--r--  1 root root   6359 Oct 17 15:19 publiccode.yml\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 scripts\ndrwxr-xr-x  4 root root   4096 Oct 17 15:19 seed\ndrwxr-xr-x 14 root root   4096 Oct 17 15:19 src\n-rw-r--r--  1 root root    771 Oct 17 15:19 tsconfig.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat docker-compose.yml docker-compose.prod.yml .env.example",
+      "exit_code": 0,
+      "stdout": "services:\n  web:\n    build:\n      context: .\n      dockerfile: Dockerfile\n      args:\n        NEXT_PUBLIC_HOCUSPOCUS_URL: ${NEXT_PUBLIC_HOCUSPOCUS_URL:?NEXT_PUBLIC_HOCUSPOCUS_URL is required}\n        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}\n    ports:\n      - \"127.0.0.1:3020:3000\"\n    environment:\n      - DATABASE_URI=mongodb://mongo:27017/urban_kit\n      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?PAYLOAD_SECRET is required}\n      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}\n      # Both serving domains \u2014 Payload's CSRF allowlist (payload.config.ts)\n      # must trust cookie-authenticated requests from either origin.\n      - NEXT_PUBLIC_PUBLIC_DOMAIN=${NEXT_PUBLIC_PUBLIC_DOMAIN:-urbankit.de}\n      - NEXT_PUBLIC_APP_DOMAIN=${NEXT_PUBLIC_APP_DOMAIN:-app.urbankit.de}\n      - SMTP_HOST=${SMTP_HOST:-localhost}\n      - SMTP_PORT=${SMTP_PORT:-1025}\n      - METHODEN_URL=${METHODEN_URL:-https://methoden.urbankit.de}\n      - METHODEN_API_KEY=${METHODEN_API_KEY:-}\n      # Password for the seeded prototype accounts (seed:prototype / rotate script)\n      - SEED_USERS_PASSWORD=${SEED_USERS_PASSWORD:-}\n      # Urban Agent (AI) \u2014 provider selection + keys; all optional, the module\n      # shows \"nicht konfiguriert\" without any of them (see docs/env-reference.md)\n      - URBAN_AGENT_PROVIDER=${URBAN_AGENT_PROVIDER:-}\n      - URBAN_AGENT_MODEL=${URBAN_AGENT_MODEL:-}\n      - URBAN_AGENT_DAILY_MAX=${URBAN_AGENT_DAILY_MAX:-}\n      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}\n      - OPENAI_API_KEY=${OPENAI_API_KEY:-}\n      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}\n      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-}\n      - OLLAMA_MODEL=${OLLAMA_MODEL:-}\n    volumes:\n      - media_data:/app/media\n      # Project document uploads (file-uploads collection, staticDir uploads/files)\n      # \u2014 without this volume they are destroyed on every container rebuild.\n      - uploads_data:/app/uploads\n    depends_on:\n      mongo:\n        condition: service_healthy\n    restart: unless-stopped\n    healthcheck:\n      # busybox wget \u2014 the Alpine runner image ships no curl\n      test: [\"CMD-SHELL\", \"wget -q -O /dev/null http://localhost:3000/api/health || exit 1\"]\n      interval: 20s\n      timeout: 10s\n      retries: 3\n      start_period: 60s\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 1g\n\n  hocuspocus:\n    build:\n      context: ./hocuspocus\n      dockerfile: Dockerfile\n    environment:\n      - PORT=1234\n      # Full-stack compose: the web container. Mixed dev (Next on the host,\n      # sidecar in Docker): set HOCUSPOCUS_PAYLOAD_URL=http://host.docker.internal:3000\n      # in .env \u2014 with the default, room authorization fails (no `web` host)\n      # and the board silently loses all realtime.\n      - PAYLOAD_INTERNAL_URL=${HOCUSPOCUS_PAYLOAD_URL:-http://web:3000}\n      - HOCUSPOCUS_SECRET=${HOCUSPOCUS_SECRET:?HOCUSPOCUS_SECRET is required}\n    ports:\n      - \"127.0.0.1:1234:1234\"\n    depends_on:\n      - web\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 512m\n\n  # Dev mailcatcher: receives all transactional mail (activation links etc.)\n  # on :1025 and shows it at http://localhost:8025 \u2014 SMTP_HOST defaults\n  # target it. Production points SMTP_* at a real provider instead.\n  mailpit:\n    image: axllent/mailpit\n    ports:\n      - \"127.0.0.1:1025:1025\"\n      - \"127.0.0.1:8025:8025\"\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 128m\n\n  mongo:\n    image: mongo:7\n    volumes:\n      - mongo_data:/data/db\n    ports:\n      - \"127.0.0.1:27019:27017\"\n    healthcheck:\n      test: [\"CMD\", \"mongosh\", \"--eval\", \"db.adminCommand('ping')\"]\n      interval: 5s\n      timeout: 5s\n      retries: 5\n      start_period: 10s\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 512m\n\n\nnetworks:\n  urban_kit:\n    driver: bridge\n\nvolumes:\n  mongo_data:\n  media_data:\n  uploads_data:\n# SPDX-FileCopyrightText: 2026 Johannes Homann\n#\n# SPDX-License-Identifier: EUPL-1.2\n\n# Production override for docker-compose.yml \u2014 same pattern as the\n# urban-kit-methodensammlung stack.\n#\n# Deploy on the VPS with:\n#   docker compose -f docker-compose.yml -f docker-compose.prod.yml up -d --build\n#\n# Assumptions (chosen for this setup):\n#   - TLS is terminated by an EXTERNAL reverse proxy already running on the host\n#     (nginx/Caddy/Traefik). The base compose already binds web (127.0.0.1:3020)\n#     and the board websocket (127.0.0.1:1234) to loopback only \u2014 the proxy\n#     forwards urbankit.de/app.urbankit.de to :3020 and wss to :1234.\n#   - MongoDB runs in this stack with root authentication enabled.\n#   - Transactional mail goes to a real SMTP provider (SMTP_* in .env); the\n#     mailpit dev catcher is parked behind a compose profile and never starts.\n#\n# Reads its values from the project .env file (Compose auto-loads it).\n# Set at least: MONGO_ROOT_USER, MONGO_ROOT_PASSWORD (plus the base-compose\n# requirements PAYLOAD_SECRET, HOCUSPOCUS_SECRET, NEXT_PUBLIC_*).\n\nservices:\n  web:\n    restart: always\n    environment:\n      # Same key as the base file \u2014 later files win, so this swaps the\n      # unauthenticated URI for the credentialed one.\n      - DATABASE_URI=mongodb://${MONGO_ROOT_USER:?set MONGO_ROOT_USER in .env}:${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD in .env}@mongo:27017/urban_kit?authSource=admin\n\n  hocuspocus:\n    restart: always\n\n  # Dev mailcatcher \u2014 parked behind a profile so it does not start in prod\n  # (profiles only run when explicitly requested).\n  mailpit:\n    profiles: [\"dev-mail\"]\n\n  mongo:\n    # Do not publish Mongo at all in prod; only services on the compose\n    # network talk to it.\n    ports: !reset []\n    restart: always\n    environment:\n      # First-boot creates this root user. NOTE: only applied on an EMPTY data\n      # volume \u2014 for an existing mongo_data volume create the user manually\n      # (see docs/deployment.md).\n      MONGO_INITDB_ROOT_USERNAME: ${MONGO_ROOT_USER:?set MONGO_ROOT_USER in .env}\n      MONGO_INITDB_ROOT_PASSWORD: ${MONGO_ROOT_PASSWORD:?set MONGO_ROOT_PASSWORD in .env}\n# Database\nDATABASE_URI=mongodb://localhost:27017/urban_kit\n\n# MongoDB root auth \u2014 PROD ONLY (docker-compose.prod.yml). First boot on an\n# empty volume creates this user; web then connects with these credentials.\nMONGO_ROOT_USER=urbankit\nMONGO_ROOT_PASSWORD=change-me-to-a-long-random-string\n\n# Password for the seeded prototype accounts (seed:prototype). REQUIRED in\n# prod \u2014 without it the roster gets the public dev password demo1234, and the\n# account emails are visible in this repo. Rotate later with\n# scripts/rotate-seed-passwords.ts.\nSEED_USERS_PASSWORD=\n\n# Payload\nPAYLOAD_SECRET=change-me-to-a-long-random-string\n\n# SMTP\nSMTP_HOST=localhost\nSMTP_PORT=1025\nSMTP_USER=\nSMTP_PASS=\nSMTP_FROM=noreply@urbankit.de\n\n# Domains\nNEXT_PUBLIC_PUBLIC_DOMAIN=urbankit.de\nNEXT_PUBLIC_APP_DOMAIN=app.urbankit.de\nNEXT_PUBLIC_SERVER_URL=http://localhost:3000\n\n# AI \u2014 Urban Agent. Provider is chosen in the admin (Einstellungen \u2192 Urban\n# Agent) or via URBAN_AGENT_PROVIDER; with neither set, the first key found\n# below wins (Anthropic \u2192 OpenAI \u2192 Mistral \u2192 Ollama). No cross-provider\n# failover.\n# URBAN_AGENT_PROVIDER=mistral\n# URBAN_AGENT_MODEL=\n# MISTRAL_API_KEY=\n# ANTHROPIC_API_KEY=\n# OPENAI_API_KEY=\n# OLLAMA_BASE_URL=http://localhost:11434\n# OLLAMA_MODEL=llama3\n# Global daily request ceiling across all users (cost backstop)\n# URBAN_AGENT_DAILY_MAX=600\n\n# Methodensammlung (optional \u2014 method teasers on Bereich Grundlagen)\n# API-client key from the Methodensammlung admin (API Clients collection);\n# without it the page simply shows no teasers.\nMETHODEN_URL=https://methoden.urbankit.de\n# METHODEN_API_KEY=\n\n# Hocuspocus (realtime sidecar for Board)\nHOCUSPOCUS_URL=ws://localhost:1234\nHOCUSPOCUS_SECRET=change-me-hocuspocus-secret\n# Browser-facing WS URL for the board client (public; use wss:// in production)\nNEXT_PUBLIC_HOCUSPOCUS_URL=ws://localhost:1234\n# Where the sidecar reaches Payload for auth + persistence (compose: http://web:3000)\nPAYLOAD_INTERNAL_URL=http://localhost:3000\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat Dockerfile hocuspocus/Dockerfile 2>/dev/null; ls hocuspocus scripts docs",
+      "exit_code": 0,
+      "stdout": "FROM node:26-alpine AS base\nWORKDIR /app\nENV NEXT_TELEMETRY_DISABLED=1\n\n# Dependencies\nFROM base AS deps\nRUN apk add --no-cache libc6-compat\nCOPY package.json package-lock.json ./\nRUN npm ci\n\n# Builder\nFROM base AS builder\nRUN apk add --no-cache libc6-compat\nCOPY --from=deps /app/node_modules ./node_modules\nCOPY . .\n# NEXT_PUBLIC_* vars are inlined at build time, so they must be available here (not just at runtime)\nARG NEXT_PUBLIC_HOCUSPOCUS_URL\nENV NEXT_PUBLIC_HOCUSPOCUS_URL=$NEXT_PUBLIC_HOCUSPOCUS_URL\nARG NEXT_PUBLIC_SERVER_URL\nENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL\nRUN rm -f src/app/\\(payload\\)/admin/importMap.js && npm run generate:types && npm run generate:importmap && npm run build\n\n# Runner \u2014 copies full node_modules for reliable Payload module resolution\nFROM base AS runner\nENV NODE_ENV=production\n\nRUN apk add --no-cache libc6-compat && \\\n    addgroup --system --gid 1001 nodejs && \\\n    adduser --system --uid 1001 nextjs\n\nCOPY --from=deps --chown=nextjs:nodejs /app/node_modules ./node_modules\nCOPY --from=builder --chown=nextjs:nodejs /app/.next ./.next\nCOPY --from=builder --chown=nextjs:nodejs /app/public ./public\nCOPY --from=builder --chown=nextjs:nodejs /app/package.json ./package.json\nCOPY --from=builder --chown=nextjs:nodejs /app/next.config.mjs ./next.config.mjs\nCOPY --from=builder --chown=nextjs:nodejs /app/src ./src\nCOPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json\n# One-off maintenance/seed scripts + seed content/assets, run via\n# `docker compose exec web npm run seed:prototype` (same pattern as the\n# methodensammlung image shipping its seed.ts/scripts).\nCOPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts\nCOPY --from=builder --chown=nextjs:nodejs /app/seed ./seed\n\n# Both volume mount points need to exist nextjs-owned BEFORE the named volumes\n# are first mounted \u2014 otherwise Docker creates them root-owned and uploads\n# fail with EACCES (media_data:/app/media, uploads_data:/app/uploads).\nRUN mkdir -p /app/media /app/uploads/files && chown -R nextjs:nodejs /app/media /app/uploads\n\nUSER nextjs\nEXPOSE 3000\nENV PORT=3000\nENV HOSTNAME=\"0.0.0.0\"\n\n# No start.sh / migrations (Mongo is schemaless) \u2014 same as the methodensammlung\nCMD [\"./node_modules/.bin/next\", \"start\"]\n# Realtime sidecar for Board (Hocuspocus + Yjs). See ADR-1 / ADR-2.\nFROM node:22-alpine\n\nWORKDIR /app\n\nCOPY package.json package-lock.json* ./\nRUN npm install --omit=dev\n\nCOPY server.js ./\n\nEXPOSE 1234\nCMD [\"node\", \"server.js\"]\ndocs:\nREADME.md\naccess-control.md\narchitecture.md\nassets\ndeployment.md\nenv-reference.md\ni18n.md\nlegal-templates.md\nmodules.md\n\nhocuspocus:\nDockerfile\npackage-lock.json\npackage.json\nserver.js\n\nscripts:\nbackup.sh\ngenerate-avatars.ts\nmigrate-color-schemes-into-platform-settings.ts\nmigrate-projektphasen.ts\nmigrate-remove-chat-module.ts\nmigrate-star-memberships.ts\nrestore.sh\nrotate-seed-passwords.ts\nseed-demo-accounts.ts\nseed-legal.ts\nseed-prototype.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker --version; docker compose version; docker info 2>&1 | head -30",
+      "exit_code": 141,
+      "stdout": "Docker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\nClient: Docker Engine - Community\n Version:    29.7.2\n Context:    default\n Debug Mode: false\n Plugins:\n  buildx: Docker Buildx (Docker Inc.)\n    Version:  v0.36.1\n    Path:     /usr/libexec/docker/cli-plugins/docker-buildx\n  compose: Docker Compose (Docker Inc.)\n    Version:  v5.5.0\n    Path:     /usr/libexec/docker/cli-plugins/docker-compose\n\nServer:\n Containers: 0\n  Running: 0\n  Paused: 0\n  Stopped: 0\n Images: 0\n Server Version: 29.7.2\n Storage Driver: overlay2\n  Backing Filesystem: extfs\n  Supports d_type: true\n  Using metacopy: false\n  Native Overlay Diff: true\n  userxattr: true\n Logging Driver: json-file\n Cgroup Driver: cgroupfs\n Cgroup Version: 2\n Plugins:\n  Volume: local\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version 2>/dev/null; npm --version 2>/dev/null; cat .nvmrc; free -h; df -h /workspace /var/lib/docker 2>/dev/null | head; nproc",
+      "exit_code": 0,
+      "stdout": "22\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       619Mi       6.5Gi       1.0Mi       557Mi       6.8Gi\nSwap:          2.0Gi        73Mi       1.9Gi\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.6G  952G   1% /\n/dev/sde       1007G  4.6G  952G   1% /var/lib/docker\n8\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps 2>&1; echo \"exit=$?\"",
+      "exit_code": 0,
+      "stdout": "CONTAINER ID   IMAGE     COMMAND   CREATED   STATUS    PORTS     NAMES\nexit=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n '1,80p' docs/env-reference.md 2>/dev/null; echo ---; sed -n '1,60p' docs/deployment.md 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "# Environment Variable Reference\n\nCanonical list \u2014 matches `.env.example` and `docker-compose.yml`.\n\n## Required (compose fails without them)\n\n| Variable | Description |\n|---|---|\n| `PAYLOAD_SECRET` | Payload token signing secret. Min 32 random chars. |\n| `HOCUSPOCUS_SECRET` | Shared secret between `web` and the `hocuspocus` sidecar (`x-hocuspocus-secret` header on `/api/internal/*`). Must be identical on both services. |\n| `NEXT_PUBLIC_HOCUSPOCUS_URL` | Browser-facing WebSocket URL for the Board (**build-time arg**, baked into the bundle). `ws://localhost:1234` in dev, `wss://\u2026` in production. |\n\n## Core\n\n| Variable | Default | Description |\n|---|---|---|\n| `DATABASE_URI` | `mongodb://localhost:27017/urban_kit` | MongoDB connection string. Compose pins it to the internal `mongo` service. |\n| `NEXT_PUBLIC_SERVER_URL` | `http://localhost:3000` | Public URL for metadata/og tags (**build-time arg**). |\n| `NEXT_PUBLIC_APP_DOMAIN` | `app.urbankit.de` | Workspace domain; drives middleware domain-splitting and the parent-domain session cookie. |\n| `NEXT_PUBLIC_PUBLIC_DOMAIN` | `urbankit.de` | Public portal domain (informational; middleware derives the portal domain by stripping `app.`). |\n| `PAYLOAD_INTERNAL_URL` | `http://localhost:3000` | Where the sidecar reaches Payload (compose: `http://web:3000`). |\n| `HOCUSPOCUS_URL` | `ws://localhost:1234` | Server-side WS URL (sidecar address). |\n| `HOCUSPOCUS_PAYLOAD_URL` | `http://web:3000` | Where the DOCKERIZED sidecar reaches Payload for room auth + persistence (compose interpolation). Mixed dev \u2014 Next on the host, sidecar in Docker \u2014 needs `http://host.docker.internal:3000`, otherwise every board connection fails `permission-denied` and realtime is silently dead. |\n\n## Methodensammlung (optional \u2014 method teasers on Bereich Grundlagen)\n\n| Variable | Default | Description |\n|---|---|---|\n| `METHODEN_URL` | `https://methoden.urbankit.de` | Base URL of the Methodensammlung. The admin field (Platform Settings \u2192 Allgemein \u2192 Methodensammlung-URL) takes precedence when set. |\n| `METHODEN_API_KEY` | \u2014 | API-client key (its `api-clients` collection) for the GraphQL read of published methods (`Authorization: api-clients API-Key <key>`). Unset \u21d2 the Grundlagen page renders without teasers. |\n\n## Urban Agent (optional \u2014 module works with any one provider)\n\nAdmin values (Einstellungen \u2192 Urban Agent) take precedence over env vars;\nsee `src/lib/urban-agent/settings.ts`. There is deliberately **no\ncross-provider failover** \u2014 an outage is an honest 502, never a silent switch\nof the data processor.\n\n| Variable | Description |\n|---|---|\n| `URBAN_AGENT_PROVIDER` | Explicit provider: `mistral` / `anthropic` / `openai` / `ollama`. Unset \u21d2 auto-detect by key presence (Anthropic \u2192 OpenAI \u2192 Mistral \u2192 Ollama). |\n| `URBAN_AGENT_MODEL` | Model id override. Unset \u21d2 cheap default per provider (`mistral-small-latest` / `claude-haiku-4-5` / `gpt-4o-mini` / `llama3`). |\n| `MISTRAL_API_KEY` | Mistral (EU processing). |\n| `ANTHROPIC_API_KEY` | Anthropic. |\n| `OPENAI_API_KEY` | OpenAI. |\n| `OLLAMA_BASE_URL` | Self-hosted Ollama (e.g. `http://localhost:11434`); driven via its OpenAI-compatible endpoint. |\n| `OLLAMA_MODEL` | Ollama model (default `llama3`). |\n| `URBAN_AGENT_DAILY_MAX` | Global daily request ceiling across all users (default `600`) \u2014 cost backstop behind the per-user rate limit. |\n\n## SMTP (optional)\n\n`SMTP_HOST`, `SMTP_PORT`, `SMTP_USER`, `SMTP_PASS`, `SMTP_FROM` \u2014 passed to\nthe container; defaults target a local dev mailcatcher (`localhost:1025`).\n\nSetting `SMTP_HOST` wires Payload's nodemailer adapter AND switches account\n**email verification on**: registration sends an activation mail (link \u2192\n`/de/verifizieren/<token>`) and blocks login until confirmed. Leave it unset\nfor instant registration without mail (dev without a mailcatcher).\n\n## Demo accounts (script-only \u2014 `npm run seed:demo`)\n\n| Variable | Default | Description |\n|---|---|---|\n| `DEMO_PROJECT_SLUG` | `push-statt-pull` | Project both test accounts join (citizen + PM). |\n| `DEMO_CITIZEN_EMAIL` | `demo-buerger@urbankit.de` | Citizen test login. |\n| `DEMO_PM_EMAIL` | `demo-projektleitung@urbankit.de` | Project-lead test login. |\n| `DEMO_PASSWORD` | `urbankit-demo` | Shared password \u2014 **public by design** (shown on `/login`); the accounts are read-only. |\n---\n# Deployment\n\nDocker Compose with three services (see `docker-compose.yml`):\n\n| Service | Image / build | Host port | Notes |\n|---|---|---|---|\n| `web` | `Dockerfile` | `127.0.0.1:3020` | runs `next start` directly (no migrations \u2014 Mongo is schemaless) |\n| `hocuspocus` | `hocuspocus/Dockerfile` | `127.0.0.1:1234` | realtime sidecar for the Board module |\n| `mongo` | `mongo:7` | `127.0.0.1:27019` | volume `mongo_data` |\n\nMedia uploads live on the `media_data` volume (`/app/media`) \u2014 no external\nobject storage.\n\n## Setup\n\n```bash\ncp .env.example .env\n# set at minimum: PAYLOAD_SECRET, HOCUSPOCUS_SECRET, NEXT_PUBLIC_HOCUSPOCUS_URL,\n# NEXT_PUBLIC_SERVER_URL  (see docs/env-reference.md)\n\ndocker compose up -d --build\ndocker compose ps          # wait for healthy\ncurl http://localhost:3020/api/health\n```\n\nCompose fails fast on missing required vars (`:?` syntax) \u2014 intentional.\n\n**Build-time args:** `NEXT_PUBLIC_SERVER_URL` and `NEXT_PUBLIC_HOCUSPOCUS_URL`\nare baked into the client bundle at build time (Docker build args). Changing\nthem requires a rebuild, not just a restart.\n\n## Domains\n\nOne deployment serves both hosts; `src/middleware.ts` splits them (see\n[architecture.md](./architecture.md)):\n\n- `urbankit.de` \u2192 public portal\n- `app.urbankit.de` \u2192 logged-in workspace\n\nPoint both DNS records at the same server. The board WebSocket needs its own\npublic endpoint: set `NEXT_PUBLIC_HOCUSPOCUS_URL` to a `wss://` URL (e.g.\n`wss://ws.urbankit.de`) proxied to port 1234 \u2014 plain `ws://` is blocked as\nmixed content on https pages.\n\n### Nginx sketch\n\n```nginx\n# portal + app \u2192 next\nserver {\n    listen 443 ssl;\n    server_name urbankit.de app.urbankit.de;\n    location / {\n        proxy_pass http://127.0.0.1:3020;\n        proxy_set_header Host $host;\n        proxy_set_header X-Forwarded-Proto $scheme;\n    }\n}\n\n# board websocket\nserver {\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cp .env.example .env && PAYLOAD=$(openssl rand -hex 32) && HOCUS=$(openssl rand -hex 32) && sed -i \"s|^PAYLOAD_SECRET=.*|PAYLOAD_SECRET=${PAYLOAD}|\" .env && sed -i \"s|^HOCUSPOCUS_SECRET=.*|HOCUSPOCUS_SECRET=${HOCUS}|\" .env && sed -i \"s|^NEXT_PUBLIC_SERVER_URL=.*|NEXT_PUBLIC_SERVER_URL=http://localhost:3020|\" .env && grep -E '^(PAYLOAD_SECRET|HOCUSPOCUS_SECRET|NEXT_PUBLIC_HOCUSPOCUS_URL|NEXT_PUBLIC_SERVER_URL|MONGO_ROOT)' .env | sed 's/=\\(.\\{8\\}\\).*/=\\1.../'",
+      "exit_code": 0,
+      "stdout": "MONGO_ROOT_USER=urbankit...\nMONGO_ROOT_PASSWORD=change-m...\nPAYLOAD_SECRET=3faa3497...\nNEXT_PUBLIC_SERVER_URL=http://l...\nHOCUSPOCUS_SECRET=3172e4cf...\nNEXT_PUBLIC_HOCUSPOCUS_URL=ws://loc...\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup docker compose up -d --build > /tmp/compose-up.log 2>&1 &\necho \"started bg pid $!\"",
+      "exit_code": 0,
+      "stdout": "started bg pid 499\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -5 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1",
+      "exit_code": 0,
+      "stdout": " 05fe25a67949 Downloading 98.08MB\n 05fe25a67949 Downloading 98.62MB\n 05fe25a67949 Downloading 99.15MB\n 05fe25a67949 Downloading 99.69MB\n 05fe25a67949 Downloading 100.2MB\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; tail -3 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1; docker images 2>&1 | head",
+      "exit_code": 0,
+      "stdout": "#9 ...\n\n#11 [hocuspocus 1/5] FROM docker.io/library/node:22-alpine@sha256:0a7108bf6c7bf5de370ffb1a3ed6be93d405b43ff159f681a8d18c0e2bc2e402\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\nIMAGE                    ID             DISK USAGE   CONTENT SIZE   EXTRA\naxllent/mailpit:latest   978742ab0aca         41MB             0B        \nmongo:7                  72404c1083af        867MB             0B        \n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; tail -4 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1",
+      "exit_code": 0,
+      "stdout": "#22 3.196 npm warn   node_modules/@excalidraw/excalidraw/node_modules/@radix-ui/react-tabs/node_modules/@radix-ui/react-roving-focus/node_modules/@radix-ui/react-collection/node_modules/@radix-ui/react-slot\n#22 3.196 npm warn     @radix-ui/react-slot@\"1.0.1\" from @radix-ui/react-collection@1.0.1\n#22 3.196 npm warn     node_modules/@excalidraw/excalidraw/node_modules/@radix-ui/react-tabs/node_modules/@radix-ui/react-roving-focus/node_modules/@radix-ui/react-collection\n#22 6.962 npm warn deprecated sliced@1.0.1: Unsupported\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 180; tail -4 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1",
+      "exit_code": 0,
+      "stdout": "#26 14.79 \n#26 15.65    \u25b2 Next.js 15.4.11\n#26 15.65 \n#26 15.69    Creating an optimized production build ...\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 240; tail -4 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1",
+      "exit_code": 0,
+      "stdout": "#35 DONE 0.7s\n\n#36 [web] exporting to image\n#36 exporting layers\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 45; tail -15 /tmp/compose-up.log; echo ---; cd /workspace && docker compose ps 2>&1",
+      "exit_code": 0,
+      "stdout": "#32 [web runner  8/11] COPY --from=builder --chown=nextjs:nodejs /app/tsconfig.json ./tsconfig.json\n#32 DONE 0.2s\n\n#33 [web runner  9/11] COPY --from=builder --chown=nextjs:nodejs /app/scripts ./scripts\n#33 DONE 0.2s\n\n#34 [web runner 10/11] COPY --from=builder --chown=nextjs:nodejs /app/seed ./seed\n#34 DONE 0.2s\n\n#35 [web runner 11/11] RUN mkdir -p /app/media /app/uploads/files && chown -R nextjs:nodejs /app/media /app/uploads\n#35 DONE 0.7s\n\n#36 [web] exporting to image\n#36 exporting layers\n#36 exporting layers 53.4s done\n---\nNAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; cd /workspace && docker compose ps 2>&1; echo ---; tail -5 /tmp/compose-up.log",
+      "exit_code": 0,
+      "stdout": "NAME      IMAGE     COMMAND   SERVICE   CREATED   STATUS    PORTS\n---\n Container workspace-hocuspocus-1 Creating \n Container workspace-hocuspocus-1 Created \n Container workspace-mongo-1 Starting \n Container workspace-mailpit-1 Starting \nError response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: cannot enter cgroupv2 \"/sys/fs/cgroup/docker\" with domain controllers -- it is in threaded mode\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /proc/self/cgroup; echo ---; cat /sys/fs/cgroup/cgroup.controllers 2>/dev/null; cat /sys/fs/cgroup/cgroup.type 2>/dev/null; echo ---; pgrep -a dockerd; pgrep -a containerd | head -3",
+      "exit_code": 0,
+      "stdout": "0::/\n---\ncpu io memory pids\ndomain threaded\n---\n4 dockerd --host=unix:///var/run/docker.sock --storage-driver=overlay2\n45 containerd --config /var/run/docker/containerd/containerd.toml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /sys/fs/cgroup/cgroup.subtree_control 2>/dev/null; echo ---; cat /sys/fs/cgroup/cgroup.procs 2>/dev/null | head; echo ---; ls /sys/fs/cgroup/ | head -20; echo ---; pgrep -a systemd | head -3; echo ---; mount | grep cgroup",
+      "exit_code": 0,
+      "stdout": "cpu pids\n---\n1\n2\n4\n45\n1605\n1606\n1610\n1611\n---\ncgroup.controllers\ncgroup.events\ncgroup.freeze\ncgroup.kill\ncgroup.max.depth\ncgroup.max.descendants\ncgroup.pressure\ncgroup.procs\ncgroup.stat\ncgroup.subtree_control\ncgroup.threads\ncgroup.type\ncpu.idle\ncpu.max\ncpu.max.burst\ncpu.pressure\ncpu.stat\ncpu.stat.local\ncpu.weight\ncpu.weight.nice\n---\n---\ncgroup2 on /sys/fs/cgroup type cgroup2 (rw,nosuid,nodev,noexec,relatime,nsdelegate)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "docker ps -a 2>&1; echo ---; find /sys/fs/cgroup -maxdepth 2 -type d 2>/dev/null | head -20; echo ---; cat /sys/fs/cgroup/cgroup.threads; echo ---; cat /sys/fs/cgroup/cgroup.subtree_control",
+      "exit_code": 0,
+      "stdout": "CONTAINER ID   IMAGE                  COMMAND                  CREATED              STATUS    PORTS     NAMES\n077c7663985b   workspace-hocuspocus   \"docker-entrypoint.s\u2026\"   About a minute ago   Created             workspace-hocuspocus-1\nf86f2b59a806   workspace-web          \"docker-entrypoint.s\u2026\"   About a minute ago   Created             workspace-web-1\n9f674592b226   axllent/mailpit        \"/mailpit\"               About a minute ago   Created             workspace-mailpit-1\n3b40975bad41   mongo:7                \"docker-entrypoint.s\u2026\"   About a minute ago   Created             workspace-mongo-1\n---\n/sys/fs/cgroup\n/sys/fs/cgroup/docker\n/sys/fs/cgroup/docker/buildkit\n---\n1\n2\n4\n26\n28\n29\n30\n45\n47\n48\n49\n50\n51\n79\n80\n81\n106\n107\n112\n113\n114\n541\n542\n587\n589\n705\n711\n712\n713\n839\n841\n842\n1374\n1561\n1618\n1619\n1634\n---\ncpu pids\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /proc/version; echo ---; cat /sys/fs/cgroup/docker/cgroup.type 2>/dev/null; cat /sys/fs/cgroup/docker/cgroup.subtree_control 2>/dev/null; echo ---; cat /sys/fs/cgroup/docker/buildkit/cgroup.type 2>/dev/null; cat /sys/fs/cgroup/docker/buildkit/cgroup.subtree_control 2>/dev/null; echo ---; cat /proc/4/cgroup; cat /sys/fs/cgroup/cgroup.max.depth /sys/fs/cgroup/cgroup.max.descendants 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "Linux version 6.6.87.2-microsoft-standard-WSL2 (root@439a258ad544) (gcc (GCC) 11.2.0, GNU ld (GNU Binutils) 2.37) #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025\n---\nthreaded\ncpu pids\n---\nthreaded\ncpu pids\n---\n0::/\nmax\nmax\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo 0 > /sys/fs/cgroup/cgroup.threads 2>&1; echo \"root rc=$?\"; cat /sys/fs/cgroup/cgroup.type 2>/dev/null; echo 0 > /sys/fs/cgroup/docker/cgroup.threads 2>&1; echo \"docker rc=$?\"; cat /sys/fs/cgroup/docker/cgroup.type 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "root rc=0\ndomain threaded\ndocker rc=0\nthreaded\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /sys/fs/cgroup/cgroup.threads; cat /sys/fs/cgroup/docker/cgroup.threads; echo ---; echo 1 > /sys/fs/cgroup/cgroup.threads 2>&1; echo \"rc=$?\"; cat /sys/fs/cgroup/cgroup.type /sys/fs/cgroup/cgroup.threads",
+      "exit_code": 0,
+      "stdout": "1\n2\n4\n26\n28\n29\n30\n45\n47\n48\n49\n50\n51\n79\n80\n81\n106\n107\n112\n113\n114\n541\n542\n587\n589\n705\n711\n712\n713\n839\n841\n842\n1374\n1561\n1652\n1653\n1656\n---\nrc=0\ndomain threaded\n1\n2\n4\n26\n28\n29\n30\n45\n47\n48\n49\n50\n51\n79\n80\n81\n106\n107\n112\n113\n114\n541\n542\n587\n589\n705\n711\n712\n713\n839\n841\n842\n1374\n1561\n1652\n1653\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "stat -f -c '%T' /sys/fs/cgroup; grep cgroup /proc/mounts; echo ---; pgrep -a buildkitd | head -3; echo ---; find /sys/fs/cgroup -maxdepth 3 -type d | head; echo ---; cat /sys/fs/cgroup/docker/cgroup.procs 2>&1 | head; echo ---; runc --version 2>/dev/null | head -2; containerd --version 2>/dev/null | head -1",
+      "exit_code": 0,
+      "stdout": "cgroup2fs\ncgroup2 /sys/fs/cgroup cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate 0 0\n---\n---\n/sys/fs/cgroup\n/sys/fs/cgroup/docker\n/sys/fs/cgroup/docker/buildkit\n---\ncat: /sys/fs/cgroup/docker/cgroup.procs: Operation not supported\n---\nrunc version 1.4.3\ncommit: v1.4.3-0-gbb14dabe\ncontainerd containerd v2.3.4 db8809540e1a7a9da5d518876894933ff55692ab\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /sys/fs/cgroup/docker/cgroup.type; echo \"=== buildkit type ===\"; cat /sys/fs/cgroup/docker/buildkit/cgroup.type; echo \"=== who is threaded at root? sample ===\"; head -3 /sys/fs/cgroup/cgroup.threads; echo \"count:\"; wc -l < /sys/fs/cgroup/cgroup.threads; echo \"=== containerd config ===\"; cat /var/run/docker/containerd/containerd.toml 2>/dev/null | head -40",
+      "exit_code": 0,
+      "stdout": "threaded\n=== buildkit type ===\nthreaded\n=== who is threaded at root? sample ===\n1\n2\n4\ncount:\n37\n=== containerd config ===\nversion = 2\nroot = '/var/lib/docker/containerd/daemon'\nstate = '/var/run/docker/containerd/daemon'\ntemp = ''\ndisabled_plugins = ['io.containerd.grpc.v1.cri']\nrequired_plugins = []\noom_score = 0\nimports = []\n\n[debug]\nlevel = ''\nformat = 'text'\nlog_trace_id = false\naddress = '/var/run/docker/containerd/containerd-debug.sock'\n\n[cgroup]\npath = ''\n\n[grpc]\naddress = '/var/run/docker/containerd/containerd.sock'\nmax_recv_message_size = 16777216\nmax_send_message_size = 16777216\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "id; echo \"=== try disable threaded on /sys/fs/cgroup/docker ===\"; { echo 0 > /sys/fs/cgroup/docker/cgroup.threads; } ; echo \"write_rc=$?\"; cat /sys/fs/cgroup/docker/cgroup.type; echo \"=== try disable threaded on root ===\"; { echo 0 > /sys/fs/cgroup/cgroup.threads; }; echo \"write_rc=$?\"; cat /sys/fs/cgroup/cgroup.type",
+      "exit_code": 0,
+      "stdout": "uid=0(root) gid=0(root) groups=0(root)\n=== try disable threaded on /sys/fs/cgroup/docker ===\nwrite_rc=0\nthreaded\n=== try disable threaded on root ===\nwrite_rc=0\ndomain threaded\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /proc/1/comm /proc/1/cmdline 2>/dev/null | tr '\\0' ' '; echo; ps aux | head -15; echo ---; dmesg 2>/dev/null | tail -5",
+      "exit_code": 0,
+      "stdout": "tini\n/usr/bin/tini -- /usr/local/bin/installbench-dind-entrypoint sleep infinity \nUSER         PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\nroot           1  0.0  0.0   2788  1152 ?        Ss   15:18   0:00 /usr/bin/tini -- /usr/local/bin/installbench-dind-entrypoint sleep infinity\nroot           2  0.0  0.0   2792  1536 ?        S    15:18   0:00 sleep infinity\nroot           4 24.1  3.3 3058344 266624 ?      Sl   15:18   4:15 dockerd --host=unix:///var/run/docker.sock --storage-driver=overlay2\nroot          45  0.2  0.4 2191360 35100 ?       Ssl  15:18   0:02 containerd --config /var/run/docker/containerd/containerd.toml\nroot        1703  0.0  0.0   2800  1408 ?        Ss   15:36   0:00 /usr/bin/timeout --signal=TERM --kill-after=5s 600s /bin/bash -lc set -o pipefail cd /workspace || exit 125 cat /proc/1/comm /proc/1/cmdline 2>/dev/null | tr '\\0' ' '; echo; ps aux | head -15; echo ---; dmesg 2>/dev/null | tail -5\nroot        1704  0.0  0.0   4364  3200 ?        S    15:36   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 cat /proc/1/comm /proc/1/cmdline 2>/dev/null | tr '\\0' ' '; echo; ps aux | head -15; echo ---; dmesg 2>/dev/null | tail -5\nroot        1709  0.0  0.0   7064  2816 ?        R    15:36   0:00 ps aux\nroot        1710  0.0  0.0   2804  1280 ?        S    15:36   0:00 head -15\n---\n[97062.633025] WSL (1 - init(podman-installbench-vpn)) WARNING: /etc/resolv.conf updating disabled in /etc/wsl.conf\n[97062.697744] WSL (624149 - Relay) ERROR: UtilAcceptVsock:244: Waiting for abnormally long accept(10)\n[97062.713758] WSL (571986 - Relay) ERROR: UtilAcceptVsock:244: Waiting for abnormally long accept(10)\n[97063.013825] WSL (203015 - Relay) ERROR: UtilAcceptVsock:244: Waiting for abnormally long accept(10)\n[97063.793979] WSL (196652 - Relay) ERROR: UtilAcceptVsock:244: Waiting for abnormally long accept(10)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mkdir -p /sys/fs/cgroup/probe 2>&1; echo \"mkdir rc=$?\"; ls /sys/fs/cgroup/probe/ 2>&1; echo ---; cat /sys/fs/cgroup/probe/cgroup.type 2>&1; echo ---; cat /sys/fs/cgroup/probe/cgroup.controllers 2>&1; cat /sys/fs/cgroup/probe/cgroup.subtree_control 2>&1; echo ---; echo $$ > /sys/fs/cgroup/probe/cgroup.procs 2>&1; echo \"join rc=$?\"",
+      "exit_code": 0,
+      "stdout": "mkdir rc=0\ncgroup.controllers\ncgroup.events\ncgroup.freeze\ncgroup.kill\ncgroup.max.depth\ncgroup.max.descendants\ncgroup.pressure\ncgroup.procs\ncgroup.stat\ncgroup.subtree_control\ncgroup.threads\ncgroup.type\ncpu.idle\ncpu.max\ncpu.max.burst\ncpu.pressure\ncpu.stat\ncpu.stat.local\ncpu.weight\ncpu.weight.nice\nio.pressure\nmemory.pressure\npids.current\npids.events\npids.max\npids.peak\n---\ndomain invalid\n---\ncpu pids\n---\njoin rc=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /sys/fs/cgroup/docker -maxdepth 2 | head -20; echo ---; for d in /sys/fs/cgroup/docker/*/; do echo \"$d: $(cat $d/cgroup.type 2>/dev/null)\"; done 2>/dev/null | head -10",
+      "exit_code": 0,
+      "stdout": "/sys/fs/cgroup/docker\n/sys/fs/cgroup/docker/cgroup.events\n/sys/fs/cgroup/docker/io.pressure\n/sys/fs/cgroup/docker/cgroup.procs\n/sys/fs/cgroup/docker/cpu.weight\n/sys/fs/cgroup/docker/cgroup.max.descendants\n/sys/fs/cgroup/docker/cpu.stat\n/sys/fs/cgroup/docker/cpu.weight.nice\n/sys/fs/cgroup/docker/memory.pressure\n/sys/fs/cgroup/docker/pids.current\n/sys/fs/cgroup/docker/pids.events\n/sys/fs/cgroup/docker/cpu.pressure\n/sys/fs/cgroup/docker/cgroup.type\n/sys/fs/cgroup/docker/cgroup.stat\n/sys/fs/cgroup/docker/buildkit\n/sys/fs/cgroup/docker/buildkit/cgroup.events\n/sys/fs/cgroup/docker/buildkit/io.pressure\n/sys/fs/cgroup/docker/buildkit/cgroup.procs\n/sys/fs/cgroup/docker/buildkit/cpu.weight\n/sys/fs/cgroup/docker/buildkit/cgroup.max.descendants\n---\n/sys/fs/cgroup/docker/buildkit/: threaded\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo 50 > /sys/fs/cgroup/docker/cpu.weight 2>&1; echo \"cpu.weight rc=$?\"; cat /sys/fs/cgroup/docker/cpu.weight; echo ---; echo 90 > /sys/fs/cgroup/probe/cpu.weight 2>&1; echo \"probe rc=$?\"; cat /sys/fs/cgroup/probe/cpu.weight; echo ---; cat /sys/fs/cgroup/docker/buildkit/cpu.weight 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "cpu.weight rc=0\n50\n---\nprobe rc=0\n90\n---\n100\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "printf '0\\n' > /sys/fs/cgroup/probe/cgroup.threads; echo \"probe write rc=$?\"; cat /sys/fs/cgroup/probe/cgroup.type /sys/fs/cgroup/probe/cgroup.threads; echo ---; stat -c '%d:%i' /sys/fs/cgroup/probe/cgroup.type /sys/fs/cgroup/probe/cgroup.threads; echo ---; findmnt -T /sys/fs/cgroup/probe/cgroup.threads 2>/dev/null; findmnt /sys/fs/cgroup",
+      "exit_code": 0,
+      "stdout": "probe write rc=1\ndomain invalid\n---\n23:113098\n23:113100\n---\nTARGET         SOURCE  FSTYPE  OPTIONS\n/sys/fs/cgroup cgroup2 cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate\nTARGET         SOURCE  FSTYPE  OPTIONS\n/sys/fs/cgroup cgroup2 cgroup2 rw,nosuid,nodev,noexec,relatime,nsdelegate\n",
+      "stderr": "/bin/bash: line 3: printf: write error: Operation not supported\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -50 /sys/fs/cgroup/docker/cgroup.threads; echo \"count: $(wc -l < /sys/fs/cgroup/docker/cgroup.threads)\"; echo ---; for t in $(head -20 /sys/fs/cgroup/docker/cgroup.threads); do if [ -d /proc/$t ]; then echo \"$t alive: $(cat /proc/$t/comm 2>/dev/null)\"; else echo \"$t dead\"; fi; done",
+      "exit_code": 0,
+      "stdout": "count: 0\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /usr/local/bin/installbench-dind-entrypoint 2>/dev/null | head -80",
+      "exit_code": 0,
+      "stdout": "#!/bin/bash\nset -euo pipefail\n\nreadonly dockerd_log=/var/log/installbench-dockerd.log\nreadonly readiness_timeout=\"${DIND_READY_TIMEOUT_SECONDS:-60}\"\n\nrm -f /var/run/docker.pid /var/run/docker.sock\n\n# /var/lib/docker is a dedicated outer-engine volume, so overlay2 can store\n# copy-on-write layers without nesting them in the sandbox's writable layer.\ndockerd \\\n    --host=unix:///var/run/docker.sock \\\n    --storage-driver=overlay2 \\\n    >\"${dockerd_log}\" 2>&1 &\nreadonly dockerd_pid=$!\n\nfor ((attempt = 1; attempt <= readiness_timeout; attempt++)); do\n    if docker info >/dev/null 2>&1; then\n        exec \"$@\"\n    fi\n\n    if ! kill -0 \"${dockerd_pid}\" 2>/dev/null; then\n        echo \"The private Docker daemon exited before becoming ready.\" >&2\n        cat \"${dockerd_log}\" >&2\n        exit 1\n    fi\n    sleep 1\ndone\n\necho \"The private Docker daemon was not ready after ${readiness_timeout} seconds.\" >&2\ncat \"${dockerd_log}\" >&2\nexit 1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "set -x\n# leaf first\n{ echo 0 > /sys/fs/cgroup/docker/buildkit/cgroup.threads; } 2>/tmp/err1; echo \"buildkit_rc=$?\"; cat /tmp/err1; cat /sys/fs/cgroup/docker/buildkit/cgroup.type\n# then docker\n{ echo 0 > /sys/fs/cgroup/docker/cgroup.threads; } 2>/tmp/err2; echo \"docker_rc=$?\"; cat /tmp/err2; cat /sys/fs/cgroup/docker/cgroup.type\nset +x",
+      "exit_code": 0,
+      "stdout": "buildkit_rc=0\n+ echo 0\nthreaded\ndocker_rc=0\n+ echo 0\nthreaded\n",
+      "stderr": "+ echo buildkit_rc=0\n+ cat /tmp/err1\n+ cat /sys/fs/cgroup/docker/buildkit/cgroup.type\n+ echo docker_rc=0\n+ cat /tmp/err2\n+ cat /sys/fs/cgroup/docker/cgroup.type\n+ set +x\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "python3 - <<'EOF'\nimport os, errno\ndef trywrite(path, val):\n    try:\n        fd = os.open(path, os.O_WRONLY)\n        n = os.write(fd, val.encode())\n        os.close(fd)\n        print(f\"{path}: wrote {val!r} -> {n} bytes OK\")\n    except OSError as e:\n        print(f\"{path}: wrote {val!r} -> EROFS/ERR: {e}\")\nfor p in [\"/sys/fs/cgroup/docker/cgroup.threads\", \"/sys/fs/cgroup/docker/buildkit/cgroup.threads\", \"/sys/fs/cgroup/cgroup.threads\"]:\n    trywrite(p, \"0\")\n    with open(p.replace(\"threads\",\"type\")) as f:\n        print(\"   type now:\", f.read().strip())\n    if p.endswith(\"/buildkit/cgroup.threads\") or p.endswith(\"/docker/cgroup.threads\"):\n        t = open(p).read().strip()\n        print(\"   threads file:\", repr(t))\nEOF",
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which python python3 node npm 2>&1; echo ---; node -e '\nfunction trywrite(path, val){\n  try{\n    const fd = require(\"fs\").openSync(path, \"w\");\n    require(\"fs\").writeSync(fd, val);\n    require(\"fs\").closeSync(fd);\n    console.log(path+\": wrote \"+JSON.stringify(val)+\" OK\");\n  }catch(e){ console.log(path+\": ERR \"+e.code); }\n}\ntrywrite(\"/sys/fs/cgroup/docker/cgroup.threads\",\"0\");\ntrywrite(\"/sys/fs/cgroup/docker/buildkit/cgroup.threads\",\"0\");\nconsole.log(\"docker type:\", require(\"fs\").readFileSync(\"/sys/fs/cgroup/docker/cgroup.type\",\"utf8\").trim());\nconsole.log(\"buildkit type:\", require(\"fs\").readFileSync(\"/sys/fs/cgroup/docker/buildkit/cgroup.type\",\"utf8\").trim());\n'",
+      "exit_code": 127,
+      "stdout": "---\n",
+      "stderr": "/bin/bash: line 3: node: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which gcc cc 2>&1; ls /usr/bin | grep -iE '^(python|gcc|cc|node)' | head",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== BEFORE ===\"; cat /sys/fs/cgroup/docker/cgroup.type\necho \"=== direct redirect, capture bash stderr ===\"\necho 0 > /sys/fs/cgroup/docker/cgroup.threads\necho \"redirect_rc=$?\"\necho \"=== AFTER ===\"; cat /sys/fs/cgroup/docker/cgroup.type\necho \"=== strace available? ===\"; which strace 2>&1\necho \"=== check nsdelegate / cgroup namespace ===\"; ls -la /proc/self/ns/cgroup; cat /proc/self/cgroup",
+      "exit_code": 0,
+      "stdout": "=== BEFORE ===\nthreaded\n=== direct redirect, capture bash stderr ===\nredirect_rc=0\n=== AFTER ===\nthreaded\n=== strace available? ===\n=== check nsdelegate / cgroup namespace ===\nlrwxrwxrwx 1 root root 0 Oct 17 15:39 /proc/self/ns/cgroup -> cgroup:[4026532404]\n0::/docker\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release | head -5; echo ---; grep Cap /proc/self/status; echo ---; which apt-get dpkg apk 2>&1; echo ---; apt-get --version 2>&1 | head -1",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\n---\nCapInh:\t0000000000000000\nCapPrm:\t000001ffffffffff\nCapEff:\t000001ffffffffff\nCapBnd:\t000001ffffffffff\nCapAmb:\t0000000000000000\n---\n/usr/bin/apt-get\n/usr/bin/dpkg\n---\napt 2.4.14 (amd64)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "rmdir /sys/fs/cgroup/probe 2>&1; echo \"probe rmdir rc=$?\"\necho \"=== can we un-thread buildkit (a NON-namespace-root threaded cgroup)? ===\"\necho 0 > /sys/fs/cgroup/docker/buildkit/cgroup.threads; echo \"buildkit.threads=0 rc=$?\"\necho \"buildkit type now: $(cat /sys/fs/cgroup/docker/buildkit/cgroup.type)\"\necho \"=== namespace root ===\"\necho 0 > /sys/fs/cgroup/cgroup.threads; echo \"root.threads=0 rc=$?\"\necho \"root type now: $(cat /sys/fs/cgroup/cgroup.type)\"",
+      "exit_code": 0,
+      "stdout": "probe rmdir rc=0\n=== can we un-thread buildkit (a NON-namespace-root threaded cgroup)? ===\nbuildkit.threads=0 rc=0\nbuildkit type now: threaded\n=== namespace root ===\nroot.threads=0 rc=0\nroot type now: domain threaded\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== minimal container run to confirm exact runc error ===\"\ntime docker run --rm busybox true 2>&1 | tail -8; echo \"run_rc=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== minimal container run to confirm exact runc error ===\nUnable to find image 'busybox:latest' locally\nlatest: Pulling from library/busybox\n37bb94b0940b: Pulling fs layer\n37bb94b0940b: Download complete\n37bb94b0940b: Pull complete\nDigest: sha256:fd7dc98638c8e305f4dc34e979f1c0fdfdcaeb0fbf8fcff77ae834b6da3d7e6e\nStatus: Downloaded newer image for busybox:latest\nrun_rc=0\n",
+      "stderr": "\nreal\t0m4.885s\nuser\t0m0.122s\nsys\t0m0.063s\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose up -d 2>&1 | tail -20; echo \"up_rc=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": " Container workspace-mongo-1 Starting \n Container workspace-mailpit-1 Starting \nError response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: cannot enter cgroupv2 \"/sys/fs/cgroup/docker\" with domain controllers -- it is in threaded mode\nup_rc=1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== test: container WITH memory limit (like compose) ===\"\ntime docker run --rm --memory 1g busybox true 2>&1 | tail -8; echo \"run_rc=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "=== test: container WITH memory limit (like compose) ===\ndocker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: cannot enter cgroupv2 \"/sys/fs/cgroup/docker\" with domain controllers -- it is in threaded mode\n\nRun 'docker run --help' for more information\nrun_rc=125\n",
+      "stderr": "\nreal\t0m0.490s\nuser\t0m0.024s\nsys\t0m0.054s\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat > /workspace/docker-compose.noresources.yml <<'EOF'\n# Local environment workaround (not part of the upstream repo):\n# this sandbox's cgroup-namespace root is in cgroup-v2 \"threaded\" mode, so\n# runc cannot apply per-container memory limits (deploy.resources.limits).\n# runc create succeeds only when no cgroup limits need to be written.\n# Verified: `docker run --rm busybox true` OK, `docker run --rm --memory 1g ...`\n# fails with: cannot enter cgroupv2 ... with domain controllers -- it is in\n# threaded mode. This override strips the memory ceilings only.\nservices:\n  web:\n    deploy: !reset null\n  hocuspocus:\n    deploy: !reset null\n  mongo:\n    deploy: !reset null\n  mailpit:\n    deploy: !reset null\nEOF\ncd /workspace && docker compose -f docker-compose.yml -f docker-compose.noresources.yml config --services 2>&1 && echo \"config OK\"",
+      "exit_code": 0,
+      "stdout": "mongo\nweb\nhocuspocus\nmailpit\nconfig OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && docker compose -f docker-compose.yml -f docker-compose.noresources.yml config 2>/dev/null | grep -A3 'deploy' ; echo \"deploy-sections-above (should be none)\"; docker compose -f docker-compose.yml -f docker-compose.noresources.yml up -d 2>&1 | tail -10; echo \"up_rc=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "deploy-sections-above (should be none)\n Container workspace-mongo-1 Starting \n Container workspace-mailpit-1 Starting \n Container workspace-mailpit-1 Started \n Container workspace-mongo-1 Started \n Container workspace-mongo-1 Waiting \n Container workspace-mongo-1 Healthy \n Container workspace-web-1 Starting \n Container workspace-web-1 Started \n Container workspace-hocuspocus-1 Starting \n Container workspace-hocuspocus-1 Started \nup_rc=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 45; cd /workspace && docker compose -f docker-compose.yml -f docker-compose.noresources.yml ps 2>&1",
+      "exit_code": 0,
+      "stdout": "NAME                     IMAGE                  COMMAND                  SERVICE      CREATED              STATUS                        PORTS\nworkspace-hocuspocus-1   workspace-hocuspocus   \"docker-entrypoint.s\u2026\"   hocuspocus   About a minute ago   Up 49 seconds                 127.0.0.1:1234->1234/tcp\nworkspace-mailpit-1      axllent/mailpit        \"/mailpit\"               mailpit      About a minute ago   Up About a minute (healthy)   127.0.0.1:1025->1025/tcp, 127.0.0.1:8025->8025/tcp, 1110/tcp\nworkspace-mongo-1        mongo:7                \"docker-entrypoint.s\u2026\"   mongo        About a minute ago   Up About a minute (healthy)   127.0.0.1:27019->27017/tcp\nworkspace-web-1          workspace-web          \"docker-entrypoint.s\u2026\"   web          About a minute ago   Up 49 seconds (healthy)       127.0.0.1:3020->3000/tcp\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /dev/null -w \"health http=%{http_code}\\n\" http://localhost:3020/api/health; curl -s http://localhost:3020/api/health; echo; echo ---; curl -s -o /dev/null -w \"root http=%{http_code}\\n\" -H \"Host: urbankit.de\" http://localhost:3020/; curl -s -o /dev/null -w \"app host http=%{http_code}\\n\" -H \"Host: app.urbankit.de\" http://localhost:3020/",
+      "exit_code": 0,
+      "stdout": "health http=200\n{\"ok\":true}\n---\nroot http=307\napp host http=307\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -i -N --max-time 5 http://127.0.0.1:1234/ 2>&1 | head -12; echo ---; docker logs workspace-hocuspocus-1 2>&1 | tail -15",
+      "exit_code": 0,
+      "stdout": "HTTP/1.1 200 OK\nContent-Type: text/plain\nDate: Sat, 17 Oct 2026 15:42:03 GMT\nConnection: keep-alive\nKeep-Alive: timeout=5\nTransfer-Encoding: chunked\n\nOK---\nHocuspocus running on port 1234\n\n  Hocuspocus v2.15.3 running at:\n\n  > HTTP: http://0.0.0.0:1234\n  > WebSocket: ws://0.0.0.0:1234\n\n  Extensions:\n  - Database\n\n  Ready.\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -L -H \"Host: urbankit.de\" -o /tmp/portal.html -w \"portal final=%{http_code} url=%{url_effective}\\n\" http://localhost:3020/; head -c 300 /tmp/portal.html; echo; echo ---; curl -s -L -H \"Host: app.urbankit.de\" -o /tmp/app.html -w \"app final=%{http_code} url=%{url_effective}\\n\" http://localhost:3020/; grep -oE '<title>[^<]*</title>' /tmp/app.html /tmp/portal.html",
+      "exit_code": 0,
+      "stdout": "portal final=200 url=http://localhost:3020/de\n<!DOCTYPE html><html lang=\"de\" style=\"--projekte:#ffdfab;--projekte-light:#ffebc9;--projekte-accent:#ff9c1a;--projekte-dark:#ffb950;--projekte-on-brand:#1c1c1c;--grundlagen:#d8d9ff;--grundlagen-light:#eeeeff;--grundlagen-accent:#7375c4;--grundlagen-dark:#a0a2e8;--grundlagen-on-brand:#1c1c1c;--zusamm\n---\napp final=200 url=http://localhost:3020/de/login\n/tmp/app.html:<title>Urban Kit</title>\n/tmp/portal.html:<title>UrbanKIT \u2013 Stadtbeteiligung f\u00fcr Detmold</title>\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 20; cd /workspace && docker compose -f docker-compose.yml -f docker-compose.noresources.yml ps 2>&1; echo \"=== final health ===\"; curl -s http://localhost:3020/api/health; echo; echo \"=== web log tail ===\"; docker logs workspace-web-1 2>&1 | tail -8",
+      "exit_code": 0,
+      "stdout": "NAME                     IMAGE                  COMMAND                  SERVICE      CREATED              STATUS                        PORTS\nworkspace-hocuspocus-1   workspace-hocuspocus   \"docker-entrypoint.s\u2026\"   hocuspocus   About a minute ago   Up About a minute             127.0.0.1:1234->1234/tcp\nworkspace-mailpit-1      axllent/mailpit        \"/mailpit\"               mailpit      About a minute ago   Up About a minute (healthy)   127.0.0.1:1025->1025/tcp, 127.0.0.1:8025->8025/tcp, 1110/tcp\nworkspace-mongo-1        mongo:7                \"docker-entrypoint.s\u2026\"   mongo        About a minute ago   Up About a minute (healthy)   127.0.0.1:27019->27017/tcp\nworkspace-web-1          workspace-web          \"docker-entrypoint.s\u2026\"   web          About a minute ago   Up About a minute (healthy)   127.0.0.1:3020->3000/tcp\n=== final health ===\n{\"ok\":true}\n=== web log tail ===\n   \u25b2 Next.js 15.4.11\n   - Local:        http://localhost:3000\n   - Network:      http://172.18.0.4:3000\n\n \u2713 Starting...\n \u2713 Ready in 4.2s\n(node:1) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.\n(Use `node --trace-warnings ...` to show where the warning was created)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "rm -f /tmp/portal.html /tmp/app.html; ls /workspace/docker-compose*.yml",
+      "exit_code": 0,
+      "stdout": "/workspace/docker-compose.noresources.yml\n/workspace/docker-compose.prod.yml\n/workspace/docker-compose.yml\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && echo '---' && cat docker-compose.yml 2>/dev/null | head -80",
+      "exit_code": 0,
+      "stdout": "total 528\ndrwxr-xr-x 12 root root   4096 Oct 17 15:40 .\ndr-xr-xr-x  1 root root   4096 Oct 17 15:18 ..\n-rw-r--r--  1 root root     92 Oct 17 15:19 .dockerignore\n-rw-r--r--  1 root root   2071 Oct 17 15:19 .env\n-rw-r--r--  1 root root   2003 Oct 17 15:19 .env.example\ndrwxr-xr-x  8 root root   4096 Oct 17 15:19 .git\ndrwxr-xr-x  3 root root   4096 Oct 17 15:19 .github\n-rw-r--r--  1 root root    330 Oct 17 15:19 .gitignore\n-rw-r--r--  1 root root      3 Oct 17 15:19 .nvmrc\n-rw-r--r--  1 root root  14931 Oct 17 15:19 AGENTS.md\n-rw-r--r--  1 root root   1468 Oct 17 15:19 CLAUDE.md\n-rw-r--r--  1 root root   5571 Oct 17 15:19 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root   2826 Oct 17 15:19 CONTRIBUTING.md\n-rw-r--r--  1 root root   2270 Oct 17 15:19 Dockerfile\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 LICENSES\n-rw-r--r--  1 root root   3659 Oct 17 15:19 README.md\n-rw-r--r--  1 root root   2629 Oct 17 15:19 REUSE.toml\n-rw-r--r--  1 root root    652 Oct 17 15:40 docker-compose.noresources.yml\n-rw-r--r--  1 root root   2176 Oct 17 15:19 docker-compose.prod.yml\n-rw-r--r--  1 root root   4107 Oct 17 15:19 docker-compose.yml\ndrwxr-xr-x  3 root root   4096 Oct 17 15:19 docs\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 hocuspocus\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 messages\n-rw-r--r--  1 root root    211 Oct 17 15:19 next-env.d.ts\n-rw-r--r--  1 root root    523 Oct 17 15:19 next.config.mjs\n-rw-r--r--  1 root root 379171 Oct 17 15:19 package-lock.json\n-rw-r--r--  1 root root   2689 Oct 17 15:19 package.json\n-rw-r--r--  1 root root    181 Oct 17 15:19 postcss.config.mjs\ndrwxr-xr-x  4 root root   4096 Oct 17 15:19 public\n-rw-r--r--  1 root root   6359 Oct 17 15:19 publiccode.yml\ndrwxr-xr-x  2 root root   4096 Oct 17 15:19 scripts\ndrwxr-xr-x  4 root root   4096 Oct 17 15:19 seed\ndrwxr-xr-x 14 root root   4096 Oct 17 15:19 src\n-rw-r--r--  1 root root    771 Oct 17 15:19 tsconfig.json\n---\nservices:\n  web:\n    build:\n      context: .\n      dockerfile: Dockerfile\n      args:\n        NEXT_PUBLIC_HOCUSPOCUS_URL: ${NEXT_PUBLIC_HOCUSPOCUS_URL:?NEXT_PUBLIC_HOCUSPOCUS_URL is required}\n        NEXT_PUBLIC_SERVER_URL: ${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}\n    ports:\n      - \"127.0.0.1:3020:3000\"\n    environment:\n      - DATABASE_URI=mongodb://mongo:27017/urban_kit\n      - PAYLOAD_SECRET=${PAYLOAD_SECRET:?PAYLOAD_SECRET is required}\n      - NEXT_PUBLIC_SERVER_URL=${NEXT_PUBLIC_SERVER_URL:-http://localhost:3000}\n      # Both serving domains \u2014 Payload's CSRF allowlist (payload.config.ts)\n      # must trust cookie-authenticated requests from either origin.\n      - NEXT_PUBLIC_PUBLIC_DOMAIN=${NEXT_PUBLIC_PUBLIC_DOMAIN:-urbankit.de}\n      - NEXT_PUBLIC_APP_DOMAIN=${NEXT_PUBLIC_APP_DOMAIN:-app.urbankit.de}\n      - SMTP_HOST=${SMTP_HOST:-localhost}\n      - SMTP_PORT=${SMTP_PORT:-1025}\n      - METHODEN_URL=${METHODEN_URL:-https://methoden.urbankit.de}\n      - METHODEN_API_KEY=${METHODEN_API_KEY:-}\n      # Password for the seeded prototype accounts (seed:prototype / rotate script)\n      - SEED_USERS_PASSWORD=${SEED_USERS_PASSWORD:-}\n      # Urban Agent (AI) \u2014 provider selection + keys; all optional, the module\n      # shows \"nicht konfiguriert\" without any of them (see docs/env-reference.md)\n      - URBAN_AGENT_PROVIDER=${URBAN_AGENT_PROVIDER:-}\n      - URBAN_AGENT_MODEL=${URBAN_AGENT_MODEL:-}\n      - URBAN_AGENT_DAILY_MAX=${URBAN_AGENT_DAILY_MAX:-}\n      - ANTHROPIC_API_KEY=${ANTHROPIC_API_KEY:-}\n      - OPENAI_API_KEY=${OPENAI_API_KEY:-}\n      - MISTRAL_API_KEY=${MISTRAL_API_KEY:-}\n      - OLLAMA_BASE_URL=${OLLAMA_BASE_URL:-}\n      - OLLAMA_MODEL=${OLLAMA_MODEL:-}\n    volumes:\n      - media_data:/app/media\n      # Project document uploads (file-uploads collection, staticDir uploads/files)\n      # \u2014 without this volume they are destroyed on every container rebuild.\n      - uploads_data:/app/uploads\n    depends_on:\n      mongo:\n        condition: service_healthy\n    restart: unless-stopped\n    healthcheck:\n      # busybox wget \u2014 the Alpine runner image ships no curl\n      test: [\"CMD-SHELL\", \"wget -q -O /dev/null http://localhost:3000/api/health || exit 1\"]\n      interval: 20s\n      timeout: 10s\n      retries: 3\n      start_period: 60s\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 1g\n\n  hocuspocus:\n    build:\n      context: ./hocuspocus\n      dockerfile: Dockerfile\n    environment:\n      - PORT=1234\n      # Full-stack compose: the web container. Mixed dev (Next on the host,\n      # sidecar in Docker): set HOCUSPOCUS_PAYLOAD_URL=http://host.docker.internal:3000\n      # in .env \u2014 with the default, room authorization fails (no `web` host)\n      # and the board silently loses all realtime.\n      - PAYLOAD_INTERNAL_URL=${HOCUSPOCUS_PAYLOAD_URL:-http://web:3000}\n      - HOCUSPOCUS_SECRET=${HOCUSPOCUS_SECRET:?HOCUSPOCUS_SECRET is required}\n    ports:\n      - \"127.0.0.1:1234:1234\"\n    depends_on:\n      - web\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 512m\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker ps -a --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}' && echo '---' && docker --version && docker compose version 2>/dev/null",
+      "exit_code": 0,
+      "stdout": "NAMES                    STATUS                        PORTS\nworkspace-hocuspocus-1   Up About a minute             127.0.0.1:1234->1234/tcp\nworkspace-web-1          Up About a minute (healthy)   127.0.0.1:3020->3000/tcp\nworkspace-mongo-1        Up 2 minutes (healthy)        127.0.0.1:27019->27017/tcp\nworkspace-mailpit-1      Up 2 minutes (healthy)        127.0.0.1:1025->1025/tcp, 127.0.0.1:8025->8025/tcp, 1110/tcp\n---\nDocker version 29.7.2, build a7dcaa6\nDocker Compose version v5.5.0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && sed -n '80,200p' docker-compose.yml && echo '=== NORESOURCES ===' && cat docker-compose.noresources.yml && echo '=== ENV (secrets masked) ===' && sed -E 's/(SECRET=).{8,}/\\1***MASKED***/' .env",
+      "exit_code": 0,
+      "stdout": "          memory: 512m\n\n  # Dev mailcatcher: receives all transactional mail (activation links etc.)\n  # on :1025 and shows it at http://localhost:8025 \u2014 SMTP_HOST defaults\n  # target it. Production points SMTP_* at a real provider instead.\n  mailpit:\n    image: axllent/mailpit\n    ports:\n      - \"127.0.0.1:1025:1025\"\n      - \"127.0.0.1:8025:8025\"\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 128m\n\n  mongo:\n    image: mongo:7\n    volumes:\n      - mongo_data:/data/db\n    ports:\n      - \"127.0.0.1:27019:27017\"\n    healthcheck:\n      test: [\"CMD\", \"mongosh\", \"--eval\", \"db.adminCommand('ping')\"]\n      interval: 5s\n      timeout: 5s\n      retries: 5\n      start_period: 10s\n    restart: unless-stopped\n    networks:\n      - urban_kit\n    deploy:\n      resources:\n        limits:\n          memory: 512m\n\n\nnetworks:\n  urban_kit:\n    driver: bridge\n\nvolumes:\n  mongo_data:\n  media_data:\n  uploads_data:\n=== NORESOURCES ===\n# Local environment workaround (not part of the upstream repo):\n# this sandbox's cgroup-namespace root is in cgroup-v2 \"threaded\" mode, so\n# runc cannot apply per-container memory limits (deploy.resources.limits).\n# runc create succeeds only when no cgroup limits need to be written.\n# Verified: `docker run --rm busybox true` OK, `docker run --rm --memory 1g ...`\n# fails with: cannot enter cgroupv2 ... with domain controllers -- it is in\n# threaded mode. This override strips the memory ceilings only.\nservices:\n  web:\n    deploy: !reset null\n  hocuspocus:\n    deploy: !reset null\n  mongo:\n    deploy: !reset null\n  mailpit:\n    deploy: !reset null\n=== ENV (secrets masked) ===\n# Database\nDATABASE_URI=mongodb://localhost:27017/urban_kit\n\n# MongoDB root auth \u2014 PROD ONLY (docker-compose.prod.yml). First boot on an\n# empty volume creates this user; web then connects with these credentials.\nMONGO_ROOT_USER=urbankit\nMONGO_ROOT_PASSWORD=change-me-to-a-long-random-string\n\n# Password for the seeded prototype accounts (seed:prototype). REQUIRED in\n# prod \u2014 without it the roster gets the public dev password demo1234, and the\n# account emails are visible in this repo. Rotate later with\n# scripts/rotate-seed-passwords.ts.\nSEED_USERS_PASSWORD=\n\n# Payload\nPAYLOAD_SECRET=***MASKED***\n\n# SMTP\nSMTP_HOST=localhost\nSMTP_PORT=1025\nSMTP_USER=\nSMTP_PASS=\nSMTP_FROM=noreply@urbankit.de\n\n# Domains\nNEXT_PUBLIC_PUBLIC_DOMAIN=urbankit.de\nNEXT_PUBLIC_APP_DOMAIN=app.urbankit.de\nNEXT_PUBLIC_SERVER_URL=http://localhost:3020\n\n# AI \u2014 Urban Agent. Provider is chosen in the admin (Einstellungen \u2192 Urban\n# Agent) or via URBAN_AGENT_PROVIDER; with neither set, the first key found\n# below wins (Anthropic \u2192 OpenAI \u2192 Mistral \u2192 Ollama). No cross-provider\n# failover.\n# URBAN_AGENT_PROVIDER=mistral\n# URBAN_AGENT_MODEL=\n# MISTRAL_API_KEY=\n# ANTHROPIC_API_KEY=\n# OPENAI_API_KEY=\n# OLLAMA_BASE_URL=http://localhost:11434\n# OLLAMA_MODEL=llama3\n# Global daily request ceiling across all users (cost backstop)\n# URBAN_AGENT_DAILY_MAX=600\n\n# Methodensammlung (optional \u2014 method teasers on Bereich Grundlagen)\n# API-client key from the Methodensammlung admin (API Clients collection);\n# without it the page simply shows no teasers.\nMETHODEN_URL=https://methoden.urbankit.de\n# METHODEN_API_KEY=\n\n# Hocuspocus (realtime sidecar for Board)\nHOCUSPOCUS_URL=ws://localhost:1234\nHOCUSPOCUS_SECRET=***MASKED***\n# Browser-facing WS URL for the board client (public; use wss:// in production)\nNEXT_PUBLIC_HOCUSPOCUS_URL=ws://localhost:1234\n# Where the sidecar reaches Payload for auth + persistence (compose: http://web:3000)\nPAYLOAD_INTERNAL_URL=http://localhost:3000\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- health ---'; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' http://localhost:3020/api/health; curl -sS http://localhost:3020/api/health | head -c 400; echo; echo '--- portal (Host urbankit.de) ---'; curl -sS -o /dev/null -w 'HTTP %{http_code} final=%{url_effective}\\n' -H 'Host: urbankit.de' -L http://localhost:3020/; echo '--- workspace login (Host app.urbankit.de) ---'; curl -sS -o /dev/null -w 'HTTP %{http_code} final=%{url_effective}\\n' -H 'Host: app.urbankit.de' -L http://localhost:3020/; echo '--- bare host ---'; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' http://localhost:3020/",
+      "exit_code": 0,
+      "stdout": "--- health ---\nHTTP 200\n{\"ok\":true}\n--- portal (Host urbankit.de) ---\nHTTP 200 final=http://localhost:3020/de\n--- workspace login (Host app.urbankit.de) ---\nHTTP 200 final=http://localhost:3020/de/login\n--- bare host ---\nHTTP 307\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '--- portal homepage (urbankit.de) content check ---' && curl -sS -H 'Host: urbankit.de' http://localhost:3020/de | grep -oE '<title>[^<]*</title>' | head -3; curl -sS -H 'Host: urbankit.de' http://localhost:3020/de | grep -oE 'urbankit|Stadt|partizip|Partizip' | sort | uniq -c | head; echo '--- login page (app.urbankit.de) ---' && curl -sS -H 'Host: app.urbankit.de' http://localhost:3020/de/login | grep -oE '<title>[^<]*</title>' | head -3; curl -sS -H 'Host: app.urbankit.de' http://localhost:3020/de/login | grep -oE 'password|E-Mail|login|Login|Anmeldung' | sort | uniq -c | head",
+      "exit_code": 0,
+      "stdout": "--- portal homepage (urbankit.de) content check ---\n<title>UrbanKIT \u2013 Stadtbeteiligung f\u00fcr Detmold</title>\n      7 Partizip\n     61 Stadt\n      7 partizip\n      4 urbankit\n--- login page (app.urbankit.de) ---\n<title>Urban Kit</title>\n      5 Anmeldung\n     13 E-Mail\n      3 Login\n     17 login\n      8 password\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '--- hocuspocus logs ---' && docker logs workspace-hocuspocus-1 2>&1 | tail -20; echo '--- WS connect test (python) ---'; python3 - <<'EOF'\nimport socket, base64, os\nkey = base64.b64encode(os.urandom(16)).decode()\nreq = (f\"GET / HTTP/1.1\\r\\nHost: localhost:1234\\r\\nUpgrade: websocket\\r\\n\"\n       f\"Connection: Upgrade\\r\\nSec-WebSocket-Key: {key}\\r\\nSec-WebSocket-Version: 13\\r\\n\\r\\n\")\ns = socket.create_connection((\"127.0.0.1\", 1234), timeout=10)\ns.sendall(req.encode())\ndata = b\"\"\ntry:\n    while b\"\\r\\n\\r\\n\" not in data:\n        chunk = s.recv(4096)\n        if not chunk: break\n        data += chunk\nexcept socket.timeout:\n    pass\nprint(data.decode(errors=\"replace\").split(\"\\r\\n\\r\\n\")[0])\ns.close()\nEOF",
+      "exit_code": 127,
+      "stdout": "--- hocuspocus logs ---\nHocuspocus running on port 1234\n\n  Hocuspocus v2.15.3 running at:\n\n  > HTTP: http://0.0.0.0:1234\n  > WebSocket: ws://0.0.0.0:1234\n\n  Extensions:\n  - Database\n\n  Ready.\n\n--- WS connect test (python) ---\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which node curl nc 2>/dev/null; echo '--- bash /dev/tcp WS handshake ---'; (exec 3<>/dev/tcp/127.0.0.1/1234; printf 'GET / HTTP/1.1\\r\\nHost: localhost:1234\\r\\nUpgrade: websocket\\r\\nConnection: Upgrade\\r\\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\\r\\nSec-WebSocket-Version: 13\\r\\n\\r\\n' >&3; timeout 5 head -c 200 <&3; exec 3<&-) 2>&1",
+      "exit_code": 0,
+      "stdout": "/usr/bin/curl\n--- bash /dev/tcp WS handshake ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-mongo-1 mongosh --quiet --eval '\nprint(\"DBs: \" + JSON.stringify(db.adminCommand({listDatabases:1}).databases.map(d=>d.name)));\nvar urban = db.getSiblingDB(\"urban_kit\");\nvar cols = urban.getCollectionNames();\nprint(\"urban_kit collections (\" + cols.length + \"): \" + cols.slice(0,40).join(\", \"));\nprint(\"users count: \" + urban.users.countDocuments());\nprint(\"settings: \" + JSON.stringify(urban.doc ? 1 : urban.getCollection(\"platform-settings\").findOne({}, {_id:1})));\n' 2>&1 | head -20",
+      "exit_code": 0,
+      "stdout": "DBs: [\"admin\",\"config\",\"local\",\"urban_kit\"]\nurban_kit collections (32): calendar-events, payload-locked-documents, media, news-comments, board-canvases, project-memberships, poll-questions, folders, task-columns, event-attendees, task-assignees, payload-kvs, tasks, saved-items, projects, forum-thread-votes, forum-comments, activities, notifications, poll-votes, globals, file-uploads, chat-room-members, users, polls, chat-messages, payload-migrations, forum-threads, chat-rooms, poll-options, news-posts, payload-preferences\nusers count: 0\nsettings: 1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /tmp && cat > wstest.sh <<'EOF'\n#!/bin/bash\nexec 3<>/dev/tcp/127.0.0.1/1234 || { echo \"CONNECT FAIL\"; exit 1; }\nprintf 'GET /board/ HTTP/1.1\\r\\nHost: localhost:1234\\r\\nUpgrade: websocket\\r\\nConnection: Upgrade\\r\\nSec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\\r\\nSec-WebSocket-Version: 13\\r\\n\\r\\n' >&3\nsleep 2\nhead -c 400 <&3\nexec 3>&- 3<&-\nEOF\nchmod +x wstest.sh && ./wstest.sh; echo; echo \"=== HTTP probe ===\"; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' --max-time 5 http://localhost:1234/ ; curl -sS --max-time 5 http://localhost:1234/ | head -c 200; echo",
+      "exit_code": 0,
+      "stdout": "HTTP/1.1 101 Switching Protocols\nUpgrade: websocket\nConnection: Upgrade\nSec-WebSocket-Accept: s3pPLMBiTxaQ9kYGzzhZRbK+xOo=\n\n\ufffd\u000e\u00111Unauthorized\n=== HTTP probe ===\nHTTP 200\nOK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '--- web logs (tail) ---' && docker logs workspace-web-1 2>&1 | tail -15 && echo '--- volumes ---' && docker volume ls | grep workspace && echo '--- compose ps ---' && docker compose -f docker-compose.yml -f docker-compose.noresources.yml ps && echo '--- git status ---' && git status --short && git log --oneline -3",
+      "exit_code": 0,
+      "stdout": "--- web logs (tail) ---\n   \u25b2 Next.js 15.4.11\n   - Local:        http://localhost:3000\n   - Network:      http://172.18.0.4:3000\n\n \u2713 Starting...\n \u2713 Ready in 4.2s\n(node:1) ExperimentalWarning: localStorage is not available because --localstorage-file was not provided.\n(Use `node --trace-warnings ...` to show where the warning was created)\n--- volumes ---\nlocal     workspace_media_data\nlocal     workspace_mongo_data\nlocal     workspace_uploads_data\n--- compose ps ---\nNAME                     IMAGE                  COMMAND                  SERVICE      CREATED         STATUS                   PORTS\nworkspace-hocuspocus-1   workspace-hocuspocus   \"docker-entrypoint.s\u2026\"   hocuspocus   3 minutes ago   Up 3 minutes             127.0.0.1:1234->1234/tcp\nworkspace-mailpit-1      axllent/mailpit        \"/mailpit\"               mailpit      3 minutes ago   Up 3 minutes (healthy)   127.0.0.1:1025->1025/tcp, 127.0.0.1:8025->8025/tcp, 1110/tcp\nworkspace-mongo-1        mongo:7                \"docker-entrypoint.s\u2026\"   mongo        3 minutes ago   Up 3 minutes (healthy)   127.0.0.1:27019->27017/tcp\nworkspace-web-1          workspace-web          \"docker-entrypoint.s\u2026\"   web          3 minutes ago   Up 3 minutes (healthy)   127.0.0.1:3020->3000/tcp\n--- git status ---\n?? docker-compose.noresources.yml\nd170d74 CHANGE \u2013 users.read liefert f\u00fcr Nicht-Admins eine Where-Einschr\u00e4nkung auf das eigene Konto statt eines Booleans, damit auch Listen-Abfragen self zur\u00fcckgeben (vorher: leer)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'ls /app/.next 2>/dev/null | head; echo ---; ls /app/media /app/uploads 2>/dev/null; echo ---; node -e \"console.log(process.version)\"' 2>&1; echo '--- env baked into client bundle ---'; docker exec workspace-web-1 sh -c 'grep -ro \"http://localhost:3020\" /app/.next/static/chunks 2>/dev/null | head -2; grep -ro \"ws://localhost:1234\" /app/.next/static/chunks 2>/dev/null | head -2'",
+      "exit_code": 0,
+      "stdout": "BUILD_ID\napp-build-manifest.json\napp-path-routes-manifest.json\nbuild-manifest.json\ncache\ndiagnostics\nexport-marker.json\nimages-manifest.json\nnext-minimal-server.js.nft.json\nnext-server.js.nft.json\n---\n/app/media:\n\n/app/uploads:\nfiles\n---\nv26.12.0\n--- env baked into client bundle ---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'grep -rl \"localhost:3020\" /app/.next/static 2>/dev/null | head -3; echo ---; grep -rl \"ws://localhost:1234\" /app/.next/static 2>/dev/null | head -3'",
+      "exit_code": 0,
+      "stdout": "---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo '--- mailpit UI ---'; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' http://localhost:8025/ ; echo '--- payload API /api/collections/users (expect 401 or 403, not 404) ---'; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' http://localhost:3020/api/collections/users; echo '--- portal /de/news or known portal route ---'; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' -H 'Host: urbankit.de' http://localhost:3020/de/bereiche 2>/dev/null; curl -sS -o /dev/null -w 'HTTP %{http_code}\\n' -H 'Host: app.urbankit.de' http://localhost:3020/de/projects",
+      "exit_code": 0,
+      "stdout": "--- mailpit UI ---\nHTTP 200\n--- payload API /api/collections/users (expect 401 or 403, not 404) ---\nHTTP 404\n--- portal /de/news or known portal route ---\nHTTP 404\nHTTP 307\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'grep -rl \"3020\" /app/.next --include=\"*.js\" 2>/dev/null | head -5; echo ===; grep -rl \"1234\" /app/.next --include=\"*.js\" 2>/dev/null | head -5'",
+      "exit_code": 0,
+      "stdout": "===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'env | grep -E \"NEXT_PUBLIC\" ; echo ===; find /app/.next -name \"*.js\" | head -5; find /app/.next -name \"*.js\" | wc -l; echo ===; grep -rlo \"localhost:3020\\|localhost:1234\" /app/.next 2>/dev/null | head'",
+      "exit_code": 0,
+      "stdout": "NEXT_PUBLIC_APP_DOMAIN=app.urbankit.de\nNEXT_PUBLIC_SERVER_URL=http://localhost:3020\nNEXT_PUBLIC_PUBLIC_DOMAIN=urbankit.de\n===\n/app/.next/static/chunks/1988.d8dc236222ce0301.js\n/app/.next/static/chunks/1292.e186246dab7c5d0f.js\n/app/.next/static/chunks/286.dc01c8d4346ebceb.js\n/app/.next/static/chunks/6842.c36d8c3700795182.js\n/app/.next/static/chunks/7238.73acf8281d3d1511.js\n776\n===\n/app/.next/server/app/[locale]/(public)/projekte/[slug]/page.js\n/app/.next/server/app/[locale]/(public)/page.js\n/app/.next/server/app/[locale]/(platform)/dashboard/projekte/[slug]/(workspace)/m/[moduleType]/page.js\n/app/.next/server/app/sitemap.xml/route.js\n/app/.next/server/app/sitemap.xml.body\n/app/.next/server/chunks/5965.js\n/app/.next/server/chunks/7597.js\n/app/.next/cache/webpack/server-production/0.pack\n/app/.next/cache/webpack/server-production/1.pack\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'grep -rl \"localhost:3020\" /app/.next/static 2>/dev/null | head; echo \"=== 1234 ===\"; grep -rl \"localhost:1234\" /app/.next/static 2>/dev/null | head; echo \"=== source usage ===\"; grep -rn \"NEXT_PUBLIC_HOCUSPOCUS_URL\\|NEXT_PUBLIC_SERVER_URL\" /workspace/src --include=\"*.ts\" --include=\"*.tsx\" -l | head'",
+      "exit_code": 0,
+      "stdout": "=== 1234 ===\n=== source usage ===\n",
+      "stderr": "grep: unrecognized option: include=*.ts\nBusyBox v1.37.0 (2026-01-10 15:38:28 UTC) multi-call binary.\n\nUsage: grep [-HhnlLoqvsrRiwFE] [-m N] [-A|B|C N] { PATTERN | -e PATTERN... | -f FILE... } [FILE]...\n\nSearch for PATTERN in FILEs (or stdin)\n\n\t-H\tAdd 'filename:' prefix\n\t-h\tDo not add 'filename:' prefix\n\t-n\tAdd 'line_no:' prefix\n\t-l\tShow only names of files that match\n\t-L\tShow only names of files that don't match\n\t-c\tShow only count of matching lines\n\t-o\tShow only the matching part of line\n\t-q\tQuiet. Return 0 if PATTERN is found, 1 otherwise\n\t-v\tSelect non-matching lines\n\t-s\tSuppress open and read errors\n\t-r\tRecurse\n\t-R\tRecurse and dereference symlinks\n\t-i\tIgnore case\n\t-w\tMatch whole words only\n\t-x\tMatch whole lines only\n\t-F\tPATTERN is a literal (not regexp)\n\t-E\tPATTERN is an extended regexp\n\t-m N\tMatch up to N times per file\n\t-A N\tPrint N lines of trailing context\n\t-B N\tPrint N lines of leading context\n\t-C N\tSame as '-A N -B N'\n\t-e PTRN\tPattern to match\n\t-f FILE\tRead pattern from file\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'grep -rl \"ws://\" /app/.next/static 2>/dev/null | head -5; echo \"=== count of ws occurrences in static ===\"; grep -rc \"ws://\" /app/.next/static 2>/dev/null | grep -v \":0\" | head -5'",
+      "exit_code": 0,
+      "stdout": "=== count of ws occurrences in static ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -rn \"NEXT_PUBLIC_HOCUSPOCUS_URL\" src --include=\"*.ts\" --include=\"*.tsx\" | head -5; echo ===; grep -rn \"NEXT_PUBLIC_SERVER_URL\" src --include=\"*.ts\" --include=\"*.tsx\" | head -5; echo \"=== Dockerfile build args ===\"; grep -n \"ARG\\|ENV\" Dockerfile | head -10",
+      "exit_code": 0,
+      "stdout": "src/app/[locale]/(platform)/dashboard/projekte/[slug]/(workspace)/m/[moduleType]/page.tsx:79:    boardData = { boards, token, wsUrl: process.env.NEXT_PUBLIC_HOCUSPOCUS_URL ?? 'ws://localhost:1234', userName }\n===\nsrc/collections/Users.ts:22:            const url = `${process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000'}/de/verifizieren/${token}`\nsrc/payload.config.ts:74:  serverURL: process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000',\nsrc/payload.config.ts:80:    process.env.NEXT_PUBLIC_SERVER_URL ?? 'http://localhost:3000',\nsrc/app/[locale]/(public)/projekte/[slug]/page.tsx:111:  const base = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://urbankit.de'\nsrc/app/[locale]/(public)/page.tsx:28:  const base = process.env.NEXT_PUBLIC_SERVER_URL ?? 'https://urbankit.de'\n=== Dockerfile build args ===\n3:ENV NEXT_TELEMETRY_DISABLED=1\n17:ARG NEXT_PUBLIC_HOCUSPOCUS_URL\n18:ENV NEXT_PUBLIC_HOCUSPOCUS_URL=$NEXT_PUBLIC_HOCUSPOCUS_URL\n19:ARG NEXT_PUBLIC_SERVER_URL\n20:ENV NEXT_PUBLIC_SERVER_URL=$NEXT_PUBLIC_SERVER_URL\n25:ENV NODE_ENV=production\n51:ENV PORT=3000\n52:ENV HOSTNAME=\"0.0.0.0\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker exec workspace-web-1 sh -c 'echo \"=== search static for 3020 / 1234 / ws / urbankit ===\"; grep -rlc \"3020\" /app/.next/static 2>/dev/null | head; grep -rlc \"1234\" /app/.next/static 2>/dev/null | head; grep -rlc \"urbankit\" /app/.next/static 2>/dev/null | head; echo \"=== image metadata: check build env via docker inspect ===\"; docker inspect workspace-web-1 2>/dev/null | grep -i \"NEXT_PUBLIC\" | head'",
+      "exit_code": 0,
+      "stdout": "=== search static for 3020 / 1234 / ws / urbankit ===\n/app/.next/static/media/static-og-image.477255a8.png:0\n/app/.next/static/media/Assistant-Regular.7acbabb8.woff2:0\n/app/.next/static/media/payload-favicon-light.b8a65007.png:0\n/app/.next/static/media/payload-favicon-dark.c322d81c.png:0\n/app/.next/static/media/Assistant-SemiBold.167acbf8.woff2:0\n/app/.next/static/media/Assistant-Bold.c8f39f24.woff2:0\n/app/.next/static/media/payload-favicon.7c819288.svg:0\n/app/.next/static/media/Assistant-Medium.1e75d8e6.woff2:0\n/app/.next/static/css/1027666ce0ef4d78.css:0\n/app/.next/static/css/c866c20983544658.css:0\n/app/.next/static/media/static-og-image.477255a8.png:0\n/app/.next/static/media/Assistant-Regular.7acbabb8.woff2:0\n/app/.next/static/media/payload-favicon-light.b8a65007.png:0\n/app/.next/static/media/payload-favicon-dark.c322d81c.png:0\n/app/.next/static/media/Assistant-SemiBold.167acbf8.woff2:0\n/app/.next/static/media/Assistant-Bold.c8f39f24.woff2:0\n/app/.next/static/media/payload-favicon.7c819288.svg:0\n/app/.next/static/media/Assistant-Medium.1e75d8e6.woff2:0\n/app/.next/static/css/1027666ce0ef4d78.css:0\n/app/.next/static/css/c866c20983544658.css:0\n/app/.next/static/media/static-og-image.477255a8.png:0\n/app/.next/static/media/Assistant-Regular.7acbabb8.woff2:0\n/app/.next/static/media/payload-favicon-light.b8a65007.png:0\n/app/.next/static/media/payload-favicon-dark.c322d81c.png:0\n/app/.next/static/media/Assistant-SemiBold.167acbf8.woff2:0\n/app/.next/static/media/Assistant-Bold.c8f39f24.woff2:0\n/app/.next/static/media/payload-favicon.7c819288.svg:0\n/app/.next/static/media/Assistant-Medium.1e75d8e6.woff2:0\n/app/.next/static/css/1027666ce0ef4d78.css:0\n/app/.next/static/css/c866c20983544658.css:0\n=== image metadata: check build env via docker inspect ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker inspect --format '{{json .Config.Env}}' workspace-web-1 2>/dev/null | tr ',' '\\n' | grep -i NEXT_PUBLIC; echo \"=== image build env (baked at build time) ===\"; docker inspect --format '{{json .Config.Env}}' $(docker image inspect --format '{{.Id}}' workspace-web:latest 2>/dev/null) 2>/dev/null | tr ',' '\\n' | grep -i NEXT_PUBLIC",
+      "exit_code": 1,
+      "stdout": "\"NEXT_PUBLIC_SERVER_URL=http://localhost:3020\"\n\"NEXT_PUBLIC_APP_DOMAIN=app.urbankit.de\"\n\"NEXT_PUBLIC_PUBLIC_DOMAIN=urbankit.de\"\n=== image build env (baked at build time) ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '=== rendered homepage: look for server URL / placeholder ==='; curl -sS -H 'Host: urbankit.de' http://localhost:3020/de 2>/dev/null | grep -oE 'http://localhost:[0-9]+|https://urbankit.de' | sort | uniq -c | head; echo '=== any localhost:3000 placeholder leakage? ==='; curl -sS -H 'Host: urbankit.de' http://localhost:3020/de 2>/dev/null | grep -oE 'localhost:3000' | head; echo \"count: $(curl -sS -H 'Host: urbankit.de' http://localhost:3020/de 2>/dev/null | grep -c 'localhost:3000')\"",
+      "exit_code": 0,
+      "stdout": "=== rendered homepage: look for server URL / placeholder ===\n     14 http://localhost:3020\n=== any localhost:3000 placeholder leakage? ===\ncount: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '=== find a real project slug from Mongo ==='; docker exec workspace-mongo-1 mongosh --quiet --eval 'db.getSiblingDB(\"urban_kit\").projects.find({}, {slug:1,title:1}).limit(5).forEach(d=>print(d.slug+\" | \"+d.title))' 2>&1 | head",
+      "exit_code": 0,
+      "stdout": "=== find a real project slug from Mongo ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '=== mongo data counts ==='; docker exec workspace-mongo-1 mongosh --quiet --eval 'var u=db.getSiblingDB(\"urban_kit\"); [\"users\",\"projects\",\"globals\",\"payload-kvs\",\"platform-settings\",\"board-canvases\"].forEach(c=>{try{print(c+\": \"+u.getCollection(c).countDocuments())}catch(e){print(c+\": (none)\")}})' 2>&1; echo '=== is seeding part of base install? (Dockerfile/compose) ==='; grep -n \"seed\" Dockerfile docker-compose.yml 2>/dev/null; echo '=== guide: seed:demo under \"Demo accounts\" (optional) ==='; grep -rn \"seed:demo\\|seed:prototype\" Installation.md 2>/dev/null | head; ls Installation.md docs/ 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "=== mongo data counts ===\nusers: 0\nprojects: 0\nglobals: 0\npayload-kvs: 0\nplatform-settings: 0\nboard-canvases: 0\n=== is seeding part of base install? (Dockerfile/compose) ===\nDockerfile:38:# One-off maintenance/seed scripts + seed content/assets, run via\nDockerfile:39:# `docker compose exec web npm run seed:prototype` (same pattern as the\nDockerfile:40:# methodensammlung image shipping its seed.ts/scripts).\nDockerfile:42:COPY --from=builder --chown=nextjs:nodejs /app/seed ./seed\ndocker-compose.yml:23:      # Password for the seeded prototype accounts (seed:prototype / rotate script)\n=== guide: seed:demo under \"Demo accounts\" (optional) ===\ndocs/:\nREADME.md\naccess-control.md\narchitecture.md\nassets\ndeployment.md\nenv-reference.md\ni18n.md\nlegal-templates.md\nmodules.md\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo '=== reproduce cgroup threaded-mode constraint (diagnostic) ==='; docker run --rm busybox true 2>&1; echo \"no-limits exit: $?\"; docker run --rm --memory 1g busybox true 2>&1 | tail -2; echo '=== compose config renders ==='; docker compose -f docker-compose.yml -f docker-compose.noresources.yml config --quiet && echo \"config OK\"; echo '=== final e2e: health ==='; curl -sS -w '\\nHTTP %{http_code}\\n' http://localhost:3020/api/health",
+      "exit_code": 0,
+      "stdout": "=== reproduce cgroup threaded-mode constraint (diagnostic) ===\nno-limits exit: 0\n\nRun 'docker run --help' for more information\n=== compose config renders ===\nconfig OK\n=== final e2e: health ===\n{\"ok\":true}\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "docker run --rm --memory 1g busybox true 2>&1; echo \"exit: $?\"",
+      "exit_code": 0,
+      "stdout": "docker: Error response from daemon: failed to create task for container: failed to create shim task: OCI runtime create failed: runc create failed: unable to start container process: unable to apply cgroup configuration: cannot enter cgroupv2 \"/sys/fs/cgroup/docker\" with domain controllers -- it is in threaded mode\n\nRun 'docker run --help' for more information\nexit: 125\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

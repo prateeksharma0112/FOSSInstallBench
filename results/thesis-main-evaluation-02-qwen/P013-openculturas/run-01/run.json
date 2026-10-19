@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P013-openculturas__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T21:57:58.953467+02:00",
+    "finished_at": "2026-10-15T22:43:04.637606+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P013",
+    "project": {
+      "opencode_id": "3458",
+      "name": "OpenCulturas",
+      "description": "Event calendar and cultural platform with profiles, magazine, interactive maps",
+      "catalogue_url": "https://opencode.de/de/software/open-culturas-3458",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/openculturas/openculturas-distribution",
+      "commit_sha": "838d5d0f359a0f32a54223fc67f2e1f74f0029dc",
+      "license": "GPL-2.0-or-later"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/openculturas/openculturas-distribution/-/blob/838d5d0f359a0f32a54223fc67f2e1f74f0029dc/README.md",
+      "language": "English",
+      "word_count": 466
+    },
+    "task_id": "P013-openculturas"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2705.235,
+    "repository_setup_duration_seconds": 21.639999999999986,
+    "installation_duration_seconds": 2368.141,
+    "validation_duration_seconds": 294.375,
+    "command_count": 208,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 152,
+    "validation_command_count": 52
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P013-openculturas/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

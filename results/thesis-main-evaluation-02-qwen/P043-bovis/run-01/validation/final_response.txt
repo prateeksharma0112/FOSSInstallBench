@@ -1,0 +1,22 @@
+Validation complete. BoVis is installed and operational per the supplied guide.
+
+## What was verified
+
+**Installation state (per guide: clone → `cp local.json.in local.json` → `dotnet run -- server`)**
+- Repo at `/workspace` (commit cd2c942), built output in `/workspace/src/Bovis.Web/bin/Debug/net8.0`; `local.json` present with the default SQLite connections; git working tree clean (no source modifications by the install or by me).
+- Prerequisites in place: dotnet SDK 8.0.131, `libfontconfig1` (SkiaSharp native dep), `sqlite3`.
+
+**Runtime (evidence of behavior, not just files)**
+- Server running: PID 1655 `/workspace/src/Bovis.Web/bin/Debug/net8.0/Bovis.Web server` (started via the documented `dotnet run --no-build -- server`), single listener on port 5195 (from `launchSettings.json`/`ASPNETCORE_URLS`, not the 18080 template).
+- Log `/tmp/bovis_server.log`: config.db opened (schema 001), "connection to Bovis database established", "Serving public files from /app", "Now listening on: http://localhost:5195", "Application started" — no fatal errors.
+
+**Functional checks**
+- `GET /` and `GET /app` → HTTP 200, full Blazor Server UI served (`/_framework/blazor.server.js` 200, `/blazor` hub live).
+- Auth gate enforced: unauthenticated requests show "Diese Seite kann nur mit Administrationsrechten aufgerufen werden."; `/login` renders the login form.
+- With the configured admin auth cookie (extracted from `appsettings.json`), the full admin UI renders consistently (8/8): navbar "Bovis Bohrsäulenvisualisierung", navigation, and the "Liste der Dienste" (services) index page.
+- Public API `/bovis/hello` → 200 JSON; public `/render` endpoint responds.
+- Databases: `bohris.db` contains all 7 required `L_*` tables; `config.db` has schema 001 plus the DIN4023/GDI pattern files loaded at startup.
+
+**Notable investigation**: mid-validation the admin cookie appeared to stop matching; I proved this was my own test error (a hand-typed cookie string missing 3 characters vs. the 50-char value in `appsettings.json`). Using the correct value, authentication is stable — not a software defect.
+
+**Limitations (documented, not defects)**: `bohris.db` holds only empty lookup tables, so no real drill-column data can be visualized until a real BohrIS data connection is configured in `local.json` — this matches the guide's own quickstart defaults. NU1903 package vulnerability warnings from the build remain (not blocking).

@@ -1,0 +1,18 @@
+Installation of UmweltNAVI completed successfully and verified end-to-end.
+
+**What was done** (in container /workspace, Ubuntu 22.04, root, WSL2 host with KVM):
+1. Installed prerequisites via apt: OpenJDK 17, unzip/zip/rsync, GL libs.
+2. Installed fvm 4.3.2 (GitHub release) to /usr/local/bin/fvm, then ran `fvm use 3.35.7` in /workspace → Flutter 3.35.7 + Dart 3.9.2 (exact guide versions), creating `.fvmrc` and `.fvm/flutter_sdk` → /root/fvm/versions/3.35.7.
+3. Fixed a root-on-overlayfs tar ownership failure with a `--no-same-owner` tar shim so Flutter could download its cache.
+4. Configured Flutter: `--jdk-dir=/usr/lib/jvm/java-17-openjdk-amd64` (guide's Java 17 requirement), `--android-sdk=/opt/android-sdk`, analytics off.
+5. Installed Android SDK headlessly at /opt/android-sdk (cmdline-tools): licenses accepted, platform-tools, platforms 34+36, build-tools 34/35/36, emulator, NDK 27.0.12077973, google_apis x86_64 system image; created AVD `umweltnavi_avd` which boots (sys.boot_completed=1, KVM).
+6. Installed Android Studio 2026.2.1.8 at /opt/android-studio with the marker file Flutter's doctor scans; doctor now reports it.
+7. `fvm flutter pub get` → "Got dependencies!".
+8. Built the app for the `ni` flavor per the guide's `ni_release` config: `fvm flutter build apk --flavor ni --dart-define=PARTNER=ni --dart-define=cronetHttpNoPlay=true` → `build/app/outputs/flutter-apk/app-ni-release.apk` (100.3 MB, package wemove.app.bipu, label "UmweltNAVI Niedersachsen").
+9. End-to-end verification: installed the APK on the booted emulator and launched `de.wemove.umweltnavi.MainActivity` — app running (pid 2662, mResumed=true), no FATAL EXCEPTIONs in logcat, stable over multiple checks, screenshot captured.
+
+**Guide's final-check result** (`fvm flutter doctor -v`, exit 0): [✓] Flutter 3.35.7/Dart 3.9.2, [✓] Android toolchain (SDK 36, Java 17, licenses accepted), [✓] Android Studio 2026.2.1.8, [✓] Connected device (emulator). Chrome and Linux-desktop lines are red but are not in the guide's required list (Android/iOS focus).
+
+**Obstacles resolved** (not failures): Gradle OOM from the project's 8G heap on a 7.6 GB machine (tuned android/gradle.properties to -Xmx3G/1G), missing gitignored `android/key.properties`/keystore (generated a local one under android/app/), missing gitignored `assets/keys/` API-key asset (created placeholder; app guards its absence).
+
+Known state: emulator `umweltnavi_avd` is running in background headless mode with the app installed; Gradle/Kotlin daemons may persist.

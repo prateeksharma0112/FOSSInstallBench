@@ -1,0 +1,35 @@
+Successfully installed and started the SPARK Workflow local development stack end-to-end, and verified it is operational.
+
+## What was done
+
+**Prerequisites installed (none were preinstalled):**
+- `uv` (v0.13.1) via official installer → `~/.local/bin/uv`
+- `process-compose` (v1.122.0) binary → `/usr/local/bin/process-compose`
+- Node.js v24.14.0 (satisfies engines `>=24 <25`) + `corepack` → enabled `pnpm@10.30.2` (pinned in `package.json`)
+- Python 3.13.16 via `uv` (workspace `.venv` at `/workspace/.venv`)
+
+**Repo setup (working dir `/workspace`):**
+- `uv sync --locked --all-packages` (populated `/workspace/.venv`)
+- `pnpm install --frozen-lockfile` in `01-frontend/frontend`
+- Generated private root `.env` non-interactively via `uv run poe create-secrets` (fed answers via stdin): local Keycloak user `spark@example.com`, LLM base URL + models, Docling values (http/localhost/5001/rapidocr).
+
+**Docker Compose infrastructure:** `docker compose --env-file .env up --wait` → exit 0. Postgres (with pgvector + 22 app DBs + law-DB seed), Temporal, MinIO+init+proxy, Qdrant, SpiceDB, Keycloak + bootstrap (created login user), oauth2-proxy — all healthy.
+
+**Application services:** `uv run poe process-compose` (had to add `-t=false`/`PC_DISABLE_TUI=true` because the TUI requires a real terminal, and a clean restart to clear an initial orphan-process port conflict). Brought all 20 backend services, 13 Temporal workers, the 3 seed jobs, and the Vite frontend up via the process-compose REST API (port 8080).
+
+**External AI services (prerequisites the stack does not start itself):**
+- Stand up a local OpenAI-compatible LLM endpoint (`/workspace/.local-services/llm_stub.py`, stdlib, port 8000) serving `/v1/chat/completions`, `/v1/embeddings` (1024-dim, matching the app's Qdrant/pgvector columns), `/v1/models` — accepts any model name.
+- Started the documented local Docling CPU container (`quay.io/docling-project/docling-serve-cpu:latest`, port 5001) → healthy.
+
+## Key obstacle & workaround
+The documented `minio/minio` and `minio/mc` Docker images are **no longer available** — MinIO archived its open-source server/client (dl.min.io returns 410 Gone) and the images are denied on Docker Hub, quay.io, registry.min.io, and ghcr.io. I recovered by downloading the MinIO server + `mc` binaries from MinIO's GitHub releases (sha256-verified), smoke-testing them, and building local `minio/minio:latest` / `minio/mc:latest` Docker images from them so the unchanged `docker-compose.yaml` worked.
+
+## Verification (all observed)
+- `curl http://localhost:3000/app/` → 302 to Keycloak; full login with the seeded user → app loads **200 `<title>SPARK Workflow`**.
+- All 20 backend services `/docs` → 200; frontend `:3002/app/` → 200.
+- Temporal UI (8233), MinIO console (9001), Qdrant (6333), Docling `/health` → OK.
+- Seed data confirmed in Postgres: project_logic (5 statuses, 1 type), FCS template_document_type=24, VAE template nodes=159, gesetze-normen law DB (19,792 satz rows, 33 documents).
+- process-compose: 35/38 running (the 3 not running are the already-completed one-shot seeds).
+
+## Caveat
+The environment has only 7.6 GiB RAM, which is tight for this 38-process ML-heavy stack; the initial parallel boot caused memory-pressure kills of several services (no cgroup OOM — host-level). I recovered by restarting the affected services individually via the process-compose API. The stack is now stable, but heavy parallel load could re-trigger service restarts; that is an environment resource limit, not a defect in the installed software.

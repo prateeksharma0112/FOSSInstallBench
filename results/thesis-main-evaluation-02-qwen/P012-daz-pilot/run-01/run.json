@@ -1,0 +1,88 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P012-daz-pilot__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T23:52:13.444997+02:00",
+    "finished_at": "2026-10-16T00:44:10.402808+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P012",
+    "project": {
+      "opencode_id": "7690",
+      "name": "DaZ-Pilot",
+      "description": "Digital language co-pilot for inclusive vocational school teaching: Learn specialist vocabulary via image recognition, pronunciation and quizzes.",
+      "catalogue_url": "https://opencode.de/de/software/da-z-pilot-7690",
+      "type": "Application",
+      "platforms": [
+        "android",
+        "ios",
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/daz-pilot",
+      "commit_sha": "ba32aab7cd2282d9a5e2c4b1845d014c8c6800b9",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/daz-pilot/-/blob/ba32aab7cd2282d9a5e2c4b1845d014c8c6800b9/INSTALLATION.md",
+      "language": "German",
+      "word_count": 1166
+    },
+    "task_id": "P012-daz-pilot"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 3117.031000000001,
+    "repository_setup_duration_seconds": 48.125,
+    "installation_duration_seconds": 2861.249999999999,
+    "validation_duration_seconds": 170.4369999999999,
+    "command_count": 163,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 111,
+    "validation_command_count": 48
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P012-daz-pilot/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

@@ -1,0 +1,32 @@
+## Klimadashboard Münster — Installation Report
+
+### Outcome: FAILURE (partial — core install succeeded, 3 of 4 category pages non-functional)
+
+### What was done
+1. **Prepared the runtime.** Node.js was not installed. Installed Node v20.18.1 (from the official `nodejs.org` tarball into `/usr/local`) and Yarn 1.22.22 (`npm i -g yarn`). This environment is a plain container; there is no application venv — the project runs directly on Node.
+2. **Ran the documented install.** `cd /workspace && yarn install --network-timeout 600000` → **exit 0**, 609 packages in `node_modules/`. The project's `postinstall` hooks fired and downloaded most data assets into `assets/data/`.
+3. **Recovered a partial postinstall failure.** `scripts/ms-open-data.sh` and `scripts/einwohner.sh` initially failed because `unzip` was absent. I installed `unzip` (apt) and re-ran `ms-open-data.sh` (succeeded → 25 CSVs landed). `einwohner.sh` still failed for a credential reason (see below).
+4. **Ran the documented start.** `yarn dev` → Next.js 15.5.28 "Ready", serving `http://localhost:3000`.
+
+### Objective evidence of state (verified via `curl`)
+| Route | Result |
+|-------|--------|
+| `/` | **HTTP 200** (705 KB, full landing page) |
+| `/energie` | **HTTP 200** (321 KB) |
+| `/mobilitaet` | **HTTP 500** |
+| `/gebaeude` | **HTTP 500** |
+| `/klima` | **HTTP 500** |
+
+Dev log for the 500s: `Module not found: Can't resolve '@/assets/data/einwohner.csv'` and `Can't resolve '@/assets/data/wachstum-recent.csv'` / `bip-recent.csv`. These are statically imported by `AutoCardHeader.tsx`, `WachstumChart.tsx`, etc.
+
+### Root cause of the failure
+The three failing category pages need CSVs produced by `scripts/einwohner.sh`, `wachstum-recent.sh`, and `bip-recent.sh`, all of which `POST` to `https://www.regionalstatistik.de/genesisws/rest/2020/data/tablefile` with `username: $REGIONALSTATICT_USER` / `password: $REGIONALSTATICT_SECRET`. I tested the endpoint directly **without** credentials and got **HTTP 401** ("Sie sind nicht berechtigt diesen Service aufzurufen…"). The credentials are **not** in `.env`, `.env.example`, the process environment, or anywhere in the repo, and the installation guide does not mention them at all. The project's own `Dockerfile` confirms these secrets are normally injected as Docker build secrets — i.e., they are a required external input that is simply not available in this environment.
+
+### Failure attribution
+**EXTERNAL_RESOURCE** — the required credentials for the `regionalstatistik.de` data service (an external, authenticated download endpoint) are unavailable in the environment, so the credential-gated data files could not be fetched and 3 of 4 category pages cannot render. (The guide's silence on this requirement is a contributing documentation gap, but the primary blocker is the unavailable external credential.)
+
+### Note on scope of success
+The core installation and dev server **do** work: dependencies installed, server runs, and the app is accessible at `http://localhost:3000` with the landing page and the `/energie` page fully functional. The installation is classified FAILURE only because the project's stated purpose — "separate pages for each of the four categories" — is met for only 1 of 4 categories, so the software is not installed fully correctly.
+
+### Current state
+The dev server is left **running** in the background (`yarn dev`, log at `/tmp/dev-server-final.log`) at `http://localhost:3000`. No source code was modified. To make the three broken pages work, `REGIONALSTATICT_USER`/`REGIONALSTATICT_SECRET` would need to be provided and the three regional-statistics scripts re-run.

@@ -1,0 +1,87 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P027-audiominer__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T15:13:20.023463+02:00",
+    "finished_at": "2026-10-17T17:16:00.150192+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P027",
+    "project": {
+      "opencode_id": "8221",
+      "name": "Audiominer",
+      "description": "Service for the automated transcription of audio and video files via web UI or file system connection",
+      "catalogue_url": "https://opencode.de/de/software/audiominer-8221",
+      "type": "Application",
+      "platforms": [
+        "web",
+        "linux"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/bpa/audiominer/audiominer",
+      "commit_sha": "e9623704ceaa06dd505f536aa867f415c57b4117",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository documentation",
+      "url": "https://gitlab.opencode.de/bpa/audiominer/audiominer/-/blob/e9623704ceaa06dd505f536aa867f415c57b4117/docs/installation.md",
+      "language": "German",
+      "word_count": 232
+    },
+    "task_id": "P027-audiominer"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 7360.297000000006,
+    "repository_setup_duration_seconds": 34.90600000000268,
+    "installation_duration_seconds": 5751.312999999995,
+    "validation_duration_seconds": 1537.4530000000086,
+    "command_count": 152,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 116,
+    "validation_command_count": 32
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P027-audiominer/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

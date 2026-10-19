@@ -1,0 +1,14 @@
+Validation of gitlab-profile installation complete. Outcome: SUCCESS.
+
+Verified (from /workspace, Docker 29.7.2 + Compose v5.5.0):
+1. All 4 compose services running with 0 restarts; postgres healthy; Traefik publishes :80/:443.
+2. Web container logs show 25 Yii migrations applied ("Migrated up successfully") followed by Apache 2.4.68 "resuming normal operations" — matching the guide's startup contract.
+3. Frontend: GET / → 200 ("KommunalEnergie - Anmelden").
+4. Administration: login page 200; POST /administration/site/login with admin + INITIAL_ADMIN_PASSWORD → 302 → dashboard 200; DB confirms admin row in backendusers.
+5. Swagger: /administration/docs/ → 401 unauthenticated, 200 with admin:SWAGGER_HTTP_AUTH_PASSWORD.
+6. Measurements API: POST /api/v1/node/measurements → 400 with Yii validation body (endpoint live); /api/v1/units → 401 (HMAC auth enforced).
+7. iothubsh-adapter: /docs, /openapi.json, /healthz → 200 ({"ok":true}); webhook routes proxied by Traefik (301 to https per redirect middleware).
+8. Traefik HTTP routing: / and /webhook/* on Host: localhost → 301 → https://localhost/* (middleware working).
+9. Guide's backup command works: pg_dump exit 0, 3071-line dump containing backendusers.
+
+Limitation: HTTPS termination via Traefik is unusable because APP_DOMAIN=localhost has no Let's Encrypt certificate (resolver disabled per the documented local-development option). This is a sandbox limitation, not an install defect — all application functionality was verified directly over the container HTTP endpoints.

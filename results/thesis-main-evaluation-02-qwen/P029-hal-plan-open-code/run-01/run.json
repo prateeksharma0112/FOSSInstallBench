@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P029-hal-plan-open-code__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T17:48:40.172244+02:00",
+    "finished_at": "2026-10-17T18:11:32.832619+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P029",
+    "project": {
+      "opencode_id": "10032",
+      "name": "HAL-Plan Open Code",
+      "description": "HAL-Plan is a digital twin for the areas of urban development and strategic land management.",
+      "catalogue_url": "https://opencode.de/de/software/hal-plan-open-code-10032",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan",
+      "commit_sha": "28ec2910c6636ad9767cb9a3a07ad44590018b85",
+      "license": "AGPL-3.0-or-later"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository Installation Guide",
+      "url": "https://gitlab.opencode.de/smart-city-halle-saale/hal-plan/hal-plan/-/blob/28ec2910c6636ad9767cb9a3a07ad44590018b85/_docs/get-started/installation.md",
+      "language": "English",
+      "word_count": 436
+    },
+    "task_id": "P029-hal-plan-open-code"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1372.6879999999946,
+    "repository_setup_duration_seconds": 81.85899999999674,
+    "installation_duration_seconds": 1120.202999999994,
+    "validation_duration_seconds": 131.88999999999942,
+    "command_count": 81,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 45,
+    "validation_command_count": 32
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P029-hal-plan-open-code/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

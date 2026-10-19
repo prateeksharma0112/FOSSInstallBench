@@ -1,0 +1,316 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal.git/\nFrom https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal\n * branch            410dc25f07b22213fa85d37622a76f614e859eb8 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 410dc25 Security: XML injection in `highlightFeaturesByAttribute` is prevented by escaping.\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 410dc25f07b22213fa85d37622a76f614e859eb8",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la && cat /etc/os-release 2>/dev/null | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 704\ndrwxr-xr-x 12 root root   4096 Oct 17 16:12 .\ndr-xr-xr-x  1 root root   4096 Oct 17 16:12 ..\n-rw-r--r--  1 root root    356 Oct 17 16:12 .editorconfig\ndrwxr-xr-x  8 root root   4096 Oct 17 16:12 .git\n-rw-r--r--  1 root root     11 Oct 17 16:12 .gitattributes\ndrwxr-xr-x  3 root root   4096 Oct 17 16:12 .github\n-rw-r--r--  1 root root    847 Oct 17 16:12 .gitignore\ndrwxr-xr-x  3 root root   4096 Oct 17 16:12 .gitlab\ndrwxr-xr-x  2 root root   4096 Oct 17 16:12 .husky\n-rw-r--r--  1 root root     55 Oct 17 16:12 .npmrc\n-rw-r--r--  1 root root 135653 Oct 17 16:12 CHANGELOG.md\n-rw-r--r--  1 root root   3958 Oct 17 16:12 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root   2863 Oct 17 16:12 CONTRIBUTING.md\n-rw-r--r--  1 root root   1140 Oct 17 16:12 License.txt\n-rw-r--r--  1 root root   5063 Oct 17 16:12 README.md\n-rw-r--r--  1 root root   1290 Oct 17 16:12 SECURITY.md\ndrwxr-xr-x  2 root root   4096 Oct 17 16:12 addons\n-rw-r--r--  1 root root  18485 Oct 17 16:12 bitbucket-pipelines.yml\ndrwxr-xr-x  8 root root   4096 Oct 17 16:12 devtools\ndrwxr-xr-x  8 root root   4096 Oct 17 16:12 docs\n-rw-r--r--  1 root root  21535 Oct 17 16:12 eslint.config.js\n-rw-r--r--  1 root root    787 Oct 17 16:12 jsconfig.json\ndrwxr-xr-x 13 root root   4096 Oct 17 16:12 locales\n-rw-r--r--  1 root root   4986 Oct 17 16:12 mkdocs.yml\n-rw-r--r--  1 root root 421157 Oct 17 16:12 package-lock.json\n-rw-r--r--  1 root root   5601 Oct 17 16:12 package.json\ndrwxr-xr-x  5 root root   4096 Oct 17 16:12 portal\n-rw-r--r--  1 root root   4039 Oct 17 16:12 publiccode.yml\ndrwxr-xr-x 10 root root   4096 Oct 17 16:12 src\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which curl wget python3 pip3 node npm php apache2 httpd nginx 2>/dev/null; echo \"---\"; python3 --version 2>/dev/null; node --version 2>/dev/null",
+      "exit_code": 127,
+      "stdout": "/usr/bin/curl\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "git log --oneline -3 && git status | head -5 && cat package.json",
+      "exit_code": 0,
+      "stdout": "410dc25 Security: XML injection in `highlightFeaturesByAttribute` is prevented by escaping.\nHEAD detached at 410dc25\nnothing to commit, working tree clean\n{\n  \"name\": \"masterportal\",\n  \"private\": true,\n  \"type\": \"module\",\n  \"author\": {\n    \"name\": \"Implementierungspartnerschaft Masterportal\",\n    \"email\": \"info@masterportal.org\",\n    \"url\": \"https://www.masterportal.org\"\n  },\n  \"bugs\": \"https://gitlab.opencode.de/lgvhh/urban-data-solutions/masterportal/-/work_items\",\n  \"version\": \"3.26.1\",\n  \"license\": \"MIT\",\n  \"description\": \"The MasterPortal as OpenSource Geoportal\",\n  \"repository\": {\n    \"type\": \"git\",\n    \"url\": \"https://bitbucket.org/geowerkstatt-hamburg/masterportal.git\"\n  },\n  \"main\": \"src/masterportal.js\",\n  \"scripts\": {\n    \"prestart\": \"node devtools/certificate/ensureDevCert.mjs\",\n    \"start\": \"vite --config devtools/vite.config.js\",\n    \"start:localApi\": \"cross-env VITE_LOCAL_MASTERPORTALAPI=true vite --config devtools/vite.config.js\",\n    \"startDebug\": \"vite --debug hmr --debug plugin-transform --config devtools/vite.config.js\",\n    \"test\": \"rimraf node_modules/.vite && vitest run --config devtools/vitest.config.js\",\n    \"test:watch\": \"rimraf node_modules/.vite && vitest --config devtools/vitest.config.js --watch\",\n    \"test:silent\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest  run --config devtools/vitest.config.js\",\n    \"test:silent:watch\": \"rimraf node_modules/.vite && cross-env SILENT=true vitest --config devtools/vitest.config.js --watch\",\n    \"lint\": \"eslint \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"lint:fix\": \"eslint --fix \\\"./**/*.{vue,js,mjs}\\\"\",\n    \"migrateConfig\": \"node devtools/tasks/migrator/migrate.js\",\n    \"build\": \"node devtools/tasks/viteBuild.js\",\n    \"buildPortal\": \"vite build --config devtools/vite.config.js && rimraf dist/portal\",\n    \"buildExamples\": \"cross-env EXAMPLES_ONLY=true vite build --config devtools/vite.config.js --mode production && rimraf dist/portal && rimraf --glob \\\"dist/examples_*\\\"\",\n    \"buildJsDoc\": \"node devtools/tasks/buildJsDoc.js\",\n    \"validateOsvSuppressions\": \"node devtools/security/validateOsvSuppressions.mjs\",\n    \"versionHotfix\": \"npm version patch && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMinor\": \"npm version minor && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionMajor\": \"npm version major && npm run versionLatest && git tag -d lts && git push --tags -f --no-verify\",\n    \"versionLatest\": \"git tag latest -f\",\n    \"versionHotfix:all\": \"npm run versionHotfix && cd addons && npm run versionHotfix && cd .. && cd portalconfigs && npm run versionHotfix && cd ..\",\n    \"versionMinor:all\": \"npm run versionMinor && cd addons && npm run versionMinor && cd .. && cd portalconfigs && npm run versionMinor && cd ..\",\n    \"versionMajor:all\": \"npm run versionMajor && cd addons && npm run versionMajor && cd .. && cd portalconfigs && npm run versionMajor && cd ..\",\n    \"prePushHook\": \"node ./node_modules/@masterportal/mpconfigparser/cli.js docs/User/Portal-Config/config.json.md docs/User/Portal-Config/config.json.de.md && npm run validateOsvSuppressions && eslint --max-warnings 0 \\\"./**/*.{vue,js,mjs}\\\" && npm run buildJsDoc && npm run test\",\n    \"validateDocs\": \"node devtools/docsValidation/validateDocs.js\",\n    \"prepare\": \"husky\"\n  },\n  \"dependencies\": {\n    \"@masterportal/masterportalapi\": \"^2.63.0\",\n    \"@popperjs/core\": \"^2.11.8\",\n    \"axios\": \"^1.19.0\",\n    \"bootstrap\": \"^5.3.8\",\n    \"bootstrap-icons\": \"^1.13.1\",\n    \"chart.js\": \"^4.5.1\",\n    \"i18next\": \"^26.1.0\",\n    \"i18next-browser-languagedetector\": \"^8.2.1\",\n    \"i18next-http-backend\": \"^4.0.0\",\n    \"i18next-vue\": \"^5.4.0\",\n    \"jsts\": \"^2.12.1\",\n    \"mqtt\": \"^5.15.1\",\n    \"object-hash\": \"^3.0.0\",\n    \"qrcode\": \"1.5.4\",\n    \"rimraf\": \"^6.1.3\",\n    \"three\": \"^0.184.0\",\n    \"url-parse\": \"^1.5.10\",\n    \"vue\": \"^3.5.33\",\n    \"vue-datepicker-next\": \"^1.0.3\",\n    \"vue-multiselect\": \"3.5.0\",\n    \"vuedraggable\": \"^4.1.0\",\n    \"vuex\": \"^4.1.0\",\n    \"pinia\": \"^4.0.2\"\n  },\n  \"devDependencies\": {\n    \"@eslint/js\": \"10.0.1\",\n    \"@geoblocks/print\": \"^0.7.9\",\n    \"@masterportal/mpconfigparser\": \"^2.0.0\",\n    \"@sinonjs/fake-timers\": \"^14.0.0\",\n    \"@stylistic/eslint-plugin\": \"^5.10.0\",\n    \"@vitejs/plugin-vue\": \"^6.0.6\",\n    \"@vitest/eslint-plugin\": \"^1.6.16\",\n    \"@vitest/ui\": \"^4.0.16\",\n    \"@vitest/web-worker\": \"^4.0.16\",\n    \"@vue/compiler-sfc\": \"3.5.33\",\n    \"@vue/devtools-api\": \"^8.1.2\",\n    \"@vue/server-renderer\": \"3.5.33\",\n    \"@vue/test-utils\": \"^2.4.9\",\n    \"canvas\": \"^3.2.3\",\n    \"chai\": \"^6.2.2\",\n    \"child-process-promise\": \"^2.2.1\",\n    \"cross-env\": \"^10.1.0\",\n    \"docdash\": \"^2.0.2\",\n    \"esbuild-loader\": \"^4.4.3\",\n    \"eslint-plugin-jsdoc\": \"63.0.1\",\n    \"eslint-plugin-n\": \"18.0.1\",\n    \"eslint-plugin-vue\": \"10.9.1\",\n    \"eslint-plugin-vuejs-accessibility\": \"2.5.0\",\n    \"fs-extra\": \"^11.3.4\",\n    \"globals\": \"^17.6.0\",\n    \"https-proxy-agent\": \"^9.0.0\",\n    \"husky\": \"^9.1.7\",\n    \"jsdoc\": \"4.0.5\",\n    \"jsdoc-vuejs\": \"^4.0.0\",\n    \"jsdom\": \"^29.1.1\",\n    \"jsdom-worker\": \"^0.3.0\",\n    \"mock-local-storage\": \"^1.1.24\",\n    \"regenerator-runtime\": \"^0.14.1\",\n    \"replace-in-file\": \"8.4.0\",\n    \"resize-observer-polyfill\": \"^1.5.1\",\n    \"sass\": \"1.77.2\",\n    \"shelljs\": \"^0.10.0\",\n    \"sinon\": \"22.0.0\",\n    \"sinon-chai\": \"^4.0.1\",\n    \"vite\": \"^8.1.4\",\n    \"vite-plugin-cp\": \"^6.0.3\",\n    \"vite-plugin-dynamic-import\": \"^1.6.0\",\n    \"vite-plugin-node-polyfills\": \"^0.28.0\",\n    \"vite-plugin-zip-pack\": \"^1.2.4\",\n    \"vitest\": \"^4.0.16\",\n    \"xmlserializer\": \"^0.6.1\"\n  },\n  \"overrides\": {\n    \"@cesium/engine\": \"npm:dry-uninstall\",\n    \"@cesium/widgets\": \"npm:dry-uninstall\"\n  },\n  \"engines\": {\n    \"node\": \">=22.19.0 <23 || >=24 <25\",\n    \"npm\": \">=10.9.3 <12\"\n  }\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls portal/ src/ docs/ 2>/dev/null; echo ---; ls -R portal | head -50",
+      "exit_code": 0,
+      "stdout": "docs/:\nDev\nSetup\nUser\n_docsCustomization\n_media\n_snippets\nindex.md\n\nportal/:\nauto\nbasic\nmaster\n\nsrc/:\nApp.vue\napp-store\nassets\ncore\ndirectives\nmasterportal.js\nmodules\nplugins\nshared\ntests\n---\nportal:\nauto\nbasic\nmaster\n\nportal/auto:\nconfig.js\nconfig.json\nindex.html\nresources\n\nportal/auto/resources:\nexample_geojson.json\nexample_newsFeedPortalAlerts.json\n\nportal/basic:\nconfig.js\nconfig.json\nindex.html\nresources\n\nportal/basic/resources:\nimg\nmetadata\nnewsFeedPortalAlerts.json\nrest-services.json\nservices.json\nstyle_v3.json\nxml\n\nportal/basic/resources/img:\nallgemein.png\nallgemein_2.png\nallgemein_3.png\nallgemein_4.png\nbackgroundCanvas.jpeg\nberufliche_schulen.svg\nblank.png\nbr.png\nfssa.png\ngrundschulen.svg\ngymnasien.svg\nkrankenhaus.png\nlangformschulen.svg\nmp_logo.png\nrouting_1.png\nrouting_10.png\nrouting_11.png\nrouting_12.png\nrouting_13.png\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for c in curl wget python3 pip3 node npm apt-get make gcc g++; do command -v $c >/dev/null 2>&1 && echo \"$c: $(command -v $c)\" || echo \"$c: NOT FOUND\"; done",
+      "exit_code": 0,
+      "stdout": "curl: /usr/bin/curl\nwget: NOT FOUND\npython3: NOT FOUND\npip3: NOT FOUND\nnode: NOT FOUND\nnpm: NOT FOUND\napt-get: /usr/bin/apt-get\nmake: NOT FOUND\ngcc: NOT FOUND\ng++: NOT FOUND\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 30 curl -sI https://bitbucket.org/geowerkstatt-hamburg/masterportal/downloads/examples.zip 2>&1 | head -20; echo \"EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "HTTP/2 302 \ndate: Sat, 17 Oct 2026 16:13:09 GMT\ncontent-type: text/html; charset=utf-8\ncontent-length: 0\nserver: AtlassianEdge\nlocation: https://bbuseruploads.s3.amazonaws.com/6dda2979-5361-40e1-81c2-bc52e48d2209/downloads/15d6895e-e346-4f8b-9bae-7000a04c0b31/examples.zip?response-content-disposition=attachment%3B%20filename%3D%22examples.zip%22&AWSAccessKeyId=ASIA6KOSE3BNBQ4P443H&Signature=icKdceVlZ4IGWqm%2Fx4SEhTpeiIE%3D&x-amz-security-token=IQoJb3JpZ2luX2VjEDgaCXVzLWVhc3QtMSJGMEQCIAymgmRHwcp21dAB8xKIXZbXKk7O%2FQ6X%2BWlT5StO5RaFAiASb%2Bo9sz74zI3FELH1nDg06o8PAA9zcr2yBkF5TZe4oyqnAggBEAAaDDk4NDUyNTEwMTE0NiIM8unDzTU0Cmw3Nz7EKoQCA3mr2kpgcRZjrW8o5014L0%2Bmoh1PEopR5KPoZb0IHs4ODLqxY7%2B%2B6hNawGoID51XNOwdHLSPAfoQIIWWsX1GnPzht%2BlY%2FEBio6GydKOv%2FIg%2FzI7dcMHLrGHlDIeHDv%2FUgpZciLsfQGrivTjZElWJs2OFU%2BOqWnftn%2BbLP2gr43zFnngYYdU5jd3Ey1Z7z9uKLQT50Nub5ph0uIppSCtS39cQRJC0eDFBIs%2B%2BbULClkzRJzPPRBvLGniRidASa9LpRHiHDjmo8M0SLe%2BBH9XNsw4go6ZLNm2qJqz%2BM3Ici%2Fyh7M1BCi9TSwy5tGr2gofexAEQxOOyJ%2BOVaIAghVLayoWvg0ow7rfO1gY6ngHtbjSdWm63QZ%2F3orkM3jHpAr0PMzkARJ%2FeO4VGCRbep5%2FB%2Fm%2Fe04uFhSqPl6qgl0WwtI0u5%2FcdtxawQu7dYXGStwohrHolzkzsMyrh4B7kuDPFvAO4vgrZPQRIPSJ40raC4XDOpwAOVuVMpbBIRFYtlkcdgfT3rmsXbWdDnadaEtL1sds%2Fw%2FUKeK6W6965%2ByKR77r0mF6WOw41bl6FMg%3D%3D&Expires=1792255389\nexpires: Sat, 17 Oct 2026 16:13:09 GMT\ncache-control: max-age=0, no-cache, no-store, must-revalidate, private\nx-used-mesh: False\nvary: Accept-Language, origin\ncontent-language: en\nx-view-name: bitbucket.apps.downloads.views.download_file\nx-dc-location: Micros-3\nx-served-by: b6f8d2f0e7dd\nx-version: 2f04cc642ea9\nx-static-version: 2f04cc642ea9\nx-request-count: 2417\nx-render-time: 0.43950796127319336\nx-b3-traceid: f7504f00793e4f81a494e5a67ba4c013\nx-b3-spanid: f469b1aa596af7d6\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 120 curl -sL -o examples.zip \"https://bitbucket.org/geowerkstatt-hamburg/masterportal/downloads/examples.zip\" && ls -la examples.zip && file examples.zip",
+      "exit_code": 127,
+      "stdout": "-rw-r--r-- 1 root root 7019648 Oct 17 16:13 examples.zip\n",
+      "stderr": "/bin/bash: line 3: file: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 300 bash -c \"apt-get update -qq 2>&1 | tail -3\"; echo \"APT_EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "APT_EXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 300 bash -c 'apt-get install -y -qq unzip 2>&1 | tail -2'; echo \"EXIT: $?\"; timeout 60 unzip -l /workspace/examples.zip | head -30; echo \"...\"; timeout 60 unzip -l /workspace/examples.zip | tail -5",
+      "exit_code": 0,
+      "stdout": "Unpacking unzip (6.0-26ubuntu3.2) ...\nSetting up unzip (6.0-26ubuntu3.2) ...\nEXIT: 0\nArchive:  /workspace/examples.zip\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n        0  2026-10-09 12:43   basic/\n     1374  2026-09-16 17:32   basic/config.js\n    12082  2026-10-09 11:48   basic/config.json\n      611  2026-10-09 12:43   basic/index.html\n        0  2026-10-09 12:43   basic/resources/\n        0  2026-10-09 12:43   basic/resources/img/\n    95280  2024-09-03 14:09   basic/resources/img/allgemein.png\n    72276  2024-09-03 14:09   basic/resources/img/allgemein_2.png\n    66244  2024-09-03 14:09   basic/resources/img/allgemein_3.png\n    44445  2024-09-03 14:09   basic/resources/img/allgemein_4.png\n     3445  2024-09-03 14:09   basic/resources/img/backgroundCanvas.jpeg\n     7796  2024-09-03 14:09   basic/resources/img/berufliche_schulen.svg\n       85  2025-04-10 10:57   basic/resources/img/blank.png\n     1323  2024-09-03 14:09   basic/resources/img/br.png\n     1786  2024-09-03 14:09   basic/resources/img/fssa.png\n     5270  2024-09-03 14:09   basic/resources/img/grundschulen.svg\n     6267  2024-09-03 14:09   basic/resources/img/gymnasien.svg\n     1349  2024-09-03 14:09   basic/resources/img/krankenhaus.png\n    11615  2024-09-03 14:09   basic/resources/img/langformschulen.svg\n    22787  2024-09-03 14:09   basic/resources/img/mp_logo.png\n     6981  2024-09-03 14:09   basic/resources/img/routing_1.png\n    26314  2024-09-03 14:09   basic/resources/img/routing_10.png\n    10274  2024-09-03 14:09   basic/resources/img/routing_11.png\n     7023  2024-09-03 14:09   basic/resources/img/routing_12.png\n   152032  2024-09-03 14:09   basic/resources/img/routing_13.png\n    15281  2024-09-03 14:09   basic/resources/img/routing_14.png\n    14129  2024-09-03 14:09   basic/resources/img/routing_15.png\n...\n        0  2026-10-09 12:43   mastercode/3_27_1/locales/ua/\n       10  2026-09-16 17:32   mastercode/3_27_1/locales/ua/additional.json\n   112350  2026-09-16 17:32   mastercode/3_27_1/locales/ua/common.json\n---------                     -------\n 14876762                     201 files\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 60 unzip -l /workspace/examples.zip | awk '{print $4}' | grep -v '/' | head; echo \"=== top dirs ===\"; timeout 60 unzip -l /workspace/examples.zip | awk '{print $4}' | grep -oE '^[^/]+' | sort -u; echo \"=== mastercode ===\"; timeout 60 unzip -l /workspace/examples.zip | grep -E 'mastercode/[^/]+/[^/]+/?$' | head -20",
+      "exit_code": 0,
+      "stdout": "\nName\n----\n\n\n=== top dirs ===\n----\nName\nbasic\nmastercode\n=== mastercode ===\n        0  2026-10-09 12:43   mastercode/3_27_1/css/\n        0  2026-10-09 12:43   mastercode/3_27_1/img/\n        0  2026-10-09 12:43   mastercode/3_27_1/js/\n        0  2026-10-09 12:43   mastercode/3_27_1/locales/\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "timeout 590 bash -c 'DEBIAN_FRONTEND=noninteractive apt-get install -y -qq apache2 2>&1 | tail -3'; echo \"APACHE_INSTALL_EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "invoke-rc.d: could not determine current runlevel\ninvoke-rc.d: policy-rc.d denied execution of start.\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\nAPACHE_INSTALL_EXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "mkdir -p /var/www/html/examples && timeout 120 unzip -q -o /workspace/examples.zip -d /var/www/html/examples/ && echo \"UNZIP OK\" && find /var/www/html/examples -maxdepth 2 | sort",
+      "exit_code": 0,
+      "stdout": "UNZIP OK\n/var/www/html/examples\n/var/www/html/examples/basic\n/var/www/html/examples/basic/config.js\n/var/www/html/examples/basic/config.json\n/var/www/html/examples/basic/index.html\n/var/www/html/examples/basic/resources\n/var/www/html/examples/mastercode\n/var/www/html/examples/mastercode/3_27_1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /var/www/html/examples/basic/index.html; echo \"=== config.js (head) ===\"; head -40 /var/www/html/examples/basic/config.js; echo \"=== mastercode dir ===\"; ls /var/www/html/examples/mastercode/3_27_1/; echo \"=== js dir ===\"; ls /var/www/html/examples/mastercode/3_27_1/js/",
+      "exit_code": 0,
+      "stdout": "<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n  <script type=\"module\" src=\"../mastercode/3_27_1/js/masterportal.js\"></script>\n  <link rel=\"stylesheet\" href=\"../mastercode/3_27_1/css/masterportal.css\">\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n\n</body>\n</html>\n=== config.js (head) ===\nconst Config = {\n    alerting: {\n        fetchBroadcastUrl: \"./resources/newsFeedPortalAlerts.json\"\n    },\n    namedProjections: [\n        [\"EPSG:25832\", \"+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs\"]\n    ],\n    layerConf: \"./resources/services.json\",\n    restConf: \"./resources/rest-services.json\",\n    styleConf: \"./resources/style_v3.json\",\n    wfsImgPath: \"./resources/img/\",\n    portalLanguage: {\n        enabled: true,\n        debug: false,\n        languages: {\n            de: \"Deutsch\",\n            en: \"English\",\n            es: \"Espa\u00f1ol\",\n            it: \"Italiano\",\n            platt: \"Platt\",\n            pt: \"Portugu\u00eas\",\n            ru: \"\u0420\u0443\u0441\u0441\u043a\u0438\u0439\",\n            tr: \"T\u00fcrk\u00e7e\",\n            ua: \"\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430\",\n            nl: \"Nederlands\"\n        },\n        fallbackLanguage: \"de\",\n        changeLanguageOnStartWhen: [\"querystring\", \"localStorage\", \"htmlTag\"]\n    },\n    portalLocales: {\n        de: {\n            common: {\n                modules: {\n                    searchBar: {\n                        placeholder: {\n                            address: \"Suche nach Themen\"\n                        }\n                    }\n                }\n            }\n=== mastercode dir ===\ncss\nimg\njs\nlocales\n=== js dir ===\nAboutModule.js\nAccordionItem.js\nAddWMS.js\nBufferAnalysis.js\nButtonGroup.js\nColladaLoader.js\nCompareFeatures.js\nCompareMaps.js\nContactFormular.js\nCoordToolkit.js\nCopyrightConstraints.js\nCustomMenuElement.js\nDrawItem.js\nDrawModule.js\nDrawTypes.js\nExportButtonGeoJSON.js\nFeatureLister.js\nFileImport.js\nFilterGeneral.js\nGraphicalSelect.js\nLanguageItem.js\nLayerClusterToggler.js\nLayerInformation.js\nLayerPills.js\nLayerSelection.js\nLayerSlider.js\nLayerSwiper.js\nLegendContainer.js\nLegendSingleLayer.js\nMeasureInMap.js\nMenuFolder.js\nModalItem.js\nModeler3D.js\nMouseHover.js\nNewsView.js\nNotoSans-Bold.woff\nNotoSans-Italic.woff\nNotoSans-extracondensedlight.woff\nNotoSans.woff\nOBJLoader.js\nOpenConfig.js\nPortalFooter.js\nPrintMap.js\nRoboto-Bold.woff\nRoboto-Medium.woff\nRoboto-MediumItalic.woff\nRoutingTemplate.js\nScaleSwitcher.js\nSelectFeatures.js\nShadowTool.js\nShareView.js\nStatisticDashboard.js\nStyleVT.js\nTableComponent.js\nWfsSearch.js\nWfsTransaction.js\nWmsTime.js\nbootstrap-icons.woff\nbootstrap-icons.woff2\ndeflate.js\ninitProjections.js\njpeg.js\nlerc.js\nlzw.js\nmaster_touchtable_big.eot\nmaster_touchtable_big.svg\nmaster_touchtable_big.ttf\nmaster_touchtable_big.woff\nmasterportal.js\nmaterialdesignicons-webfont.eot\nmaterialdesignicons-webfont.ttf\nmaterialdesignicons-webfont.woff\nmaterialdesignicons-webfont.woff2\npackbits.js\npako.esm.js\nraw.js\nroboto-700.eot\nroboto-700.svg\nroboto-700.ttf\nroboto-700.woff\nroboto-700.woff2\nroboto-italic.eot\nroboto-italic.svg\nroboto-italic.ttf\nroboto-italic.woff\nroboto-italic.woff2\nroboto-regular.eot\nroboto-regular.svg\nroboto-regular.ttf\nroboto-regular.woff\nroboto-regular.woff2\nthree.core.js\nvue-datepicker-next.js\nvuetify.js\nwebimage.js\nzstd.js\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ln -sfn basic /var/www/html/examples/Basic && service apache2 start; sleep 2; service apache2 status; ss -tlnp 2>/dev/null | grep :80 || netstat -tlnp 2>/dev/null | grep :80 || echo \"no ss/netstat\"",
+      "exit_code": 0,
+      "stdout": " * Starting Apache httpd web server apache2\n * \n * apache2 is running\nno ss/netstat\n",
+      "stderr": "AH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 192.168.127.2. Set the 'ServerName' directive globally to suppress this message\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== /examples/Basic/index.html ===\"; curl -s -o /dev/null -w \"HTTP %{http_code} | size %{size_download}\\n\" http://localhost/examples/Basic/index.html; echo \"=== body ===\"; curl -s http://localhost/examples/Basic/index.html; echo \"=== config.js ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/config.js; echo \"=== config.json ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/config.json; echo \"=== services.json ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/resources/services.json; echo \"=== rest-services.json ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/resources/rest-services.json; echo \"=== style_v3.json ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/resources/style_v3.json",
+      "exit_code": 0,
+      "stdout": "=== /examples/Basic/index.html ===\nHTTP 200 | size 611\n=== body ===\n<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n  <script type=\"module\" src=\"../mastercode/3_27_1/js/masterportal.js\"></script>\n  <link rel=\"stylesheet\" href=\"../mastercode/3_27_1/css/masterportal.css\">\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n\n</body>\n</html>\n=== config.js ===\nHTTP 200\n=== config.json ===\nHTTP 200\n=== services.json ===\nHTTP 200\n=== rest-services.json ===\nHTTP 200\n=== style_v3.json ===\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== masterportal.js ===\"; curl -s -o /dev/null -w \"HTTP %{http_code} | size %{size_download}\\n\" http://localhost/examples/mastercode/3_27_1/js/masterportal.js; echo \"=== masterportal.css ===\"; curl -s -o /dev/null -w \"HTTP %{http_code} | size %{size_download}\\n\" http://localhost/examples/mastercode/3_27_1/css/masterportal.css; echo \"=== a resource img ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/Basic/resources/img/mp_logo.png; echo \"=== locales de/common.json ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}\\n\" http://localhost/examples/mastercode/3_27_1/locales/de/common.json",
+      "exit_code": 0,
+      "stdout": "=== masterportal.js ===\nHTTP 200 | size 4736764\n=== masterportal.css ===\nHTTP 200 | size 1240068\n=== a resource img ===\nHTTP 200\n=== locales de/common.json ===\nHTTP 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"=== zip file count ===\"; unzip -l /workspace/examples.zip | tail -1; echo \"=== deployed file count ===\"; find /var/www/html/examples -type f | wc -l; echo \"=== deployed dir count ===\"; find /var/www/html/examples -type d | wc -l; echo \"=== Basic symlink ===\"; ls -la /var/www/html/examples/ | grep -i basic; echo \"=== apache status ===\"; service apache2 status; echo \"=== full example tree (depth 3) ===\"; find /var/www/html/examples -maxdepth 3 -type d | sort | head -20",
+      "exit_code": 0,
+      "stdout": "=== zip file count ===\n 14876762                     201 files\n=== deployed file count ===\n177\n=== deployed dir count ===\n25\n=== Basic symlink ===\nlrwxrwxrwx 1 root root    5 Oct 17 16:14 Basic -> basic\ndrwxr-xr-x 3 root root 4096 Oct  9 12:43 basic\n=== apache status ===\n * apache2 is running\n=== full example tree (depth 3) ===\n/var/www/html/examples\n/var/www/html/examples/basic\n/var/www/html/examples/basic/resources\n/var/www/html/examples/basic/resources/img\n/var/www/html/examples/basic/resources/metadata\n/var/www/html/examples/basic/resources/xml\n/var/www/html/examples/mastercode\n/var/www/html/examples/mastercode/3_27_1\n/var/www/html/examples/mastercode/3_27_1/css\n/var/www/html/examples/mastercode/3_27_1/img\n/var/www/html/examples/mastercode/3_27_1/js\n/var/www/html/examples/mastercode/3_27_1/locales\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && unzip -l /workspace/examples.zip | awk '{print $4}' | grep -v '^$' | grep -v '^-*$' | grep -v '^Name$' | grep -v 'Date' | sort > zip_entries.txt; find /var/www/html/examples -mindepth 1 | sed 's|^/var/www/html/examples/||' | grep -v '^Basic$' | sort > deployed_entries.txt; echo \"=== in zip but not deployed ===\"; comm -23 zip_entries.txt deployed_entries.txt; echo \"=== in deployed but not in zip ===\"; comm -13 zip_entries.txt deployed_entries.txt; echo \"=== done ===\"; wc -l zip_entries.txt deployed_entries.txt",
+      "exit_code": 0,
+      "stdout": "=== in zip but not deployed ===\nbasic/\nbasic/resources/\nbasic/resources/img/\nbasic/resources/metadata/\nbasic/resources/xml/\nmastercode/\nmastercode/3_27_1/\nmastercode/3_27_1/css/\nmastercode/3_27_1/img/\nmastercode/3_27_1/img/tools/\nmastercode/3_27_1/img/tools/draw/\nmastercode/3_27_1/js/\nmastercode/3_27_1/locales/\nmastercode/3_27_1/locales/de/\nmastercode/3_27_1/locales/en/\nmastercode/3_27_1/locales/es/\nmastercode/3_27_1/locales/fr/\nmastercode/3_27_1/locales/it/\nmastercode/3_27_1/locales/nl/\nmastercode/3_27_1/locales/platt/\nmastercode/3_27_1/locales/pt/\nmastercode/3_27_1/locales/ru/\nmastercode/3_27_1/locales/tr/\nmastercode/3_27_1/locales/ua/\n=== in deployed but not in zip ===\nbasic\nbasic/resources\nbasic/resources/img\nbasic/resources/metadata\nbasic/resources/xml\nmastercode\nmastercode/3_27_1\nmastercode/3_27_1/css\nmastercode/3_27_1/img\nmastercode/3_27_1/img/tools\nmastercode/3_27_1/img/tools/draw\nmastercode/3_27_1/js\nmastercode/3_27_1/locales\nmastercode/3_27_1/locales/de\nmastercode/3_27_1/locales/en\nmastercode/3_27_1/locales/es\nmastercode/3_27_1/locales/fr\nmastercode/3_27_1/locales/it\nmastercode/3_27_1/locales/nl\nmastercode/3_27_1/locales/platt\nmastercode/3_27_1/locales/pt\nmastercode/3_27_1/locales/ru\nmastercode/3_27_1/locales/tr\nmastercode/3_27_1/locales/ua\n=== done ===\n  201 zip_entries.txt\n  201 deployed_entries.txt\n  402 total\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== /workspace ===\"; ls -la /workspace/ | head -30; echo; echo \"=== /var/www/html ===\"; ls -la /var/www/html/; echo; echo \"=== examples dir ===\"; ls -la /var/www/html/examples/ 2>&1; echo; echo \"=== Apache status ===\"; service apache2 status 2>&1; ps aux | grep -i [a]pache | head -5",
+      "exit_code": 0,
+      "stdout": "=== /workspace ===\ntotal 7560\ndrwxr-xr-x 12 root root    4096 Oct 17 16:13 .\ndr-xr-xr-x  1 root root    4096 Oct 17 16:12 ..\n-rw-r--r--  1 root root     356 Oct 17 16:12 .editorconfig\ndrwxr-xr-x  8 root root    4096 Oct 17 16:13 .git\n-rw-r--r--  1 root root      11 Oct 17 16:12 .gitattributes\ndrwxr-xr-x  3 root root    4096 Oct 17 16:12 .github\n-rw-r--r--  1 root root     847 Oct 17 16:12 .gitignore\ndrwxr-xr-x  3 root root    4096 Oct 17 16:12 .gitlab\ndrwxr-xr-x  2 root root    4096 Oct 17 16:12 .husky\n-rw-r--r--  1 root root      55 Oct 17 16:12 .npmrc\n-rw-r--r--  1 root root  135653 Oct 17 16:12 CHANGELOG.md\n-rw-r--r--  1 root root    3958 Oct 17 16:12 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root    2863 Oct 17 16:12 CONTRIBUTING.md\n-rw-r--r--  1 root root    1140 Oct 17 16:12 License.txt\n-rw-r--r--  1 root root    5063 Oct 17 16:12 README.md\n-rw-r--r--  1 root root    1290 Oct 17 16:12 SECURITY.md\ndrwxr-xr-x  2 root root    4096 Oct 17 16:12 addons\n-rw-r--r--  1 root root   18485 Oct 17 16:12 bitbucket-pipelines.yml\ndrwxr-xr-x  8 root root    4096 Oct 17 16:12 devtools\ndrwxr-xr-x  8 root root    4096 Oct 17 16:12 docs\n-rw-r--r--  1 root root   21535 Oct 17 16:12 eslint.config.js\n-rw-r--r--  1 root root 7019648 Oct 17 16:13 examples.zip\n-rw-r--r--  1 root root     787 Oct 17 16:12 jsconfig.json\ndrwxr-xr-x 13 root root    4096 Oct 17 16:12 locales\n-rw-r--r--  1 root root    4986 Oct 17 16:12 mkdocs.yml\n-rw-r--r--  1 root root  421157 Oct 17 16:12 package-lock.json\n-rw-r--r--  1 root root    5601 Oct 17 16:12 package.json\ndrwxr-xr-x  5 root root    4096 Oct 17 16:12 portal\n-rw-r--r--  1 root root    4039 Oct 17 16:12 publiccode.yml\n\n=== /var/www/html ===\ntotal 24\ndrwxr-xr-x 3 root root  4096 Oct 17 16:14 .\ndrwxr-xr-x 3 root root  4096 Oct 17 16:14 ..\ndrwxr-xr-x 4 root root  4096 Oct 17 16:14 examples\n-rw-r--r-- 1 root root 10671 Oct 17 16:14 index.html\n\n=== examples dir ===\ntotal 16\ndrwxr-xr-x 4 root root 4096 Oct 17 16:14 .\ndrwxr-xr-x 3 root root 4096 Oct 17 16:14 ..\nlrwxrwxrwx 1 root root    5 Oct 17 16:14 Basic -> basic\ndrwxr-xr-x 3 root root 4096 Oct  9 12:43 basic\ndrwxr-xr-x 3 root root 4096 Oct  9 12:43 mastercode\n\n=== Apache status ===\n * apache2 is running\nroot        1193  0.0  0.0   6780  4580 ?        Ss   16:14   0:00 /usr/sbin/apache2 -k start\nwww-data    1195  0.0  0.0 1997928 4588 ?        Sl   16:14   0:00 /usr/sbin/apache2 -k start\nwww-data    1196  0.1  0.0 1997928 4972 ?        Sl   16:14   0:00 /usr/sbin/apache2 -k start\nroot        1322  0.0  0.0   2800  1536 ?        Ss   16:15   0:00 /usr/bin/timeout --signal=TERM --kill-after=5s 600s /bin/bash -lc set -o pipefail cd /workspace || exit 125 echo \"=== /workspace ===\"; ls -la /workspace/ | head -30; echo; echo \"=== /var/www/html ===\"; ls -la /var/www/html/; echo; echo \"=== examples dir ===\"; ls -la /var/www/html/examples/ 2>&1; echo; echo \"=== Apache status ===\"; service apache2 status 2>&1; ps aux | grep -i [a]pache | head -5\nroot        1323  0.0  0.0   4364  3200 ?        S    16:15   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 echo \"=== /workspace ===\"; ls -la /workspace/ | head -30; echo; echo \"=== /var/www/html ===\"; ls -la /var/www/html/; echo; echo \"=== examples dir ===\"; ls -la /var/www/html/examples/ 2>&1; echo; echo \"=== Apache status ===\"; service apache2 status 2>&1; ps aux | grep -i [a]pache | head -5\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== zip in workspace ===\"; ls -la /workspace/examples.zip 2>&1; file /workspace/examples.zip 2>&1; echo; echo \"=== unzip listing (top) ===\"; unzip -l /workspace/examples.zip 2>&1 | head -30; echo \"...\"; unzip -l /workspace/examples.zip 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "=== zip in workspace ===\n-rw-r--r-- 1 root root 7019648 Oct 17 16:13 /workspace/examples.zip\n/workspace/examples.zip: Zip archive data, at least v1.0 to extract, compression method=store\n\n=== unzip listing (top) ===\nArchive:  /workspace/examples.zip\n  Length      Date    Time    Name\n---------  ---------- -----   ----\n        0  2026-10-09 12:43   basic/\n     1374  2026-09-16 17:32   basic/config.js\n    12082  2026-10-09 11:48   basic/config.json\n      611  2026-10-09 12:43   basic/index.html\n        0  2026-10-09 12:43   basic/resources/\n        0  2026-10-09 12:43   basic/resources/img/\n    95280  2024-09-03 14:09   basic/resources/img/allgemein.png\n    72276  2024-09-03 14:09   basic/resources/img/allgemein_2.png\n    66244  2024-09-03 14:09   basic/resources/img/allgemein_3.png\n    44445  2024-09-03 14:09   basic/resources/img/allgemein_4.png\n     3445  2024-09-03 14:09   basic/resources/img/backgroundCanvas.jpeg\n     7796  2024-09-03 14:09   basic/resources/img/berufliche_schulen.svg\n       85  2025-04-10 10:57   basic/resources/img/blank.png\n     1323  2024-09-03 14:09   basic/resources/img/br.png\n     1786  2024-09-03 14:09   basic/resources/img/fssa.png\n     5270  2024-09-03 14:09   basic/resources/img/grundschulen.svg\n     6267  2024-09-03 14:09   basic/resources/img/gymnasien.svg\n     1349  2024-09-03 14:09   basic/resources/img/krankenhaus.png\n    11615  2024-09-03 14:09   basic/resources/img/langformschulen.svg\n    22787  2024-09-03 14:09   basic/resources/img/mp_logo.png\n     6981  2024-09-03 14:09   basic/resources/img/routing_1.png\n    26314  2024-09-03 14:09   basic/resources/img/routing_10.png\n    10274  2024-09-03 14:09   basic/resources/img/routing_11.png\n     7023  2024-09-03 14:09   basic/resources/img/routing_12.png\n   152032  2024-09-03 14:09   basic/resources/img/routing_13.png\n    15281  2024-09-03 14:09   basic/resources/img/routing_14.png\n    14129  2024-09-03 14:09   basic/resources/img/routing_15.png\n...\n        0  2026-10-09 12:43   mastercode/3_27_1/locales/ua/\n       10  2026-09-16 17:32   mastercode/3_27_1/locales/ua/additional.json\n   112350  2026-09-16 17:32   mastercode/3_27_1/locales/ua/common.json\n---------                     -------\n 14876762                     201 files\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /var/www/html/examples && unzip -l /workspace/examples.zip | awk 'NR>3 {print $4}' | grep -v '^$' | grep -v '^Name$' | sort > /tmp/zip_entries.txt; find . -mindepth 1 | sed 's|^\\./||' | sort > /tmp/fs_entries.txt; wc -l /tmp/zip_entries.txt /tmp/fs_entries.txt; echo \"=== diff (zip vs fs) ===\"; diff /tmp/zip_entries.txt /tmp/fs_entries.txt && echo \"IDENTICAL (excluding the Basic symlink)\"",
+      "exit_code": 1,
+      "stdout": "  201 /tmp/zip_entries.txt\n  202 /tmp/fs_entries.txt\n  403 total\n=== diff (zip vs fs) ===\n1c1,2\n< basic/\n---\n> Basic\n> basic\n5,6c6,7\n< basic/resources/\n< basic/resources/img/\n---\n> basic/resources\n> basic/resources/img\n45c46\n< basic/resources/metadata/\n---\n> basic/resources/metadata\n51c52\n< basic/resources/xml/\n---\n> basic/resources/xml\n56,58c57,59\n< mastercode/\n< mastercode/3_27_1/\n< mastercode/3_27_1/css/\n---\n> mastercode\n> mastercode/3_27_1\n> mastercode/3_27_1/css\n60c61\n< mastercode/3_27_1/img/\n---\n> mastercode/3_27_1/img\n62,63c63,64\n< mastercode/3_27_1/img/tools/\n< mastercode/3_27_1/img/tools/draw/\n---\n> mastercode/3_27_1/img/tools\n> mastercode/3_27_1/img/tools/draw\n73c74\n< mastercode/3_27_1/js/\n---\n> mastercode/3_27_1/js\n170,171c171,172\n< mastercode/3_27_1/locales/\n< mastercode/3_27_1/locales/de/\n---\n> mastercode/3_27_1/locales\n> mastercode/3_27_1/locales/de\n173c174\n< mastercode/3_27_1/locales/en/\n---\n> mastercode/3_27_1/locales/en\n175c176\n< mastercode/3_27_1/locales/es/\n---\n> mastercode/3_27_1/locales/es\n178c179\n< mastercode/3_27_1/locales/fr/\n---\n> mastercode/3_27_1/locales/fr\n181c182\n< mastercode/3_27_1/locales/it/\n---\n> mastercode/3_27_1/locales/it\n184c185\n< mastercode/3_27_1/locales/nl/\n---\n> mastercode/3_27_1/locales/nl\n187c188\n< mastercode/3_27_1/locales/platt/\n---\n> mastercode/3_27_1/locales/platt\n190c191\n< mastercode/3_27_1/locales/pt/\n---\n> mastercode/3_27_1/locales/pt\n193c194\n< mastercode/3_27_1/locales/ru/\n---\n> mastercode/3_27_1/locales/ru\n196c197\n< mastercode/3_27_1/locales/tr/\n---\n> mastercode/3_27_1/locales/tr\n199c200\n< mastercode/3_27_1/locales/ua/\n---\n> mastercode/3_27_1/locales/ua\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== GET /examples/Basic/index.html ===\"; curl -s -o /tmp/index.html -w \"HTTP %{http_code}, %{size_download} bytes, content-type: %{content_type}\\n\" http://localhost/examples/Basic/index.html; echo \"--- body ---\"; cat /tmp/index.html; echo; echo \"=== GET /examples/basic/index.html (lowercase) ===\"; curl -s -o /dev/null -w \"HTTP %{http_code}, %{size_download} bytes\\n\" http://localhost/examples/basic/index.html",
+      "exit_code": 0,
+      "stdout": "=== GET /examples/Basic/index.html ===\nHTTP 200, 611 bytes, content-type: text/html\n--- body ---\n<!DOCTYPE html>\n<html lang=\"de\">\n<head>\n    <meta charset=\"utf-8\">\n    <meta http-equiv=\"X-UA-Compatible\" content=\"IE=edge\">\n    <meta name=\"viewport\" content=\"width=device-width, initial-scale=1, user-scalable=0\">\n    <meta name=\"apple-mobile-web-app-capable\" content=\"yes\">\n    <meta name=\"mobile-web-app-capable\" content=\"yes\">\n\n    <title>Basic Masterportal</title>\n  <script type=\"module\" src=\"../mastercode/3_27_1/js/masterportal.js\"></script>\n  <link rel=\"stylesheet\" href=\"../mastercode/3_27_1/css/masterportal.css\">\n</head>\n<body>\n    <div id=\"masterportal-root\"></div>\n\n</body>\n</html>\n\n=== GET /examples/basic/index.html (lowercase) ===\nHTTP 200, 611 bytes\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "sed 's|/$||' /tmp/zip_entries.txt | grep -v '^$' | sort -u > /tmp/zip_norm.txt; grep -v '^Basic$' /tmp/fs_entries.txt | sed 's|/$||' | sort -u > /tmp/fs_norm.txt; diff /tmp/zip_norm.txt /tmp/fs_norm.txt && echo \"FS MATCHES ZIP EXACTLY (only extra entry: Basic symlink)\"; echo; echo \"=== symlink target check ===\"; ls -la /var/www/html/examples/; readlink -f /var/www/html/examples/Basic",
+      "exit_code": 0,
+      "stdout": "FS MATCHES ZIP EXACTLY (only extra entry: Basic symlink)\n\n=== symlink target check ===\ntotal 16\ndrwxr-xr-x 4 root root 4096 Oct 17 16:14 .\ndrwxr-xr-x 3 root root 4096 Oct 17 16:14 ..\nlrwxrwxrwx 1 root root    5 Oct 17 16:14 Basic -> basic\ndrwxr-xr-x 3 root root 4096 Oct  9 12:43 basic\ndrwxr-xr-x 3 root root 4096 Oct  9 12:43 mastercode\n/var/www/html/examples/basic\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in \\\n  \"/examples/Basic/../mastercode/3_27_1/js/masterportal.js\" \\\n  \"/examples/mastercode/3_27_1/js/masterportal.js\" \\\n  \"/examples/mastercode/3_27_1/css/masterportal.css\" \\\n  \"/examples/Basic/config.js\" \\\n  \"/examples/Basic/config.json\" \\\n  \"/examples/Basic/resources/services.json\" \\\n  \"/examples/Basic/resources/rest-services.json\" \\\n  \"/examples/Basic/resources/style_v3.json\" \\\n  \"/examples/mastercode/3_27_1/locales/en/common.json\" \\\n  \"/examples/mastercode/3_27_1/img/Logo_Masterportal.svg\" ; do\n  code=$(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost$p\"); echo \"$code  $p\";\ndone; echo; echo \"=== masterportal.js size check ===\"; curl -s http://localhost/examples/mastercode/3_27_1/js/masterportal.js | wc -c; stat -c '%s bytes on disk' /var/www/html/examples/mastercode/3_27_1/js/masterportal.js",
+      "exit_code": 0,
+      "stdout": "200  /examples/Basic/../mastercode/3_27_1/js/masterportal.js\n200  /examples/mastercode/3_27_1/js/masterportal.js\n200  /examples/mastercode/3_27_1/css/masterportal.css\n200  /examples/Basic/config.js\n200  /examples/Basic/config.json\n200  /examples/Basic/resources/services.json\n200  /examples/Basic/resources/rest-services.json\n200  /examples/Basic/resources/style_v3.json\n200  /examples/mastercode/3_27_1/locales/en/common.json\n200  /examples/mastercode/3_27_1/img/Logo_Masterportal.svg\n\n=== masterportal.js size check ===\n4736764\n4736764 bytes on disk\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /var/www/html/examples/basic; echo \"=== jq validation of all JSON ===\"; for f in config.json resources/services.json resources/rest-services.json resources/style_v3.json; do if command -v jq >/dev/null; then jq empty \"$f\" && echo \"OK  $f\"; else node -e \"JSON.parse(require('fs').readFileSync('$f','utf8'));console.log('OK  $f')\" 2>&1; fi; done; echo; echo \"=== config.js syntax check ===\"; if command -v node >/dev/null; then node --check config.js && echo \"config.js syntax OK\"; else echo \"node not available, skipping\"; fi; echo; echo \"=== config.js head ===\"; head -40 config.js; echo; echo \"=== config.json keys ===\"; (jq -r 'keys[]' config.json 2>/dev/null || node -e \"console.log(Object.keys(JSON.parse(require('fs').readFileSync('config.json','utf8'))))\")",
+      "exit_code": 127,
+      "stdout": "=== jq validation of all JSON ===\n/bin/bash: line 3: node: command not found\n/bin/bash: line 3: node: command not found\n/bin/bash: line 3: node: command not found\n/bin/bash: line 3: node: command not found\n\n=== config.js syntax check ===\nnode not available, skipping\n\n=== config.js head ===\nconst Config = {\n    alerting: {\n        fetchBroadcastUrl: \"./resources/newsFeedPortalAlerts.json\"\n    },\n    namedProjections: [\n        [\"EPSG:25832\", \"+title=ETRS89/UTM 32N +proj=utm +zone=32 +ellps=GRS80 +towgs84=0,0,0,0,0,0,0 +units=m +no_defs\"]\n    ],\n    layerConf: \"./resources/services.json\",\n    restConf: \"./resources/rest-services.json\",\n    styleConf: \"./resources/style_v3.json\",\n    wfsImgPath: \"./resources/img/\",\n    portalLanguage: {\n        enabled: true,\n        debug: false,\n        languages: {\n            de: \"Deutsch\",\n            en: \"English\",\n            es: \"Espa\u00f1ol\",\n            it: \"Italiano\",\n            platt: \"Platt\",\n            pt: \"Portugu\u00eas\",\n            ru: \"\u0420\u0443\u0441\u0441\u043a\u0438\u0439\",\n            tr: \"T\u00fcrk\u00e7e\",\n            ua: \"\u0423\u043a\u0440\u0430\u0457\u043d\u0441\u044c\u043a\u0430\",\n            nl: \"Nederlands\"\n        },\n        fallbackLanguage: \"de\",\n        changeLanguageOnStartWhen: [\"querystring\", \"localStorage\", \"htmlTag\"]\n    },\n    portalLocales: {\n        de: {\n            common: {\n                modules: {\n                    searchBar: {\n                        placeholder: {\n                            address: \"Suche nach Themen\"\n                        }\n                    }\n                }\n            }\n\n=== config.json keys ===\n",
+      "stderr": "/bin/bash: line 3: node: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== Listening ports ===\"; (ss -tlnp 2>/dev/null || netstat -tlnp 2>/dev/null) | grep -E ':80\\b|:443\\b' ; echo; echo \"=== Apache conf docroot & options ===\"; grep -E \"DocumentRoot|Options|AllowOverride\" /etc/apache2/sites-available/000-default.conf 2>/dev/null; echo; echo \"=== mastercode js head ===\"; head -c 300 /var/www/html/examples/mastercode/3_27_1/js/masterportal.js; echo; echo \"...\"; echo \"=== mastercode tree ===\"; find /var/www/html/examples/mastercode -maxdepth 2 -type d | sort; echo; echo \"=== mastercode file counts ===\"; find /var/www/html/examples/mastercode -type f | wc -l; ls /var/www/html/examples/mastercode/3_27_1/css /var/www/html/examples/mastercode/3_27_1/js; echo; echo \"=== css head ===\"; head -c 200 /var/www/html/examples/mastercode/3_27_1/css/masterportal.css; echo; echo \"=== locales ===\"; ls /var/www/html/examples/mastercode/3_27_1/locales/",
+      "exit_code": 0,
+      "stdout": "=== Listening ports ===\n\n=== Apache conf docroot & options ===\n\tDocumentRoot /var/www/html\n\n=== mastercode js head ===\nconst __vite__mapDeps=(i,m=__vite__mapDeps,d=(m.f||(m.f=[\"./deflate.js\",\"./pako.esm.js\",\"./lerc.js\",\"./ContactFormular.js\",\"./AccordionItem.js\",\"./CoordToolkit.js\",\"./initProjections.js\",\"./CompareFeatures.js\",\"./TableComponent.js\",\"./ExportButtonGeoJSON.js\",\"./DrawModule.js\",\"./DrawTypes.js\",\"./Fea\n...\n=== mastercode tree ===\n/var/www/html/examples/mastercode\n/var/www/html/examples/mastercode/3_27_1\n/var/www/html/examples/mastercode/3_27_1/css\n/var/www/html/examples/mastercode/3_27_1/img\n/var/www/html/examples/mastercode/3_27_1/js\n/var/www/html/examples/mastercode/3_27_1/locales\n\n=== mastercode file counts ===\n127\n/var/www/html/examples/mastercode/3_27_1/css:\nmasterportal.css\n\n/var/www/html/examples/mastercode/3_27_1/js:\nAboutModule.js\nAccordionItem.js\nAddWMS.js\nBufferAnalysis.js\nButtonGroup.js\nColladaLoader.js\nCompareFeatures.js\nCompareMaps.js\nContactFormular.js\nCoordToolkit.js\nCopyrightConstraints.js\nCustomMenuElement.js\nDrawItem.js\nDrawModule.js\nDrawTypes.js\nExportButtonGeoJSON.js\nFeatureLister.js\nFileImport.js\nFilterGeneral.js\nGraphicalSelect.js\nLanguageItem.js\nLayerClusterToggler.js\nLayerInformation.js\nLayerPills.js\nLayerSelection.js\nLayerSlider.js\nLayerSwiper.js\nLegendContainer.js\nLegendSingleLayer.js\nMeasureInMap.js\nMenuFolder.js\nModalItem.js\nModeler3D.js\nMouseHover.js\nNewsView.js\nNotoSans-Bold.woff\nNotoSans-Italic.woff\nNotoSans-extracondensedlight.woff\nNotoSans.woff\nOBJLoader.js\nOpenConfig.js\nPortalFooter.js\nPrintMap.js\nRoboto-Bold.woff\nRoboto-Medium.woff\nRoboto-MediumItalic.woff\nRoutingTemplate.js\nScaleSwitcher.js\nSelectFeatures.js\nShadowTool.js\nShareView.js\nStatisticDashboard.js\nStyleVT.js\nTableComponent.js\nWfsSearch.js\nWfsTransaction.js\nWmsTime.js\nbootstrap-icons.woff\nbootstrap-icons.woff2\ndeflate.js\ninitProjections.js\njpeg.js\nlerc.js\nlzw.js\nmaster_touchtable_big.eot\nmaster_touchtable_big.svg\nmaster_touchtable_big.ttf\nmaster_touchtable_big.woff\nmasterportal.js\nmaterialdesignicons-webfont.eot\nmaterialdesignicons-webfont.ttf\nmaterialdesignicons-webfont.woff\nmaterialdesignicons-webfont.woff2\npackbits.js\npako.esm.js\nraw.js\nroboto-700.eot\nroboto-700.svg\nroboto-700.ttf\nroboto-700.woff\nroboto-700.woff2\nroboto-italic.eot\nroboto-italic.svg\nroboto-italic.ttf\nroboto-italic.woff\nroboto-italic.woff2\nroboto-regular.eot\nroboto-regular.svg\nroboto-regular.ttf\nroboto-regular.woff\nroboto-regular.woff2\nthree.core.js\nvue-datepicker-next.js\nvuetify.js\nwebimage.js\nzstd.js\n\n=== css head ===\n@charset \"UTF-8\";@font-face{font-display:block;font-family:bootstrap-icons;src:url(../js/bootstrap-icons.woff2) format(\"woff2\"),url(../js/bootstrap-icons.woff) format(\"woff\")}.bi:before,[class^=bi-]:b\n=== locales ===\nde\nen\nes\nfr\nit\nnl\nplatt\npt\nru\ntr\nua\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /var/www/html/examples/basic && python3 - <<'EOF'\nimport json\nfor f in [\"config.json\",\"resources/services.json\",\"resources/rest-services.json\",\"resources/style_v3.json\"]:\n    try:\n        d = json.load(open(f))\n        print(f\"OK   {f}  (top-level type: {type(d).__name__})\")\n    except Exception as e:\n        print(f\"FAIL {f}: {e}\")\nc = json.load(open(\"config.json\"))\nprint(\"config.json keys:\", list(c.keys())[:12])\ns = json.load(open(\"resources/services.json\"))\nprint(\"services.json:\", type(s).__name__, len(s))\nEOF\necho; echo \"=== config.js referenced by bundle? ===\"; grep -o 'config\\.js\\|config\\.json' /var/www/html/examples/mastercode/3_27_1/js/masterportal.js | sort | uniq -c",
+      "exit_code": 0,
+      "stdout": "\n=== config.js referenced by bundle? ===\n     18 config.js\n      8 config.json\n",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in \\\n  \"/examples/mastercode/3_27_1/js/deflate.js\" \\\n  \"/examples/mastercode/3_27_1/js/pako.esm.js\" \\\n  \"/examples/mastercode/3_27_1/js/lerc.js\" \\\n  \"/examples/mastercode/3_27_1/js/AboutModule.js\" \\\n  \"/examples/mastercode/3_27_1/js/DrawModule.js\" \\\n  \"/examples/mastercode/3_27_1/js/three.core.js\" \\\n  \"/examples/mastercode/3_27_1/js/vuetify.js\" \\\n  \"/examples/mastercode/3_27_1/js/bootstrap-icons.woff2\" \\\n  \"/examples/mastercode/3_27_1/locales/de/common.json\" \\\n  \"/examples/Basic/resources/img/mp_logo.png\" ; do\n  code=$(curl -s -o /dev/null -w \"%{http_code}\" \"http://localhost$p\"); size=$(curl -s -o /dev/null -w \"%{size_download}\" \"http://localhost$p\"); echo \"$code  ${size}B  $p\";\ndone; echo; echo \"=== css size served vs disk ===\"; curl -s -o /dev/null -w \"served: %{size_download}B\\n\" http://localhost/examples/mastercode/3_27_1/css/masterportal.css; stat -c \"disk:   %sB\" /var/www/html/examples/mastercode/3_27_1/css/masterportal.css; echo; echo \"=== img/tools/draw svgs ===\"; ls /var/www/html/examples/mastercode/3_27_1/img/ /var/www/html/examples/mastercode/3_27_1/img/tools/draw/ | head -25; echo; echo \"=== apache2ctl -S (vhosts) ===\"; apache2ctl -S 2>&1 | head -10",
+      "exit_code": 0,
+      "stdout": "200  163B  /examples/mastercode/3_27_1/js/deflate.js\n200  46535B  /examples/mastercode/3_27_1/js/pako.esm.js\n200  96918B  /examples/mastercode/3_27_1/js/lerc.js\n200  4788B  /examples/mastercode/3_27_1/js/AboutModule.js\n200  11460B  /examples/mastercode/3_27_1/js/DrawModule.js\n200  178335B  /examples/mastercode/3_27_1/js/three.core.js\n200  40521B  /examples/mastercode/3_27_1/js/vuetify.js\n200  134044B  /examples/mastercode/3_27_1/js/bootstrap-icons.woff2\n200  88858B  /examples/mastercode/3_27_1/locales/de/common.json\n200  22787B  /examples/Basic/resources/img/mp_logo.png\n\n=== css size served vs disk ===\nserved: 1240068B\ndisk:   1240068B\n\n=== img/tools/draw svgs ===\n/var/www/html/examples/mastercode/3_27_1/img/:\nLogo_Masterportal.svg\ntools\n\n/var/www/html/examples/mastercode/3_27_1/img/tools/draw/:\ncircle_black.svg\ncircle_blue.svg\ncircle_green.svg\ncircle_grey.svg\ncircle_orange.svg\ncircle_orange_big_opacity05.svg\ncircle_red.svg\ncircle_white.svg\ncircle_yellow.svg\n\n=== apache2ctl -S (vhosts) ===\nAH00558: apache2: Could not reliably determine the server's fully qualified domain name, using 192.168.127.2. Set the 'ServerName' directive globally to suppress this message\nVirtualHost configuration:\n*:80                   192.168.127.2 (/etc/apache2/sites-enabled/000-default.conf:1)\nServerRoot: \"/etc/apache2\"\nMain DocumentRoot: \"/var/www/html\"\nMain ErrorLog: \"/var/log/apache2/error.log\"\nMutex default: dir=\"/var/run/apache2/\" mechanism=default \nMutex watchdog-callback: using_defaults\nPidFile: \"/var/run/apache2/apache2.pid\"\nDefine: DUMP_VHOSTS\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for c in python python3 python3.10 python3.11 perl ruby php busybox; do command -v $c >/dev/null 2>&1 && echo \"FOUND: $c\"; done; echo \"---\"; perl -MJSON::PP -e 'print \"perl JSON::PP OK\\n\"' 2>&1 | head -1",
+      "exit_code": 0,
+      "stdout": "FOUND: perl\n---\nperl JSON::PP OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== zip entries containing 'ajax' or 'mapMarker' or 'Loader' ===\"; unzip -l /workspace/examples.zip | grep -iE 'ajax|mapMarker|loader' ; echo \"(exit: $?)\"; echo; echo \"=== all mastercode/img entries in zip ===\"; unzip -l /workspace/examples.zip | awk '{print $4}' | grep 'mastercode.*img/' ; echo; echo \"=== config load context in bundle ===\"; grep -o 'fetch([^)]*config[^)]*)' /var/www/html/examples/mastercode/3_27_1/js/masterportal.js | head -5; grep -oE '.{60}config\\.json.{20}' /var/www/html/examples/mastercode/3_27_1/js/masterportal.js | head -3",
+      "exit_code": 0,
+      "stdout": "=== zip entries containing 'ajax' or 'mapMarker' or 'Loader' ===\n    54597  2026-10-09 12:43   mastercode/3_27_1/js/ColladaLoader.js\n     8591  2026-10-09 12:43   mastercode/3_27_1/js/OBJLoader.js\n(exit: 0)\n\n=== all mastercode/img entries in zip ===\nmastercode/3_27_1/img/\nmastercode/3_27_1/img/Logo_Masterportal.svg\nmastercode/3_27_1/img/tools/\nmastercode/3_27_1/img/tools/draw/\nmastercode/3_27_1/img/tools/draw/circle_black.svg\nmastercode/3_27_1/img/tools/draw/circle_blue.svg\nmastercode/3_27_1/img/tools/draw/circle_green.svg\nmastercode/3_27_1/img/tools/draw/circle_grey.svg\nmastercode/3_27_1/img/tools/draw/circle_orange.svg\nmastercode/3_27_1/img/tools/draw/circle_orange_big_opacity05.svg\nmastercode/3_27_1/img/tools/draw/circle_red.svg\nmastercode/3_27_1/img/tools/draw/circle_white.svg\nmastercode/3_27_1/img/tools/draw/circle_yellow.svg\n\n=== config load context in bundle ===\nn({commit:e,state:t,dispatch:n,getters:r}){let i=`.json`,a=`config.json`;(t.configJs?.porta\nn`)}).catch(e=>{console.error(`Error occured during loading config.json specified by config\nffset must be a number! Using offset 0. Please correct your config.json.`),c=0),e(`useCamer\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /var/www/html/examples/basic && for f in config.json resources/services.json resources/rest-services.json resources/style_v3.json; do perl -MJSON::PP -e 'local $/; open F,\"<\",\"$ARGV[0]\" or die \"open: $!\"; my $d=eval{decode_json(<F>)}; print($@?\"FAIL $ARGV[0]: $@\":\"OK   $ARGV[0]\\n\")' \"$f\"; done; echo; cd /var/www/html/examples/mastercode/3_27_1/locales && for f in */common.json */additional.json; do perl -MJSON::PP -e 'local $/; open F,\"<\",$ARGV[0] or die; my $d=eval{decode_json(<F>)}; print($@?\"FAIL $ARGV[0]: $@\":\"OK   $ARGV[0]\\n\")' \"$f\"; done; echo; echo \"=== config.js brace balance ===\"; perl -ne '$o+=()=/{/g; $c+=()=/}/g; END{print \"open=$o close=$c \", ($o==$c?\"BALANCED\":\"UNBALANCED\"), \"\\n\"}' /var/www/html/examples/basic/config.js; echo \"=== config.js tail ===\"; tail -5 /var/www/html/examples/basic/config.js",
+      "exit_code": 0,
+      "stdout": "OK   config.json\nOK   resources/services.json\nOK   resources/rest-services.json\nOK   resources/style_v3.json\n\nOK   de/common.json\nOK   en/common.json\nOK   es/common.json\nOK   fr/common.json\nOK   it/common.json\nOK   nl/common.json\nOK   platt/common.json\nOK   pt/common.json\nOK   ru/common.json\nOK   tr/common.json\nOK   ua/common.json\nOK   es/additional.json\nOK   fr/additional.json\nOK   it/additional.json\nOK   nl/additional.json\nOK   platt/additional.json\nOK   pt/additional.json\nOK   ru/additional.json\nOK   tr/additional.json\nOK   ua/additional.json\n\n=== config.js brace balance ===\nopen=11 close=11 BALANCED\n=== config.js tail ===\n};\n\nif (typeof module !== \"undefined\") {\n    module.exports = Config;\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== content-type of ES module entry ===\"; curl -sI http://localhost/examples/mastercode/3_27_1/js/masterportal.js | grep -iE 'content-type|content-length'; echo; echo \"=== content-type of config.js ===\"; curl -sI http://localhost/examples/Basic/config.js | grep -i content-type; echo; echo \"=== content-type of index.html ===\"; curl -sI http://localhost/examples/Basic/index.html | grep -iE 'content-type|HTTP/'; echo; echo \"=== root / behavior ===\"; curl -s -o /dev/null -w \"GET / -> %{http_code} (redirect: %{redirect_url})\\n\" http://localhost/",
+      "exit_code": 0,
+      "stdout": "=== content-type of ES module entry ===\nContent-Length: 4736764\nContent-Type: text/javascript\n\n=== content-type of config.js ===\nContent-Type: text/javascript\n\n=== content-type of index.html ===\nHTTP/1.1 200 OK\nContent-Type: text/html\n\n=== root / behavior ===\nGET / -> 200 (redirect: )\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "echo \"=== unzip -t (CRC integrity) ===\"; unzip -t /workspace/examples.zip 2>&1 | tail -3; echo; echo \"=== tail of served masterportal.js (last 80 bytes) ===\"; curl -s http://localhost/examples/mastercode/3_27_1/js/masterportal.js | tail -c 80; echo; echo; echo \"=== head/tail of disk file match? ===\"; cmp <(curl -s http://localhost/examples/mastercode/3_27_1/js/masterportal.js) /var/www/html/examples/mastercode/3_27_1/js/masterportal.js && echo \"SERVED == DISK\"",
+      "exit_code": 0,
+      "stdout": "=== unzip -t (CRC integrity) ===\n    testing: mastercode/3_27_1/locales/ua/additional.json   OK\n    testing: mastercode/3_27_1/locales/ua/common.json   OK\nNo errors detected in compressed data of /workspace/examples.zip.\n\n=== tail of served masterportal.js (last 80 bytes) ===\nyt as y,Ht as yi,lT as yn,mc as yr,lY as yt,vQ as z,$v as zn,qi as zr,qF as zt};\n\n=== head/tail of disk file match? ===\nSERVED == DISK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for c in chromium chromium-browser google-chrome firefox node npx; do command -v $c >/dev/null 2>&1 && echo \"FOUND: $c\"; done; echo \"(done)\"",
+      "exit_code": 0,
+      "stdout": "(done)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /var/www/html/examples/mastercode/3_27_1/js && perl -ne 'while (/\"\\.(\\/?(?:[^\"\\\\]|\\\\.)+)\"/g) { my $f=$1; $f=~s|^\\.\\/||; $f=~s|^/||; $seen{$f}=1 if $f=~/^\\./ || $f=~/^[A-Za-z0-9_.-]+$/; }' masterportal.js >/dev/null 2>&1; perl -ne 'while (/\\[(\"(?:\\.\\/[^\",]+\\.js|[^\",]+\\.js)\"(?:,\"(?:\\.\\/[^\",]+\\.js|[^\",]+\\.js)\")*)\\]/g) { my $s=$1; while ($s=~/\"((?:\\.\\/)?[^\"]+)\"/g){ $seen{$1}=1 } } END{ open O,\">\",\"/tmp/chunks.txt\"; for (sort keys %seen){ chomp; s|^\\./||; print O \"$_\\n\" if /\\.(js|woff2?|ttf|eot|svg|css)$/ } }' masterportal.js; wc -l /tmp/chunks.txt; echo \"=== missing from disk (relative to js dir) ===\"; missing=0; while read -r f; do case \"$f\" in css/*) [ -f \"/var/www/html/examples/mastercode/3_27_1/$f\" ] || { echo \"MISSING: $f\"; missing=1; };; *) [ -f \"/var/www/html/examples/mastercode/3_27_1/js/$f\" ] || { echo \"MISSING: $f\"; missing=1; };; esac; done < /tmp/chunks.txt; [ $missing -eq 0 ] && echo \"ALL REFERENCED CHUNKS PRESENT\"; echo; echo \"=== sample of referenced chunks ===\"; head -15 /tmp/chunks.txt; echo \"...\"; grep -cE '\\.js$' /tmp/chunks.txt",
+      "exit_code": 0,
+      "stdout": "30 /tmp/chunks.txt\n=== missing from disk (relative to js dir) ===\nALL REFERENCED CHUNKS PRESENT\n\n=== sample of referenced chunks ===\nAccordionItem.js\nButtonGroup.js\nCompareFeatures.js\nContactFormular.js\nCoordToolkit.js\nDrawModule.js\nDrawTypes.js\nExportButtonGeoJSON.js\nFeatureLister.js\nFilterGeneral.js\nGraphicalSelect.js\nLayerInformation.js\nLayerSwiper.js\nLegendContainer.js\nLegendSingleLayer.js\n...\n30\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

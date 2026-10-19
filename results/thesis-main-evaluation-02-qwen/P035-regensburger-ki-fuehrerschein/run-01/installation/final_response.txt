@@ -1,0 +1,17 @@
+Installation of the Regensburger KI-Führerschein (Next.js 15 + React 19 learning platform) completed successfully per the provided Installation.md guide.
+
+What was done:
+1. Prerequisites: Node.js and Bun were absent, so I installed Node.js v22.23.3 (official linux-x64 tarball, satisfies the "Node.js 18+" requirement) to /usr/local, and Bun 1.4.3 (official GitHub release binary) to /usr/local/bin/bun. Also installed unzip via apt to extract the Bun zip.
+2. Per the guide, ran `bun install` in /workspace (the repository, already checked out at the predefined SHA) — 511 packages installed successfully. Bun blocked 2 postinstall scripts (native binaries for @tailwindcss/oxide and unrs-resolver); I ran `bun pm trust` for both official packages and re-ran `bun install` so the scripts executed.
+3. Per the guide's Konfiguration section, created /workspace/.env.local from .env.example (MongoDB left as the optional placeholder; set a concrete dev DASHBOARD_PASSWORD).
+4. Started the dev server with `bun dev` (Next.js 15.4.10 + Turbopack) in the background; log at /tmp/devserver.log; server ready in ~2.3s.
+
+Verification (objective evidence):
+- `curl http://localhost:5173/` → HTTP 200, 17,983 bytes, page title "KI Führerschein Regensburg"
+- Routes `/certificate`, `/dashboard`, `/settings`, `/imprint`, `/journey/1` all return HTTP 200
+- Server log shows "✓ Ready in 2.3s" and "GET / 200 in 18655ms" (initial Turbopack compilation)
+- Dev server process confirmed running; final re-check of `/` returned HTTP 200
+
+Known non-installation issues (not counted against installation):
+- `/metrics` returns 500 because MONGODB_URI in .env.local is the placeholder template value; the guide states MongoDB is optional and the app works without a database.
+- `/chapter/[id]` returns 500 due to an upstream app code defect: "ReferenceError: localStorage is not defined" in a 'use client' page during SSR — unrelated to installation.

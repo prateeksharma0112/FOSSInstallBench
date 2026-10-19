@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P042-it-fachplanung__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-18T14:17:31.028417+02:00",
+    "finished_at": "2026-10-18T14:35:56.907880+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P042",
+    "project": {
+      "opencode_id": "2546",
+      "name": "IT-Fachplanung",
+      "description": "More efficient IT departmental planning for the highest state authorities and their business units.",
+      "catalogue_url": "https://opencode.de/de/software/it-fachplanung-2546",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung",
+      "commit_sha": "786839b35393c508cf73e75e6424d9dbb2fe221f",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/thlv/tlrz/it-fachplanung/-/blob/786839b35393c508cf73e75e6424d9dbb2fe221f/README.md",
+      "language": "German",
+      "word_count": 347
+    },
+    "task_id": "P042-it-fachplanung"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1105.8899999999994,
+    "repository_setup_duration_seconds": 13.85899999999674,
+    "installation_duration_seconds": 986.0940000000046,
+    "validation_duration_seconds": 93.0,
+    "command_count": 121,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 89,
+    "validation_command_count": 28
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P042-it-fachplanung/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

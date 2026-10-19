@@ -1,0 +1,412 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 07106747c55ab8a214bf52142ddcb28ed5a0faaf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein.git/\nFrom https://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein\n * branch            07106747c55ab8a214bf52142ddcb28ed5a0faaf -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 07106747c55ab8a214bf52142ddcb28ed5a0faaf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 0710674 chore: add SBOM\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 07106747c55ab8a214bf52142ddcb28ed5a0faaf",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 2200\ndrwxr-xr-x 10 root root    4096 Oct 17 22:00 .\ndr-xr-xr-x  1 root root    4096 Oct 17 22:00 ..\n-rw-r--r--  1 root root     807 Oct 17 22:00 .env.example\ndrwxr-xr-x  8 root root    4096 Oct 17 22:00 .git\ndrwxr-xr-x  4 root root    4096 Oct 17 22:00 .github\n-rw-r--r--  1 root root     490 Oct 17 22:00 .gitignore\ndrwxr-xr-x  3 root root    4096 Oct 17 22:00 .opencode\n-rw-r--r--  1 root root      89 Oct 17 22:00 .prettierrc\ndrwxr-xr-x  2 root root    4096 Oct 17 22:00 .reuse\n-rw-r--r--  1 root root   13921 Oct 17 22:00 ARCHITECTURE.md\n-rw-r--r--  1 root root    1625 Oct 17 22:00 CHANGELOG.md\n-rw-r--r--  1 root root    3420 Oct 17 22:00 CODE_OF_CONDUCT.md\n-rw-r--r--  1 root root    3224 Oct 17 22:00 CONTRIBUTING.md\n-rw-r--r--  1 root root    2233 Oct 17 22:00 DCO.md\n-rw-r--r--  1 root root   11987 Oct 17 22:00 DEPLOYMENT.md\n-rw-r--r--  1 root root     828 Oct 17 22:00 Dockerfile\n-rw-r--r--  1 root root   13827 Oct 17 22:00 LICENSE\ndrwxr-xr-x  2 root root    4096 Oct 17 22:00 LICENSES\n-rw-r--r--  1 root root    1268 Oct 17 22:00 MAINTAINERS.md\n-rw-r--r--  1 root root   10190 Oct 17 22:00 README.md\n-rw-r--r--  1 root root    1273 Oct 17 22:00 REUSE.toml\n-rw-r--r--  1 root root 1818533 Oct 17 22:00 SBOM.json\n-rw-r--r--  1 root root    1336 Oct 17 22:00 SECURITY.md\n-rwxr-xr-x  1 root root  243372 Oct 17 22:00 bun.lockb\n-rw-r--r--  1 root root     176 Oct 17 22:00 bunfig.toml\n-rw-r--r--  1 root root     441 Oct 17 22:00 components.json\n-rw-r--r--  1 root root     858 Oct 17 22:00 docker-compose.yml\ndrwxr-xr-x  2 root root    4096 Oct 17 22:00 docs\n-rw-r--r--  1 root root     393 Oct 17 22:00 eslint.config.mjs\n-rw-r--r--  1 root root     111 Oct 17 22:00 netlify.toml\n-rw-r--r--  1 root root     126 Oct 17 22:00 next.config.ts\n-rw-r--r--  1 root root    2209 Oct 17 22:00 package.json\n-rw-r--r--  1 root root      81 Oct 17 22:00 postcss.config.mjs\ndrwxr-xr-x  5 root root    4096 Oct 17 22:00 public\n-rw-r--r--  1 root root    4920 Oct 17 22:00 publiccode.yml\ndrwxr-xr-x  7 root root    4096 Oct 17 22:00 src\n-rw-r--r--  1 root root     602 Oct 17 22:00 tsconfig.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat package.json .env.example bunfig.toml next.config.ts",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"ki-fuehrerschein\",\n  \"version\": \"1.0.0\",\n  \"description\": \"KI-F\u00fchrerschein - Ein interaktiver Lernkurs f\u00fcr die verantwortungsvolle Nutzung von KI-Systemen am Arbeitsplatz\",\n  \"license\": \"EUPL-1.2\",\n  \"author\": {\n    \"name\": \"Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG\",\n    \"email\": \"info@i40.de\",\n    \"url\": \"https://www.i40.de\"\n  },\n  \"keywords\": [\n    \"ki\",\n    \"ai\",\n    \"learning\",\n    \"education\",\n    \"next.js\",\n    \"react\",\n    \"typescript\"\n  ],\n  \"scripts\": {\n    \"dev\": \"next dev --turbopack --port 5173\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"next lint\",\n    \"test\": \"bun test\",\n    \"test:watch\": \"bun test --watch\",\n    \"test:coverage\": \"bun test --coverage\",\n    \"format\": \"prettier --write .\",\n    \"format:check\": \"prettier --check .\"\n  },\n  \"dependencies\": {\n    \"@mux/mux-player-react\": \"^3.5.1\",\n    \"@radix-ui/react-accordion\": \"^1.2.11\",\n    \"@radix-ui/react-dialog\": \"^1.1.14\",\n    \"@radix-ui/react-slider\": \"^1.3.5\",\n    \"@radix-ui/react-slot\": \"^1.2.3\",\n    \"@radix-ui/react-toast\": \"^1.2.14\",\n    \"@vercel/analytics\": \"^1.5.0\",\n    \"class-variance-authority\": \"^0.7.1\",\n    \"clsx\": \"^2.1.1\",\n    \"embla-carousel-react\": \"^8.6.0\",\n    \"lucide-react\": \"^0.525.0\",\n    \"mongodb\": \"^6.19.0\",\n    \"motion\": \"^12.23.0\",\n    \"next\": \"15.4.10\",\n    \"next-themes\": \"^0.4.6\",\n    \"pdf-lib\": \"^1.17.1\",\n    \"react\": \"19.1.0\",\n    \"react-dom\": \"19.1.0\",\n    \"react-markdown\": \"^10.1.0\",\n    \"tailwind-merge\": \"^3.3.1\",\n    \"tailwindcss-animate\": \"^1.0.7\",\n    \"zod\": \"^4.1.8\"\n  },\n  \"devDependencies\": {\n    \"@eslint/eslintrc\": \"^3\",\n    \"@happy-dom/global-registrator\": \"^20.8.3\",\n    \"@netlify/plugin-nextjs\": \"^5.13.2\",\n    \"@tailwindcss/postcss\": \"^4\",\n    \"@tailwindcss/typography\": \"^0.5.19\",\n    \"@types/bun\": \"^1.3.10\",\n    \"@types/node\": \"^20\",\n    \"@types/react\": \"19.1.8\",\n    \"@types/react-dom\": \"19.1.6\",\n    \"eslint\": \"^9\",\n    \"eslint-config-next\": \"15.4.1\",\n    \"happy-dom\": \"^20.8.3\",\n    \"prettier\": \"^3.6.2\",\n    \"prettier-plugin-tailwindcss\": \"^0.6.13\",\n    \"tailwindcss\": \"^4\",\n    \"tw-animate-css\": \"^1.3.5\",\n    \"typescript\": \"^5\"\n  },\n  \"overrides\": {\n    \"@types/react\": \"19.1.8\",\n    \"@types/react-dom\": \"19.1.6\"\n  }\n}\n# =============================================================================\n# KI-F\u00fchrerschein \u2013 Umgebungsvariablen\n# =============================================================================\n# Kopieren Sie diese Datei nach .env.local und passen Sie die Werte an:\n#   cp .env.example .env.local\n# =============================================================================\n\n# --- MongoDB (optional) ---\n# Erforderlich nur f\u00fcr Metriken und Zertifikatsspeicherung.\n# Wenn nicht gesetzt, funktioniert die Anwendung ohne Datenbank.\nMONGODB_URI=mongodb+srv://<BENUTZER>:<PASSWORT>@<CLUSTER>.mongodb.net/\nMONGODB_DB=ki-fuehrerschein\n\n# --- Dashboard-Zugang ---\nDASHBOARD_PASSWORD=<SICHERES_PASSWORT_SETZEN>\n\n# --- Node.js ---\n# Auf \"production\" setzen f\u00fcr den Produktivbetrieb.\nNODE_ENV=development\n# SPDX-FileCopyrightText: 2026 Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG, info@i40.de\n#\n# SPDX-License-Identifier: EUPL-1.2\n\n[test]\npreload = [\"./src/test-setup.ts\"]\nimport type { NextConfig } from 'next'\n\nconst nextConfig: NextConfig = {\n  output: 'standalone',\n}\n\nexport default nextConfig\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "node --version 2>/dev/null; npm --version 2>/dev/null; bun --version 2>/dev/null; which node npm bun 2>/dev/null; echo \"---\"; cat /etc/os-release | head -3",
+      "exit_code": 0,
+      "stdout": "---\nPRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which apt-get curl wget git docker 2>/dev/null; echo \"---\"; git -C /workspace log --oneline -3; git -C /workspace remote -v 2>/dev/null | head -2",
+      "exit_code": 0,
+      "stdout": "/usr/bin/apt-get\n/usr/bin/curl\n/usr/bin/git\n/usr/bin/docker\n---\n0710674 chore: add SBOM\norigin\thttps://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein (fetch)\norigin\thttps://gitlab.opencode.de/regensburg_next/regensburger-ki-fuehrerschein (push)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -sI --max-time 15 https://registry.npmjs.org/ | head -3; echo \"EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "HTTP/2 200 \ndate: Sat, 17 Oct 2026 22:01:13 GMT\ncontent-type: application/json\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "uname -m && ldd --version | head -1 && which unzip tar",
+      "exit_code": 141,
+      "stdout": "x86_64\nldd (Ubuntu GLIBC 2.35-0ubuntu3.14) 2.35\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which unzip; which tar; echo ok",
+      "exit_code": 0,
+      "stdout": "/usr/bin/tar\nok\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s --max-time 15 https://nodejs.org/dist/index.json | python3 -c \"import json,sys; d=json.load(sys.stdin); print([v['version'] for v in d if v['version'].startswith('v20.')][:3]); print([v['version'] for v in d if v['version'].startswith('v22.')][:3])\"",
+      "exit_code": 127,
+      "stdout": "",
+      "stderr": "/bin/bash: line 3: python3: command not found\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s --max-time 15 https://nodejs.org/dist/index.json | tr ',' '\\n' | grep '\"version\"' | grep 'v20' | head -3; echo \"---22---\"; curl -s --max-time 15 https://nodejs.org/dist/index.json | tr ',' '\\n' | grep '\"version\"' | grep 'v22' | head -3",
+      "exit_code": 0,
+      "stdout": "{\"version\":\"v20.20.2\"\n{\"version\":\"v20.20.1\"\n{\"version\":\"v20.20.0\"\n---22---\n{\"version\":\"v22.23.3\"\n{\"version\":\"v22.23.2\"\n{\"version\":\"v22.23.1\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -fsSL --max-time 300 -o node.tar.xz https://nodejs.org/dist/v22.23.3/node-v22.23.3-linux-x64.tar.xz && echo NODE_DOWNLOADED && ls -la node.tar.xz",
+      "exit_code": 0,
+      "stdout": "NODE_DOWNLOADED\n-rw-r--r-- 1 root root 31001304 Oct 17 22:01 node.tar.xz\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -s --max-time 30 https://api.github.com/repos/oven-sh/bun/releases/latest | grep '\"tag_name\"' | head -1",
+      "exit_code": 0,
+      "stdout": "  \"tag_name\": \"bun-v1.4.3\",\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && tar -xf node.tar.xz && cp -r node-v22.23.3-linux-x64/* /usr/local/ && rm -rf node-v22.23.3-linux-x64 node.tar.xz && node --version && npm --version",
+      "exit_code": 0,
+      "stdout": "v22.23.3\n10.9.9\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && curl -fsSL --max-time 300 -o bun.zip https://github.com/oven-sh/bun/releases/latest/download/bun-linux-x64.zip && echo BUN_DOWNLOADED && ls -la bun.zip",
+      "exit_code": 0,
+      "stdout": "BUN_DOWNLOADED\n-rw-r--r-- 1 root root 42015139 Oct 17 22:02 bun.zip\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get install -y unzip >/dev/null 2>&1 || (apt-get update >/dev/null 2>&1 && apt-get install -y unzip 2>&1 | tail -2); unzip -v | head -1",
+      "exit_code": 141,
+      "stdout": "Unpacking unzip (6.0-26ubuntu3.2) ...\nSetting up unzip (6.0-26ubuntu3.2) ...\nUnZip 6.00 of 20 April 2009, by Debian. Original by Info-ZIP.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && unzip -o bun.zip -d bun-dist >/dev/null && ls bun-dist/ && install -m 755 bun-dist/bun-linux-x64/bun /usr/local/bin/bun && rm -rf bun-dist bun.zip && bun --version",
+      "exit_code": 0,
+      "stdout": "bun-linux-x64\n1.4.3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && bun install 2>&1 | tail -20; echo \"EXIT: ${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "+ @vercel/analytics@1.5.0\n+ class-variance-authority@0.7.1\n+ clsx@2.1.1\n+ embla-carousel-react@8.6.0\n+ lucide-react@0.525.0\n+ mongodb@6.19.0\n+ motion@12.23.0\n+ next@15.4.10\n+ next-themes@0.4.6\n+ pdf-lib@1.17.1\n+ react@19.1.0\n+ react-dom@19.1.0\n+ react-markdown@10.1.0\n+ tailwind-merge@3.3.1\n+ tailwindcss-animate@1.0.7\n+ zod@4.1.8\n\n511 packages installed [159.68s]\n\nBlocked 2 postinstalls. Run `bun pm untrusted` for details.\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && bun pm untrusted 2>&1",
+      "exit_code": 0,
+      "stdout": "bun pm untrusted v1.4.3 (c6da4a4d3)\n\n./node_modules/@tailwindcss/oxide @4.1.11\n \u00bb [postinstall]: node ./scripts/install.js\n\n./node_modules/unrs-resolver @1.11.0\n \u00bb [postinstall]: napi-postinstall unrs-resolver 1.11.0 check\n\nThese dependencies had their lifecycle scripts blocked during install.\n\nIf you trust them and wish to run their scripts, use `bun pm trust`.\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && bun pm trust @tailwindcss/oxide unrs-resolver 2>&1 && echo \"---reinstall---\" && bun install 2>&1 | tail -8; echo \"EXIT: ${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "bun pm trust v1.4.3 (c6da4a4d3)\n\n./node_modules/@tailwindcss/oxide @4.1.11\n \u2713 [postinstall]: node ./scripts/install.js\n\n./node_modules/unrs-resolver @1.11.0\n \u2713 [postinstall]: napi-postinstall unrs-resolver 1.11.0 check\n\n 2 scripts ran across 2 packages [444.00ms]\n---reinstall---\nbun install v1.4.3 (c6da4a4d3)\n\nChecked 516 installs across 576 packages (no changes) [53.00ms]\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && cp .env.example .env.local && sed -i 's|^DASHBOARD_PASSWORD=.*|DASHBOARD_PASSWORD=dev-password-123|' .env.local && grep DASHBOARD .env.local",
+      "exit_code": 0,
+      "stdout": "DASHBOARD_PASSWORD=dev-password-123\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && (nohup bun dev > /tmp/devserver.log 2>&1 &) && sleep 25 && tail -25 /tmp/devserver.log",
+      "exit_code": 0,
+      "stdout": "$ next dev --turbopack --port 5173\n   \u25b2 Next.js 15.4.10 (Turbopack)\n   - Local:        http://localhost:5173\n   - Network:      http://192.168.127.2:5173\n   - Environments: .env.local\n\n \u2713 Starting...\nAttention: Next.js now collects completely anonymous telemetry regarding usage.\nThis information is used to shape Next.js' roadmap and prioritize features.\nYou can learn more, including how to opt-out if you'd not like to participate in this anonymous program, by visiting the following URL:\nhttps://nextjs.org/telemetry\n\n \u2713 Ready in 2.3s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "curl -s -o /tmp/page.html -w \"HTTP_CODE: %{http_code}\\nSIZE: %{size_download} bytes\\nTIME: %{time_total}s\\n\" --max-time 120 http://localhost:5173/",
+      "exit_code": 0,
+      "stdout": "HTTP_CODE: 200\nSIZE: 17983 bytes\nTIME: 18.673485s\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -o '<title>[^<]*</title>' /tmp/page.html | head -2; grep -ci 'ki-f' /tmp/page.html; echo \"---routes---\"; ls /workspace/src/app 2>/dev/null | head -20",
+      "exit_code": 0,
+      "stdout": "<title>KI F\u00fchrerschein Regensburg</title>\n0\n---routes---\napi\ncertificate\nchapter\ndashboard\nfavicon.ico\nglobals.css\nimprint\njourney\nlayout.tsx\nmetrics\npage.tsx\nsettings\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -5 /tmp/devserver.log",
+      "exit_code": 0,
+      "stdout": "\n \u2713 Ready in 2.3s\n \u25cb Compiling / ...\n \u2713 Compiled / in 17.7s\n GET / 200 in 18655ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for r in chapter journey metrics certificate dashboard; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 90 \"http://localhost:5173/$r\"); echo \"/$r -> $code\"; done",
+      "exit_code": 0,
+      "stdout": "/chapter -> 404\n/journey -> 404\n/metrics -> 500\n/certificate -> 200\n/dashboard -> 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /workspace/src/app -name \"page.tsx\" | sed 's|/workspace/src/app||; s|/page.tsx||' | sort; echo \"---log tail---\"; tail -15 /tmp/devserver.log",
+      "exit_code": 0,
+      "stdout": "\n/certificate\n/chapter/[chapterId]\n/dashboard\n/imprint\n/journey/[chapterId]\n/metrics\n/settings\n---log tail---\n \u2713 Compiled /metrics in 1285ms\n \u2a2f [Error: querySrv EBADNAME _mongodb._tcp.<CLUSTER>.mongodb.net] {\n  errno: undefined,\n  code: 'EBADNAME',\n  syscall: 'querySrv',\n  hostname: '_mongodb._tcp.<CLUSTER>.mongodb.net',\n  digest: '454510307'\n}\n GET /metrics 500 in 1876ms\n \u25cb Compiling /certificate ...\n \u2713 Compiled /certificate in 3.9s\n GET /certificate 200 in 4244ms\n \u25cb Compiling /dashboard ...\n \u2713 Compiled /dashboard in 818ms\n GET /dashboard 200 in 999ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"MONGODB_URI\" /workspace/src --include=\"*.ts\" --include=\"*.tsx\" -l | head; echo ---; grep -rn \"MONGODB_URI\" /workspace/src/lib/mongodb*.ts 2>/dev/null | head -5; find /workspace/src -name \"*.ts\" -path \"*mongo*\" | head",
+      "exit_code": 0,
+      "stdout": "/workspace/src/lib/mongodb.ts\n---\n22:if (!process.env.MONGODB_URI) {\n23:  throw new Error('Missing MONGODB_URI env var')\n25:const uri = process.env.MONGODB_URI\n/workspace/src/lib/mongodb.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -40 /workspace/src/lib/mongodb.ts; echo \"===METRICS===\"; find /workspace/src/app/metrics -type f | head -5",
+      "exit_code": 0,
+      "stdout": "// SPDX-FileCopyrightText: 2026 Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG, info@i40.de\n//\n// SPDX-License-Identifier: EUPL-1.2\n\n/**\n * @fileoverview MongoDB database connection utility.\n * Provides a singleton connection pattern optimized for Next.js serverless environment.\n * Reuses connections in development to prevent connection pool exhaustion during hot reloading.\n * @module lib/mongodb\n */\nimport { MongoClient } from 'mongodb'\n\n/**\n * Global declaration for MongoDB client promise.\n * Allows connection reuse across hot reloads in development.\n */\ndeclare global {\n  // eslint-disable-next-line no-var\n  var _mongoClientPromise: Promise<MongoClient> | undefined\n}\n\nif (!process.env.MONGODB_URI) {\n  throw new Error('Missing MONGODB_URI env var')\n}\nconst uri = process.env.MONGODB_URI\n\nconst options = {}\n\nlet client: MongoClient\nlet clientPromise: Promise<MongoClient>\n\n/**\n * Connection initialization with environment-aware caching.\n * In development: Reuses global promise to prevent connection exhaustion.\n * In production: Creates fresh connection per instance.\n */\nif (process.env.NODE_ENV === 'development') {\n  if (!global._mongoClientPromise) {\n    client = new MongoClient(uri!, options)\n    global._mongoClientPromise = client.connect()\n===METRICS===\n/workspace/src/app/metrics/page.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"id:\" /workspace/src/data/chapters.ts 2>/dev/null | head -5; find /workspace/src -name \"*.ts\" -o -name \"*.tsx\" | xargs grep -ln \"chapters\" 2>/dev/null | grep -v node_modules | head -5",
+      "exit_code": 0,
+      "stdout": "/workspace/src/__tests__/data.test.ts\n/workspace/src/app/journey/[chapterId]/page.tsx\n/workspace/src/app/chapter/[chapterId]/page.tsx\n/workspace/src/app/certificate/page.tsx\n/workspace/src/app/dashboard/page.tsx\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n \"id:\" /workspace/src/data/*.ts 2>/dev/null | grep -i chapter | head; echo \"---list data files---\"; ls /workspace/src/data/ 2>/dev/null; echo \"---find chapters data---\"; grep -rln \"chapterId\\|chapters\" /workspace/src/data/ 2>/dev/null | head",
+      "exit_code": 2,
+      "stdout": "---list data files---\n---find chapters data---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -rn \"generateStaticParams\\|chapters\" /workspace/src/app/chapter/\\[chapterId\\]/page.tsx | head -8; echo \"---find data---\"; find /workspace/src -name \"chapters*\" 2>/dev/null | grep -v node_modules; grep -rn \"export const chapters\\|chapterList\" /workspace/src/lib/ 2>/dev/null | head -3",
+      "exit_code": 1,
+      "stdout": "21:  const chapter = data.chapters[parseInt(chapterId, 10)]\n---find data---\n/workspace/src/components/chapters\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "for r in \"chapter/1\" \"chapter/2\" \"journey/1\" \"settings\" \"imprint\"; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 90 \"http://localhost:5173/$r\"); echo \"/$r -> $code\"; done",
+      "exit_code": 0,
+      "stdout": "/chapter/1 -> 500\n/chapter/2 -> 500\n/journey/1 -> 200\n/settings -> 200\n/imprint -> 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "tail -12 /tmp/devserver.log; echo \"===data source===\"; sed -n '1,30p' /workspace/src/app/chapter/\\[chapterId\\]/page.tsx",
+      "exit_code": 0,
+      "stdout": "  digest: '731917969'\n}\n GET /chapter/2 500 in 203ms\n \u25cb Compiling /journey/[chapterId] ...\n \u2713 Compiled /journey/[chapterId] in 1345ms\n GET /journey/1 200 in 2911ms\n \u25cb Compiling /settings ...\n \u2713 Compiled /settings in 1459ms\n GET /settings 200 in 1688ms\n \u25cb Compiling /imprint ...\n \u2713 Compiled /imprint in 1282ms\n GET /imprint 200 in 1515ms\n===data source===\n// SPDX-FileCopyrightText: 2026 Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG, info@i40.de\n//\n// SPDX-License-Identifier: EUPL-1.2\n\n'use client'\n\nimport { data as dataDE } from '@/data'\nimport ChapterRenderer from '@/components/progress/ChapterRenderer'\nimport { Data } from '@/types'\n\nexport default async function ChapterPage(props: {\n  params: Promise<{ chapterId: string }>\n}) {\n  const params = await props.params\n  const { chapterId } = params\n\n  const data = JSON.parse(\n    localStorage.getItem('data') || JSON.stringify(dataDE),\n  ) as Data\n\n  const chapter = data.chapters[parseInt(chapterId, 10)]\n\n  return (\n    <ChapterRenderer\n      chapterId={chapter.id ?? chapterId}\n      components={chapter.components}\n    />\n  )\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -A8 '\"paths\"' /workspace/tsconfig.json; echo \"---error---\"; grep -B5 \"731917969\" /tmp/devserver.log | head -12; echo \"---data module---\"; find /workspace/src -name \"data*\" -maxdepth 3 2>/dev/null | grep -v node_modules; ls /workspace/src",
+      "exit_code": 0,
+      "stdout": "    \"paths\": {\n      \"@/*\": [\"./src/*\"]\n    }\n  },\n  \"include\": [\"next-env.d.ts\", \"**/*.ts\", \"**/*.tsx\", \".next/types/**/*.ts\"],\n  \"exclude\": [\"node_modules\"]\n}\n---error---\n> 18 |     localStorage.getItem('data') || JSON.stringify(dataDE),\n     |    ^\n  19 |   ) as Data\n  20 |\n  21 |   const chapter = data.chapters[parseInt(chapterId, 10)] {\n  digest: '731917969'\n--\n> 18 |     localStorage.getItem('data') || JSON.stringify(dataDE),\n     |    ^\n  19 |   ) as Data\n  20 |\n  21 |   const chapter = data.chapters[parseInt(chapterId, 10)] {\n---data module---\n/workspace/src/__tests__/data.test.ts\n/workspace/src/data_en.ts\n/workspace/src/data.ts\n__tests__\napp\ncomponents\ndata.ts\ndata_en.ts\nhooks\nlib\ntest-setup.ts\ntypes.d.ts\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -B12 \"localStorage\" /tmp/devserver.log | grep -i \"error\\|reference\\|undefined\" | head -3",
+      "exit_code": 0,
+      "stdout": " \u2a2f ReferenceError: localStorage is not defined\n \u2a2f ReferenceError: localStorage is not defined\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /workspace && echo \"---\" && cat /workspace/README.md 2>/dev/null | head -50",
+      "exit_code": 0,
+      "stdout": "total 2236\ndrwxr-xr-x  12 root root    4096 Oct 17 22:05 .\ndr-xr-xr-x   1 root root    4096 Oct 17 22:00 ..\n-rw-r--r--   1 root root     807 Oct 17 22:00 .env.example\n-rw-r--r--   1 root root     797 Oct 17 22:05 .env.local\ndrwxr-xr-x   8 root root    4096 Oct 17 22:00 .git\ndrwxr-xr-x   4 root root    4096 Oct 17 22:00 .github\n-rw-r--r--   1 root root     490 Oct 17 22:00 .gitignore\ndrwxr-xr-x   7 root root    4096 Oct 17 22:07 .next\ndrwxr-xr-x   3 root root    4096 Oct 17 22:00 .opencode\n-rw-r--r--   1 root root      89 Oct 17 22:00 .prettierrc\ndrwxr-xr-x   2 root root    4096 Oct 17 22:00 .reuse\n-rw-r--r--   1 root root   13921 Oct 17 22:00 ARCHITECTURE.md\n-rw-r--r--   1 root root    1625 Oct 17 22:00 CHANGELOG.md\n-rw-r--r--   1 root root    3420 Oct 17 22:00 CODE_OF_CONDUCT.md\n-rw-r--r--   1 root root    3224 Oct 17 22:00 CONTRIBUTING.md\n-rw-r--r--   1 root root    2233 Oct 17 22:00 DCO.md\n-rw-r--r--   1 root root   11987 Oct 17 22:00 DEPLOYMENT.md\n-rw-r--r--   1 root root     828 Oct 17 22:00 Dockerfile\n-rw-r--r--   1 root root   13827 Oct 17 22:00 LICENSE\ndrwxr-xr-x   2 root root    4096 Oct 17 22:00 LICENSES\n-rw-r--r--   1 root root    1268 Oct 17 22:00 MAINTAINERS.md\n-rw-r--r--   1 root root   10190 Oct 17 22:00 README.md\n-rw-r--r--   1 root root    1273 Oct 17 22:00 REUSE.toml\n-rw-r--r--   1 root root 1818533 Oct 17 22:00 SBOM.json\n-rw-r--r--   1 root root    1336 Oct 17 22:00 SECURITY.md\n-rwxr-xr-x   1 root root  248060 Oct 17 22:05 bun.lockb\n-rw-r--r--   1 root root     176 Oct 17 22:00 bunfig.toml\n-rw-r--r--   1 root root     441 Oct 17 22:00 components.json\n-rw-r--r--   1 root root     858 Oct 17 22:00 docker-compose.yml\ndrwxr-xr-x   2 root root    4096 Oct 17 22:00 docs\n-rw-r--r--   1 root root     393 Oct 17 22:00 eslint.config.mjs\n-rw-r--r--   1 root root     111 Oct 17 22:00 netlify.toml\n-rw-r--r--   1 root root     211 Oct 17 22:05 next-env.d.ts\n-rw-r--r--   1 root root     126 Oct 17 22:00 next.config.ts\ndrwxr-xr-x 415 root root   20480 Oct 17 22:05 node_modules\n-rw-r--r--   1 root root    2287 Oct 17 22:05 package.json\n-rw-r--r--   1 root root      81 Oct 17 22:00 postcss.config.mjs\ndrwxr-xr-x   5 root root    4096 Oct 17 22:00 public\n-rw-r--r--   1 root root    4920 Oct 17 22:00 publiccode.yml\ndrwxr-xr-x   7 root root    4096 Oct 17 22:00 src\n-rw-r--r--   1 root root     602 Oct 17 22:00 tsconfig.json\n---\n# KI-F\u00fchrerschein\n\n[![License: EUPL-1.2](https://img.shields.io/badge/License-EUPL--1.2-blue.svg)](https://joinup.ec.europa.eu/collection/eupl/eupl-text-eupl-12)\n[![REUSE compliant](https://img.shields.io/badge/REUSE-compliant-green.svg)](https://reuse.software/)\n\nDer KI-F\u00fchrerschein ist eine interaktive Lernplattform zur Vermittlung von Grundkenntnissen im Bereich K\u00fcnstliche Intelligenz. Das Projekt richtet sich an B\u00fcrgerinnen und B\u00fcrger, die einen praxisnahen Einstieg in das Thema KI suchen.\n\n## \ud83d\udccb Inhaltsverzeichnis\n\n- [\u00dcber das Projekt](#\u00fcber-das-projekt)\n- [Funktionen](#funktionen)\n- [Technologien](#technologien)\n- [Installation](#installation)\n- [Konfiguration](#konfiguration)\n- [Entwicklung](#entwicklung)\n- [Deployment](#deployment)\n- [Dokumentation](#dokumentation)\n- [Mitwirken](#mitwirken)\n- [Lizenz](#lizenz)\n- [Maintainer](#maintainer)\n- [Kontakt](#kontakt)\n- [F\u00f6rderhinweis](#f\u00f6rderhinweis)\n\n## \ud83c\udfaf \u00dcber das Projekt\n\nDiese Open-Source-Software entstand im Kontext der Smart-City-Aktivit\u00e4ten der Stadt Regensburg und ist Teil des F\u00f6rderprogramms \u201eModellprojekte Smart Cities\" des Bundes. Unter dem Leitgedanken \u201eGemeinsam aus der Krise: Raum f\u00fcr Zukunft\" verfolgt REGENSBURG_NEXT das Ziel, eine nachhaltige, lebenswerte und zukunftsf\u00e4hige Stadt aktiv zu gestalten. Grundlage daf\u00fcr ist ein integriertes digitales \u00d6kosystem, das sich an den Prinzipien der Neuen Leipzig-Charta \u2014 gerecht, gr\u00fcn und produktiv \u2014 orientiert. Ein besonderer Fokus liegt darauf, Technologie verst\u00e4ndlich und zug\u00e4nglich zu machen, sodass sie den Menschen dient und von der Stadtgesellschaft aktiv mitgestaltet werden kann.\n\nIm Rahmen der Ma\u00dfnahme \u201eReallabor Urbaner Raum\" werden im \u201eR_Lab Mobilit\u00e4t\" innovative Mobilit\u00e4tsl\u00f6sungen \u2014 h\u00e4ufig unter Einsatz von K\u00fcnstlicher Intelligenz \u2014 erprobt. In diesem Kontext entstand gemeinsam mit regionalen Partnern der \u201eRegensburger KI-F\u00fchrerschein\", ein digitales Bildungsangebot, das seit Ende 2025 unterschiedliche Zielgruppen niedrigschwellig und praxisnah f\u00fcr KI begeistert. Die Umsetzung dieses Anwendungsfalls wird ebenfalls durch das Bundesministerium f\u00fcr Wohnen, Stadtentwicklung und Bauwesen (BMWSB) gef\u00f6rdert.\n\n### Zielgruppe\n\n- B\u00fcrgerinnen und B\u00fcrger ohne technischen Hintergrund\n- Mitarbeiter:innen der \u00f6ffentlichen Verwaltung\n- Alle Interessierten, die mehr \u00fcber KI lernen m\u00f6chten\n\n## \u2728 Funktionen\n\n- **Interaktive Lernmodule**: 6 Stationen entlang einer virtuellen Fahrradtour durch Regensburg\n- **Quiz-Elemente**: Single-Choice-Fragen, Slider-Quiz, Wortwolken und Bild-Quizze\n- **Video-Inhalte**: Experteninterviews von der Universit\u00e4t Regensburg und Smart-City-Projekt\n- **Chat-Simulationen**: Interaktive Dialoge mit dem Lernbegleiter \u201eBruckmandl\"\n- **Fortschrittsverfolgung**: Lokale Speicherung des Lernfortschritts im Browser\n- **Zertifikat**: Digitales PDF-Zertifikat nach erfolgreichem Abschluss\n- **Mehrsprachig**: Verf\u00fcgbar auf Deutsch und Englisch\n- **Responsive Design**: Optimiert f\u00fcr Desktop, Tablet und Smartphone\n- **Barrierefreiheit**: Entwickelt unter Ber\u00fccksichtigung von Accessibility-Standards\n\n## \ud83d\udee0\ufe0f Technologien\n\n- **Framework**: [Next.js 15](https://nextjs.org/) (App Router)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "which node bun npm; node --version; bun --version; echo \"---\"; ps aux | grep -E \"bun|node|next\" | grep -v grep | head -20",
+      "exit_code": 0,
+      "stdout": "/usr/local/bin/node\n/usr/local/bin/bun\n/usr/local/bin/npm\nv22.23.3\n1.4.3\n---\nroot         776  0.0  0.1 1147412 8064 ?        S    22:05   0:00 bun dev\nroot         778  1.9  2.3 23932300 186332 ?     Sl   22:05   0:02 node /workspace/node_modules/.bin/next dev --turbopack --port 5173\nroot         798  113 17.8 31627360 1420632 ?    Sl   22:05   2:17 next-server (v15.4.10)\nroot         856  4.5  1.5 2280372 121420 ?      Sl   22:06   0:04 node /workspace/.next/postcss.js 33745\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat package.json | head -40 && echo \"=== .env.example ===\" && cat .env.example && echo \"=== .env.local (masked) ===\" && sed -E 's/(PASSWORD|URI|DB)=(.{6}).*/\\1=\\2.../' .env.local",
+      "exit_code": 0,
+      "stdout": "{\n  \"name\": \"ki-fuehrerschein\",\n  \"version\": \"1.0.0\",\n  \"description\": \"KI-F\u00fchrerschein - Ein interaktiver Lernkurs f\u00fcr die verantwortungsvolle Nutzung von KI-Systemen am Arbeitsplatz\",\n  \"license\": \"EUPL-1.2\",\n  \"author\": {\n    \"name\": \"Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG\",\n    \"email\": \"info@i40.de\",\n    \"url\": \"https://www.i40.de\"\n  },\n  \"keywords\": [\n    \"ki\",\n    \"ai\",\n    \"learning\",\n    \"education\",\n    \"next.js\",\n    \"react\",\n    \"typescript\"\n  ],\n  \"scripts\": {\n    \"dev\": \"next dev --turbopack --port 5173\",\n    \"build\": \"next build\",\n    \"start\": \"next start\",\n    \"lint\": \"next lint\",\n    \"test\": \"bun test\",\n    \"test:watch\": \"bun test --watch\",\n    \"test:coverage\": \"bun test --coverage\",\n    \"format\": \"prettier --write .\",\n    \"format:check\": \"prettier --check .\"\n  },\n  \"dependencies\": {\n    \"@mux/mux-player-react\": \"^3.5.1\",\n    \"@radix-ui/react-accordion\": \"^1.2.11\",\n    \"@radix-ui/react-dialog\": \"^1.1.14\",\n    \"@radix-ui/react-slider\": \"^1.3.5\",\n    \"@radix-ui/react-slot\": \"^1.2.3\",\n    \"@radix-ui/react-toast\": \"^1.2.14\",\n    \"@vercel/analytics\": \"^1.5.0\",\n    \"class-variance-authority\": \"^0.7.1\",\n    \"clsx\": \"^2.1.1\",\n=== .env.example ===\n# =============================================================================\n# KI-F\u00fchrerschein \u2013 Umgebungsvariablen\n# =============================================================================\n# Kopieren Sie diese Datei nach .env.local und passen Sie die Werte an:\n#   cp .env.example .env.local\n# =============================================================================\n\n# --- MongoDB (optional) ---\n# Erforderlich nur f\u00fcr Metriken und Zertifikatsspeicherung.\n# Wenn nicht gesetzt, funktioniert die Anwendung ohne Datenbank.\nMONGODB_URI=mongodb+srv://<BENUTZER>:<PASSWORT>@<CLUSTER>.mongodb.net/\nMONGODB_DB=ki-fuehrerschein\n\n# --- Dashboard-Zugang ---\nDASHBOARD_PASSWORD=<SICHERES_PASSWORT_SETZEN>\n\n# --- Node.js ---\n# Auf \"production\" setzen f\u00fcr den Produktivbetrieb.\nNODE_ENV=development\n=== .env.local (masked) ===\n# =============================================================================\n# KI-F\u00fchrerschein \u2013 Umgebungsvariablen\n# =============================================================================\n# Kopieren Sie diese Datei nach .env.local und passen Sie die Werte an:\n#   cp .env.example .env.local\n# =============================================================================\n\n# --- MongoDB (optional) ---\n# Erforderlich nur f\u00fcr Metriken und Zertifikatsspeicherung.\n# Wenn nicht gesetzt, funktioniert die Anwendung ohne Datenbank.\nMONGODB_URI=mongod...\nMONGODB_DB=ki-fue...\n\n# --- Dashboard-Zugang ---\nDASHBOARD_PASSWORD=dev-pa...\n\n# --- Node.js ---\n# Auf \"production\" setzen f\u00fcr den Produktivbetrieb.\nNODE_ENV=development\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "for p in \"/\" \"/certificate\" \"/dashboard\" \"/settings\" \"/imprint\" \"/journey/1\" \"/metrics\" \"/chapter/1\" \"/favicon.ico\"; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 60 \"http://localhost:5173$p\"); echo \"$p -> $code\"; done",
+      "exit_code": 0,
+      "stdout": "/ -> 200\n/certificate -> 200\n/dashboard -> 200\n/settings -> 200\n/imprint -> 200\n/journey/1 -> 200\n/metrics -> 500\n/chapter/1 -> 500\n/favicon.ico -> 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:5173/ | grep -oE \"<title>[^<]*</title>\" ; curl -s --max-time 60 http://localhost:5173/ | grep -oiE \"(KI-F\u00fchrerschein|KI F\u00fchrerschein|Lernstation|Station)\" | sort | uniq -c | head; echo \"===\"; ls /workspace/src/app/",
+      "exit_code": 0,
+      "stdout": "<title>KI F\u00fchrerschein Regensburg</title>\n      2 KI F\u00fchrerschein\n===\napi\ncertificate\nchapter\ndashboard\nfavicon.ico\nglobals.css\nimprint\njourney\nlayout.tsx\nmetrics\npage.tsx\nsettings\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && find src/app -name \"page.tsx\" | sort && echo \"=== chapter page source ===\" && head -80 \"src/app/chapter/[chapterId]/page.tsx\"",
+      "exit_code": 0,
+      "stdout": "src/app/certificate/page.tsx\nsrc/app/chapter/[chapterId]/page.tsx\nsrc/app/dashboard/page.tsx\nsrc/app/imprint/page.tsx\nsrc/app/journey/[chapterId]/page.tsx\nsrc/app/metrics/page.tsx\nsrc/app/page.tsx\nsrc/app/settings/page.tsx\n=== chapter page source ===\n// SPDX-FileCopyrightText: 2026 Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG, info@i40.de\n//\n// SPDX-License-Identifier: EUPL-1.2\n\n'use client'\n\nimport { data as dataDE } from '@/data'\nimport ChapterRenderer from '@/components/progress/ChapterRenderer'\nimport { Data } from '@/types'\n\nexport default async function ChapterPage(props: {\n  params: Promise<{ chapterId: string }>\n}) {\n  const params = await props.params\n  const { chapterId } = params\n\n  const data = JSON.parse(\n    localStorage.getItem('data') || JSON.stringify(dataDE),\n  ) as Data\n\n  const chapter = data.chapters[parseInt(chapterId, 10)]\n\n  return (\n    <ChapterRenderer\n      chapterId={chapter.id ?? chapterId}\n      components={chapter.components}\n    />\n  )\n}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && head -40 src/app/metrics/page.tsx; echo \"=== dev log tail ===\"; tail -40 /tmp/devserver.log",
+      "exit_code": 0,
+      "stdout": "// SPDX-FileCopyrightText: 2026 Innovationszentrum f\u00fcr Industrie 4.0 GmbH & Co. KG, info@i40.de\n//\n// SPDX-License-Identifier: EUPL-1.2\n\n// app/metrics/page.tsx\nexport const dynamic = 'force-dynamic'\nexport const runtime = 'nodejs'\n\nimport { getDb } from '@/lib/mongodb'\nimport { unstable_noStore as noStore } from 'next/cache'\n\ntype DayBucket = {\n  dateKey: string // YYYY-MM-DD in Europe/Berlin\n  count: number\n}\n\ntype HourBucket = {\n  hour: number // 0-23 in Europe/Berlin\n  count: number\n}\n\nconst TZ = 'Europe/Berlin'\nconst LOCALE = 'de-DE'\n\nfunction formatDateDE(dateKey: string) {\n  // dateKey: YYYY-MM-DD\n  const [y, m, d] = dateKey.split('-').map(Number)\n  const dt = new Date(Date.UTC(y, m - 1, d))\n  return new Intl.DateTimeFormat(LOCALE, {\n    timeZone: TZ,\n    year: 'numeric',\n    month: '2-digit',\n    day: '2-digit',\n  }).format(dt)\n}\n\nfunction formatDayShortDE(dateKey: string) {\n  // F\u00fcr Achsenlabels (z. B. 16.09.)\n  const [y, m, d] = dateKey.split('-').map(Number)\n  const dt = new Date(Date.UTC(y, m - 1, d))\n=== dev log tail ===\n \u25cb Compiling /journey/[chapterId] ...\n \u2713 Compiled /journey/[chapterId] in 1345ms\n GET /journey/1 200 in 2911ms\n \u25cb Compiling /settings ...\n \u2713 Compiled /settings in 1459ms\n GET /settings 200 in 1688ms\n \u25cb Compiling /imprint ...\n \u2713 Compiled /imprint in 1282ms\n GET /imprint 200 in 1515ms\n GET / 200 in 166ms\n GET /certificate 200 in 206ms\n GET /dashboard 200 in 221ms\n GET /settings 200 in 155ms\n GET /imprint 200 in 177ms\n GET /journey/1 200 in 251ms\n \u2a2f [Error: querySrv EBADNAME _mongodb._tcp.<CLUSTER>.mongodb.net] {\n  errno: undefined,\n  code: 'EBADNAME',\n  syscall: 'querySrv',\n  hostname: '_mongodb._tcp.<CLUSTER>.mongodb.net',\n  digest: '454510307'\n}\n GET /metrics 500 in 182ms\n \u2a2f ReferenceError: localStorage is not defined\n    at ChapterPage (src/app/chapter/[chapterId]/page.tsx:18:4)\n  16 |\n  17 |   const data = JSON.parse(\n> 18 |     localStorage.getItem('data') || JSON.stringify(dataDE),\n     |    ^\n  19 |   ) as Data\n  20 |\n  21 |   const chapter = data.chapters[parseInt(chapterId, 10)] {\n  digest: '731917969'\n}\n GET /chapter/1 500 in 287ms\n \u25cb Compiling /favicon.ico ...\n \u2713 Compiled /favicon.ico in 757ms\n GET /favicon.ico 200 in 1137ms\n GET / 200 in 166ms\n GET / 200 in 263ms\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git log --oneline -3 && git status --short | head && echo \"=== chapter page diff vs HEAD ===\" && git --no-pager diff HEAD -- \"src/app/chapter/[chapterId]/page.tsx\" | head -5 && echo \"(empty = unmodified)\" && echo \"=== links to /chapter/ in source ===\" && grep -rn 'href=\"/chapter' src/ | head; grep -rn '\"/chapter' src/ --include=\"*.tsx\" | head",
+      "exit_code": 1,
+      "stdout": "0710674 chore: add SBOM\n M bun.lockb\n M package.json\n=== chapter page diff vs HEAD ===\n(empty = unmodified)\n=== links to /chapter/ in source ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:5173/journey/1 | grep -oE \"(Lernstation|Station [0-9]|KI-|Quiz|<title>[^<]*</title>)\" | sort | uniq -c | head -12; echo \"=== dashboard ===\"; curl -s --max-time 60 http://localhost:5173/dashboard | grep -oiE \"(password|passwort|login|zertifiz|Metrik)\" | sort | uniq -c | head",
+      "exit_code": 1,
+      "stdout": "      1 <title>KI F\u00fchrerschein Regensburg</title>\n=== dashboard ===\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && git --no-pager diff HEAD -- package.json bun.lockb | head -40; echo \"=== full status ===\"; git status --short",
+      "exit_code": 0,
+      "stdout": "diff --git a/bun.lockb b/bun.lockb\nindex 4cbc4f5..1d30b38 100755\nBinary files a/bun.lockb and b/bun.lockb differ\ndiff --git a/package.json b/package.json\nindex ff4777a..10dccfb 100644\n--- a/package.json\n+++ b/package.json\n@@ -74,5 +74,9 @@\n   \"overrides\": {\n     \"@types/react\": \"19.1.8\",\n     \"@types/react-dom\": \"19.1.6\"\n-  }\n+  },\n+  \"trustedDependencies\": [\n+    \"@tailwindcss/oxide\",\n+    \"unrs-resolver\"\n+  ]\n }\n=== full status ===\n M bun.lockb\n M package.json\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:5173/ > /tmp/home.html; grep -oE 'href=\"[^\"]*\"' /tmp/home.html | sort | uniq -c | sort -rn | head -25; echo \"=== size ===\"; wc -c /tmp/home.html",
+      "exit_code": 0,
+      "stdout": "      1 href=\"/favicon.ico?favicon.45db1c09.ico\"\n      1 href=\"/_next/static/chunks/src_app_globals_b805903d.css\"\n      1 href=\"/_next/static/chunks/%5Bturbopack%5D_browser_dev_hmr-client_hmr-client_ts_6aaa83c7._.js\"\n=== size ===\n19157 /tmp/home.html\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "curl -s --max-time 60 http://localhost:5173/journey/1 > /tmp/j1.html; wc -c /tmp/j1.html; echo \"=== text content (strip tags) ===\"; sed 's/<[^>]*>//g' /tmp/j1.html | tr -s ' \\n' ' \\n' | grep -vE '^\\s*$' | head -30",
+      "exit_code": 0,
+      "stdout": "40266 /tmp/j1.html\n=== text content (strip tags) ===\nKI F\u00fchrerschein Regensburg\n .cls-1 {\n fill: #c1d5e8;\n }\n .cls-2 {\n fill: #c3735b;\n }\n .cls-3 {\n fill: #e2f3f6;\n }\n .cls-4 {\n fill: #5f5f62;\n }\n .cls-5 {\n fill: #ffb6a1;\n }\n .cls-6 {\n fill: #f70000;\n }\n .cls-7 {\n fill: #981601;\n }\n .cls-8 {\n fill: #005fa6;\n }\n Keep swiping/scrolling until you arrive at the station.\n .st0 {\n fill: none;\n stroke: var(--arrow-color);\n stroke-linecap: round;\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && echo \"=== port listening ===\"; (ss -ltnp 2>/dev/null || netstat -ltnp 2>/dev/null) | grep 5173; echo \"=== stability: 5 quick requests ===\"; for i in 1 2 3 4 5; do code=$(curl -s -o /dev/null -w \"%{http_code}\" --max-time 60 \"http://localhost:5173/\"); echo \"req $i -> $code\"; done; echo \"=== node_modules count ===\"; ls node_modules | wc -l; echo \"=== metrics route links in UI ===\"; grep -rn 'href=\"/metrics\\|href={\"/metrics\\|/metrics' src/app --include=\"*.tsx\" | grep -i href | head",
+      "exit_code": 1,
+      "stdout": "=== port listening ===\n=== stability: 5 quick requests ===\nreq 1 -> 200\nreq 2 -> 200\nreq 3 -> 200\nreq 4 -> 200\nreq 5 -> 200\n=== node_modules count ===\n412\n=== metrics route links in UI ===\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

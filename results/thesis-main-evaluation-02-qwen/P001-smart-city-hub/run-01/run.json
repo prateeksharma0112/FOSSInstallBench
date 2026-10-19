@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P001-smart-city-hub__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T10:55:37.455024+02:00",
+    "finished_at": "2026-10-15T11:34:32.189675+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P001",
+    "project": {
+      "opencode_id": "9857",
+      "name": "Smart City Hub",
+      "description": "Open-source platform for data management, app hosting and identity management for municipalities and regions.",
+      "catalogue_url": "https://opencode.de/de/software/smart-city-hub-9857",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/wuerzburg/smart-city-hub",
+      "commit_sha": "7b1730e51e1b7d44a10fc753d0adc8d079eb44dd",
+      "license": "MIT"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/wuerzburg/smart-city-hub/-/blob/7b1730e51e1b7d44a10fc753d0adc8d079eb44dd/README.md#quickstart",
+      "language": "English",
+      "word_count": 52
+    },
+    "task_id": "P001-smart-city-hub"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2337.1100000000006,
+    "repository_setup_duration_seconds": 17.57800000000134,
+    "installation_duration_seconds": 2268.25,
+    "validation_duration_seconds": 32.42199999999866,
+    "command_count": 95,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 79,
+    "validation_command_count": 12
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P001-smart-city-hub/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

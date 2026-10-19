@@ -1,0 +1,17 @@
+Installed the DaZ-Pilot production stack with Docker Compose in the shared workspace `/workspace` (repo already checked out at commit `ba32aab`, so step 1 "clone" was a no-op).
+
+Prereqs: Docker 29.7.2, Compose v5.5.0, 8 CPUs, ~7.6 GB RAM, ~952 GB disk. Installed the host `age` tool via apt to run `age-keygen`.
+
+Secrets (step 2): generated `SUPER_ADMIN_API_KEY` (openssl rand -hex 48), `SECRETS_ENCRYPTION_KEY` and `MEDIA_URL_SIGNING_KEY` (openssl rand -base64 32), `DB_PASS` (openssl rand -hex 32), and an age keypair `age-keygen -o age-identity.txt`.
+
+`.env` (step 3): wrote `/workspace/.env` (chmod 600) from the .env.example layout with `ENVIRONMENT=production`, `SCHOOL_SLUG=eckener-schule`, `TRUST_PROXY=1`, `AUTH_RATE_LIMIT_MAX=300`, `AGE_RECIPIENT` (age public key), `SMTP_*` pointing at the local relay, and all generated secrets. Because this sandbox has no public DNS names/TLS, `CORE_BACKEND_DOMAIN=http://localhost:4000` and `FRONTEND_DOMAIN=http://localhost:3000` were used (the guide's reverse-proxy step is not feasible here).
+
+Build & start (step 5): `docker compose up -d --build`. First run built all images (backend, dashboard, ml-service, backup) and started postgres/qdrant/migrate/backup/ml-service; it then aborted with "dependency ml-service failed to start" because the one-time 4.6 GB SigLIP model download (HF google/siglip2-so400m-patch14-384) exceeded the 300 s health start_period — the exact "first start is long / ml-service stays unhealthy" behavior the guide documents. After the download finished and `ml-service` reported healthy, re-ran `docker compose up -d` to start `migrate`, `backend`, `worker`, `dashboard`. migrate ran the 001–009 migrations and exited 0.
+
+Verification (steps 6/7/10): all long-running services `healthy`, `migrate` `exited (0)`. `GET /api/v1/health` on backend:4000 → `{"status":"pass","healthCheckResults":[{"status":"pass","message":"Database is healthy"...}]}`. Dashboard `/` → HTTP 200 and `/eckener-schule/login` → HTTP 200 (SCHOOL_SLUG school-skip works). Swagger UI served under `/api/v1/swagger`. School `eckener-schule` ("Eckener-Schule Flensburg") and admin teacher `admin@schule.de` created via the super-admin API (`x-super-admin-api-key`), both HTTP 201, confirmed in Postgres `schools`/`teachers`. Backup sidecar logs its supercronic schedule (does not exit). A one-off `docker compose run --rm backup backup.sh` completed and wrote age-encrypted archives (`.age` files begin with `age-encryption.org/v1`) for postgres/qdrant/media.
+
+Additional end-to-end check: stood up a local SMTP relay container on the compose network (alias `mailcatcher`), then verified the no-SSO login loop: `POST /api/v1/auth/init-email-login` → OTP email delivered through the relay (code visible in the relay log) → `POST /api/v1/auth/complete-email-login` → HTTP 201 with a teacher session. Test teachers created for this check were removed afterward, leaving only `admin@schule.de`.
+
+Not done (environment-limited, not failures): the reverse proxy (no public DNS/TLS available in this sandbox; documented internal targets validated directly), SSO/IdP (step 8) and Moodle (step 9), both optional/follow-on admin tasks needing external systems absent here.
+
+Access point: dashboard login at `http://localhost:3000/eckener-schule/login` (admin@schule.de, role admin). Start command: `docker compose up -d` from `/workspace`. Volumes: workspace_{postgres_data,qdrant_storage,qdrant_snapshots,ml_model_cache,media_data,backup_data}.

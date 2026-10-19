@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P028-urbankit-plattform__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-17T17:18:37.257116+02:00",
+    "finished_at": "2026-10-17T17:48:05.449557+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P028",
+    "project": {
+      "opencode_id": "12597",
+      "name": "UrbanKIT Plattform",
+      "description": "A city's digital citizen participation platform: public portal plus closed project workspace with modular tools.",
+      "catalogue_url": "https://opencode.de/de/software/urban-kit-plattform-12597",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform",
+      "commit_sha": "d170d748ae3d7873d83816fe68a36c7989dce0a7",
+      "license": "EUPL-1.2"
+    },
+    "installation": {
+      "complexity": "Medium"
+    },
+    "installation_guide": {
+      "source": "Repository deployment guide",
+      "url": "https://gitlab.opencode.de/stadt-detmold/urban-kit-plattform/-/blob/d170d748ae3d7873d83816fe68a36c7989dce0a7/docs/deployment.md",
+      "language": "English",
+      "word_count": 505
+    },
+    "task_id": "P028-urbankit-plattform"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 1768.25,
+    "repository_setup_duration_seconds": 15.781000000002678,
+    "installation_duration_seconds": 1427.828999999998,
+    "validation_duration_seconds": 258.81200000000536,
+    "command_count": 79,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 50,
+    "validation_command_count": 25
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P028-urbankit-plattform/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

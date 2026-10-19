@@ -1,0 +1,15 @@
+Successfully installed and verified the "samarbeid" collaboration platform.
+
+## What was done
+- Explored the Rails 8.1.3.1 + Vue 2 SPA at `/workspace`; requirements per `.ruby-version`/`.tool-versions`: Ruby 3.4.10, Node 24.9.0 + Yarn 4.13.0, PostgreSQL, Docker Compose.
+- Installed build tools & libs via apt, then built **Ruby 3.4.10 from source** (`/opt/tools/ruby-3.4.10`), installed **Node.js 24.9.0** (prebuilt tarball) and **Yarn 4.13.0** (corepack), and installed/started **PostgreSQL 14.24** (created `samarbeid` superuser role).
+- Started dependency services (`apache/tika`, `axllent/mailpit`) via `docker compose up -d`.
+- Ran the documented `bin/setup` (with `--skip-server`), which installed all bundle + yarn dependencies, copied `config/database.yml`, and prepared/seeded the development database. It generated an initial super-admin account: **admin@example.org / TTOF3UHA0bsQ** (printed in setup output).
+- Started the dev server with `bin/dev` (foreman → Puma/Rails on :3000 + Vite dev on :3036).
+
+## Result (verified via HTTP + DB)
+- `GET /` → 301 → `/users/sign-in` → **200** (samarbeid sign-in, Vite assets served).
+- Login POST with generated admin credentials → **302** → `/`; authenticated `GET /` → **200**.
+- DB confirms the seeded admin user and initial data.
+
+The app is running and accessible at **http://localhost:3000**.

@@ -1,0 +1,540 @@
+{
+  "command_executions": [
+    {
+      "phase": "repository_setup",
+      "command": "git clone --no-checkout --depth 1 https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check /workspace",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "Cloning into '/workspace'...\nwarning: redirecting to https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check.git/\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace fetch --depth 1 origin 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "warning: redirecting to https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check.git/\nFrom https://gitlab.opencode.de/sh/zit/opendata/dcat-catalog-check\n * branch            44583b12709bbb64ef18ec470e8a13b53fb4abe9 -> FETCH_HEAD\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "git -C /workspace checkout --detach 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "HEAD is now at 44583b1 fix table style [ci skip]\n",
+      "timed_out": false
+    },
+    {
+      "phase": "repository_setup",
+      "command": "test \"$(git -C /workspace rev-parse HEAD)\" = 44583b12709bbb64ef18ec470e8a13b53fb4abe9",
+      "exit_code": 0,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "pwd && ls -la",
+      "exit_code": 0,
+      "stdout": "/workspace\ntotal 324\ndrwxr-xr-x 7 root root   4096 Oct 18 17:07 .\ndr-xr-xr-x 1 root root   4096 Oct 18 17:05 ..\n-rw-r--r-- 1 root root     22 Oct 18 17:07 .coveragerc\ndrwxr-xr-x 8 root root   4096 Oct 18 17:07 .git\n-rw-r--r-- 1 root root     71 Oct 18 17:07 .gitignore\n-rw-r--r-- 1 root root   1571 Oct 18 17:07 .gitlab-ci.yml\n-rw-r--r-- 1 root root     64 Oct 18 17:07 .markdownlint.json\n-rw-r--r-- 1 root root   1119 Oct 18 17:07 CHANGELOG.md\n-rw-r--r-- 1 root root    650 Oct 18 17:07 Dockerfile\n-rw-r--r-- 1 root root  13792 Oct 18 17:07 LICENSE\n-rw-r--r-- 1 root root   9358 Oct 18 17:07 README.md\n-rwxr-xr-x 1 root root   7037 Oct 18 17:07 check_periodicity.py\n-rwxr-xr-x 1 root root  28099 Oct 18 17:07 dcat_catalog_check.py\n-rwxr-xr-x 1 root root   1176 Oct 18 17:07 download_catalog.py\ndrwxr-xr-x 2 root root   4096 Oct 18 17:07 formats\n-rw-r--r-- 1 root root   5154 Oct 18 17:07 logo.svg\n-rw-r--r-- 1 root root   9264 Oct 18 17:07 mqa.py\n-rw-r--r-- 1 root root 176934 Oct 18 17:07 poetry.lock\n-rw-r--r-- 1 root root   2556 Oct 18 17:07 publiccode.yml\n-rw-r--r-- 1 root root    711 Oct 18 17:07 pyproject.toml\ndrwxr-xr-x 2 root root   4096 Oct 18 17:07 resources\ndrwxr-xr-x 3 root root   4096 Oct 18 17:07 tests\ndrwxr-xr-x 2 root root   4096 Oct 18 17:07 tools\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat pyproject.toml && echo \"---\" && cat Dockerfile && echo \"---\" && ls resources/ formats/ tests/ tools/",
+      "exit_code": 0,
+      "stdout": "[tool.poetry]\n\nname = \"dcat-catalog-check\"\nversion = \"1.1.0\"\ndescription = \"DCAT Catalog Check\"\nauthors = [\n  \"Jesper Zedlitz <jesper.zedlitz@stk.landsh.de>\",\n  \"Thorge Petersen <petersen@rz.uni-kiel.de>\",\n]\nlicense = \"AGPL-3.0-or-later\"\nreadme = \"README.md\"\n\n[tool.poetry.dependencies]\npython = \"^3.10\"\nrequests = \"^2.32.3\"\npython-magic = \"^0.4.27\"\nfrictionless = {extras = [\"wkt\"], version = \"^5.18.1\"}\ngeopandas = \"^1.0.1\"\nrdflib = \"^7.1.1\"\npypdf = \"^5.1.0\"\npillow = \"^11.0.0\"\nfiona = \"^1.10.1\"\npyarrow = \"^18.1.0\"\ngeojson = \"^3.2.0\"\ngdal = \"3.6.2\"\n\n[tool.poetry.group.dev.dependencies]\ncoverage = \"^7.6.1\"\nruff = \"^0.6.8\"\n\n[build-system]\nrequires = [\"poetry-core\"]\nbuild-backend = \"poetry.core.masonry.api\"\n---\nFROM python:3.10\n\n# Install necessary system dependencies\nRUN apt-get update && \\\n    apt-get install -y \\\n    libgdal-dev \\\n    libmagic-dev \\\n    gcc \\\n    python3-dev \\\n    musl-dev \\\n    libgeos-dev \\\n    libproj-dev \\\n    python3-poetry\n\n# Set the working directory inside the container\nWORKDIR /app\n\n# Copy the entire project to the container's working directory\nCOPY . .\n\n# Install project dependencies with Poetry\nRUN poetry install --no-interaction --no-ansi\n\n# Make the main script executable\nRUN chmod +x dcat_catalog_check.py\n\n# Specify the entry point to run the script by default\nENTRYPOINT [\"poetry\", \"run\", \"./dcat_catalog_check.py\"]\n---\nformats/:\n__init__.py\natom_format.py\ndocx_format.py\ngeojson_format.py\ngeotiff_format.py\ngml_format.py\njpeg_format.py\njson_format.py\nods_format.py\nodt_format.py\nparquet_format.py\npdf_format.py\npng_format.py\nrdf_format.py\nshp_format.py\nwfs_srvc_format.py\nwms_srvc_format.py\nwmts_srvc_format.py\nxlsx_format.py\nxml_format.py\nzip_format.py\n\nresources/:\nfile_types.json\n\ntests/:\n__init__.py\ndata\ntest_all_formats.py\ntest_atom_format.py\ntest_dcat_catalog_check.py\ntest_docx_format.py\ntest_geojson_format.py\ntest_geotiff_format.py\ntest_gml_format.py\ntest_integration.py\ntest_jpeg_format.py\ntest_json_format.py\ntest_ods_format.py\ntest_odt_format.py\ntest_parquet_format.py\ntest_pdf_format.py\ntest_png_format.py\ntest_rdf_format.py\ntest_shp_format.py\ntest_wmts_format.py\ntest_xlsx_format.py\ntest_xml_format.py\ntest_zip_format.py\n\ntools/:\ngenerate_report.py\njsonl2sqlite.py\nper_publisher.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "which poetry python3 python pip3 2>&1; python3 --version 2>&1; poetry --version 2>&1",
+      "exit_code": 127,
+      "stdout": "/bin/bash: line 3: python3: command not found\n/bin/bash: line 3: poetry: command not found\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /etc/os-release 2>&1; echo \"---ARCH---\"; uname -a; echo \"---PIP---\"; which pip pip3 python 2>&1; echo \"---APT---\"; which apt-get apt 2>&1; echo \"---GIT---\"; git --version 2>&1",
+      "exit_code": 0,
+      "stdout": "PRETTY_NAME=\"Ubuntu 22.04.5 LTS\"\nNAME=\"Ubuntu\"\nVERSION_ID=\"22.04\"\nVERSION=\"22.04.5 LTS (Jammy Jellyfish)\"\nVERSION_CODENAME=jammy\nID=ubuntu\nID_LIKE=debian\nHOME_URL=\"https://www.ubuntu.com/\"\nSUPPORT_URL=\"https://help.ubuntu.com/\"\nBUG_REPORT_URL=\"https://bugs.launchpad.net/ubuntu/\"\nPRIVACY_POLICY_URL=\"https://www.ubuntu.com/legal/terms-and-policies/privacy-policy\"\nUBUNTU_CODENAME=jammy\n---ARCH---\nLinux 80ce536a745e 6.6.87.2-microsoft-standard-WSL2 #1 SMP PREEMPT_DYNAMIC Thu Jun  5 18:30:46 UTC 2025 x86_64 x86_64 x86_64 GNU/Linux\n---PIP---\n---APT---\n/usr/bin/apt-get\n/usr/bin/apt\n---GIT---\ngit version 2.34.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "echo \"---PYTHON versions available---\"; ls /usr/bin/python* 2>&1; ls /usr/local/bin/python* 2>&1; echo \"---gcc---\"; which gcc cc g++ make 2>&1; echo \"---internet check---\"; timeout 10 curl -sI https://pypi.org 2>&1 | head -5",
+      "exit_code": 0,
+      "stdout": "---PYTHON versions available---\nls: cannot access '/usr/bin/python*': No such file or directory\nls: cannot access '/usr/local/bin/python*': No such file or directory\n---gcc---\n---internet check---\nHTTP/2 200 \ncontent-security-policy: base-uri 'self'; connect-src 'self' https://api.github.com/repos/ https://api.github.com/search/issues https://gitlab.com/api/ https://analytics.python.org *.ethicalads.io https://api.pwnedpasswords.com https://cdn.jsdelivr.net/npm/mathjax@3.2.2/es5/sre/mathmaps/ https://2p66nmmycsj3.statuspage.io; default-src 'none'; font-src 'self'; form-action 'self' https://checkout.stripe.com https://billing.stripe.com; frame-ancestors 'none'; frame-src 'none'; img-src 'self' https://pypi-camo.freetls.fastly.net/ *.ethicalads.io ethicalads.blob.core.windows.net; script-src 'self' https://analytics.python.org *.ethicalads.io 'sha256-U3hKDidudIaxBDEzwGJApJgPEf2mWk6cfMWghrAa6i0=' https://cdn.jsdelivr.net/npm/mathjax@3.2.2/ 'sha256-1CldwzdEg2k1wTmf7s5RWVd7NMXI/7nxxjJM2C4DqII='; style-src 'self' *.ethicalads.io 'sha256-2YHqZokjiizkHi1Zt+6ar0XJ0OeEy/egBnlm+MDMtrM=' 'sha256-47DEQpj8HBSa+/TImW+5JCeuQeRkm5NMpJWZG3hSuFU=' 'sha256-JLEjeN9e5dGsz5475WyRaoA4eQOdNPxDIeUhclnJDCE=' 'sha256-mQyxHEuwZJqpxCw3SLmc4YOySNKXunyu2Oiz1r3/wAE=' 'sha256-OCf+kv5Asiwp++8PIevKBYSgnNLNUZvxAp4a7wMLuKA=' 'sha256-h5LOiLhk6wiJrGsG5ItM0KimwzWQH/yAcmoJDJL//bY='\nreferrer-policy: origin-when-cross-origin\nserver: gunicorn\netag: \"x2bDn4FSepNCN3oXyDfSVA\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "nproc; free -h; df -h /workspace /usr | head -5",
+      "exit_code": 0,
+      "stdout": "8\n               total        used        free      shared  buff/cache   available\nMem:           7.6Gi       506Mi       6.2Gi       2.0Mi       965Mi       6.9Gi\nSwap:          2.0Gi        86Mi       1.9Gi\nFilesystem      Size  Used Avail Use% Mounted on\noverlay        1007G  4.8G  951G   1% /\noverlay        1007G  4.8G  951G   1% /\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n -A5 'name = \"gdal\"' poetry.lock | head -30; echo \"---LOCK_VERSION---\"; grep -n \"lock-version\" poetry.lock; echo \"---GDAL IMPORTS---\"; grep -rn \"import gdal\\|from osgeo\\|import fiona\\|import geopandas\" --include=\"*.py\" /workspace | head -20",
+      "exit_code": 0,
+      "stdout": "398:name = \"gdal\"\n399-version = \"3.6.2\"\n400-description = \"GDAL: Geospatial Data Abstraction Library\"\n401-optional = false\n402-python-versions = \">=3.6.0\"\n403-files = [\n---LOCK_VERSION---\n1901:lock-version = \"2.0\"\n---GDAL IMPORTS---\n/workspace/formats/geotiff_format.py:1:from osgeo import gdal\n/workspace/formats/shp_format.py:1:import geopandas\n/workspace/formats/gml_format.py:1:import geopandas\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "apt-get update 2>&1 | tail -3 && DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3 python3-venv python3-dev libgdal-dev libgeos-dev libproj-dev libmagic-dev gcc g++ make 2>&1 | tail -5",
+      "exit_code": 0,
+      "stdout": "Get:20 http://archive.ubuntu.com/ubuntu jammy-backports/universe amd64 Packages [35.6 kB]\nFetched 49.2 MB in 9s (5393 kB/s)\nReading package lists...\nSetting up libarmadillo-dev (1:10.8.2+dfsg-1) ...\nSetting up python3-dev (3.10.6-1~22.04.1) ...\nSetting up libhdf4-alt-dev (4.2.15-4) ...\nSetting up libgdal-dev (3.4.1+dfsg-1build4) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends python3-pip 2>&1 | tail -2 && python3 -m pip install --no-cache-dir poetry 2>&1 | tail -3 && python3 -m poetry --version",
+      "exit_code": 0,
+      "stdout": "Setting up python3-wheel (0.37.1-2ubuntu0.22.04.1) ...\nSetting up python3-pip (22.0.2+dfsg-1ubuntu0.7) ...\nInstalling collected packages: trove-classifiers, distlib, zipp, urllib3, typing_extensions, tomlkit, tomli, shellingham, rapidfuzz, pyproject-hooks, pycparser, poetry-core, platformdirs, pkginfo, pbs-installer, packaging, msgpack, more-itertools, jeepney, installer, idna, h11, filelock, fastjsonschema, crashtest, charset_normalizer, certifi, backports.zstd, backports.tarfile, requests, python-discovery, jaraco.functools, jaraco.context, jaraco.classes, importlib_metadata, httpcore, findpython, exceptiongroup, dulwich, cleo, cffi, build, virtualenv, requests-toolbelt, cryptography, cachecontrol, anyio, SecretStorage, httpx, keyring, poetry\nSuccessfully installed SecretStorage-3.5.0 anyio-4.15.1 backports.tarfile-1.2.0 backports.zstd-1.8.0 build-1.6.1 cachecontrol-0.14.4 certifi-2026.10.18 cffi-2.1.1 charset_normalizer-3.5.2 cleo-2.1.0 crashtest-0.4.1 cryptography-50.0.2 distlib-0.4.4 dulwich-1.2.17 exceptiongroup-1.3.1 fastjsonschema-2.22.2 filelock-4.1.0 findpython-0.8.0 h11-0.16.0 httpcore-1.0.9 httpx-0.28.1 idna-3.20 importlib_metadata-9.0.1 installer-1.1.0 jaraco.classes-3.4.0 jaraco.context-6.1.2 jaraco.functools-4.6.0 jeepney-0.9.0 keyring-25.7.0 more-itertools-11.1.0 msgpack-1.2.3 packaging-26.3 pbs-installer-2026.10.13 pkginfo-1.13.3 platformdirs-4.12.4 poetry-2.5.1 poetry-core-2.5.0 pycparser-3.11 pyproject-hooks-1.3.3 python-discovery-1.6.3 rapidfuzz-3.14.5 requests-2.34.2 requests-toolbelt-1.0.0 shellingham-1.5.4 tomli-2.5.0 tomlkit-0.15.2 trove-classifiers-2026.9.21.13 typing_extensions-4.16.0 urllib3-2.8.0 virtualenv-21.14.11 zipp-4.1.1\nWARNING: Running pip as the 'root' user can result in broken permissions and conflicting behaviour with the system package manager. It is recommended to use a virtual environment instead: https://pip.pypa.io/warnings/venv\nPoetry (version 2.5.1)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m poetry check 2>&1; echo \"EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "Warning: [tool.poetry.name] is deprecated. Use [project.name] instead.\nWarning: [tool.poetry.version] is set but 'version' is not in [project.dynamic]. If it is static use [project.version]. If it is dynamic, add 'version' to [project.dynamic].\nIf you want to set the version dynamically via `poetry build --local-version` or you are using a plugin, which sets the version dynamically, you should define the version in [tool.poetry] and add 'version' to [project.dynamic].\nWarning: [tool.poetry.description] is deprecated. Use [project.description] instead.\nWarning: [tool.poetry.readme] is set but 'readme' is not in [project.dynamic]. If it is static use [project.readme]. If it is dynamic, add 'readme' to [project.dynamic].\nIf you want to define multiple readmes, you should define them in [tool.poetry] and add 'readme' to [project.dynamic].\nWarning: [tool.poetry.license] is deprecated. Use [project.license] instead.\nWarning: [tool.poetry.authors] is deprecated. Use [project.authors] instead.\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup python3 -m poetry install --no-interaction --no-ansi > /tmp/poetry_install.log 2>&1 &\necho \"started PID $!\"",
+      "exit_code": 0,
+      "stdout": "started PID 2989\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 30; tail -15 /tmp/poetry_install.log; echo \"---\"; ps aux | grep -c \"[p]ython\"",
+      "exit_code": 0,
+      "stdout": "\n!!\n  self._finalize_license_expression()\n  - Installing coverage (7.9.2)\n  - Installing fiona (1.10.1)\n  - Installing frictionless (5.18.1)\n  - Installing gdal (3.6.2)\n  - Installing geojson (3.2.0)\n  - Installing geopandas (1.1.1)\n  - Installing pillow (11.3.0)\n  - Installing pyarrow (18.1.0)\n  - Installing pypdf (5.7.0)\n  - Installing python-magic (0.4.27)\n  - Installing rdflib (7.1.4)\n  - Installing ruff (0.6.9)\n---\n3\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -40 /tmp/poetry_install.log; echo \"===\"; sleep 60; tail -8 /tmp/poetry_install.log",
+      "exit_code": 0,
+      "stdout": "Creating virtualenv dcat-catalog-check-xS3fZVNL-py3.10 in /root/.cache/pypoetry/virtualenvs\nInstalling dependencies from lock file\n\nPackage operations: 62 installs, 0 updates, 0 removals\n\n  - Installing attrs (25.3.0)\n  - Installing mdurl (0.1.2)\n  - Installing rpds-py (0.26.0)\n  - Installing typing-extensions (4.14.1)\n  - Installing markdown-it-py (3.0.0)\n  - Installing pygments (2.19.2)\n  - Installing six (1.17.0)\n  - Installing referencing (0.36.2)\n  - Installing annotated-types (0.7.0)\n  - Installing certifi (2025.6.15)\n  - Installing click (8.2.1)\n  - Installing charset-normalizer (3.4.2)\n  - Installing jsonschema-specifications (2025.4.1)\n  - Installing markupsafe (3.0.2)\n  - Installing idna (3.10)\n  - Installing numpy (2.2.6)\n  - Installing packaging (25.0)\n  - Installing pydantic-core (2.33.2)\n  - Installing python-dateutil (2.9.0.post0)\n  - Installing pytz (2025.2)\n  - Installing rich (14.0.0)\n  - Installing shellingham (1.5.4)\n  - Installing text-unidecode (1.3)\n  - Installing typing-inspection (0.4.1)\n  - Installing tzdata (2025.2)\n  - Installing urllib3 (2.5.0)\n/usr/local/lib/python3.10/dist-packages/poetry/installation/wheel_installer.py:153: RuntimeWarning: Skip installing numpy/distutils/__pycache__/conv_template.cpython-310.pyc from numpy. Installing files in a __pycache__ directory poses a security risk. __pycache__ directories should not be included in wheels. This is probably an issue in the build process of 'numpy'.\n  install(\n  - Installing chardet (5.2.0)\n  - Installing click-plugins (1.1.1.2)\n  - Installing cligj (0.7.2)\n  - Installing humanize (4.12.3)\n  - Installing isodate (0.7.2)\n  - Installing jinja2 (3.1.6)\n  - Installing jsonschema (4.24.0)\n===\n\n  - not supporting PEP 517 builds\n  - not specifying PEP 517 build requirements correctly\n  - the build requirements are incompatible with your operating system or Python version\n  - the build requirements are missing system dependencies (eg: compilers, libraries, headers).\n\nYou can verify this by running pip wheel --no-cache-dir --use-pep517 \"gdal (==3.6.2)\".\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && grep -n -B5 -A40 \"gdal\" /tmp/poetry_install.log | sed -n '1,120p'",
+      "exit_code": 0,
+      "stdout": "69-!!\n70-  self._finalize_license_expression()\n71-  - Installing coverage (7.9.2)\n72-  - Installing fiona (1.10.1)\n73-  - Installing frictionless (5.18.1)\n74:  - Installing gdal (3.6.2)\n75-  - Installing geojson (3.2.0)\n76-  - Installing geopandas (1.1.1)\n77-  - Installing pillow (11.3.0)\n78-  - Installing pyarrow (18.1.0)\n79-  - Installing pypdf (5.7.0)\n80-  - Installing python-magic (0.4.27)\n81-  - Installing rdflib (7.1.4)\n82-  - Installing ruff (0.6.9)\n83-/tmp/tmpbznx_qay/.venv/lib/python3.10/site-packages/setuptools/dist.py:765: BuildBackendWarning: License classifiers are deprecated.\n84-!!\n85-\n86-        ********************************************************************************\n87-        Please consider removing the following classifiers in favor of a SPDX license expression:\n88-\n89-        License :: OSI Approved :: MIT License\n90-\n91-        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.\n92-        ********************************************************************************\n93-\n94-!!\n95-  self._finalize_license_expression()\n96-\n97-PEP517 build of a dependency failed\n98-\n99-Backend subprocess exited when trying to invoke build_wheel\n100-\n101-    | Command '['/tmp/tmpbznx_qay/.venv/bin/python', '/usr/local/lib/python3.10/dist-packages/pyproject_hooks/_in_process/_in_process.py', 'build_wheel', '/tmp/tmp5symwdh_']' returned non-zero exit status 1.\n102-    | \n103-    | WARNING: numpy not available!  Array support will not be enabled\n104-    | running bdist_wheel\n105-    | running build\n106-    | running build_py\n107-    | creating build/lib.linux-x86_64-cpython-310/osgeo\n108-    | copying osgeo/__init__.py -> build/lib.linux-x86_64-cpython-310/osgeo\n109:    | copying osgeo/gdalconst.py -> build/lib.linux-x86_64-cpython-310/osgeo\n110-    | copying osgeo/gnm.py -> build/lib.linux-x86_64-cpython-310/osgeo\n111:    | copying osgeo/gdal.py -> build/lib.linux-x86_64-cpython-310/osgeo\n112:    | copying osgeo/gdalnumeric.py -> build/lib.linux-x86_64-cpython-310/osgeo\n113:    | copying osgeo/gdal_array.py -> build/lib.linux-x86_64-cpython-310/osgeo\n114-    | copying osgeo/ogr.py -> build/lib.linux-x86_64-cpython-310/osgeo\n115-    | copying osgeo/osr.py -> build/lib.linux-x86_64-cpython-310/osgeo\n116-    | creating build/lib.linux-x86_64-cpython-310/osgeo_utils\n117:    | copying gdal-utils/osgeo_utils/ogrmerge.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n118:    | copying gdal-utils/osgeo_utils/gdalmove.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n119:    | copying gdal-utils/osgeo_utils/__init__.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n120:    | copying gdal-utils/osgeo_utils/gdal_edit.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n121:    | copying gdal-utils/osgeo_utils/ogr_layer_algebra.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n122:    | copying gdal-utils/osgeo_utils/gdal_fillnodata.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n123:    | copying gdal-utils/osgeo_utils/gdal_sieve.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n124:    | copying gdal-utils/osgeo_utils/gdal_pansharpen.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n125:    | copying gdal-utils/osgeo_utils/gdal_calc.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n126:    | copying gdal-utils/osgeo_utils/gdal2tiles.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n127:    | copying gdal-utils/osgeo_utils/gdal_merge.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n128:    | copying gdal-utils/osgeo_utils/pct2rgb.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n129:    | copying gdal-utils/osgeo_utils/gdalcompare.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n130:    | copying gdal-utils/osgeo_utils/gdal_proximity.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n131:    | copying gdal-utils/osgeo_utils/rgb2pct.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n132:    | copying gdal-utils/osgeo_utils/gdal_retile.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n133:    | copying gdal-utils/osgeo_utils/gdal_polygonize.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n134:    | copying gdal-utils/osgeo_utils/gdalattachpct.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n135:    | copying gdal-utils/osgeo_utils/gdal2xyz.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils\n136-    | creating build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n137:    | copying gdal-utils/osgeo_utils/samples/ogr2ogr.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n138:    | copying gdal-utils/osgeo_utils/samples/classify.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n139:    | copying gdal-utils/osgeo_utils/samples/gdal_lut.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n140:    | copying gdal-utils/osgeo_utils/samples/validate_cloud_optimized_geotiff.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n141:    | copying gdal-utils/osgeo_utils/samples/gdal_rm.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n142:    | copying gdal-utils/osgeo_utils/samples/magphase.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n143:    | copying gdal-utils/osgeo_utils/samples/gdal_vrtmerge.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n144:    | copying gdal-utils/osgeo_utils/samples/__init__.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n145:    | copying gdal-utils/osgeo_utils/samples/gdalimport.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n146:    | copying gdal-utils/osgeo_utils/samples/gdalident.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n147:    | copying gdal-utils/osgeo_utils/samples/mkgraticule.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n148:    | copying gdal-utils/osgeo_utils/samples/ogrupdate.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n149:    | copying gdal-utils/osgeo_utils/samples/gdal_rmdir.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n150:    | copying gdal-utils/osgeo_utils/samples/ogr_build_junction_table.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n151:    | copying gdal-utils/osgeo_utils/samples/jpeg_in_tiff_extract.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n152:    | copying gdal-utils/osgeo_utils/samples/densify.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n153:    | copying gdal-utils/osgeo_utils/samples/assemblepoly.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n154:    | copying gdal-utils/osgeo_utils/samples/val_repl.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n155:    | copying gdal-utils/osgeo_utils/samples/histrep.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n156:    | copying gdal-utils/osgeo_utils/samples/rel.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n157:    | copying gdal-utils/osgeo_utils/samples/ogr2vrt.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n158:    | copying gdal-utils/osgeo_utils/samples/gdal_cp.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n159:    | copying gdal-utils/osgeo_utils/samples/gdallocationinfo.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n160:    | copying gdal-utils/osgeo_utils/samples/ogrinfo.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n161:    | copying gdal-utils/osgeo_utils/samples/gdal_mkdir.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n162:    | copying gdal-utils/osgeo_utils/samples/gcps2ogr.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n163:    | copying gdal-utils/osgeo_utils/samples/tile_extent_from_raster.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n164:    | copying gdal-utils/osgeo_utils/samples/tolatlong.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n165:    | copying gdal-utils/osgeo_utils/samples/validate_gpkg.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n166:    | copying gdal-utils/osgeo_utils/samples/epsg_tr.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n167:    | copying gdal-utils/osgeo_utils/samples/build_jp2_from_xml.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n168:    | copying gdal-utils/osgeo_utils/samples/fft.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n169:    | copying gdal-utils/osgeo_utils/samples/fix_gpkg.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n170:    | copying gdal-utils/osgeo_utils/samples/get_soundg.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n171:    | copying gdal-utils/osgeo_utils/samples/vec_tr.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n172:    | copying gdal-utils/osgeo_utils/samples/wcs_virtds_params.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n173:    | copying gdal-utils/osgeo_utils/samples/dump_jp2.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n174:    | copying gdal-utils/osgeo_utils/samples/crs2crs2grid.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n175:    | copying gdal-utils/osgeo_utils/samples/gdal_auth.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n176:    | copying gdal-utils/osgeo_utils/samples/hsv_merge.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n177:    | copying gdal-utils/osgeo_utils/samples/gcps2wld.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n178:    | copying gdal-utils/osgeo_utils/samples/gdalchksum.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n179:    | copying gdal-utils/osgeo_utils/samples/esri2wkt.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n180:    | copying gdal-utils/osgeo_utils/samples/loslas2ntv2.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n181:    | copying gdal-utils/osgeo_utils/samples/gdal_ls.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n182:    | copying gdal-utils/osgeo_utils/samples/vec_tr_spat.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n183:    | copying gdal-utils/osgeo_utils/samples/load2odbc.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n184:    | copying gdal-utils/osgeo_utils/samples/gcps2vec.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n185:    | copying gdal-utils/osgeo_utils/samples/tigerpoly.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n186:    | copying gdal-utils/osgeo_utils/samples/make_fuzzer_friendly_archive.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n187:    | copying gdal-utils/osgeo_utils/samples/gdalinfo.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n188:    | copying gdal-utils/osgeo_utils/samples/gdal_remove_towgs84.py -> build/lib.linux-x86_64-cpython-310/osgeo_utils/samples\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -n \"error\\|fatal\" /tmp/poetry_install.log | head -30; echo \"===TAIL===\"; tail -30 /tmp/poetry_install.log; echo \"===PROC===\"; ps aux | grep -E \"[p]oetry|[c]c1\" | head",
+      "exit_code": 0,
+      "stdout": "212:    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c gdal_python_cxx11_test.cpp -o gdal_python_cxx11_test.o\n218:    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c extensions/osr_wrap.cpp -o build/temp.linux-x86_64-cpython-310/extensions/osr_wrap.o -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal\n219:    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c extensions/gdal_wrap.cpp -o build/temp.linux-x86_64-cpython-310/extensions/gdal_wrap.o -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal\n220:    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c extensions/gnm_wrap.cpp -o build/temp.linux-x86_64-cpython-310/extensions/gnm_wrap.o -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal\n221:    | x86_64-linux-gnu-gcc -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c extensions/gdalconst_wrap.c -o build/temp.linux-x86_64-cpython-310/extensions/gdalconst_wrap.o -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal\n222:    | x86_64-linux-gnu-g++ -Wno-unused-result -Wsign-compare -DNDEBUG -g -fwrapv -O2 -Wall -g -fstack-protector-strong -Wformat -Werror=format-security -g -fwrapv -O2 -fPIC -I/tmp/tmpbznx_qay/.venv/include -I/usr/include/python3.10 -I/usr/include -c extensions/ogr_wrap.cpp -o build/temp.linux-x86_64-cpython-310/extensions/ogr_wrap.o -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal -I/usr/include/gdal\n223:    | extensions/ogr_wrap.cpp:2851:10: fatal error: ogr_recordbatch.h: No such file or directory\n228:    | extensions/gdalconst_wrap.c:3526:63: error: \u2018GDT_UInt64\u2019 undeclared (first use in this function); did you mean \u2018GDT_UInt32\u2019?\n233:    | extensions/gdalconst_wrap.c:3527:62: error: \u2018GDT_Int64\u2019 undeclared (first use in this function); did you mean \u2018GDT_Int32\u2019?\n237:    | extensions/gdalconst_wrap.c:3630:83: error: \u2018GDAL_DMD_MULTIDIM_ARRAY_OPENOPTIONLIST\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DMD_MULTIDIM_ARRAY_CREATIONOPTIONLIST\u2019?\n241:    | extensions/gdalconst_wrap.c:3637:81: error: \u2018GDAL_DMD_CREATION_FIELD_DOMAIN_TYPES\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DMD_CREATIONFIELDDATASUBTYPES\u2019?\n245:    | extensions/gdalconst_wrap.c:3638:81: error: \u2018GDAL_DMD_ALTER_GEOM_FIELD_DEFN_FLAGS\u2019 undeclared (first use in this function)\n248:    | extensions/gdalconst_wrap.c:3639:76: error: \u2018GDAL_DMD_SUPPORTED_SQL_DIALECTS\u2019 undeclared (first use in this function)\n251:    | extensions/gdalconst_wrap.c:3651:67: error: \u2018GDAL_DCAP_CREATE_LAYER\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DCAP_CREATECOPY\u2019?\n255:    | extensions/gdalconst_wrap.c:3652:67: error: \u2018GDAL_DCAP_DELETE_LAYER\u2019 undeclared (first use in this function)\n258:    | extensions/gdalconst_wrap.c:3653:67: error: \u2018GDAL_DCAP_CREATE_FIELD\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DCAP_UNIQUE_FIELDS\u2019?\n262:    | extensions/gdalconst_wrap.c:3654:67: error: \u2018GDAL_DCAP_DELETE_FIELD\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DCAP_UNIQUE_FIELDS\u2019?\n266:    | extensions/gdalconst_wrap.c:3655:69: error: \u2018GDAL_DCAP_REORDER_FIELDS\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DCAP_UNIQUE_FIELDS\u2019?\n270:    | extensions/gdalconst_wrap.c:3656:76: error: \u2018GDAL_DMD_ALTER_FIELD_DEFN_FLAGS\u2019 undeclared (first use in this function)\n273:    | extensions/gdalconst_wrap.c:3662:71: error: \u2018GDAL_DCAP_CURVE_GEOMETRIES\u2019 undeclared (first use in this function)\n276:    | extensions/gdalconst_wrap.c:3663:74: error: \u2018GDAL_DCAP_MEASURED_GEOMETRIES\u2019 undeclared (first use in this function); did you mean \u2018GDAL_DCAP_FEATURE_STYLES\u2019?\n280:    | extensions/gdalconst_wrap.c:3664:67: error: \u2018GDAL_DCAP_Z_GEOMETRIES\u2019 undeclared (first use in this function)\n283:    | extensions/gdalconst_wrap.c:3665:68: error: \u2018GDAL_DMD_GEOMETRY_FLAGS\u2019 undeclared (first use in this function)\n286:    | extensions/gdalconst_wrap.c:3669:68: error: \u2018GDAL_DCAP_FIELD_DOMAINS\u2019 undeclared (first use in this function)\n289:    | extensions/gdalconst_wrap.c:3670:68: error: \u2018GDAL_DCAP_RELATIONSHIPS\u2019 undeclared (first use in this function)\n292:    | extensions/gdalconst_wrap.c:3671:79: error: \u2018GDAL_DCAP_CREATE_RELATIONSHIP\u2019 undeclared (first use in this function)\n295:    | extensions/gdalconst_wrap.c:3672:79: error: \u2018GDAL_DCAP_DELETE_RELATIONSHIP\u2019 undeclared (first use in this function)\n298:    | extensions/gdalconst_wrap.c:3673:79: error: \u2018GDAL_DCAP_UPDATE_RELATIONSHIP\u2019 undeclared (first use in this function)\n301:    | extensions/gdalconst_wrap.c:3674:77: error: \u2018GDAL_DMD_RELATIONSHIP_FLAGS\u2019 undeclared (first use in this function)\n304:    | extensions/gdalconst_wrap.c:3675:68: error: \u2018GDAL_DCAP_RENAME_LAYERS\u2019 undeclared (first use in this function)\n===TAIL===\n    | 37523 |   arg2 = static_cast< GDALRelationshipType >(val2);\n    |       |   ^~~~\n    |       |   arg1\n    | extensions/gdal_wrap.cpp:37523:23: error: \u2018GDALRelationshipType\u2019 does not name a type; did you mean \u2018GDALRelationshipShadow\u2019?\n    | 37523 |   arg2 = static_cast< GDALRelationshipType >(val2);\n    |       |                       ^~~~~~~~~~~~~~~~~~~~\n    |       |                       GDALRelationshipShadow\n    | extensions/gdal_wrap.cpp: In function \u2018PyObject* PyInit__gdal()\u2019:\n    | extensions/gdal_wrap.cpp:982:64: warning: \u2018void PyEval_InitThreads()\u2019 is deprecated [-Wdeprecated-declarations]\n    |   982 | #     define SWIG_PYTHON_INITIALIZE_THREADS  PyEval_InitThreads()\n    |       |                                              ~~~~~~~~~~~~~~~~~~^~\n    | extensions/gdal_wrap.cpp:48265:3: note: in expansion of macro \u2018SWIG_PYTHON_INITIALIZE_THREADS\u2019\n    | 48265 |   SWIG_PYTHON_INITIALIZE_THREADS;\n    |       |   ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~\n    | In file included from /usr/include/python3.10/Python.h:130,\n    |                  from extensions/gdal_wrap.cpp:180:\n    | /usr/include/python3.10/ceval.h:122:37: note: declared here\n    |   122 | Py_DEPRECATED(3.9) PyAPI_FUNC(void) PyEval_InitThreads(void);\n    |       |                                     ^~~~~~~~~~~~~~~~~~\n    | error: Command '['x86_64-linux-gnu-g++', '-Wno-unused-result', '-Wsign-compare', '-DNDEBUG', '-g', '-fwrapv', '-O2', '-Wall', '-g', '-fstack-protector-strong', '-Wformat', '-Werror=format-security', '-g', '-fwrapv', '-O2', '-fPIC', '-I/tmp/tmpbznx_qay/.venv/include', '-I/usr/include/python3.10', '-I/usr/include', '-c', 'extensions/gdal_wrap.cpp', '-o', 'build/temp.linux-x86_64-cpython-310/extensions/gdal_wrap.o', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal', '-I/usr/include/gdal']' returned non-zero exit status 1.\n\nNote: This error originates from the build backend, and is likely not a problem with poetry but one of the following issues with gdal (3.6.2)\n\n  - not supporting PEP 517 builds\n  - not specifying PEP 517 build requirements correctly\n  - the build requirements are incompatible with your operating system or Python version\n  - the build requirements are missing system dependencies (eg: compilers, libraries, headers).\n\nYou can verify this by running pip wheel --no-cache-dir --use-pep517 \"gdal (==3.6.2)\".\n\n===PROC===\nroot        3095  0.0  0.0   2800  1408 ?        Ss   17:12   0:00 /usr/bin/timeout --signal=TERM --kill-after=5s 600s /bin/bash -lc set -o pipefail cd /workspace || exit 125 grep -n \"error\\|fatal\" /tmp/poetry_install.log | head -30; echo \"===TAIL===\"; tail -30 /tmp/poetry_install.log; echo \"===PROC===\"; ps aux | grep -E \"[p]oetry|[c]c1\" | head\nroot        3096  0.0  0.0   4364  3328 ?        S    17:12   0:00 /bin/bash -lc set -o pipefail cd /workspace || exit 125 grep -n \"error\\|fatal\" /tmp/poetry_install.log | head -30; echo \"===TAIL===\"; tail -30 /tmp/poetry_install.log; echo \"===PROC===\"; ps aux | grep -E \"[p]oetry|[c]c1\" | head\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "DEBIAN_FRONTEND=noninteractive apt-get install -y --no-install-recommends cmake libcurl4-openssl-dev libtiff-dev zlib1g-dev 2>&1 | tail -2 && cmake --version | head -1",
+      "exit_code": 0,
+      "stdout": "Setting up cmake (3.22.1-1ubuntu1.22.04.2) ...\nProcessing triggers for libc-bin (2.35-0ubuntu3.14) ...\ncmake version 3.22.1\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && rm -rf gdal-src && git clone --depth 1 --branch v3.6.2 https://github.com/OSGeo/gdal.git gdal-src 2>&1 | tail -3 && ls gdal-src | head -5",
+      "exit_code": 0,
+      "stdout": "Turn off this advice by setting config variable advice.detachedHead to false\n\nUpdating files:  66% (5593/8355)\nUpdating files:  67% (5598/8355)\nUpdating files:  68% (5682/8355)\nUpdating files:  69% (5765/8355)\nUpdating files:  70% (5849/8355)\nUpdating files:  71% (5933/8355)\nUpdating files:  72% (6016/8355)\nUpdating files:  73% (6100/8355)\nUpdating files:  74% (6183/8355)\nUpdating files:  75% (6267/8355)\nUpdating files:  76% (6350/8355)\nUpdating files:  77% (6434/8355)\nUpdating files:  78% (6517/8355)\nUpdating files:  79% (6601/8355)\nUpdating files:  80% (6684/8355)\nUpdating files:  81% (6768/8355)\nUpdating files:  82% (6852/8355)\nUpdating files:  83% (6935/8355)\nUpdating files:  84% (7019/8355)\nUpdating files:  85% (7102/8355)\nUpdating files:  86% (7186/8355)\nUpdating files:  87% (7269/8355)\nUpdating files:  88% (7353/8355)\nUpdating files:  89% (7436/8355)\nUpdating files:  90% (7520/8355)\nUpdating files:  91% (7604/8355)\nUpdating files:  92% (7687/8355)\nUpdating files:  93% (7771/8355)\nUpdating files:  94% (7854/8355)\nUpdating files:  95% (7938/8355)\nUpdating files:  96% (8021/8355)\nUpdating files:  97% (8105/8355)\nUpdating files:  98% (8188/8355)\nUpdating files:  99% (8272/8355)\nUpdating files: 100% (8355/8355)\nUpdating files: 100% (8355/8355), done.\nBUILDING.md\nCITATION\nCITATION.cff\nCMakeLists.txt\nCODE_OF_CONDUCT.md\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /tmp && nohup bash -c 'cmake -S gdal-src -B gdal-build -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=/usr/local -DBUILD_SHARED_LIBS=ON -DBUILD_TESTING=OFF -DGDAL_USE_CURL=ON -DGDAL_USE_GEOS=ON -DGDAL_USE_PROJ=ON -DGDAL_USE_TIFF=ON -DGDAL_USE_ZLIB=ON -DPNG_WANT_SIMPLE=ON > /tmp/gdal_cmake.log 2>&1 && cmake --build gdal-build -j8 >> /tmp/gdal_cmake.log 2>&1 && cmake --install gdal-build >> /tmp/gdal_cmake.log 2>&1 && ldconfig >> /tmp/gdal_cmake.log 2>&1 && echo GDAL_BUILD_OK > /tmp/gdal_build_done.txt' > /tmp/gdal_nohup.log 2>&1 &\necho \"started $!\"",
+      "exit_code": 0,
+      "stdout": "started 3257\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -80 /workspace/dcat_catalog_check.py",
+      "exit_code": 0,
+      "stdout": "#!/usr/bin/env python3\n\"\"\"A script that checks client sites for dead links.\n\nGets lists of links to be checked from a DCAT catalog, checks the links\nto see if they're working or broken and writes the results in JSON Lines\ntext file format\n\"\"\"\n\nimport argparse\nimport bz2\nimport glob\nimport gzip\nimport hashlib\nimport json\nimport logging\nimport lzma\nimport magic\nimport os\nimport requests\nimport sys\nimport time\nfrom zipfile import ZipFile\nimport importlib\nimport tempfile\nfrom urllib3.exceptions import ReadTimeoutError, ProtocolError\nfrom rdflib import Graph, Namespace\nfrom rdflib.namespace import RDF, DCAT, DCTERMS, FOAF\nfrom datetime import datetime, timedelta\n\nHYDRA = Namespace(\"http://www.w3.org/ns/hydra/core#\")\nSPDX = Namespace(\"http://spdx.org/rdf/terms#\")\n\n\nclass CouldNotGetResourceIDsError(Exception):\n    \"\"\"Raised if getting the resource IDs to check fails.\"\"\"\n\n    pass\n\n\nclass CouldNotGetURLError(Exception):\n    \"\"\"Raised if getting the URL for a given ID from the client site fails.\"\"\"\n\n    pass\n\n\nclass CheckOptions:\n    format_to_check = None\n    force_check_format = None\n    http_error = None\n    http_error_5xx = False\n    access_url_as_download = False\n\n    def __init__(self):\n        pass\n\n\nclass DcatCatalogCheck:\n    check_options = CheckOptions()\n    no_recheck = False\n\n    def __init__(\n        self,\n        client_site_url,\n        log_file=None,\n        verbose=False,\n        debug=False,\n        save_catalog=False,\n    ):\n        self.client_site_url = client_site_url\n        self.log_file = log_file\n        self.verbose = verbose\n        self.debug = debug\n        self.allowed_file_formats = self.read_allowed_file_formats()\n        self.logger = self._get_logger()\n        self.previous_results = {}\n        self.save_catalog = save_catalog\n        self.temp_dir = tempfile.TemporaryDirectory()\n\n    def __del__(self):\n        \"\"\"Destructor. Deletes the temporal directory.\"\"\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /workspace/tests/data/ | head -30; echo \"---\"; head -50 /workspace/tests/test_dcat_catalog_check.py; echo \"---README tests---\"; grep -n -A15 \"Testing\\|testing\" /workspace/README.md | head -40",
+      "exit_code": 0,
+      "stdout": "Atom_SH_Feldblockfinder_OpenGBD.xml\nWMTSCapabilities.xml\nall-tests.ttl\nbermuda-with-subdir.zip\nbermuda.geojson\nbermuda.gml\nbermuda.zip\nbroken.parquet\ncatalog-1.ttl\ncatalog-dataservice.ttl\ncatalog.ttl\ncorrect.json\ncorrect.json.bz2\ncorrect.json.gz\ncorrect.json.xz\ncorrect.xml\ngeotiff.zip\nimage.jpeg\nimage.png\nincorrect.json\nincorrect.xml\njson-in-zip.zip\njsons-in-zip.zip\npng-in-zip.zip\nrdf.json\nrdf.xml\nresult-1.jsonl\ntext.txt\nufo-resource.json\nufo-schema.json\n---\nimport os\nimport unittest\nimport json\nfrom unittest.mock import patch, mock_open, MagicMock\nfrom dcat_catalog_check import (\n    DcatCatalogCheck,\n)\nfrom rdflib import Graph\nfrom rdflib.namespace import RDF, DCAT\n\n\nclass TestDcatCatalogCheck(unittest.TestCase):\n    def setUp(self):\n        self.dcc = DcatCatalogCheck(\"http://test.invalid:8000/\", \"my_api_key\")\n        # Mock the logger to capture log messages\n        self.logger_patch = patch.object(self.dcc, \"logger\", MagicMock())\n        self.mock_logger = self.logger_patch.start()\n\n    def tearDown(self):\n        if os.path.exists(\"my_api_key\"):\n            os.remove(\"my_api_key\")\n        if os.path.exists(\"previous_results.json\"):\n            os.remove(\"previous_results.json\")\n        self.logger_patch.stop()\n\n    def test_is_mime_type_compatible(self):\n        self.dcc.allowed_file_formats = {\n            \"JSON\": [\"application/json\"],\n            \"XML\": [\"application/xml\"],\n        }\n\n        self.assertTrue(self.dcc.is_mime_type_compatible(\"JSON\", \"application/json\"))\n        self.assertFalse(self.dcc.is_mime_type_compatible(\"JSON\", \"application/xml\"))\n        self.assertFalse(\n            self.dcc.is_mime_type_compatible(\"UnknownFormat\", \"application/json\")\n        )\n\n    def test_read_allowed_file_formats(self):\n        with patch(\n            \"builtins.open\",\n            unittest.mock.mock_open(\n                read_data='{\"JSON\": [\"application/json\"], \"XML\": [\"application/xml\"]}'\n            ),\n        ):\n            formats = self.dcc.read_allowed_file_formats()\n            self.assertEqual(\n                formats, {\"JSON\": [\"application/json\"], \"XML\": [\"application/xml\"]}\n            )\n\n    @patch(\"dcat_catalog_check.requests.get\")\n---README tests---\n204:To ensure the quality of the code, we utilize **unittest** for testing and **coverage** to measure code coverage. Follow the instructions below to run the tests and generate coverage reports.\n205-\n206-### Running Tests\n207-\n208-To run the tests with coverage, you can use either of the following commands:\n209-\n210-```sh\n211-# Using Python directly\n212-python3 -m coverage run -m unittest\n213-```\n214-\n215-or\n216-\n217-```sh\n218-# Using Poetry\n219-poetry run coverage run -m unittest\n--\n224:After running the tests, you can generate a coverage report to see which parts of your code were exercised during testing:\n225-\n226-```sh\n227-# Using Python directly\n228-python3 -m coverage report\n229-```\n230-\n231-or\n232-\n233-```sh\n234-# Using Poetry\n235-poetry run coverage report\n236-```\n237-\n238-### Code Linting\n239-\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; tail -3 /tmp/gdal_cmake.log 2>/dev/null; echo \"---\"; ps aux | grep -E \"[c]make|[c]c1plus|[l]d\" | wc -l; ls /tmp/gdal_build_done.txt 2>&1",
+      "exit_code": 2,
+      "stdout": "[ 26%] Building CXX object ogr/ogrsf_frmts/gml/CMakeFiles/ogr_GML.dir/gmlfeatureclass.cpp.o\n[ 26%] Built target ogr_AVC\n[ 26%] Building CXX object ogr/ogrsf_frmts/tiger/CMakeFiles/ogr_Tiger.dir/tigeridhistory.cpp.o\n---\n35\nls: cannot access '/tmp/gdal_build_done.txt': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 240; grep -oE \"^\\[ *[0-9]+%\\]\" /tmp/gdal_cmake.log | tail -1; tail -2 /tmp/gdal_cmake.log; ls /tmp/gdal_build_done.txt 2>&1",
+      "exit_code": 2,
+      "stdout": "[ 61%]\n[ 61%] Building CXX object alg/CMakeFiles/alg.dir/gdalgeoloc.cpp.o\n[ 61%] Building CXX object gcore/CMakeFiles/gcore.dir/gdalpamproxydb.cpp.o\nls: cannot access '/tmp/gdal_build_done.txt': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 280; grep -oE \"^\\[ *[0-9]+%\\]\" /tmp/gdal_cmake.log | tail -1; tail -2 /tmp/gdal_cmake.log; ls /tmp/gdal_build_done.txt 2>&1",
+      "exit_code": 2,
+      "stdout": "[100%]\n-- Installing /usr/local/share/bash-completion/completions/gdaldem\n-- Installing /usr/local/share/bash-completion/completions/gdal_edit.py\nls: cannot access '/tmp/gdal_build_done.txt': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 20; cat /tmp/gdal_build_done.txt 2>&1; echo \"===\"; /usr/local/bin/gdal-config --version 2>&1; echo \"===\"; ldconfig; ls -la /usr/local/lib/libgdal.so.32 2>&1 | head -2",
+      "exit_code": 0,
+      "stdout": "GDAL_BUILD_OK\n===\n3.6.2dev\n===\nlrwxrwxrwx 1 root root 19 Oct 18 17:24 /usr/local/lib/libgdal.so.32 -> libgdal.so.32.3.6.2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ls /usr/local/include/gdal/ogr_recordbatch.h /usr/local/include/gdal/gdal_priv.h >/dev/null 2>&1 && grep -c \"GDT_UInt64\" /usr/local/include/gdal/ogr_core.h && echo HEADERS_OK",
+      "exit_code": 2,
+      "stdout": "",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "find /usr/local/include -name \"ogr_recordbatch.h\" 2>/dev/null; find /usr/local/include -name \"ogr_core.h\" 2>/dev/null; ls /usr/local/include/gdal/ 2>&1 | head",
+      "exit_code": 2,
+      "stdout": "/usr/local/include/ogr_recordbatch.h\n/usr/local/include/ogr_core.h\nls: cannot access '/usr/local/include/gdal/': No such file or directory\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "hash -r; which gdal-config; gdal-config --version; gdal-config --cflags; echo \"---\"; grep -rn \"include_directories\\|INCLUDEDIR\" /tmp/gdal-src/gdal-config.cmake.in 2>/dev/null | head; ls /tmp/gdal-src/*.cmake.in 2>/dev/null",
+      "exit_code": 2,
+      "stdout": "/usr/local/bin/gdal-config\n3.6.2dev\n-I/usr/local/include\n---\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup python3 -m poetry install --no-interaction --no-ansi > /tmp/poetry_install2.log 2>&1 &\necho \"started $!\"",
+      "exit_code": 0,
+      "stdout": "started 13815\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 120; tail -10 /tmp/poetry_install2.log; echo \"===\"; ps aux | grep -cE \"[c]c1plus|[c]make\"",
+      "exit_code": 1,
+      "stdout": "\n        License :: OSI Approved :: MIT License\n\n        See https://packaging.python.org/en/latest/guides/writing-pyproject-toml/#license for details.\n        ********************************************************************************\n\n!!\n  self._finalize_license_expression()\n\nInstalling the current project: dcat-catalog-check (1.1.0)\n===\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -E \"Installing gdal|error|Error|done\" /tmp/poetry_install2.log | head; echo \"===\"; cd /workspace && python3 -m poetry run python -c \"import sys; print(sys.version)\"; python3 -m poetry env info | head -12",
+      "exit_code": 0,
+      "stdout": "  - Installing gdal (3.6.2)\n===\n3.10.12 (main, Aug 31 2026, 10:18:17) [GCC 11.4.0]\n\nVirtualenv\nPython:         3.10.12\nImplementation: CPython\nPath:           /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10\nExecutable:     /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/python\nValid:          True\n\nBase\nPlatform:   linux\nOS:         posix\nPython:     3.10.12\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m poetry run python -c \"\nimport magic, requests, rdflib, frictionless, geopandas, fiona, pypdf, PIL, pyarrow, geojson\nfrom osgeo import gdal\nprint('magic:', magic.__version__)\nprint('requests:', requests.__version__)\nprint('rdflib:', rdflib.__version__)\nprint('frictionless:', frictionless.__version__)\nprint('geopandas:', geopandas.__version__)\nprint('fiona:', fiona.__version__)\nprint('pyarrow:', pyarrow.__version__)\nprint('gdal:', gdal.__version__)\nprint('ALL IMPORTS OK')\n\"",
+      "exit_code": 1,
+      "stdout": "",
+      "stderr": "Traceback (most recent call last):\n  File \"<string>\", line 4, in <module>\nAttributeError: module 'magic' has no attribute '__version__'\n",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m poetry run python -c \"\nimport magic, requests, rdflib, frictionless, geopandas, fiona, pypdf, PIL, pyarrow, geojson\nfrom osgeo import gdal\nprint('magic (python-magic):', magic.from_buffer(b'hello', mime=True))\nprint('requests:', requests.__version__)\nprint('rdflib:', rdflib.__version__)\nprint('frictionless:', frictionless.__version__)\nprint('geopandas:', geopandas.__version__)\nprint('fiona:', fiona.__version__)\nprint('pyarrow:', pyarrow.__version__)\nprint('gdal:', gdal.__version__)\nprint('ALL IMPORTS OK')\n\"",
+      "exit_code": 0,
+      "stdout": "magic (python-magic): text/plain\nrequests: 2.32.4\nrdflib: 7.1.4\nfrictionless: 5.18.1\ngeopandas: 1.1.1\nfiona: 1.10.1\npyarrow: 18.1.0\ngdal: 3.6.2\nALL IMPORTS OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m poetry run python dcat_catalog_check.py --help; echo \"EXIT: $?\"",
+      "exit_code": 0,
+      "stdout": "usage: dcat_catalog_check.py [-h] [--url URL] [--log_file LOG_FILE]\n                             [--results RESULTS] [--verbose] [--debug]\n                             [--recheck] [--save-catalog] [--no-recheck]\n                             [--access-url-as-download]\n                             [--check-format CHECK_FORMAT]\n                             [--force-check-format FORCE_CHECK_FORMAT]\n                             [--check-http-5xx]\n\noptions:\n  -h, --help            show this help message and exit\n  --url URL             DCAT catalog URL\n  --log_file LOG_FILE   Log file path\n  --results RESULTS     File from which the results are loaded\n  --verbose             Enable verbose logging\n  --debug               Enable debug logging\n  --recheck             Only use the previous results (specified by --results)\n                        as input for the next check\n  --save-catalog        Save the DCAT catalog into a file catalog.xml\n  --no-recheck          Just check new entries from the catalog. Do not re-\n                        check existing results.\n  --access-url-as-download\n                        Treat the dcat:accessURL as the download URL.\n  --check-format CHECK_FORMAT\n                        Only check the specified format\n  --force-check-format FORCE_CHECK_FORMAT\n                        Check distributinons with the specified format\n                        regardless of previous results\n  --check-http-5xx      Only re-check HTTP 5xx errors\nEXIT: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cat /workspace/.coveragerc; echo \"===\"; head -40 /workspace/tests/test_integration.py",
+      "exit_code": 0,
+      "stdout": "[run]\nomit =\n  tests/*===\nfrom http.server import SimpleHTTPRequestHandler, HTTPServer\nimport json\nimport threading\nimport time\nimport io\nimport requests\nimport sys\nimport unittest\nfrom dcat_catalog_check import DcatCatalogCheck\nfrom functools import partial\n\n\nclass TestIntegration(unittest.TestCase):\n    @classmethod\n    def setUpClass(cls):\n        cls.server_address = (\"\", 8000)\n        handler = partial(SimpleHTTPRequestHandler, directory=\"tests/data/\")\n        cls.httpd = HTTPServer(cls.server_address, handler)\n\n        cls.server_thread = threading.Thread(target=cls.httpd.serve_forever)\n        cls.server_thread.daemon = True\n        cls.server_thread.start()\n\n        cls._wait_for_server(\"http://localhost:8000\")\n\n    @classmethod\n    def tearDownClass(cls):\n        cls.httpd.shutdown()\n        cls.httpd.server_close()\n        cls.server_thread.join()\n\n    @staticmethod\n    def _wait_for_server(url, timeout=10, interval=0.2):\n        \"\"\"Wait until the server can be reached at the specified URL.\"\"\"\n        start_time = time.time()\n        while time.time() - start_time < timeout:\n            try:\n                response = requests.get(url)\n                if response.status_code == 200:\n                    return True\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup python3 -m poetry run coverage run -m unittest --buffer > /tmp/tests.log 2>&1 &\necho \"started $!\"",
+      "exit_code": 0,
+      "stdout": "started 13985\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 60; tail -20 /tmp/tests.log; echo \"===\"; ps aux | grep -cE \"[c]overage|[u]nittest\"",
+      "exit_code": 1,
+      "stdout": "ERROR 4: `/tmp/tmp1f4h7mht' not recognized as a supported file format.\n.............................................................................\n----------------------------------------------------------------------\nRan 77 tests in 2.018s\n\nOK\n===\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -30 /workspace/tests/data/catalog.ttl; echo \"===\"; grep -c \"dcat:distribution\\|foaf:homepage\" /workspace/tests/data/catalog.ttl",
+      "exit_code": 0,
+      "stdout": "@prefix adms: <http://www.w3.org/ns/adms#> .\n@prefix dcat: <http://www.w3.org/ns/dcat#> .\n@prefix dcatap: <http://data.europa.eu/r5r/> .\n@prefix dcatde: <http://dcat-ap.de/def/dcatde/> .\n@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n@prefix locn: <http://www.w3.org/ns/locn#> .\n@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n\n<http://example.com/dataset/1> a dcat:Dataset ;\n    dcterms:title \"Dataset with invalid distributions\" ;\n    dcat:distribution\n    <http://example.com/dists/json/bad1> ,\n<http://example.com/dists/atom/bad1> ,\n<http://example.com/dists/atom/bad2> ,\n<http://example.com/dists/geojson/bad> ,\n<http://example.com/dists/jpeg/bad> ,\n<http://example.com/dists/docx/bad> ,\n<http://example.com/dists/docx/bad2> ,\n<http://example.com/dists/docx/bad3> ,\n<http://example.com/dists/geotiff/bad> ,\n<http://example.com/dists/gml/bad> ,\n<http://example.com/dists/ods/bad> ,\n<http://example.com/dists/ods/bad2> ,\n<http://example.com/dists/ods/bad3> ,\n<http://example.com/dists/odt/bad> ,\n<http://example.com/dists/odt/bad2> ,\n<http://example.com/dists/odt/bad3> ,\n===\n2\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sed -n 40,120p /workspace/tests/test_integration.py; echo ===; head -3 /workspace/tests/data/result-1.jsonl",
+      "exit_code": 0,
+      "stdout": "                    return True\n            except requests.exceptions.RequestException:\n                pass\n            time.sleep(interval)\n        print(f\"Timeout reached: Server at {url} not reachable.\")\n        return False\n\n    def setUp(self):\n        self.dcc = DcatCatalogCheck(\"http://test.invalid:8000/\", \"my_api_key\")\n\n    def test_rerun_with_old_data(self):\n        \"\"\"When the test is run after a long time all distributions will be\n        checked. The number of successfull checks will be increased.\"\"\"\n\n        # Read previous results\n        self.dcc.read_previous_results(\"tests/data/result-1.jsonl\")\n\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog-1.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        self.assertEqual(len(json_objects), 1)\n\n        self.assertEqual(json_objects[0].get(\"num_good_checks\"), 2)\n\n    def test_check_dcat_catalog(self):\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        for result in json_objects:\n            # good distributions have one successful check\n            if \"/good\" in result.get(\"id\"):\n                self.assertEqual(result.get(\"num_good_checks\"), 1)\n\n            # bad distributions do not a successful check\n            if \"/bad\" in result.get(\"id\"):\n                self.assertEqual(result.get(\"num_good_checks\"), 0)\n\n\nif __name__ == \"__main__\":\n    unittest.main()\n===\n{\"id\": \"http://example.com/dists/jpeg/good\", \"dataset\": \"http://example.com/dataset/2\", \"dataset_title\": \"Dataset with valid distributions\", \"format\": \"JPEG\", \"publisher\": \"http://example.com/publisher/1\", \"url\": \"http://localhost:8000/image.jpeg\", \"last_check\": \"2025-04-18 08:05:55.011547\", \"http_status\": 200, \"duration\": 0.00280001200735569, \"accessible\": true, \"size\": \"525\", \"mimetype\": \"image/jpeg\", \"valid\": true, \"num_good_checks\": 1}\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace/tests/data && nohup python3 -m http.server 8123 > /tmp/http_server.log 2>&1 &\necho \"server $!\"; sleep 2; curl -s -o /dev/null -w \"%{http_code}\\n\" http://localhost:8123/catalog.ttl",
+      "exit_code": 0,
+      "stdout": "server 14031\n200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "grep -o \"dcat:accessURL [^;]*\" /workspace/tests/data/catalog.ttl | head -5; grep -c \"http://localhost\" /workspace/tests/data/catalog.ttl",
+      "exit_code": 0,
+      "stdout": "46\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 14031 2>/dev/null; sleep 1; cd /workspace/tests/data && nohup python3 -m http.server 8000 > /tmp/http_server.log 2>&1 &\necho \"server $!\"; sleep 2; curl -s -o /dev/null -w \"catalog.ttl: %{http_code}\\n\" http://localhost:8000/catalog.ttl",
+      "exit_code": 0,
+      "stdout": "server 14046\ncatalog.ttl: 200\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && nohup python3 -m poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl > /tmp/results.jsonl 2>/tmp/results.stderr.log &\necho \"started $!\"",
+      "exit_code": 0,
+      "stdout": "started 14054\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "sleep 90; wc -l /tmp/results.jsonl; tail -2 /tmp/results.stderr.log; ps aux | grep \"[d]cat_catalog_check\" | wc -l",
+      "exit_code": 1,
+      "stdout": "45 /tmp/results.jsonl\nEOF marker not found\nEOF marker not found\n0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "head -2 /tmp/results.jsonl; echo \"===\"; python3 -c \"\nimport json\nwith open('/tmp/results.jsonl') as f:\n    lines = [json.loads(l) for l in f if l.strip()]\nprint('total results:', len(lines))\ngood = sum(1 for l in lines if l.get('num_good_checks', 0) >= 1)\nbad = sum(1 for l in lines if l.get('num_good_checks', 0) == 0)\nprint('good checks:', good, '| bad:', bad)\nfmts = sorted(set(l.get('format') for l in lines))\nprint('formats checked:', fmts)\nassert all(isinstance(l.get('http_status'), int) for l in lines)\nprint('JSONL VALID')\n\"",
+      "exit_code": 0,
+      "stdout": "{\"id\": \"http://example.com/dists/json/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"JSON\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/incorrect.json\", \"last_check\": \"2026-10-18 17:28:33.325375\", \"http_status\": 200, \"duration\": 0.004183778997685295, \"accessible\": true, \"size\": \"9\", \"mimetype\": \"text/plain\", \"error\": \"Expecting property name enclosed in double quotes: line 2 column 1 (char 2)\", \"valid\": false, \"date_first_error\": \"2026-10-18\", \"num_good_checks\": 0}\n{\"id\": \"http://example.com/dists/atom/bad1\", \"dataset\": \"http://example.com/dataset/1\", \"dataset_title\": \"Dataset with invalid distributions\", \"format\": \"ATOM\", \"publisher\": \"Publisher with invalid distributions\", \"url\": \"http://localhost:8000/correct.xml\", \"last_check\": \"2026-10-18 17:28:33.592618\", \"http_status\": 200, \"duration\": 0.004116007999982685, \"accessible\": true, \"size\": \"29\", \"mimetype\": \"text/plain\", \"error\": \"Root element is not {http://www.w3.org/2005/Atom}feed\", \"valid\": false, \"date_first_error\": \"2026-10-18\", \"num_good_checks\": 0}\n===\ntotal results: 45\ngood checks: 22 | bad: 23\nformats checked: ['ATOM', 'DOCX', 'GEOJSON', 'GEOTIFF', 'GML', 'JPEG', 'JSON', 'ODS', 'ODT', 'PARQUET', 'PDF', 'PNG', 'RDF', 'SHP', 'XML', 'ZIP']\nJSONL VALID\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "cd /workspace && python3 -m poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl --results /tmp/results.jsonl --recheck > /tmp/recheck.jsonl 2>/tmp/recheck.stderr.log; echo \"EXIT: $?\"; wc -l /tmp/recheck.jsonl; python3 -c \"\nimport json\nlines=[json.loads(l) for l in open('/tmp/recheck.jsonl') if l.strip()]\nprint('recheck results:', len(lines), '| good:', sum(1 for l in lines if l.get('num_good_checks',0)>=1))\nprint('RECHECK OK')\"",
+      "exit_code": 0,
+      "stdout": "EXIT: 0\n27 /tmp/recheck.jsonl\nrecheck results: 27 | good: 21\nRECHECK OK\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 14046 2>/dev/null; sleep 1; ps aux | grep \"[h]ttp.server\" | wc -l; echo \"===\"; cd /workspace && python3 -m poetry install --no-interaction --no-ansi 2>&1 | tail -3; echo \"===\"; git status --short | head",
+      "exit_code": 0,
+      "stdout": "2\n===\nNo dependencies to install or update\n\nInstalling the current project: dcat-catalog-check (1.1.0)\n===\n?? my_api_key\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "ps aux | grep \"[h]ttp.server\"; cat /workspace/.gitignore",
+      "exit_code": 0,
+      "stdout": "root       14033  0.1  0.2  98668 18176 ?        S    17:28   0:00 python3 -m http.server 8123\nroot       14048  0.1  0.2  98668 18304 ?        S    17:28   0:00 python3 -m http.server 8000\n.coverage\n__pycache__/\n.idea/\n.env/\n*~\nuri_replacements.json\n*.log\n20*\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "kill 14033 14048 2>/dev/null; sleep 1; ps aux | grep -c \"[h]ttp.server\"; ls -la /workspace/my_api_key 2>&1; cat /workspace/my_api_key 2>/dev/null | head -3",
+      "exit_code": 0,
+      "stdout": "0\n-rw-r--r-- 1 root root 0 Oct 18 17:27 /workspace/my_api_key\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "installation",
+      "command": "rm -f /workspace/my_api_key && cd /workspace && git status --short; echo \"===\"; python3 -m poetry run python -c \"from osgeo import gdal; import geopandas, fiona, frictionless, rdflib, magic, pypdf, PIL, pyarrow; print('FINAL: all core deps import OK; gdal', gdal.__version__)\"; echo \"===\"; python3 -m poetry run python dcat_catalog_check.py --help > /dev/null; echo \"CLI exit: $?\"",
+      "exit_code": 0,
+      "stdout": "===\nFINAL: all core deps import OK; gdal 3.6.2\n===\nCLI exit: 0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && ls -la && echo \"---GIT---\" && git status --short 2>/dev/null | head -20; echo \"---PYTHON---\" && python3 --version && echo \"---POETRY---\" && python3 -m poetry --version",
+      "exit_code": 0,
+      "stdout": "total 380\ndrwxr-xr-x 8 root root   4096 Oct 18 17:30 .\ndr-xr-xr-x 1 root root   4096 Oct 18 17:05 ..\n-rw-r--r-- 1 root root  53248 Oct 18 17:27 .coverage\n-rw-r--r-- 1 root root     22 Oct 18 17:07 .coveragerc\ndrwxr-xr-x 8 root root   4096 Oct 18 17:30 .git\n-rw-r--r-- 1 root root     71 Oct 18 17:07 .gitignore\n-rw-r--r-- 1 root root   1571 Oct 18 17:07 .gitlab-ci.yml\n-rw-r--r-- 1 root root     64 Oct 18 17:07 .markdownlint.json\n-rw-r--r-- 1 root root   1119 Oct 18 17:07 CHANGELOG.md\n-rw-r--r-- 1 root root    650 Oct 18 17:07 Dockerfile\n-rw-r--r-- 1 root root  13792 Oct 18 17:07 LICENSE\n-rw-r--r-- 1 root root   9358 Oct 18 17:07 README.md\ndrwxr-xr-x 2 root root   4096 Oct 18 17:27 __pycache__\n-rwxr-xr-x 1 root root   7037 Oct 18 17:07 check_periodicity.py\n-rwxr-xr-x 1 root root  28099 Oct 18 17:07 dcat_catalog_check.py\n-rwxr-xr-x 1 root root   1176 Oct 18 17:07 download_catalog.py\ndrwxr-xr-x 3 root root   4096 Oct 18 17:27 formats\n-rw-r--r-- 1 root root   5154 Oct 18 17:07 logo.svg\n-rw-r--r-- 1 root root   9264 Oct 18 17:07 mqa.py\n-rw-r--r-- 1 root root 176934 Oct 18 17:07 poetry.lock\n-rw-r--r-- 1 root root   2556 Oct 18 17:07 publiccode.yml\n-rw-r--r-- 1 root root    711 Oct 18 17:07 pyproject.toml\ndrwxr-xr-x 2 root root   4096 Oct 18 17:07 resources\ndrwxr-xr-x 4 root root   4096 Oct 18 17:27 tests\ndrwxr-xr-x 2 root root   4096 Oct 18 17:07 tools\n---GIT---\n---PYTHON---\nPython 3.10.12\n---POETRY---\nPoetry (version 2.5.1)\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls -la /root/.cache/pypoetry/virtualenvs/ 2>/dev/null && echo \"---\" && ls /root/.cache/pypoetry/virtualenvs/dcat-catalog-check-xS3fZVNL-py3.10/bin/ 2>/dev/null | head -30",
+      "exit_code": 0,
+      "stdout": "total 12\ndrwxr-xr-x 3 root root 4096 Oct 18 17:11 .\ndrwxr-xr-x 5 root root 4096 Oct 18 17:11 ..\ndrwxr-xr-x 6 root root 4096 Oct 18 17:25 dcat-catalog-check-xS3fZVNL-py3.10\n---\nactivate\nactivate.csh\nactivate.fish\nactivate.nu\nactivate.ps1\nactivate.xsh\nactivate_this.py\nchardetect\ncoverage\ncoverage-3.10\ncoverage3\ncsv2rdf\ndeactivate.csh\nf2py\nfio\nfrictionless\ng2e\ngdal2tiles.py\ngdal2xyz.py\ngdal_calc.py\ngdal_edit.py\ngdal_fillnodata.py\ngdal_merge.py\ngdal_pansharpen.py\ngdal_polygonize.py\ngdal_proximity.py\ngdal_retile.py\ngdal_sieve.py\ngdalattachpct.py\ngdalcompare.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat pyproject.toml && echo \"---RESOURCES---\" && ls -la resources/ && head -30 resources/file_types.json",
+      "exit_code": 0,
+      "stdout": "[tool.poetry]\n\nname = \"dcat-catalog-check\"\nversion = \"1.1.0\"\ndescription = \"DCAT Catalog Check\"\nauthors = [\n  \"Jesper Zedlitz <jesper.zedlitz@stk.landsh.de>\",\n  \"Thorge Petersen <petersen@rz.uni-kiel.de>\",\n]\nlicense = \"AGPL-3.0-or-later\"\nreadme = \"README.md\"\n\n[tool.poetry.dependencies]\npython = \"^3.10\"\nrequests = \"^2.32.3\"\npython-magic = \"^0.4.27\"\nfrictionless = {extras = [\"wkt\"], version = \"^5.18.1\"}\ngeopandas = \"^1.0.1\"\nrdflib = \"^7.1.1\"\npypdf = \"^5.1.0\"\npillow = \"^11.0.0\"\nfiona = \"^1.10.1\"\npyarrow = \"^18.1.0\"\ngeojson = \"^3.2.0\"\ngdal = \"3.6.2\"\n\n[tool.poetry.group.dev.dependencies]\ncoverage = \"^7.6.1\"\nruff = \"^0.6.8\"\n\n[build-system]\nrequires = [\"poetry-core\"]\nbuild-backend = \"poetry.core.masonry.api\"\n---RESOURCES---\ntotal 12\ndrwxr-xr-x 2 root root 4096 Oct 18 17:07 .\ndrwxr-xr-x 8 root root 4096 Oct 18 17:30 ..\n-rw-r--r-- 1 root root 1854 Oct 18 17:07 file_types.json\n{\n  \"7Z\": [\n    \"application/x-7z-compressed\"\n  ],\n  \"ARCINFO_COV\": [\n    \"application/zip\"\n  ],\n  \"ATOM\": [\n    \"text/xml\", \"application/xml\"\n  ],\n  \"CSV\": [\n    \"text/csv\", \"text/plain\", \"application/csv\"\n  ],\n  \"DOC\": [\n    \"application/msword\"\n  ],\n  \"DWG\": [\n    \"image/vnd.dwg\"\n  ],\n  \"GDB\": [\n    \"application/zip\"\n  ],\n  \"GEOJSON\": [\n    \"application/json\"\n  ],\n  \"GEOTIFF\": [\n    \"image/tiff\"\n  ],\n  \"GML\": [\n    \"text/xml\", \"application/xml\"\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && python3 -m poetry run python -c \"\nimport magic, requests, rdflib, frictionless, geopandas, fiona, pypdf, PIL, pyarrow, geojson, json\nfrom osgeo import gdal\nimport csv\nprint('magic OK')\nprint('requests', requests.__version__)\nprint('rdflib', rdflib.__version__)\nprint('frictionless', frictionless.__version__)\nprint('geopandas', geopandas.__version__)\nprint('fiona', fiona.__version__)\nprint('pypdf', pypdf.__version__)\nprint('pillow', PIL.__version__)\nprint('pyarrow', pyarrow.__version__)\nprint('gdal', gdal.__version__)\nprint('ALL IMPORTS OK')\n\"; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "magic OK\nrequests 2.32.4\nrdflib 7.1.4\nfrictionless 5.18.1\ngeopandas 1.1.1\nfiona 1.10.1\npypdf 5.7.0\npillow 11.3.0\npyarrow 18.1.0\ngdal 3.6.2\nALL IMPORTS OK\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && python3 -m poetry run python dcat_catalog_check.py --help; echo \"EXIT=$?\"",
+      "exit_code": 0,
+      "stdout": "usage: dcat_catalog_check.py [-h] [--url URL] [--log_file LOG_FILE]\n                             [--results RESULTS] [--verbose] [--debug]\n                             [--recheck] [--save-catalog] [--no-recheck]\n                             [--access-url-as-download]\n                             [--check-format CHECK_FORMAT]\n                             [--force-check-format FORCE_CHECK_FORMAT]\n                             [--check-http-5xx]\n\noptions:\n  -h, --help            show this help message and exit\n  --url URL             DCAT catalog URL\n  --log_file LOG_FILE   Log file path\n  --results RESULTS     File from which the results are loaded\n  --verbose             Enable verbose logging\n  --debug               Enable debug logging\n  --recheck             Only use the previous results (specified by --results)\n                        as input for the next check\n  --save-catalog        Save the DCAT catalog into a file catalog.xml\n  --no-recheck          Just check new entries from the catalog. Do not re-\n                        check existing results.\n  --access-url-as-download\n                        Treat the dcat:accessURL as the download URL.\n  --check-format CHECK_FORMAT\n                        Only check the specified format\n  --force-check-format FORCE_CHECK_FORMAT\n                        Check distributinons with the specified format\n                        regardless of previous results\n  --check-http-5xx      Only re-check HTTP 5xx errors\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && timeout 500 python3 -m poetry run coverage run -m unittest --buffer 2>&1 | tail -15; echo \"EXIT=${PIPESTATUS[0]}\"",
+      "exit_code": 0,
+      "stdout": "ERROR 4: `/tmp/tmpy9m_avm6' not recognized as a supported file format.\n.............................................................................\n----------------------------------------------------------------------\nRan 77 tests in 1.674s\n\nOK\nEXIT=0\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "ls /workspace/tests/data/ | head -50 && echo \"---\" && ls /workspace/tests/data/ | wc -l",
+      "exit_code": 0,
+      "stdout": "Atom_SH_Feldblockfinder_OpenGBD.xml\nWMTSCapabilities.xml\nall-tests.ttl\nbermuda-with-subdir.zip\nbermuda.geojson\nbermuda.gml\nbermuda.zip\nbroken.parquet\ncatalog-1.ttl\ncatalog-dataservice.ttl\ncatalog.ttl\ncorrect.json\ncorrect.json.bz2\ncorrect.json.gz\ncorrect.json.xz\ncorrect.xml\ngeotiff.zip\nimage.jpeg\nimage.png\nincorrect.json\nincorrect.xml\njson-in-zip.zip\njsons-in-zip.zip\npng-in-zip.zip\nrdf.json\nrdf.xml\nresult-1.jsonl\ntext.txt\nufo-resource.json\nufo-schema.json\nufo.csv\nufo.ttl\nvalid.docx\nvalid.ods\nvalid.odt\nvalid.parquet\nvalid.pdf\nvalid.tif\nvalid.xlsx\nvalid_geotiff.tif\nwfs-service-base.xml\nwfs-service-capabilities.xml\nzos116.zip\n---\n43\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && head -60 tests/data/catalog.ttl && echo \"===GREP URLS in tests===\" && grep -rn \"catalog.ttl\\|localhost\\|127.0.0.1\\|catalog-1\" tests/test_dcat_catalog_check.py 2>/dev/null | head -20; echo \"---files---\"; ls tests/",
+      "exit_code": 0,
+      "stdout": "@prefix adms: <http://www.w3.org/ns/adms#> .\n@prefix dcat: <http://www.w3.org/ns/dcat#> .\n@prefix dcatap: <http://data.europa.eu/r5r/> .\n@prefix dcatde: <http://dcat-ap.de/def/dcatde/> .\n@prefix dcterms: <http://purl.org/dc/terms/> .\n@prefix foaf: <http://xmlns.com/foaf/0.1/> .\n@prefix locn: <http://www.w3.org/ns/locn#> .\n@prefix vcard: <http://www.w3.org/2006/vcard/ns#> .\n@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .\n\n\n<http://example.com/dataset/1> a dcat:Dataset ;\n    dcterms:title \"Dataset with invalid distributions\" ;\n    dcat:distribution\n    <http://example.com/dists/json/bad1> ,\n<http://example.com/dists/atom/bad1> ,\n<http://example.com/dists/atom/bad2> ,\n<http://example.com/dists/geojson/bad> ,\n<http://example.com/dists/jpeg/bad> ,\n<http://example.com/dists/docx/bad> ,\n<http://example.com/dists/docx/bad2> ,\n<http://example.com/dists/docx/bad3> ,\n<http://example.com/dists/geotiff/bad> ,\n<http://example.com/dists/gml/bad> ,\n<http://example.com/dists/ods/bad> ,\n<http://example.com/dists/ods/bad2> ,\n<http://example.com/dists/ods/bad3> ,\n<http://example.com/dists/odt/bad> ,\n<http://example.com/dists/odt/bad2> ,\n<http://example.com/dists/odt/bad3> ,\n<http://example.com/dists/parquet/bad> ,\n<http://example.com/dists/pdf/bad> ,\n<http://example.com/dists/png/bad> ,\n<http://example.com/dists/rdf/bad> ,\n<http://example.com/dists/shp/bad> ,\n<http://example.com/dists/xml/bad> ,\n<http://example.com/dists/zip/bad>\n     ;\n    dcterms:publisher [\n       a foaf:Organization;\n       foaf:name \"Publisher with invalid distributions\" ;\n    ] .\n   \n<http://example.com/dataset/2> a dcat:Dataset ;\n    dcterms:title \"Dataset with valid distributions\" ;\n    dcat:distribution\n    <http://example.com/dists/atom/good> ,\n<http://example.com/dists/geojson/good> ,\n<http://example.com/dists/jpeg/good> ,\n<http://example.com/dists/docx/good> ,\n<http://example.com/dists/geotiff/good> ,\n<http://example.com/dists/geotiff/good2> ,\n<http://example.com/dists/gml/good> ,\n<http://example.com/dists/json/good> ,\n<http://example.com/dists/json/good2> ,\n<http://example.com/dists/ods/good> ,\n<http://example.com/dists/odt/good> ,\n<http://example.com/dists/parquet/good> ,\n<http://example.com/dists/pdf/good> ,\n<http://example.com/dists/png/good> ,\n===GREP URLS in tests===\n---files---\n__init__.py\n__pycache__\ndata\ntest_all_formats.py\ntest_atom_format.py\ntest_dcat_catalog_check.py\ntest_docx_format.py\ntest_geojson_format.py\ntest_geotiff_format.py\ntest_gml_format.py\ntest_integration.py\ntest_jpeg_format.py\ntest_json_format.py\ntest_ods_format.py\ntest_odt_format.py\ntest_parquet_format.py\ntest_pdf_format.py\ntest_png_format.py\ntest_rdf_format.py\ntest_shp_format.py\ntest_wmts_format.py\ntest_xlsx_format.py\ntest_xml_format.py\ntest_zip_format.py\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && cat tests/test_integration.py | head -80",
+      "exit_code": 0,
+      "stdout": "from http.server import SimpleHTTPRequestHandler, HTTPServer\nimport json\nimport threading\nimport time\nimport io\nimport requests\nimport sys\nimport unittest\nfrom dcat_catalog_check import DcatCatalogCheck\nfrom functools import partial\n\n\nclass TestIntegration(unittest.TestCase):\n    @classmethod\n    def setUpClass(cls):\n        cls.server_address = (\"\", 8000)\n        handler = partial(SimpleHTTPRequestHandler, directory=\"tests/data/\")\n        cls.httpd = HTTPServer(cls.server_address, handler)\n\n        cls.server_thread = threading.Thread(target=cls.httpd.serve_forever)\n        cls.server_thread.daemon = True\n        cls.server_thread.start()\n\n        cls._wait_for_server(\"http://localhost:8000\")\n\n    @classmethod\n    def tearDownClass(cls):\n        cls.httpd.shutdown()\n        cls.httpd.server_close()\n        cls.server_thread.join()\n\n    @staticmethod\n    def _wait_for_server(url, timeout=10, interval=0.2):\n        \"\"\"Wait until the server can be reached at the specified URL.\"\"\"\n        start_time = time.time()\n        while time.time() - start_time < timeout:\n            try:\n                response = requests.get(url)\n                if response.status_code == 200:\n                    return True\n            except requests.exceptions.RequestException:\n                pass\n            time.sleep(interval)\n        print(f\"Timeout reached: Server at {url} not reachable.\")\n        return False\n\n    def setUp(self):\n        self.dcc = DcatCatalogCheck(\"http://test.invalid:8000/\", \"my_api_key\")\n\n    def test_rerun_with_old_data(self):\n        \"\"\"When the test is run after a long time all distributions will be\n        checked. The number of successfull checks will be increased.\"\"\"\n\n        # Read previous results\n        self.dcc.read_previous_results(\"tests/data/result-1.jsonl\")\n\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog-1.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        self.assertEqual(len(json_objects), 1)\n\n        self.assertEqual(json_objects[0].get(\"num_good_checks\"), 2)\n\n    def test_check_dcat_catalog(self):\n        mock_stdout = io.StringIO()\n        sys.stdout = mock_stdout\n        self.dcc.check_dcat_catalog(\"http://localhost:8000/catalog.ttl\")\n        sys.stdout = sys.__stdout__\n\n        output = mock_stdout.getvalue()\n        json_objects = [json.loads(line) for line in output.splitlines()]\n\n        for result in json_objects:\n            # good distributions have one successful check\n            if \"/good\" in result.get(\"id\"):\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && grep -B2 -A5 \"dists/json/bad1\" tests/data/catalog.ttl | head -20",
+      "exit_code": 0,
+      "stdout": "    dcterms:title \"Dataset with invalid distributions\" ;\n    dcat:distribution\n    <http://example.com/dists/json/bad1> ,\n<http://example.com/dists/atom/bad1> ,\n<http://example.com/dists/atom/bad2> ,\n<http://example.com/dists/geojson/bad> ,\n<http://example.com/dists/jpeg/bad> ,\n<http://example.com/dists/docx/bad> ,\n--\n\n\n<http://example.com/dists/json/bad1> a dcat:Distribution ;\n     dcat:downloadURL <http://localhost:8000/incorrect.json> ;\n     dcat:description \"This is a syntactically incorrect JSON file.\" ;\n     dcterms:format <http://publications.europa.eu/resource/authority/file-type/JSON> .\n\n\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/tests/data && python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/httpd.log 2>&1 &\nSRVPID=$!\nsleep 2\ncd /workspace && timeout 550 python3 -m poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl > /tmp/results.jsonl 2>/tmp/check_stderr.log\nEC=$?\nkill $SRVPID 2>/dev/null\necho \"SCRIPT_EXIT=$EC\"\necho \"---stderr tail---\"\ntail -5 /tmp/check_stderr.log\necho \"---results count---\"\nwc -l /tmp/results.jsonl\necho \"---all lines valid JSON?---\"\npython3 - <<'EOF'\nimport json\ngood = bad = 0\nlines = open('/tmp/results.jsonl').read().splitlines()\nfor i, line in enumerate(lines, 1):\n    obj = json.loads(line)  # raises if invalid JSON\n    if obj.get(\"num_good_checks\", 0) > obj.get(\"num_bad_checks\", 0):\n        good += 1\n    else:\n        bad += 1\nprint(f\"valid JSON lines: {len(lines)}, good-leaning: {good}, bad-leaning: {bad}\")\nEOF",
+      "exit_code": 0,
+      "stdout": "SCRIPT_EXIT=0\n---stderr tail---\ninvalid pdf header: b'\\x89PNG\\r'\nEOF marker not found\nEOF marker not found\nEOF marker not found\n---results count---\n45 /tmp/results.jsonl\n---all lines valid JSON?---\nvalid JSON lines: 45, good-leaning: 22, bad-leaning: 23\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace/tests/data && python3 -m http.server 8000 --bind 127.0.0.1 >/tmp/httpd2.log 2>&1 &\nSRVPID=$!\nsleep 2\ncd /workspace && timeout 550 python3 -m poetry run python dcat_catalog_check.py --url http://localhost:8000/catalog.ttl --results /tmp/results.jsonl --recheck > /tmp/recheck.jsonl 2>/tmp/recheck_stderr.log\nEC=$?\nkill $SRVPID 2>/dev/null\necho \"RECHECK_EXIT=$EC\"\nwc -l /tmp/recheck.jsonl\npython3 - <<'EOF'\nimport json\nlines = open('/tmp/recheck.jsonl').read().splitlines()\nvalid = sum(1 for l in lines if json.loads(l))\nprint(f\"valid JSON lines: {valid}/{len(lines)}\")\n# show sample record\nprint(json.dumps(json.loads(lines[0]), indent=2)[:600])\nEOF",
+      "exit_code": 0,
+      "stdout": "RECHECK_EXIT=0\n27 /tmp/recheck.jsonl\nvalid JSON lines: 27/27\n{\n  \"id\": \"http://example.com/dists/json/bad1\",\n  \"dataset\": \"http://example.com/dataset/1\",\n  \"dataset_title\": \"Dataset with invalid distributions\",\n  \"format\": \"JSON\",\n  \"publisher\": \"Publisher with invalid distributions\",\n  \"url\": \"http://localhost:8000/incorrect.json\",\n  \"size\": \"9\",\n  \"date_first_error\": \"2026-10-18\",\n  \"num_good_checks\": 0,\n  \"last_check\": \"2026-10-18 17:31:42.814493\",\n  \"http_status\": 200,\n  \"duration\": 0.005092355997476261,\n  \"accessible\": true,\n  \"mimetype\": \"text/plain\",\n  \"error\": \"Expecting property name enclosed in double quotes: line 2 column 1 (char 2)\",\n  \"vali\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && python3 -m poetry install --no-interaction --no-ansi 2>&1 | tail -3; echo \"EXIT=$?\"; echo \"---workspace artifacts---\"; ls -la my_api_key results.jsonl 2>&1 | head -3; git status --short; echo \"---gdal system version---\"; gdal-config --version 2>/dev/null || echo \"no system gdal-config\"",
+      "exit_code": 0,
+      "stdout": "No dependencies to install or update\n\nInstalling the current project: dcat-catalog-check (1.1.0)\nEXIT=0\n---workspace artifacts---\nls: cannot access 'results.jsonl': No such file or directory\n-rw-r--r-- 1 root root 0 Oct 18 17:31 my_api_key\n?? my_api_key\n---gdal system version---\n3.6.2dev\n",
+      "stderr": "",
+      "timed_out": false
+    },
+    {
+      "phase": "validation",
+      "command": "cd /workspace && rm -f my_api_key /tmp/results.jsonl /tmp/recheck.jsonl /tmp/check_stderr.log /tmp/recheck_stderr.log /tmp/httpd.log /tmp/httpd2.log && git status --short && echo \"CLEAN\" && git log --oneline -1",
+      "exit_code": 0,
+      "stdout": "CLEAN\n44583b1 fix table style [ci skip]\n",
+      "stderr": "",
+      "timed_out": false
+    }
+  ]
+}

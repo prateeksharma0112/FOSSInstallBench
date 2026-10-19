@@ -1,0 +1,86 @@
+{
+  "run": {
+    "run_id": "thesis-main-evaluation-02-qwen__P009-qonnectra__run-01",
+    "experiment_id": "thesis-main-evaluation-02-qwen",
+    "run_number": 1,
+    "started_at": "2026-10-15T18:59:33.586582+02:00",
+    "finished_at": "2026-10-15T19:38:54.397118+02:00",
+    "status": "completed",
+    "error_message": null
+  },
+  "task": {
+    "dataset_id": "P009",
+    "project": {
+      "opencode_id": "7791",
+      "name": "Qonnectra",
+      "description": "Fiber optic documentation of passive networks",
+      "catalogue_url": "https://opencode.de/de/software/qonnectra-7791",
+      "type": "Application",
+      "platforms": [
+        "web"
+      ]
+    },
+    "repository": {
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/qonnectra",
+      "commit_sha": "c07d840c783b5ea824328622f597e269487f0c0f",
+      "license": "AGPL-3.0-only"
+    },
+    "installation": {
+      "complexity": "High"
+    },
+    "installation_guide": {
+      "source": "Repository README",
+      "url": "https://gitlab.opencode.de/sh/digitalhub-sh/landesprogramm-offene-innovationen/qonnectra/-/blob/c07d840c783b5ea824328622f597e269487f0c0f/README.md",
+      "language": "English",
+      "word_count": 115
+    },
+    "task_id": "P009-qonnectra"
+  },
+  "environment": {
+    "container_image": "installbench:22.04-dind",
+    "container_engine": "podman",
+    "sandbox_mode": "dind",
+    "command_timeout_seconds": 600
+  },
+  "agents": {
+    "installation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 500,
+      "status": "completed",
+      "reported_outcome": "success",
+      "error_message": null
+    },
+    "validation": {
+      "model": "hosted_vllm/Qwen/Qwen3.8-27B-FP8",
+      "max_iterations": 300,
+      "status": "completed",
+      "assessed_outcome": "success",
+      "error_message": null
+    }
+  },
+  "metrics": {
+    "duration_seconds": 2360.8439999999973,
+    "repository_setup_duration_seconds": 15.5,
+    "installation_duration_seconds": 2249.405999999988,
+    "validation_duration_seconds": 48.67200000000594,
+    "command_count": 144,
+    "repository_setup_command_count": 4,
+    "installation_command_count": 129,
+    "validation_command_count": 11
+  },
+  "artifacts": {
+    "agent_run_data_path": "workspace/thesis-main-evaluation-02-qwen/P009-qonnectra/run-01",
+    "commands_path": "commands.json",
+    "installation": {
+      "prompt_path": "installation/prompt.md",
+      "response_path": "installation/final_response.txt",
+      "report_path": "installation/report.json",
+      "summary_path": "installation/installation_summary.md"
+    },
+    "validation": {
+      "prompt_path": "validation/prompt.md",
+      "response_path": "validation/final_response.txt",
+      "report_path": "validation/report.json"
+    }
+  }
+}

@@ -1,0 +1,10 @@
+Installation of "Interaktive Gartenkarte" (Laravel 12 + Inertia/Vue 3) completed and verified via the guide's primary method (Lokales Dev-Setup). Working directory: /workspace (git repo at commit 7edb795, detached HEAD = main).
+
+What was done:
+1. Prerequisites installed (none preinstalled in the Ubuntu 22.04 container): PHP 8.4.26 with extensions sqlite3/mbstring/xml/curl/zip/intl/gd (via ondrej/php PPA; 8.4 chosen because composer.lock pins Symfony 8 packages requiring php>=8.4, and the guide explicitly allows 8.3/8.4), Composer 2.10.3 (official installer), Node.js v22.23.3 + npm 10.9.9 (official nodejs.org binary in /usr/local).
+2. Guide steps: composer install (exit 0); cp .env.example .env + php artisan key:generate; touch database/database.sqlite + php artisan migrate (3 migrations, 9 tables); npm install (exit 0); composer dev (running in background, log at storage/logs/dev-server.log).
+3. Verification: http://localhost:8000 → HTTP 200 serving Inertia HTML that loads http://127.0.0.1:5173/@vite/client, app.ts and MainPage.vue; Vite on :5173 → HTTP 200; queue:listen and pail processes up; opendata.wuerzburg.de reachable (HTTP 302). A Node-based walk of the Vite module graph for the "/" route's MainPage.vue resolved all 18 reachable modules with 0 failures.
+
+Known caveat (upstream source defect, not an installation failure): the committed tree is missing resources/js/components/UserInfo.vue and UserMenuContent.vue (verified absent via git ls-tree -r HEAD; not gitignored). This makes `npm run build` fail ("Could not resolve ./UserMenuContent.vue from NavUser.vue") and breaks the Dashboard.vue page transform. The only defined route (GET / → MainPage.vue, the garden map) does not use those components, so the main application page is fully functional. The missing files were not fabricated.
+
+Startup: `composer dev` in /workspace (server :8000, queue, pail, Vite :5173).

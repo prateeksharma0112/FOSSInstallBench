@@ -1,0 +1,1 @@
+SVA Studio was installed and verified in the `local-builder` runtime profile (the guide's self-contained local profile with Builder.io + Mock-User). The app is running at http://localhost:3000 with working UI, mock-auth login, `/auth/me` and IAM context endpoints. Full details in the structured report below.
